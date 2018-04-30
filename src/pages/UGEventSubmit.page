@@ -1,0 +1,71 @@
+<!--
+ - Created by dahl3702 on 4/12/2018.
+ -->
+
+<apex:page id="UGEventSubmit" showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" controller="UGEventSubmitController">
+    <apex:composition template="CastorTemplate2017">
+        <apex:define name="pageTitle"><a href="/applicantportal/UGEvent">Events</a></apex:define>
+        <apex:define name="afterJquery">
+            <link href="{!URLFOR($Resource.UGEventStyles)}" rel="stylesheet" type="text/css"/>
+            <script src="{!URLFOR($Resource.UGEventsRegistrationOptionScripts)}" type="text/javascript"/>
+        </apex:define>
+        <apex:define name="sectionNav">
+            <li>
+                <apex:outputLink value="{!$Page.UGEvent}">Event Calendar</apex:outputLink>
+            </li>
+            <!--
+            <li>
+                <apex:outputLink value="{!$Page.Home_Page}">Home</apex:outputLink>
+            </li>
+            <li>
+                <apex:outputLink value="{!$Page.ScholarshipHome}">Scholarship List</apex:outputLink>
+            </li>
+            <li>
+                <apex:outputLink value="{!$Page.MyProfile}">My Profile</apex:outputLink>
+            </li>
+            <li>
+                <apex:outputLink value="{!$Page.MyApplication}">My Applications</apex:outputLink>
+            </li>
+            -->
+        </apex:define>
+        <apex:define name="body">
+            <div class="row">
+                <div class="columns errorMessages">
+                    <apex:messages />
+                </div>
+            </div>
+            <apex:form id="UGRegistraterSubmitForm" html-data-abide="ajax" html-novalidate="novalidate">
+                <div class="row">
+                    <div class="column">
+                        <h2>
+                            <apex:outputText escape="false" value="{!eventPage.Event_Submit_Title__c}"/>
+                        </h2>
+                        <p>
+                            <apex:outputText escape="false" value="{!eventPage.Event_Submit_Description__c}"/>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <apex:outputText escape="false" value="{!chosenFormatted}"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <p>
+                            <apex:commandLink action="{!submitRegistration}" Value="Submit Registration" id="submitOptions" styleClass="button confirmContinue"/>
+                            <apex:commandLink action="{!previousPage}" onClick="" Value="Previous" id="previousPage" styleClass="button previous"/>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <p>
+                            <apex:outputText escape="false" value="{!EventPage.Event_Footer__c}"></apex:outputText>
+                        </p>
+                    </div>
+                </div>
+            </apex:form>
+        </apex:define>
+    </apex:composition>
+</apex:page>
