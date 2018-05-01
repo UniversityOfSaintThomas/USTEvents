@@ -2,7 +2,7 @@
 var eventsObj, dMonth, dYear;
 var overlay = '<div class="waiting-overlay"></div>';
 //parse event cookie
-var UGSettings = JSON.parse(readCookie('UGEvent'));
+var USTSettings = JSON.parse(readCookie('USTEvent'));
 
 $(document).ready(function () {
 
@@ -50,8 +50,8 @@ $(document).ready(function () {
     $("#audienceDDwrap, #audienceDDwrap").append(overlay);
 
     $("#audienceDD").on("change", function () {
-        eraseCookie('UGEvent');
-        createCookie('UGEvent','{"audience" : "' + $(this).val() + '"}', '');
+        eraseCookie('USTEvent');
+        createCookie('USTEvent','{"audience" : "' + $(this).val() + '"}', '');
         if ($(this).val() !== '') {
             //start loading in the list of events by audience
             loadJSONEvents();
@@ -68,8 +68,8 @@ $(document).ready(function () {
 });
 
 function setSessionCookie(sessionID) {
-    eraseCookie('UGEvent');
-    createCookie('UGEvent','{"audience" : "' + $("#audienceDD").val() + '", "sessionID" : "' + sessionID + '" }', '');
+    eraseCookie('USTEvent');
+    createCookie('USTEvent','{"audience" : "' + $("#audienceDD").val() + '", "sessionID" : "' + sessionID + '" }', '');
     return true;
 }
 
@@ -90,7 +90,7 @@ function loadJSONEvents() {
     viewStart = getCurrentSOQLDateTimeLiteral($("#fullCalendarView").fullCalendar('getView').start).toString();
     viewEnd = getCurrentSOQLDateTimeLiteral($("#fullCalendarView").fullCalendar('getView').end).toString();
     $.ajax({
-        url: "/applicantportal/UGEventFeed",
+        url: "/applicantportal/USTEventFeed",
         data: {'viewStart': viewStart, 'viewEnd': viewEnd, 'feedType': 'eventList', 'audience': $("#audienceDD").val()},
         dataType: "json",
         cache: false
@@ -103,7 +103,7 @@ function loadJSONEvents() {
         $("#fullCalendarView").fullCalendar('addEventSource', eventsObj);
 
     }).fail(function () {
-        alert("error");
+        console.log("Error - Feed didn't load");
     }).always(function () {
         //alert( "complete" );
     });
@@ -142,7 +142,7 @@ function findEvents(edate, sessionID) {
         }
         alert(value.eventClosed);
         if (value.eventClosed != true) {
-            evOut += "<a href='/applicantportal/UGEventRegister?sessionID=" + value.ID + "&audience=" + encodeURI($("#audienceDD").val()) + "' class='button'>Register</a></td>"
+            evOut += "<a href='/applicantportal/USTEventRegister?sessionID=" + value.ID + "&audience=" + encodeURI($("#audienceDD").val()) + "' class='button'>Register</a></td>"
         }
         evOut += "</tr>"
     });
@@ -152,7 +152,7 @@ function findEvents(edate, sessionID) {
 
 function loadAudienceDD() {
     $.ajax({
-        url: "/applicantportal/UGEventFeed",
+        url: "/applicantportal/USTEventFeed",
         data: {'feedType': 'audienceDD'},
         dataType: "json"
     }).done(function (data) {
@@ -160,9 +160,9 @@ function loadAudienceDD() {
         $("#audienceDDwrap .waiting-overlay").remove();
 
         //preselect audience based on cookie
-        if (UGSettings != null) {
-            if(UGSettings.audience!=null) {
-                $("#audienceDD").val(UGSettings.audience);
+        if (USTSettings != null) {
+            if(USTSettings.audience!=null) {
+                $("#audienceDD").val(USTSettings.audience);
                 loadJSONEvents();
             }
         }
