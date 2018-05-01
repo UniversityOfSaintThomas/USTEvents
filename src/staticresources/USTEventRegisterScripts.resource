@@ -1,0 +1,397 @@
+// USTEventRegisterScripts
+var overlay = '<div class="waiting-overlay"></div>';
+var ChosenSchoolFilter;
+var ChosenCollegeFilter;
+var ChosenProcess = {};
+var ChosenProcessActive = {};
+var UGSettings = JSON.parse(readCookie('UGEvent'));
+var audience;
+
+$(document).ready(function () {
+    // get audience
+    audience = getUrlParameter('audience');
+    if (!audience) {
+        if (UGSettings != null) {
+            if (UGSettings.audience !== null) {
+                audience = UGSettings.audience;
+            }
+        }
+    }
+    if (!audience) {
+        audience = "High School";
+    }
+    //display correct school ask based on audience
+    // if (audience.indexOf("Graduate") >= 0 || audience.indexOf("Transfer") >= 0) {
+    //     $("#hsAsk").hide();
+    // } else {
+    //     $("#collegeAsk").hide();
+    // }
+
+    //Set up both school selectors
+    //check if selection has already been made
+    if ($("[id$=school]").val() && $("[id$=schoolCode]").val()) {
+        $("#schoolSelector").append($('<option>', {value: $("[id$=schoolCode]").val(), text: $("[id$=school]").val(), selected: true}));
+    }
+    if ($("[id$=college]").val() && $("[id$=collegelCode]").val()) {
+        $("#schoolSelector").append($('<option>', {value: $("[id$=collegelCode]").val(), text: $("[id$=college]").val(), selected: true}));
+    }
+    if ($("[id$=HSAltInput]").val()) {
+        $("#cantFindHS").click();
+    }
+
+
+    $("#schoolSelector, #collegeSelector").chosen({no_results_text: "No results yet, keep typing..."});
+    ChosenSchoolFilter = $("#schoolSelector").next('.chosen-container').find('.chosen-search-input');
+    ChosenCollegeFilter = $("#collegeSelector").next('.chosen-container').find('.chosen-search-input');
+
+
+    //activate zip fill in for city state
+    $('[id$=zip]').on("change", function () {
+        fillInCityStateOnZip($(this));
+    });
+
+    //make sure phone is formated correctly
+    $('[id$=phone], [id$=mobile]').on('change', function () {
+        formatPhone($(this));
+    });
+
+    validYear();
+
+    ChosenSchoolFilter.on("keyup", function (e) {
+        var code = (e.keyCode || e.which);
+        if (code == 37 || code == 38 || code == 39 || code == 40) {
+            return true;
+        }
+        //When return is hit populate hidden data because something was selected.
+        if (e.code == 13) {
+            populateHiddenSchoolValue();
+        }
+        if ($(this).val().length > 3) {
+            getSchoolOptions($(this).val(), 'highSchool');
+        }
+    });
+
+    ChosenCollegeFilter.on("keyup", function (e) {
+        var code = (e.keyCode || e.which);
+        if (code == 37 || code == 38 || code == 39 || code == 40) {
+            return true;
+        }
+        if ($(this).val().length > 3) {
+            getSchoolOptions($(this).val(), 'college');
+        }
+    });
+
+    $("#cantFindHS").on("change", function () {
+        if ($(this).is(":checked")) {
+            $("#schoolSelector_chosen").hide();
+            $("[id$=HSAltInput]").show();
+        } else {
+            $("[id$=HSAltInput]").val('').hide();
+            $("#schoolSelector_chosen").show();
+        }
+    });
+
+    $("#cantFindCollege").on("change", function () {
+        if ($(this).is(":checked")) {
+            $("#collegeSelector_chosen").hide();
+            $("[id$=CollegeAltInput]").show();
+        } else {
+            $("[id$=CollegeAltInput]").val('').hide();
+            $("#collegeSelector_chosen").show();
+        }
+    });
+});
+
+function populateHiddenSchoolValue() {
+    if ($("[id$=school]").length > 0) {
+        $("[id$=school]").val($("#schoolSelector option:selected").text());
+        $("[id$=schoolCode]").val($("#schoolSelector").val());
+    }
+    if ($("[id$=college]").length > 0) {
+        $("[id$=college]").val($("#collegeSelector option:selected").text());
+        $("[id$=collegeCode]").val($("[id$=collegeSelector]").val());
+    }
+    if ($("[id$=HSAltInput]").val()) {
+        $("[id$=school]").val($("#HSAltInput").val());
+    }
+    if ($("[id$=CollegeAltInput]").val()) {
+        $("[id$=college]").val($("[id$=CollegeAltInput]").val());
+    }
+}
+
+function getSchoolOptions(filter, type) {
+    if (ChosenProcessActive[type]) {
+        ChosenProcess[type].abort();
+    }
+    ChosenProcessActive[type] = true;
+    ChosenProcess[type] = $.ajax({
+        url: "/applicantportal/USTObjDefFeed",
+        data: {'type': type, 'filter': filter},
+        dataType: "json"
+    }).done(function (data) {
+        if (data) {
+            if (type == 'highSchool') {
+                populateschSel(data, $("#schoolSelector"));
+                $("#schoolSelector").trigger('chosen:updated');
+            } else if (type == 'college') {
+                populateschSel(data, $("#collegeSelector"));
+                $("#collegeSelector").trigger('chosen:updated');
+            }
+        }
+        ChosenProcessActive[type] = false;
+    })
+}
+
+function populateschSel(data, selector, keyAsText) {
+    selector.find("option").remove();
+    $.each(data, function (key, value) {
+        selector.append($('<option>').text(value).attr('value', key));
+    });
+    $(document).foundation('reflow');
+}
+
+//Validation for the page
+function checkForm() {
+    populateHiddenSchoolValue();
+    var error_count = 0;
+    var emailReg = /^([a-zA-Z0-9_.\-.'.+])+@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+    $.each($('[id$=UGRegistraterForm] input, [id$=UGRegistraterForm] select'), function (i, v) {
+        if ($(this).hasClass("required") && !$(this).val()) {
+            $(this).addClass("validationError");
+            $('label[for="' + $(this).attr("id") + '"]').addClass("validationError");
+            error_count++;
+        }
+        if ($(this).hasClass("validEmail")) {
+            if (!emailReg.test($(this).val())) {
+                $(this).addClass("validationError");
+                $('label[for="' + $(this).attr("id") + '"]').addClass("validationError");
+                error_count++;
+            }
+        }
+    });
+    // require school be filled in.
+    if (audience.indexOf("Graduate") >= 0 || audience.indexOf("Transfer") >= 0) {
+
+
+        if (!$("[id$=college]").val()) {
+            // alert( $("[id$=college]").val() );
+            error_count++;
+            $("#collegeSelector").addClass("validationError");
+            $('label[for="collegeSelector"]').addClass("validationError");
+        }
+
+    } else {
+        if (!$("[id$=school]").val()) {
+            //  alert( $("[id$=school]").val() );
+            error_count++;
+            $("#schoolSelector").addClass("validationError");
+            $('label[for="schoolSelector"]').addClass("validationError");
+        }
+    }
+    if (error_count > 0) {
+
+        validationErrorAction();
+        return false;
+    }
+    return true;
+}
+
+function validationErrorAction() {
+    $(".validationError").on("change", function () {
+        // alert();
+        $('label[for="' + $(this).attr("id") + '"]').removeClass("validationError");
+        $(this).removeClass("validationError");
+    });
+
+}
+
+function fillInCityStateOnZip(zipObj) {
+    var zip = zipObj.val();
+    var url = "https://nominatim.openstreetmap.org/search?format=jsonv2&limit=1&addressdetails=1&postalcode=";
+    if (zip.length === 5 && zip.match(/^[0-9]+$/) != null) {
+        url = url + zip + "&country=united states";
+    } else {
+        url = url + zip;
+    }
+
+    $('[id$=city], [id$=state]').closest(".columns").prepend(overlay)
+    $.getJSON(url, function (result) {
+        if (result.length > 0) {
+            var city = result[0].address.city;
+            if (city == null) {
+                city = result[0].address.hamlet;
+            }
+            if (city == null) {
+                city = result[0].address.town;
+            }
+            var state = result[0].address.state;
+            if (state == null) {
+                state = result[0].address.county;
+            }
+
+            $.each(RFIStates, function (key, value) {
+                if (value === state) {
+                    state = key;
+                }
+            });
+            //state = RFIStates.value[state].key;
+            var county = result[0].address.county;
+            var country = result[0].address.country_code.toUpperCase();
+            $("[id$=city]").val(city);
+            $("[id$=state]").val(state);
+        }
+    }).always(function () {
+        $(".waiting-overlay").remove();
+    });
+}
+
+function formatPhone(obj) {
+    var intr = false,
+        digits = 0;
+    if (obj.val().startsWith("+")) {
+        intr = true;
+    }
+    digits = obj.val().replace(/\D/g, '');
+    if (intr) {
+        if (digits.startsWith("0")) {
+            digits = digits.substring(1);
+        }
+        obj.val("+" + digits);
+    } else {
+        obj.val(digits.replace(/(\d{3})(\d{3})(\d{4})/, "($1) $2-$3"));
+    }
+}
+
+function validYear() {
+    $(".validYear").on("keyup", function () {
+        $(this).val($(this).val().replace(/\D/g, ''));
+        $(this).parent().find(".yearError").remove();
+        if (this.value.length > 4) {
+            $(this).val(this.value.slice(0, 4));
+        }
+    });
+    $(".validYear").on("change", function () {
+        var re = new RegExp(/(19|20)\d{2}/);
+        if (!re.test($(this).val())) {
+            $(this).val("");
+            $(this).after("<span class='yearError'>Enter a valid graduation year.</span>");
+        }
+        ;
+    });
+}
+
+var RFIStates = {
+    'AL': 'Alabama',
+    'AK': 'Alaska',
+    'AZ': 'Arizona',
+    'AR': 'Arkansas',
+    'CA': 'California',
+    'CO': 'Colorado',
+    'CT': 'Connecticut',
+    'DE': 'Delaware',
+    'FL': 'Florida',
+    'GA': 'Georgia',
+    'HI': 'Hawaii',
+    'ID': 'Idaho',
+    'IL': 'Illinois',
+    'IN': 'Indiana',
+    'IA': 'Iowa',
+    'KS': 'Kansas',
+    'KY': 'Kentucky',
+    'LA': 'Louisiana',
+    'ME': 'Maine',
+    'MD': 'Maryland',
+    'MA': 'Massachusetts',
+    'MI': 'Michigan',
+    'MN': 'Minnesota',
+    'MS': 'Mississippi',
+    'MO': 'Missouri',
+    'MT': 'Montana',
+    'NE': 'Nebraska',
+    'NV': 'Nevada',
+    'NH': 'New Hampshire',
+    'NJ': 'New Jersey',
+    'NM': 'New Mexico',
+    'NY': 'New York',
+    'NC': 'North Carolina',
+    'ND': 'North Dakota',
+    'OH': 'Ohio',
+    'OK': 'Oklahoma',
+    'OR': 'Oregon',
+    'PA': 'Pennsylvania',
+    'RI': 'Rhode Island',
+    'SC': 'South Carolina',
+    'SD': 'South Dakota',
+    'TN': 'Tennessee',
+    'TX': 'Texas',
+    'UT': 'Utah',
+    'VT': 'Vermont',
+    'VA': 'Virginia',
+    'WA': 'Washington',
+    'WV': 'West Virginia',
+    'WI': 'Wisconsin',
+    'WY': 'Wyoming',
+    'AB': 'Alberta',
+    'AS': 'American Samoa',
+    'BC': 'British Columbia',
+    'DC': 'District of Columbia',
+    'GU': 'Guam ',
+    'MB': 'Manitoba',
+    'NB': 'New Brunswick',
+    'NL': 'Newfoundland and Labrador',
+    'NS': 'Nova Scotia',
+    'NT': 'Northwest Territories',
+    'NU': 'Nunavut',
+    'ON': 'Ontario',
+    'PE': 'Prince Edward Island',
+    'PR': 'Puerto Rico',
+    'QC': 'Quebec',
+    'SK': 'Saskatchewan',
+    'VI': 'Virgin Islands',
+    'YT': 'Yukon'
+};
+
+function createCookie(name, value, days) {
+    var expires;
+
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        expires = "; expires=" + date.toGMTString();
+    } else {
+        expires = "";
+    }
+    document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + expires + "; path=/";
+}
+
+function readCookie(name) {
+    var nameEQ = encodeURIComponent(name) + "=";
+    var ca = document.cookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) === ' ')
+            c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) === 0)
+            return decodeURIComponent(c.substring(nameEQ.length, c.length));
+    }
+    return null;
+}
+
+function eraseCookie(name) {
+    createCookie(name, "", -1);
+}
+
+var getUrlParameter = function getUrlParameter(sParam) {
+    var sPageURL = decodeURIComponent(window.location.search.substring(1)),
+        sURLVariables = sPageURL.split('&'),
+        sParameterName,
+        i;
+
+    for (i = 0; i < sURLVariables.length; i++) {
+        sParameterName = sURLVariables[i].split('=');
+
+        if (sParameterName[0] === sParam) {
+            return sParameterName[1] === undefined ? true : sParameterName[1];
+        }
+    }
+};
