@@ -1,4 +1,4 @@
-// UGEventsRegistrationOptionScripts
+// USTEventsRegistrationOptionScripts
 $(document).ready(function () {
     $("#chooser .appointmentAdd").on("click", function () {
         var addAppt;

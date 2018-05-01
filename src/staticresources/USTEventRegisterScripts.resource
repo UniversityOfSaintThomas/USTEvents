@@ -4,16 +4,16 @@ var ChosenSchoolFilter;
 var ChosenCollegeFilter;
 var ChosenProcess = {};
 var ChosenProcessActive = {};
-var UGSettings = JSON.parse(readCookie('UGEvent'));
+var USTSettings = JSON.parse(readCookie('USTEvent'));
 var audience;
 
 $(document).ready(function () {
     // get audience
     audience = getUrlParameter('audience');
     if (!audience) {
-        if (UGSettings != null) {
-            if (UGSettings.audience !== null) {
-                audience = UGSettings.audience;
+        if (USTSettings != null) {
+            if (USTSettings.audience !== null) {
+                audience = USTSettings.audience;
             }
         }
     }
@@ -155,7 +155,7 @@ function checkForm() {
     populateHiddenSchoolValue();
     var error_count = 0;
     var emailReg = /^([a-zA-Z0-9_.\-.'.+])+@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
-    $.each($('[id$=UGRegistraterForm] input, [id$=UGRegistraterForm] select'), function (i, v) {
+    $.each($('[id$=USTRegistraterForm] input, [id$=USTRegistraterForm] select'), function (i, v) {
         if ($(this).hasClass("required") && !$(this).val()) {
             $(this).addClass("validationError");
             $('label[for="' + $(this).attr("id") + '"]').addClass("validationError");
@@ -170,17 +170,16 @@ function checkForm() {
         }
     });
     // require school be filled in.
-    if (audience.indexOf("Graduate") >= 0 || audience.indexOf("Transfer") >= 0) {
-
-
+    if ($("#collegeAsk").length > 0) {
         if (!$("[id$=college]").val()) {
             // alert( $("[id$=college]").val() );
             error_count++;
             $("#collegeSelector").addClass("validationError");
             $('label[for="collegeSelector"]').addClass("validationError");
         }
+    }
 
-    } else {
+    if ($("#hsAsk").length > 0) {
         if (!$("[id$=school]").val()) {
             //  alert( $("[id$=school]").val() );
             error_count++;
@@ -188,8 +187,9 @@ function checkForm() {
             $('label[for="schoolSelector"]').addClass("validationError");
         }
     }
-    if (error_count > 0) {
 
+
+    if (error_count > 0) {
         validationErrorAction();
         return false;
     }

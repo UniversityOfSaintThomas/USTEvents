@@ -27,7 +27,7 @@
 
             .textReference {
                 width: 8.5in;
-                heigth: 11in;
+                height: 11in;
                 z-index: 10;
             }
 

@@ -18,8 +18,8 @@ $(document).ready(function () {
             loadJSONEvents();
             fullCalButtonEvts();
         },
-        eventRender: function(event, element) {
-            var evtTmplt = '<div class="ust-title"><h4>'+ event.title + '</h4></div>';
+        eventRender: function (event, element) {
+            var evtTmplt = '<div class="ust-title"><h4>' + event.title + '</h4></div>';
             evtTmplt += '<div class="ust-desc">';
             if (event.description) {
                 evtTmplt += "<p>" + event.description + "</p>";
@@ -34,12 +34,12 @@ $(document).ready(function () {
             evtTmplt += '</div>';
             element.find('.fc-title').closest('.fc-content').html(evtTmplt);
         },
-        dayClick: function(date, jsEvent, view) {
-            $("#fullCalendarView").fullCalendar('gotoDate',date);
-            $("#fullCalendarView").fullCalendar('changeView','basicDay');
+        dayClick: function (date, jsEvent, view) {
+            $("#fullCalendarView").fullCalendar('gotoDate', date);
+            $("#fullCalendarView").fullCalendar('changeView', 'basicDay');
         },
-        eventClick: function(event, jsEvent, view) {
-            $("#fullCalendarView").fullCalendar('gotoDate',event.start);
+        eventClick: function (event, jsEvent, view) {
+            $("#fullCalendarView").fullCalendar('gotoDate', event.start);
             $("#fullCalendarView").fullCalendar('changeView', 'basicDay');
             if (event.eventClosed) {
                 alert('Event Closed!');
@@ -51,7 +51,7 @@ $(document).ready(function () {
 
     $("#audienceDD").on("change", function () {
         eraseCookie('USTEvent');
-        createCookie('USTEvent','{"audience" : "' + $(this).val() + '"}', '');
+        createCookie('USTEvent', '{"audience" : "' + $(this).val() + '"}', '');
         if ($(this).val() !== '') {
             //start loading in the list of events by audience
             loadJSONEvents();
@@ -59,17 +59,15 @@ $(document).ready(function () {
     });
 
 
-
     //initial load of dropdown audience type
     loadAudienceDD();
-
 
 
 });
 
 function setSessionCookie(sessionID) {
     eraseCookie('USTEvent');
-    createCookie('USTEvent','{"audience" : "' + $("#audienceDD").val() + '", "sessionID" : "' + sessionID + '" }', '');
+    createCookie('USTEvent', '{"audience" : "' + $("#audienceDD").val() + '", "sessionID" : "' + sessionID + '" }', '');
     return true;
 }
 
@@ -161,7 +159,7 @@ function loadAudienceDD() {
 
         //preselect audience based on cookie
         if (USTSettings != null) {
-            if(USTSettings.audience!=null) {
+            if (USTSettings.audience != null) {
                 $("#audienceDD").val(USTSettings.audience);
                 loadJSONEvents();
             }

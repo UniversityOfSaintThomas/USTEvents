@@ -7,7 +7,7 @@ fieldset {margin:0px;padding:0px;}
 .horzRadioTable td { text-align:center; border: solid #fff 10px; background:#DCDADF}
 .horzRadioTable td label {padding:10px 10px 10px 0px;}
 .horzRadioTable td input {margin: 12px 0px 10px 10px;}
-.horzRadioTable td.selected {background:#8546B1;color:#fff!imporant; font-weight:bold;}
+.horzRadioTable td.selected {background:#8546B1;color:#fff; font-weight:bold;}
 .horzRadioTable td.selected label{ color:#fff;}
 .outlined {border: solid 1px #999; padding:10px 25px 5px 25px; margin:15px 0px;}
 .outlinedWithNumber {position:relative; float:left; clear:both; border: solid 1px #999; padding:15px 25px 15px 70px; margin:15px 0px;}
