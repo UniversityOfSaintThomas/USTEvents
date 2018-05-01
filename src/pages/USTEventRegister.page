@@ -1,0 +1,234 @@
+<!--
+ - Created by dahl3702 on 5/1/2018.
+ -->
+
+<apex:page id="USTEventRegister" showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" controller="USTEventRegisterController" action="{!checkEventDetails}">
+    <apex:composition template="CastorTemplate2017">
+        <apex:define name="pageTitle"><a href="/applicantportal/USTEvent">Events</a></apex:define>
+        <apex:define name="afterJquery">
+            <link href="{!URLFOR($Resource.USTEventStyles)}" rel="stylesheet" type="text/css"/>
+            <link href="//static.stthomas.edu/undergraduate-admissions/js/chosen/chosen-ust.css" rel="stylesheet" type="text/css"/>
+            <script src="{!URLFOR($Resource.USTEventRegisterScripts)}" type="text/javascript"/>
+            <script src="//static.stthomas.edu/undergraduate-admissions/js/chosen/chosen.ust.jquery.min.js" type="text/javascript"/>
+        </apex:define>
+        <apex:define name="sectionNav">
+            <li>
+                <apex:outputLink value="{!$Page.USTEvent}">Event Calendar</apex:outputLink>
+            </li>
+            <!--
+            <li>
+                <apex:outputLink value="{!$Page.Home_Page}">Home</apex:outputLink>
+            </li>
+            <li>
+                <apex:outputLink value="{!$Page.ScholarshipHome}">Scholarship List</apex:outputLink>
+            </li>
+            <li>
+                <apex:outputLink value="{!$Page.MyProfile}">My Profile</apex:outputLink>
+            </li>
+            <li>
+                <apex:outputLink value="{!$Page.MyApplication}">My Applications</apex:outputLink>
+            </li>
+            -->
+        </apex:define>
+        <apex:define name="body">
+            <div class="row">
+                <div class="columns errorMessages">
+                    <apex:messages/>
+                </div>
+            </div>
+            <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!IF(SessionInfo.Current_Available_Capacity__c > 0, true, false)}">
+                <div class="row">
+                    <div class="columns">
+                        <h2>
+                            <apex:outputText value="{!eventPage.Name}"></apex:outputText>
+                        </h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <p>{!eventPage.Event_description__c}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <h3>Student Information</h3>
+                        <apex:outputText escape="false" value="<p>{!test}</p>"></apex:outputText>
+                        <apex:outputText rendered="{!If(EvtUserType != 'Guest',true,false)}" escape="false">
+                            <p>You are currently logged into the St. Thomas Portal and the information below is tied to your user account.
+                                If this is Not you please <a href="/applicantportal/secur/logout.jsp">log out</a> and return to fill out this form.
+                                If the information below is incorrect please adjust it on your <a href="/applicantportal/apex/MyProfile">profile page</a>.
+                            </p>
+                        </apex:outputText>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column small-12 medium-6 large-6">
+                        <apex:outputLabel value="First Name" for="firstName" styleClass="required"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_First_Name__c}" id="firstName" required="true" styleClass="required requiredText" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_First_Name__c != null),true,false)}"></apex:inputText>
+                    </div>
+                    <div class="column small-12 medium-6 large-6">
+                        <apex:outputLabel value="Last Name" for="lastName" styleClass="required"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_Last_Name__c}" id="lastName" required="true" styleClass="required requiredText" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Last_Name__c != null),true,false)}"></apex:inputText>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column small-12 medium-6 large-6">
+                        <apex:outputLabel value="Email" for="email" styleClass="required"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_Email__c}" id="email" required="true" styleClass="required requiredText validEmail" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Email__c != null),true,false)}"></apex:inputText>
+
+                    </div>
+                    <div class="column small-12 medium-6 large-6">
+                        <apex:outputLabel value="Sex" for="sex" styleClass="required"/>
+                        <apex:selectList value="{!newEvtReg.Registrant_Gender__c}" size="1" id="sex" multiselect="false" required="true" styleClass="required" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Gender__c != null),true,false)}">
+                            <apex:selectOptions value="{!sexDD}"/>
+                        </apex:selectList>
+                    </div>
+                </div>
+                <apex:outputPanel styleClass="row" rendered="{!IF(eventPage.Allow_Other_Attendees__c || eventPage.Include_Time_frame_List__c, true,false)}" layout="block">
+                    <apex:outputPanel styleClass="column small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Include_Time_frame_List__c, true,false)}">
+                        <apex:outputLabel value="Preferred visit time" for="timeframe" styleClass="required"/>
+                        <apex:selectList size="1" value="{!newEvtReg.Preferred_Visit_Time__c}" id="timeframe" required="true" styleClass="required">
+                            <apex:selectOptions value="{!timeFrame}"></apex:selectOptions>
+                        </apex:selectList>
+                    </apex:outputPanel>
+                    <apex:outputPanel styleClass="column small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Allow_Other_Attendees__c, true,false)}">
+                        <apex:outputLabel value="Additional guests" for="guests"/>
+                        <apex:selectList size="1" value="{!newEvtReg.Number_of_Guests__c}" id="guests" styleClass="required">
+                            <apex:selectOptions value="{!guestAmt}"></apex:selectOptions>
+                        </apex:selectList>
+                    </apex:outputPanel>
+                </apex:outputPanel>
+                <div class="row">
+                    <div class="columns">
+                        <h4>Address</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <apex:outputLabel value="Street" for="street" styleClass="required"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_Street_1__c}" id="street" required="true" styleClass="required requiredText" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Street_1__c != null),true,false)}"></apex:inputText>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <apex:outputLabel value="Street Line 2 (Optional)" for="street2"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_Street_2__c}" id="street2" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Street_2__c != null),true,false)}"></apex:inputText>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column small-12 medium-4 large-4">
+                        <apex:outputLabel value="Zip" for="zip" styleClass="required"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_Zip__c}" id="zip" required="true" styleClass="required requiredText" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Zip__c != null),true,false)}"></apex:inputText>
+                    </div>
+                    <div class="column small-12 medium-4 large-4">
+                        <apex:outputLabel value="City" for="city" styleClass="required"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_City__c}" id="city" required="true" styleClass="required requiredText" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_City__c != null),true,false)}"></apex:inputText>
+                    </div>
+                    <div class="column small-12 medium-4 large-4">
+                        <apex:outputLabel value="State" for="state" styleClass="required"/>
+                        <apex:selectList value="{!newEvtReg.Registrant_State__c}" size="1" id="state" multiselect="false" required="true" styleClass="required" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_State__c != null),true,false)}">
+                            <apex:selectOptions value="{!stateDD}"/>
+                        </apex:selectList>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <h4>Phone</h4>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column small-12 large-6 medium-6">
+                        <apex:outputLabel value="Home Phone" for="phone"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_Phone__c}" id="phone" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Phone__c != null),true,false)}"></apex:inputText>
+                    </div>
+                    <div class="column small-12 large-6 medium-6">
+                        <apex:outputLabel value="Mobile Phone" for="mobile"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_Mobile_Phone__c}" id="mobile" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Mobile_Phone__c != null),true,false)}"></apex:inputText>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns">
+                        <apex:inputCheckbox value="{!newEvtReg.Registrant_Receive_Texts__c}" id="AcceptTextMessage" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Receive_Texts__c != null),true,false)}"/>
+                        <apex:outputLabel value="I am willing to receive text messages about this event" for="AcceptTextMessage"/>
+                    </div>
+                </div>
+                <apex:outputPanel layout="block" StyleClass="row" id="hsAsk"
+                                  rendered="{!If((eventPage.College_High_School_Ask__c = 'HS Only')
+                                          || (eventPage.College_High_School_Ask__c = 'Both College and HS')
+                                          || (eventPage.College_High_School_Ask__c = 'Auto Select on Audience' && NOT CONTAINS(evtInfo.audience, 'Transfer') && NOT CONTAINS(evtInfo.audience, 'Graduate'))
+                                          , true, false)}">
+                    <div class="column small-12 large-12 medium-12">
+                        <h4>High School</h4>
+                    </div>
+                    <div class="column small-12 large-8 medium-8">
+
+                        <label for="schoolSelector" class="required">High School Attended</label>
+                        <select data-placeholder="Begin typing your school name" class="chosen-select-no-results schoolSelector" tabindex="10" id="schoolSelector">
+                            <option value=""></option>
+                            <option disabled="true">Searching...</option>
+                        </select>
+                        <apex:inputText value="{!newEvtReg.Registrant_High_School_Not_Found__c}" id="HSAltInput" style="display:none;"/>
+                        <label><input type="checkbox" id="cantFindHS"/> I can't find my High School</label>
+                        <apex:inputHidden value="{!newEvtReg.Registrant_High_School__c}" id="school"/>
+                        <apex:inputHidden value="{!newEvtReg.Registrant_High_School_Code__c}" id="schoolCode"/>
+                    </div>
+                    <div class="column small-12 large-4 medium-4">
+                        <apex:outputLabel value="Graduation Year" for="hsGradYear" styleClass="required"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_High_School_Grad_Year__c}" id="hsGradYear" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_High_School_Grad_Year__c != null),true,false)}" styleClass="validYear" required="true"></apex:inputText>
+                    </div>
+                </apex:outputPanel>
+
+                <apex:outputPanel layout="block" StyleClass="row" id="collegeAsk"
+                                  rendered="{!If(
+                                          (eventPage.College_High_School_Ask__c = 'College Only')
+                                                  || (eventPage.College_High_School_Ask__c = 'Both College and HS')
+                                                  || (eventPage.College_High_School_Ask__c = 'Auto Select on Audience' && evtInfo.audience = 'Transfer')
+                                                  || (eventPage.College_High_School_Ask__c = 'Auto Select on Audience' && CONTAINS(evtInfo.audience, 'Graduate'))
+                                          , true, false)}">
+                    <div class="column small-12 large-12 medium-12">
+                        <h4>College</h4>
+                        <p>Please indicate the last college you attended and the last year you attended that college.</p>
+                    </div>
+                    <div class="column small-12 large-8 medium-8">
+                        <label for="schoolSelector" class="required">School recently attended</label>
+                        <select data-placeholder="Begin typing your school name" class="chosen-select-no-results schoolSelector" tabindex="10" id="collegeSelector">
+                            <option value=""></option>
+                            <option disabled="true">Searching...</option>
+                        </select>
+                        <apex:inputText value="{!newEvtReg.Registrant_College_Not_Found__c}" id="CollegeAltInput" style="display:none;"/>
+                        <label><input type="checkbox" id="cantFindCollege"/> I can't find my School</label>
+                        <apex:inputHidden value="{!newEvtReg.Registrant_College__c}" id="college"/>
+                        <apex:inputHidden value="{!newEvtReg.Registrant_College_Code__c}" id="collegeCode"/>
+                    </div>
+                    <div class="column small-12 large-4 medium-4">
+                        <apex:outputLabel value="Last year attended" for="collegeYear" styleClass="required"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_College_Year__c}" id="collegeYear" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_College_Year__c != null),true,false)}" styleClass="validYear" required="true"></apex:inputText>
+                    </div>
+                </apex:outputPanel>
+
+                <div class="row">
+                    <div class="columns">
+                        <p>
+                            <apex:commandLink action="{!saveContactRegistration}" onClick="return checkForm();" Value="Next" id="submitReg1" styleClass="button confirmContinue"/>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <p>
+                            <apex:outputText escape="false" value="{!eventPage.Event_Footer__c}"></apex:outputText>
+                        </p>
+                    </div>
+                </div>
+            </apex:form>
+            <apex:outputPanel rendered="{!IF(SessionInfo.Current_Available_Capacity__c <= 0, true, false)}" styleClass="row">
+                <div class="column">
+                    <p>
+                        <apex:outputText escape="false" value="{!eventPage.Event_Full_Text__c}"></apex:outputText>
+                    </p>
+                </div>
+            </apex:outputPanel>
+        </apex:define>
+    </apex:composition>
+
+</apex:page>
