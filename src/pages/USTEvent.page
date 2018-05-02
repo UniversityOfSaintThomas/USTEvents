@@ -47,17 +47,10 @@
                             <p>Pick a date:</p>
                             <div id="datepickerOverlay">
                                 <div id="fullCalendarView">
-
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--    <div class="column small-12 medium-4 large-4">
-                    <div id="dayEventList">
-                        <h3>Events</h3>
-                        <p>Please select above to see events available to you.</p>
-                    </div>
-                    </div>  -->
                 </div>
             </apex:form>
         </apex:define>

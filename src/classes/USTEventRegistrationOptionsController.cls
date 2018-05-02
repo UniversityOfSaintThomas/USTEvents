@@ -12,6 +12,7 @@ public with sharing class USTEventRegistrationOptionsController {
     public String chosenFormatted { get; set; }
     public String incomingApptJSon { get; set; }
     public UST_Event__C eventPage { get; set; }
+    public String templateSelected {get;set;}
 
     public class incomingAppt {
         String apptId;
@@ -23,6 +24,7 @@ public with sharing class USTEventRegistrationOptionsController {
 
     public USTEventRegistrationOptionsController() {
         test = '';
+        templateSelected = 'CastorTemplate2017';
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
         apptFormatted = '';

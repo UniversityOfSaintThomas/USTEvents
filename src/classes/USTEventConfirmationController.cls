@@ -15,7 +15,7 @@ public with sharing class USTEventConfirmationController {
     public USTEventConfirmationController() {
         evtInfo = USTShared.getUSTEventInfo();
         if (!String.isEmpty(evtInfo.evtId)) {
-            eventPage = [SELECT Event_Confirmation_Title__c, Event_Confirmation_Description__c, Event_Footer__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
+            eventPage = [SELECT Event_Confirmation_Title__c, Template__c, Event_Confirmation_Description__c, Event_Footer__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
         }
         //Delete cookie
         Cookie deleteCookie = new Cookie('USTEvent', '', null, 0, false); // Note the 0 to delete the cookie
@@ -23,4 +23,5 @@ public with sharing class USTEventConfirmationController {
                 deleteCookie
         });
     }
+
 }

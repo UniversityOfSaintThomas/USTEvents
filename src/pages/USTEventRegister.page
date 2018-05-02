@@ -3,7 +3,7 @@
  -->
 
 <apex:page id="USTEventRegister" showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" controller="USTEventRegisterController" action="{!checkEventDetails}">
-    <apex:composition template="CastorTemplate2017">
+    <apex:composition template="{!eventPage.Template__c}">
         <apex:define name="pageTitle"><a href="/applicantportal/USTEvent">Events</a></apex:define>
         <apex:define name="afterJquery">
             <link href="{!URLFOR($Resource.USTEventStyles)}" rel="stylesheet" type="text/css"/>
@@ -54,9 +54,7 @@
                         <h3>Student Information</h3>
                         <apex:outputText escape="false" value="<p>{!test}</p>"></apex:outputText>
                         <apex:outputText rendered="{!If(EvtUserType != 'Guest',true,false)}" escape="false">
-                            <p>You are currently logged into the St. Thomas Portal and the information below is tied to your user account.
-                                If this is Not you please <a href="/applicantportal/secur/logout.jsp">log out</a> and return to fill out this form.
-                                If the information below is incorrect please adjust it on your <a href="/applicantportal/apex/MyProfile">profile page</a>.
+                            <p>You are currently logged into a St. Thomas Portal and therefore your portal information is pre-filled below and cannot be changed.
                             </p>
                         </apex:outputText>
                     </div>

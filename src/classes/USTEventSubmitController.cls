@@ -17,7 +17,7 @@ public with sharing class USTEventSubmitController {
         evtInfo = USTShared.getUSTEventInfo();
         chosenFormatted = '';
         if(!String.isEmpty(evtInfo.evtId)) {
-            eventPage = [SELECT Event_Submit_Title__c, Event_Submit_Description__c, Event_Footer__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
+            eventPage = [SELECT Event_Submit_Title__c, Event_Submit_Description__c, Event_Footer__c, Template__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
         }
 
         if (!String.isBlank(evtinfo.evtRegId)) {

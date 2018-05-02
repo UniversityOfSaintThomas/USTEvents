@@ -3,7 +3,7 @@
  -->
 
 <apex:page id="USTEventConfirmation" showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" controller="USTEventConfirmationController">
-    <apex:composition template="CastorTemplate2017">
+    <apex:composition template="{!eventPage.Template__c}">
         <apex:define name="pageTitle"><a href="/applicantportal/USTEvent">Events</a></apex:define>
         <apex:define name="afterJquery">
             <link href="{!URLFOR($Resource.USTEventStyles)}" rel="stylesheet" type="text/css"/>

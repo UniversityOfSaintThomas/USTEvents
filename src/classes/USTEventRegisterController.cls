@@ -12,7 +12,7 @@ public with sharing class USTEventRegisterController {
     public String ContactId { get; set; }
     public String sessionName { get; set; }
     public String EvtUserType { get; set; }
-    public List<SelectOption> guestAmt {get;set;}
+    public List<SelectOption> guestAmt { get; set; }
     public UST_Event_Registration__c newEvtReg { get; set; }
     private USTEventShared USTShared = new USTEventShared();
     public USTEventShared.USTEventInfo evtInfo { get; set; }
@@ -20,6 +20,7 @@ public with sharing class USTEventRegisterController {
     public USTEventRegisterController() {
         newEvtReg = new UST_Event_Registration__c();
         test = '';
+
         EvtUserType = UserInfo.getUserType();
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
@@ -61,15 +62,17 @@ public with sharing class USTEventRegisterController {
                     newEvtReg.Registrant_Receive_Texts__c = true;
                 }
             } else {
-                newEvtReg = [ SELECT Contact__c, Registrant_First_Name__c, Registrant_Last_Name__c, Registrant_Email__c,Number_of_Guests__c,
-                        Registrant_Gender__c,Registrant_Street_1__c,Registrant_Street_2__c, Registrant_State__c,Registrant_City__c, Preferred_Visit_Time__c,
-                        Registrant_Zip__c,Registrant_Phone__c,Registrant_Mobile_Phone__c, Registrant_College__c,Registrant_College_Code__c,Registrant_College_Year__c,
-                        Registrant_High_School__c,Registrant_High_School_Code__c, Registrant_Receive_Texts__c, Registrant_High_School_Grad_Year__c, Registrant_High_School_Not_Found__c,
-                        Registrant_College_Not_Found__c
-                FROM UST_Event_Registration__c WHERE id = :evtInfo.evtRegId ][0];
+                newEvtReg = [
+                        SELECT Contact__c, Registrant_First_Name__c, Registrant_Last_Name__c, Registrant_Email__c,Number_of_Guests__c,
+                                Registrant_Gender__c,Registrant_Street_1__c,Registrant_Street_2__c, Registrant_State__c,Registrant_City__c, Preferred_Visit_Time__c,
+                                Registrant_Zip__c,Registrant_Phone__c,Registrant_Mobile_Phone__c, Registrant_College__c,Registrant_College_Code__c,Registrant_College_Year__c,
+                                Registrant_High_School__c,Registrant_High_School_Code__c, Registrant_Receive_Texts__c, Registrant_High_School_Grad_Year__c, Registrant_High_School_Not_Found__c,
+                                Registrant_College_Not_Found__c
+                        FROM UST_Event_Registration__c
+                        WHERE id = :evtInfo.evtRegId
+                ][0];
             }
         }
-
 
         //Get Session information
         SessionInfo = [
@@ -85,9 +88,13 @@ public with sharing class USTEventRegisterController {
         sessionName = SessionInfo.Name;
 
         //Get Event Info off of session master detail id
-        eventPage = [SELECT Name, Id, Event_description__c, Event_Footer__c, Event_Full_Text__c, Audience__c,Include_Time_frame_List__c,
-                Max_Other_Attendees__c, Allow_Other_Attendees__c, College_High_School_Ask__c, Ask_Gender__c
-        FROM UST_Event__c WHERE Id = :evtInfo.evtId LIMIT 1][0];
+        eventPage = [
+                SELECT Name, Id, Event_description__c, Event_Footer__c, Event_Full_Text__c, Audience__c,Include_Time_frame_List__c,
+                        Max_Other_Attendees__c, Allow_Other_Attendees__c, College_High_School_Ask__c, Ask_Gender__c, Template__c
+                FROM UST_Event__c
+                WHERE Id = :evtInfo.evtId
+                LIMIT 1
+        ][0];
 
         if (eventPage.Allow_Other_Attendees__c) {
             guestAmt = new List<SelectOption>();
@@ -212,7 +219,7 @@ public with sharing class USTEventRegisterController {
             //Create new contact
         }
         newEvtReg.Status__c = 'Started';
-        newEvtReg.Date__c =  Date.valueof(SessionInfo.Start_Date_Time__c);
+        newEvtReg.Date__c = Date.valueof(SessionInfo.Start_Date_Time__c);
         //Create registration if event Registration does not exist
         if (String.isBlank(evtInfo.evtRegId)) {
             newEvtReg.Event__c = evtInfo.evtId;
