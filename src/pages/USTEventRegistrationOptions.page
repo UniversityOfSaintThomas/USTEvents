@@ -32,7 +32,7 @@
         <apex:define name="body">
             <div class="row">
                 <div class="columns errorMessages">
-                    <apex:messages/>
+                    <apex:messages />
                     <apex:outputText escape="false" value="{!test}"/>
                 </div>
             </div>

@@ -31,7 +31,7 @@
         <apex:define name="body">
             <div class="row">
                 <div class="columns errorMessages">
-                    <apex:messages/>
+                    <apex:messages />
                 </div>
             </div>
             <apex:form id="USTRegistrationCancelReview" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!IF (evt != null, true, false)}">
