@@ -32,3 +32,6 @@ label.required {font-weight:bold;}
 
 #reviewWrapper {background-color:#fdfdfd; padding: 3px 20px; margin: 15px 0px 15px 0px; border: solid 1px #dededf;}
 .warning {color:#510C76;font-style:italic;font-weight:bold;}
+
+/*Hid the section nav on the page because we aren't using it right now */
+#sectionNav {display:none;}
