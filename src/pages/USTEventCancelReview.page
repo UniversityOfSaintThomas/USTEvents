@@ -4,7 +4,7 @@
 
 <apex:page id="USTEventCancelReview" showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" controller="USTEventCancelReviewController">
     <apex:composition template="{!evt.Event__r.Template__c}">
-        <apex:define name="pageTitle"><a href="/applicantportal/USTEvent">Events</a></apex:define>
+        <apex:define name="pageTitle"><a href="{!evt.Event__r.Event_Home_Link_URL__c}">{!evt.Event__r.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
             <link href="{!URLFOR($Resource.USTEventStyles)}" rel="stylesheet" type="text/css"/>
             <script src="{!URLFOR($Resource.USTEventRegistrationOptionScripts)}" type="text/javascript"/>

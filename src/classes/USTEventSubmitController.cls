@@ -16,8 +16,8 @@ public with sharing class USTEventSubmitController {
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
         chosenFormatted = '';
-        if(!String.isEmpty(evtInfo.evtId)) {
-            eventPage = [SELECT Event_Submit_Title__c, Event_Submit_Description__c, Event_Footer__c, Template__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
+        if (!String.isEmpty(evtInfo.evtId)) {
+            eventPage = [SELECT Event_Submit_Title__c, Event_Submit_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
         }
 
         if (!String.isBlank(evtinfo.evtRegId)) {
@@ -38,7 +38,7 @@ public with sharing class USTEventSubmitController {
 
     }
 
-    public PageReference submitRegistration () {
+    public PageReference submitRegistration() {
         //Change Status of registration to complete
         UST_Event_Registration__c evtReg = [SELECT Id, Status__c FROM UST_Event_Registration__c WHERE id = :evtInfo.evtRegId][0];
         evtReg.Status__c = 'Requested';

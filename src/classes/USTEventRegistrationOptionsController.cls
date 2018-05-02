@@ -12,7 +12,7 @@ public with sharing class USTEventRegistrationOptionsController {
     public String chosenFormatted { get; set; }
     public String incomingApptJSon { get; set; }
     public UST_Event__C eventPage { get; set; }
-    public String templateSelected {get;set;}
+    public String templateSelected { get; set; }
 
     public class incomingAppt {
         String apptId;
@@ -33,7 +33,7 @@ public with sharing class USTEventRegistrationOptionsController {
         Map<String, Integer> apptCount = new Map<String, Integer>();
 
         if (!String.isBlank(evtinfo.evtId)) {
-            eventPage = [SELECT Event_Appointment_Title__c, Event_Appointment_Description__c, Event_Footer__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
+            eventPage = [SELECT Event_Appointment_Title__c, Event_Appointment_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
             if (!String.isBlank(evtinfo.evtRegId)) {
                 chosenAppts = [SELECT Id, Appointment_Category__c, Event_Appointment_Type__c, Appointment_Type__c, Appointment_Title__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :evtinfo.evtRegId AND Client_Created_Appointment__c = true];
                 for (UST_Event_appointments__c cappt : chosenAppts) {

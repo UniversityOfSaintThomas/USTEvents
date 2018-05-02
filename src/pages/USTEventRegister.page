@@ -4,7 +4,7 @@
 
 <apex:page id="USTEventRegister" showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" controller="USTEventRegisterController" action="{!checkEventDetails}">
     <apex:composition template="{!eventPage.Template__c}">
-        <apex:define name="pageTitle"><a href="/applicantportal/USTEvent">Events</a></apex:define>
+        <apex:define name="pageTitle"><a href="{!eventPage.Event_home_Link_URL__c}">{!eventPage.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
             <link href="{!URLFOR($Resource.USTEventStyles)}" rel="stylesheet" type="text/css"/>
             <link href="//static.stthomas.edu/undergraduate-admissions/js/chosen/chosen-ust.css" rel="stylesheet" type="text/css"/>

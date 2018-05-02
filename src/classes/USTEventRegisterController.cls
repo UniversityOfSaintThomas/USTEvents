@@ -90,7 +90,8 @@ public with sharing class USTEventRegisterController {
         //Get Event Info off of session master detail id
         eventPage = [
                 SELECT Name, Id, Event_description__c, Event_Footer__c, Event_Full_Text__c, Audience__c,Include_Time_frame_List__c,
-                        Max_Other_Attendees__c, Allow_Other_Attendees__c, College_High_School_Ask__c, Ask_Gender__c, Template__c
+                        Max_Other_Attendees__c, Allow_Other_Attendees__c, College_High_School_Ask__c, Ask_Gender__c, Template__c,
+                        Event_Home_Link_Title__c, Event_Home_Link_URL__c
                 FROM UST_Event__c
                 WHERE Id = :evtInfo.evtId
                 LIMIT 1
