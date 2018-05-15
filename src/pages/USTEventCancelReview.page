@@ -2,8 +2,8 @@
  - Created by dahl3702 on 5/1/2018.
  -->
 
-<apex:page id="USTEventCancelReview" showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0" controller="USTEventCancelReviewController">
-    <apex:composition template="{!evt.Event__r.Template__c}">
+<apex:page id="USTEventCancelReview" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" docType="html-5.0" cache="false" controller="USTEventCancelReviewController">
+    <apex:composition template="{!templateSelected}">
         <apex:define name="pageTitle"><a href="{!evt.Event__r.Event_Home_Link_URL__c}">{!evt.Event__r.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
             <link href="{!URLFOR($Resource.USTEventStyles)}" rel="stylesheet" type="text/css"/>

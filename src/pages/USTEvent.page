@@ -2,7 +2,7 @@
  - Created by dahl3702 on 5/1/2018.
  -->
 
-<apex:page id="USTEvent" showHeader="false" sidebar="false" standardStylesheets="false" docType="html-5.0">
+<apex:page id="USTEvent" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" cache="false" docType="html-5.0">
     <apex:composition template="CastorTemplate2017">
         <apex:define name="pageTitle"><a href="/applicantportal/USTEvent">Events</a></apex:define>
         <apex:define name="afterJquery">

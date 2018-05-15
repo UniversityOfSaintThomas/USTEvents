@@ -10,14 +10,18 @@ public with sharing class USTEventSubmitController {
     public List<UST_Event_Appointments__c> chosenAppts { get; set; }
     public String chosenFormatted { get; set; }
     public UST_Event__C eventPage { get; set; }
+    public String templateSelected { get; set; }
 
     public USTEventSubmitController() {
         test = '';
+        templateSelected =  USTShared.defaultTemplate;
+
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
         chosenFormatted = '';
         if (!String.isEmpty(evtInfo.evtId)) {
             eventPage = [SELECT Event_Submit_Title__c, Event_Submit_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
+            templateSelected = eventPage.Template__c;
         }
 
         if (!String.isBlank(evtinfo.evtRegId)) {
@@ -38,11 +42,11 @@ public with sharing class USTEventSubmitController {
 
     }
 
+    public PageReference checkEventDetails() {
+        return USTShared.checkForEvent();
+    }
+
     public PageReference submitRegistration() {
-        //Change Status of registration to complete
-        UST_Event_Registration__c evtReg = [SELECT Id, Status__c FROM UST_Event_Registration__c WHERE id = :evtInfo.evtRegId][0];
-        evtReg.Status__c = 'Requested';
-        upsert evtReg;
         PageReference confirmPage = Page.USTEventConfirmation;
         return confirmPage;
     }
@@ -56,9 +60,9 @@ public with sharing class USTEventSubmitController {
         } else {
             lastPage = Page.USTEventRegistrationOptions;
         }
-        // create cookie to pass on to next page
+        //Create cookie to pass on to next page
         //Posting along everything we need to build the next page
-        String encrytpString = USTShared.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"' + evtInfo.evtRegId + '","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
+        //String encrytpString = USTShared.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"' + evtInfo.evtRegId + '","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
         //String decryptCookie = cookieWork.getDecryptCookie('USTEvent');
         //lastPage.getParameters().put('evt', encrytpString);
         return lastPage;

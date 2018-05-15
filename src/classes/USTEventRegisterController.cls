@@ -16,20 +16,68 @@ public with sharing class USTEventRegisterController {
     public UST_Event_Registration__c newEvtReg { get; set; }
     private USTEventShared USTShared = new USTEventShared();
     public USTEventShared.USTEventInfo evtInfo { get; set; }
+    public String templateSelected { get; set; }
 
     public USTEventRegisterController() {
         newEvtReg = new UST_Event_Registration__c();
+        templateSelected =  USTShared.defaultTemplate;
         test = '';
 
         EvtUserType = UserInfo.getUserType();
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
+
+        //Get Session information
+        if (!String.isBlank(evtInfo.sessionID)) {
+            SessionInfo = [
+                    SELECT Id, Name, Event__r.Name, Event__r.Id, Session_Title__c,
+                            Event__r.Event_description__c, Event__r.Audience__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c
+                    FROM UST_Event_Session__c
+                    WHERE Id = :evtInfo.sessionID
+                    LIMIT 1
+            ][0];
+
+            //define Event ID from sessionInfo data
+            evtInfo.evtId = SessionInfo.Event__r.Id;
+            sessionName = SessionInfo.Name;
+        }
+
+        //Get Event Info off of session master detail id
+        if (!String.isBlank(evtInfo.evtId)) {
+            eventPage = [
+                    SELECT Name, Id, Event_description__c, Event_Footer__c, Event_Full_Text__c, Audience__c,Include_Time_frame_List__c,
+                            Max_Other_Attendees__c, Allow_Other_Attendees__c, College_High_School_Ask__c, Ask_Gender__c, Template__c,
+                            Event_Home_Link_Title__c, Event_Home_Link_URL__c
+                    FROM UST_Event__c
+                    WHERE Id = :evtInfo.evtId
+                    LIMIT 1
+            ][0];
+
+            //Grab the template if defined
+            if (!String.isBlank(eventPage.Template__c)) {
+                templateSelected = eventPage.Template__c;
+            }
+
+            if (eventPage.Allow_Other_Attendees__c) {
+                guestAmt = new List<SelectOption>();
+                if (Integer.valueOf(eventPage.Max_Other_Attendees__c) > 0) {
+                    for (Integer ma = 0; ma <= Integer.valueOf(eventPage.Max_Other_Attendees__c); ma++) {
+                        System.debug(ma);
+                        guestAmt.add(new SelectOption(String.valueOf(ma), String.valueOf(ma)));
+                    }
+                }
+            }
+
+
+            //Get Appoitment Types for event
+            apptTypes = [SELECT Id, Title__c, Appointment_Category__c, Appointment_Type__c, Description__c FROM UST_Event_Appointment_Type__c WHERE UST_Event__c = :evtInfo.evtId];
+        }
+
         //If the user is logged in use that data
-        if ((!String.isBlank(EvtUserType) && EvtUserType != 'Guest') || !String.isBlank(evtInfo.evtRegId)) {
-            //test += 'User logged in!<br>';
+        if ((!String.isBlank(EvtUserType) && EvtUserType != 'Guest') || (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING')) {
             //Fill in contact information
             Contact userContact = new Contact();
-            if (String.isBlank(evtInfo.evtRegId)) {
+            if (String.isBlank(evtInfo.evtRegId) || evtInfo.evtRegId == 'COMING') {
                 userContact = [
                         Select Id, Name, FirstName, LastName, Email, EnrollmentrxRx__Gender__c, MailingStreetLine1__c, MailingStreetLine2__c, MailingState__c,
                                 MailingZip__c, MailingCity__c, Home_Phone__c, MobilePhone, Receive_Texts__c, EnrollmentrxRx__High_School__c, EnrollmentrxRx__High_School_Code__c
@@ -73,58 +121,10 @@ public with sharing class USTEventRegisterController {
                 ][0];
             }
         }
-
-        //Get Session information
-        SessionInfo = [
-                SELECT Id, Name, Event__r.Name, Event__r.Id, Session_Title__c,
-                        Event__r.Event_description__c, Event__r.Audience__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c
-                FROM UST_Event_Session__c
-                WHERE Id = :evtInfo.sessionID
-                LIMIT 1
-        ][0];
-
-        //define Event ID from sessionInfo data
-        evtInfo.evtId = SessionInfo.Event__r.Id;
-        sessionName = SessionInfo.Name;
-
-        //Get Event Info off of session master detail id
-        eventPage = [
-                SELECT Name, Id, Event_description__c, Event_Footer__c, Event_Full_Text__c, Audience__c,Include_Time_frame_List__c,
-                        Max_Other_Attendees__c, Allow_Other_Attendees__c, College_High_School_Ask__c, Ask_Gender__c, Template__c,
-                        Event_Home_Link_Title__c, Event_Home_Link_URL__c
-                FROM UST_Event__c
-                WHERE Id = :evtInfo.evtId
-                LIMIT 1
-        ][0];
-
-        if (eventPage.Allow_Other_Attendees__c) {
-            guestAmt = new List<SelectOption>();
-            if (Integer.valueOf(eventPage.Max_Other_Attendees__c) > 0) {
-                for (Integer ma = 0; ma <= Integer.valueOf(eventPage.Max_Other_Attendees__c); ma++) {
-                    System.debug(ma);
-                    guestAmt.add(new SelectOption(String.valueOf(ma), String.valueOf(ma)));
-                }
-            }
-        }
-
-        //Get Appoitment Types for event
-        apptTypes = [SELECT Id, Title__c, Appointment_Category__c, Appointment_Type__c, Description__c FROM UST_Event_Appointment_Type__c WHERE UST_Event__c = :evtInfo.evtId];
-
-        //test = JSON.serialize(eventPage);
-
     }
 
     public PageReference checkEventDetails() {
-//        String cookiePresent = USTShared.getDecryptCookie('USTEvent');
-//        String sessionIDPresent = ApexPages.currentPage().getParameters().get('sessionID');
-//        if (String.isBlank(sessionIDPresent) && String.isBlank(cookiePresent)) {
-//            PageReference pageRef = new PageReference('/applicantportal/USTEvent');
-//            return pageRef;
-//        } else {
-//            return null;
-//        }
-        //ApexPages.currentPage().getHeaders().get('Referer');
-        return null;
+        return USTShared.checkForEvent();
     }
 
     public List<SelectOption> getSexDD() {
@@ -213,8 +213,12 @@ public with sharing class USTEventRegisterController {
             if (newEvtReg.Registrant_Receive_Texts__c = true) {
                 newEvtContact.Receive_Texts__c = 'Yes';
             }
-
-            upsert newEvtContact;
+            try {
+                upsert newEvtContact;
+            } catch (Exception ex) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                ApexPages.addMessage(myMsg);
+            }
             contactId = newEvtContact.Id;
             newContactCreated = true;
             //Create new contact
@@ -222,23 +226,37 @@ public with sharing class USTEventRegisterController {
         newEvtReg.Status__c = 'Started';
         newEvtReg.Date__c = Date.valueof(SessionInfo.Start_Date_Time__c);
         //Create registration if event Registration does not exist
-        if (String.isBlank(evtInfo.evtRegId)) {
-            newEvtReg.Event__c = evtInfo.evtId;
-            newEvtReg.Event_session__c = evtInfo.sessionID;
-            newEvtReg.Contact__c = contactId;
-            if (newContactCreated) {
-                newEvtReg.New_Contact_Created__c = true;
-                newEvtReg.Contact_Soft_Match_Email__c = softEmailMatches;
-                newEvtReg.Contact_Soft_Match_First_Last_Zip__c = softFirstLastZipMatches;
+        if (!String.isBlank(contactId)) {
+            if (String.isBlank(evtInfo.evtRegId) || evtInfo.evtRegId == 'COMING') {
+                newEvtReg.Event__c = evtInfo.evtId;
+                newEvtReg.Event_session__c = evtInfo.sessionID;
+                newEvtReg.Contact__c = contactId;
+                if (newContactCreated) {
+                    newEvtReg.New_Contact_Created__c = true;
+                    newEvtReg.Contact_Soft_Match_Email__c = softEmailMatches;
+                    newEvtReg.Contact_Soft_Match_First_Last_Zip__c = softFirstLastZipMatches;
+                }
+
+                try {
+                    insert newEvtReg;
+                } catch (Exception ex) {
+                    //  ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                    //  ApexPages.addMessage(myMsg);
+                }
+                evtInfo.evtRegId = newEvtReg.Id;
+            } else {
+                //update registration if Registration exists
+                try {
+                    upsert newEvtReg;
+                } catch (Exception ex) {
+                    //   ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                    //   ApexPages.addMessage(myMsg);
+                }
+
             }
-            insert newEvtReg;
-            evtInfo.evtRegId = newEvtReg.Id;
-        } else {
-            //update registration if Registration exists
-            upsert newEvtReg;
         }
 
-        if (!String.isBlank(evtInfo.evtRegId)) {
+        if (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
             List<UST_Event_Appointment_Type__c> apptTypes = [SELECT Id From UST_Event_Appointment_Type__c WHERE UST_Event__c = :evtInfo.evtId];
             if (apptTypes.size() == 0) {
                 //If no options skip that step

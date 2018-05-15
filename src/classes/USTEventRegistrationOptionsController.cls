@@ -24,7 +24,7 @@ public with sharing class USTEventRegistrationOptionsController {
 
     public USTEventRegistrationOptionsController() {
         test = '';
-        templateSelected = 'CastorTemplate2017';
+        templateSelected =  USTShared.defaultTemplate;
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
         apptFormatted = '';
@@ -34,6 +34,8 @@ public with sharing class USTEventRegistrationOptionsController {
 
         if (!String.isBlank(evtinfo.evtId)) {
             eventPage = [SELECT Event_Appointment_Title__c, Event_Appointment_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
+            templateSelected = eventPage.Template__c;
+
             if (!String.isBlank(evtinfo.evtRegId)) {
                 chosenAppts = [SELECT Id, Appointment_Category__c, Event_Appointment_Type__c, Appointment_Type__c, Appointment_Title__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :evtinfo.evtRegId AND Client_Created_Appointment__c = true];
                 for (UST_Event_appointments__c cappt : chosenAppts) {
@@ -108,6 +110,10 @@ public with sharing class USTEventRegistrationOptionsController {
         }
     }
 
+    public PageReference checkEventDetails() {
+        return USTShared.checkForEvent();
+    }
+
     public PageReference saveOptions() {
         //remove old client created appointments
         UST_Event_Appointments__c[] deleteAppt = [SELECT Id, Event_Registration__c, Client_Created_Appointment__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :evtinfo.evtRegId AND Client_Created_Appointment__c = true];
@@ -141,11 +147,11 @@ public with sharing class USTEventRegistrationOptionsController {
         //if (!String.isBlank(eventRegId)) {
         PageReference registerPage = Page.USTEventRegister;
         // create cookie to pass on to next page
-        USTEventShared cookieWork = new USTEventShared();
+        //USTEventShared cookieWork = new USTEventShared();
         //Posting along everything we need to build the next page
-        String encrytpString = cookieWork.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"' + evtInfo.evtRegId + '","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
+        //String encrytpString = cookieWork.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"' + evtInfo.evtRegId + '","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
         //String decryptCookie = cookieWork.getDecryptCookie('USTEvent');
-        registerPage.getParameters().put('evt', encrytpString);
+        //registerPage.getParameters().put('evt', encrytpString);
         return registerPage;
     }
 }

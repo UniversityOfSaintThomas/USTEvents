@@ -5,6 +5,7 @@
 public with sharing class USTEventShared {
     //private key for encryption
     Private Blob key = Blob.valueOf('TmC%2%4&X9fzG2PrtP7f&6acnc#y7@vW');
+    Public String defaultTemplate = 'CastorTemplate2017';
 
     public class USTEventInfo {
         public String audience { get; set; }
@@ -26,9 +27,7 @@ public with sharing class USTEventShared {
             } catch (Exception e) {
                 //Cookie was un-serializable so delete it
                 Cookie deleteCookie = new Cookie('USTEvent', '', null, 0, false); // Note the 0 to delete the cookie
-                ApexPages.currentPage().setCookies(new Cookie[]{
-                        deleteCookie
-                });
+                ApexPages.currentPage().setCookies(new Cookie[]{deleteCookie});
             }
         }
         if (!String.isBlank(URLsessionID)) {
@@ -44,19 +43,51 @@ public with sharing class USTEventShared {
                     if (!String.isBlank(URLaudience)) {
                         evtInfo.audience = URLaudience;
                     }
+                    try {
+                        UST_Event_Session__c sessionInfo = [SELECT Event__c FROM UST_Event_Session__c WHERE ID = :evtInfo.sessionID][0];
+                        evtInfo.evtId = sessionInfo.Event__c;
+                    } catch (Exception e) {
+
+                    }
+                    createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"COMING","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
                 }
             }
         }
+        //check if regid is there  and whether status it is set to registered. IF so reset cookie if it is.
+        if (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
+            UST_Event_Registration__c evtReg = [SELECT Status__c FROM UST_Event_Registration__c WHERE ID = :evtInfo.evtRegId][0];
+            if (evtReg.Status__c != 'Started') {
+                //Registration is complete and a new form should be generated.
+                createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
+            }
+        }
+
         //If eventInfo is null return to default page (add to event definition object.
 
         return evtInfo;
     }
 
-    public String checkSessionStatus(String ChkCessionId) {
-
-        return '';
+    public PageReference checkForEvent() {
+        USTEventInfo evt = new USTEventInfo();
+        PageReference myVFPage = null;
+        evt = getUSTEventInfo();
+        SYSTEM.debug('!!!!!!!!!!!!!!!  EVENT ID : ' + evt.evtId + ' , SESSION ID : ' + evt.sessionID + ' , EVENT REG ID : ' + evt.evtRegId);
+        if (String.isBlank(evt.evtRegId) || String.isBlank(evt.sessionID)) {
+            if (!String.isBlank(evt.evtId)) {
+                UST_Event__c eventPage = [SELECT Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evt.evtId][0];
+                myVFPage = new PageReference(eventPage.Event_Home_Link_URL__c);
+                myVFPage.setRedirect(true);
+            } else {
+                myVFPage = new PageReference('/applicantportal/USTEvent');
+                myVFPage.setRedirect(true);
+            }
+            //Reset the cookie to prevent loop on registration page
+            Cookie deleteCookie = new Cookie('USTEvent', '', null, 0, false); // Note the 0 to delete the cookie
+            ApexPages.currentPage().setCookies(new Cookie[]{deleteCookie});
+            return myVFPage;
+        }
+        return null;
     }
-
 
     public String createEncryptedCookie(String CookieValue, String CookieName) {
         Blob data = Blob.valueOf(CookieValue);
@@ -73,17 +104,21 @@ public with sharing class USTEventShared {
     public String getDecryptCookie(String CookieName) {
 
         Cookie encodedCipherText = ApexPages.currentPage().getCookies().get(CookieName);
-        if (encodedCipherText == null) {
-            return '';
+        if (encodedCipherText != null) {
+            try {
+                Blob decrypted = Crypto.decryptWithManagedIV(
+                        'AES256',
+                        key,
+                        EncodingUtil.base64Decode(
+                                EncodingUtil.urlDecode(encodedCipherText.getValue(), 'UTF-8')
+                        )
+                );
+                return decrypted.toString();
+            } catch (Exception e) {
+                return '';
+            }
         }
-        Blob decrypted = Crypto.decryptWithManagedIV(
-                'AES256',
-                key,
-                EncodingUtil.base64Decode(
-                        EncodingUtil.urlDecode(encodedCipherText.getValue(), 'UTF-8')
-                )
-        );
-        return decrypted.toString();
+        return '';
     }
 
     public DateTime adjustForCenteralTime(Datetime dt) {
@@ -126,7 +161,7 @@ public with sharing class USTEventShared {
                 }
             }
 
-//2nd get the dependent PL values mapped to the target parent PL's value
+            //2nd get the dependent PL values mapped to the target parent PL's value
             if (-1 != parentValueIndex && null != dependentField) {
                 Schema.PicklistEntry[] plValues = dependentField.getPicklistValues();
                 for (PicklistEntry plv : plValues) {
