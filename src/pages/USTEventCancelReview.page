@@ -9,7 +9,7 @@
             <link href="{!URLFOR($Resource.USTEventStyles)}" rel="stylesheet" type="text/css"/>
             <script src="{!URLFOR($Resource.USTEventRegistrationOptionScripts)}" type="text/javascript"/>
         </apex:define>
-        <apex:define name="sectionNav" />
+        <apex:define name="sectionNav"/>
         <apex:define name="body">
             <div class="row">
                 <div class="columns errorMessages">

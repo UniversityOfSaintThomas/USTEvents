@@ -1,6 +1,12 @@
-<apex:page >
-  <!-- Begin Default Content REMOVE THIS -->
-  <h1>Congratulations</h1>
-  This is your new Page: USTTabbedEventDefinitionAdmin
-  <!-- End Default Content REMOVE THIS -->
+<apex:page standardController="UST_Event__c">
+    <!-- Begin Default Content REMOVE THIS -->
+    <h1>Congratulations HERE</h1>
+    <apex:tabPanel switchType="Ajax" id="EventDefinition" selectedTab="tabOpen" tabClass="activeTab" inactiveTabClass="inactiveTab">
+        <apex:tab label="Details"></apex:tab>
+        <apex:tab label="Options"></apex:tab>
+        <apex:tab label="Appoitment"></apex:tab>
+
+    </apex:tabPanel>
+    This is your new Page: USTTabbedEventDefinitionAdmin
+    <!-- End Default Content REMOVE THIS -->
 </apex:page>

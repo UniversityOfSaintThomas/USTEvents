@@ -15,7 +15,7 @@
         <apex:define name="body">
             <div class="row">
                 <div class="columns errorMessages">
-                    <apex:messages />
+                    <apex:messages/>
                 </div>
             </div>
             <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!IF(SessionInfo.Current_Available_Capacity__c > 0, true, false)}">
@@ -28,7 +28,9 @@
                 </div>
                 <div class="row">
                     <div class="columns">
-                        <p><apex:outputText escape="false" value="{!eventPage.Event_description__c}"></apex:outputText></p>
+                        <p>
+                            <apex:outputText escape="false" value="{!eventPage.Event_description__c}"></apex:outputText>
+                        </p>
                     </div>
                 </div>
                 <div class="row">
@@ -44,40 +46,37 @@
                 <div class="row">
                     <div class="column small-12 medium-6 large-6">
                         <apex:outputLabel value="First Name" for="firstName" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_First_Name__c}" id="firstName" required="true" styleClass="required requiredText" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_First_Name__c != null),true,false)}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_First_Name__c}" id="firstName" required="true" styleClass="required requiredText" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
                     </div>
                     <div class="column small-12 medium-6 large-6">
                         <apex:outputLabel value="Last Name" for="lastName" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_Last_Name__c}" id="lastName" required="true" styleClass="required requiredText" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Last_Name__c != null),true,false)}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_Last_Name__c}" id="lastName" required="true" styleClass="required requiredText" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="column small-12 medium-6 large-6">
+                    <div class="columns small-12 medium-6 large-6">
                         <apex:outputLabel value="Email" for="email" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_Email__c}" id="email" required="true" styleClass="required requiredText validEmail" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Email__c != null),true,false)}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
-
+                        <apex:inputText value="{!newEvtReg.Registrant_Email__c}" id="email" required="true" styleClass="required requiredText validEmail" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
                     </div>
-                    <div class="column small-12 medium-6 large-6">
-                        <apex:outputLabel value="Sex" for="sex" styleClass="required"/>
-                        <apex:selectList value="{!newEvtReg.Registrant_Gender__c}" size="1" id="sex" multiselect="false" required="true" styleClass="required" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Gender__c != null),true,false)}">
+                    <apex:outputPanel styleClass="columns small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Ask_Gender__c != 'Do not ask', true, false)}">
+                        <apex:outputLabel value="Sex" for="sex" styleClass="{!IF(eventPage.Ask_Gender__c == 'Ask and require', 'required', '')}"/>
+                        <apex:selectList value="{!newEvtReg.Registrant_Gender__c}" size="1" id="sex" multiselect="false" required="{!IF(eventPage.Ask_Gender__c == 'Ask and require', true, false)}" styleClass="{!IF(eventPage.Ask_Gender__c == 'Ask and require', 'required', '')}" disabled="{!contactSet}">
                             <apex:selectOptions value="{!sexDD}"/>
                         </apex:selectList>
-                    </div>
-                </div>
-                <apex:outputPanel styleClass="row" rendered="{!IF(eventPage.Allow_Other_Attendees__c || eventPage.Include_Time_frame_List__c, true,false)}" layout="block">
-                    <apex:outputPanel styleClass="column small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Include_Time_frame_List__c, true,false)}">
+                    </apex:outputPanel>
+                    <apex:outputPanel styleClass="columns small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Include_Time_frame_List__c, true,false)}">
                         <apex:outputLabel value="Preferred visit time" for="timeframe" styleClass="required"/>
                         <apex:selectList size="1" value="{!newEvtReg.Preferred_Visit_Time__c}" id="timeframe" required="true" styleClass="required">
                             <apex:selectOptions value="{!timeFrame}"></apex:selectOptions>
                         </apex:selectList>
                     </apex:outputPanel>
-                    <apex:outputPanel styleClass="column small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Allow_Other_Attendees__c, true,false)}">
+                    <apex:outputPanel styleClass="columns small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Allow_Other_Attendees__c, true,false)}">
                         <apex:outputLabel value="Additional guests" for="guests"/>
                         <apex:selectList size="1" value="{!newEvtReg.Number_of_Guests__c}" id="guests" styleClass="required">
                             <apex:selectOptions value="{!guestAmt}"></apex:selectOptions>
                         </apex:selectList>
                     </apex:outputPanel>
-                </apex:outputPanel>
+                </div>
                 <div class="row">
                     <div class="columns">
                         <h4>Address</h4>
@@ -182,7 +181,7 @@
                     </div>
                     <div class="column small-12 large-4 medium-4">
                         <apex:outputLabel value="Last year attended" for="collegeYear" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_College_Year__c}" id="collegeYear" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_College_Year__c != null),true,false)}" styleClass="validYear" required="true" ></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_College_Year__c}" id="collegeYear" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_College_Year__c != null),true,false)}" styleClass="validYear" required="true"></apex:inputText>
                     </div>
                 </apex:outputPanel>
 
@@ -203,6 +202,9 @@
             </apex:form>
             <apex:outputPanel rendered="{!IF(SessionInfo.Current_Available_Capacity__c <= 0, true, false)}" styleClass="row">
                 <div class="column">
+                    <h2>
+                        <apex:outputText value="{!eventPage.Name}"></apex:outputText>
+                    </h2>
                     <p>
                         <apex:outputText escape="false" value="{!eventPage.Event_Full_Text__c}"></apex:outputText>
                     </p>

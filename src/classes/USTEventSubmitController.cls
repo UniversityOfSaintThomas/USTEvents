@@ -60,11 +60,6 @@ public with sharing class USTEventSubmitController {
         } else {
             lastPage = Page.USTEventRegistrationOptions;
         }
-        //Create cookie to pass on to next page
-        //Posting along everything we need to build the next page
-        //String encrytpString = USTShared.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"' + evtInfo.evtRegId + '","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
-        //String decryptCookie = cookieWork.getDecryptCookie('USTEvent');
-        //lastPage.getParameters().put('evt', encrytpString);
         return lastPage;
     }
 }

@@ -5,18 +5,14 @@
 public with sharing class USTEventFeedController {
     public USTEventShared USTShared = new USTEventShared();
     public String jsonString { get; set; }
-    public Date currentDateTime { get; set; }
-    public String paramCalDate { get; set; }
     public DateTime viewStart { get; set; }
     public DateTime viewEnd { get; set; }
-    public TimeZone tz { get; set; }
     public String feedType { get; set; }
     public String audience { get; Set; }
 
     private Class eventItem {
         public String ID { get; set; }
         public String title { get; set; }
-        public String sessionTitle { get; set; }
         public String sessionDesc { get; set; }
         public String description { get; set; }
         public Datetime endDate { get; set; }

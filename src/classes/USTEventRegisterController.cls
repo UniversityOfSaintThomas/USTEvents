@@ -7,8 +7,6 @@ public with sharing class USTEventRegisterController {
     public UST_Event_Session__c sessionInfo { get; set; }
     public UST_Event__c eventPage { get; set; }
     public List<UST_Event_Appointment_Type__c> apptTypes { get; set; }
-    public String eventTitle { get; set; }
-    public String eventDescription { get; set; }
     public String ContactId { get; set; }
     public String sessionName { get; set; }
     public String EvtUserType { get; set; }
@@ -17,11 +15,13 @@ public with sharing class USTEventRegisterController {
     private USTEventShared USTShared = new USTEventShared();
     public USTEventShared.USTEventInfo evtInfo { get; set; }
     public String templateSelected { get; set; }
+    public boolean contactSet { get; set; }
 
     public USTEventRegisterController() {
         newEvtReg = new UST_Event_Registration__c();
-        templateSelected =  USTShared.defaultTemplate;
+        templateSelected = USTShared.defaultTemplate;
         test = '';
+        contactSet = false;
 
         EvtUserType = UserInfo.getUserType();
         //Get cookie or URL string variable
@@ -74,7 +74,7 @@ public with sharing class USTEventRegisterController {
         }
 
         //If the user is logged in use that data
-        if ((!String.isBlank(EvtUserType) && EvtUserType != 'Guest') || (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING')) {
+        if ((!String.isBlank(EvtUserType) && EvtUserType != 'Guest' && EvtUserType != 'Standard') || (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING')) {
             //Fill in contact information
             Contact userContact = new Contact();
             if (String.isBlank(evtInfo.evtRegId) || evtInfo.evtRegId == 'COMING') {
@@ -109,6 +109,7 @@ public with sharing class USTEventRegisterController {
                 if (userContact.Receive_Texts__c == 'Yes') {
                     newEvtReg.Registrant_Receive_Texts__c = true;
                 }
+                contactSet = true;
             } else {
                 newEvtReg = [
                         SELECT Contact__c, Registrant_First_Name__c, Registrant_Last_Name__c, Registrant_Email__c,Number_of_Guests__c,
@@ -174,16 +175,14 @@ public with sharing class USTEventRegisterController {
                 for (Contact c : zipContactTest) {
                     softFirstLastZipMatches += c.Id + ' ';
                 }
-                test += zipContactTest.size() + ' soft match(es) found with first name, last name and zip! ' + zipContactTest[0].Id + '<br>';
                 contactCount++;
             }
             List<Contact> emailContactTest = [SELECT Id FROM Contact WHERE Email = :newEvtReg.Registrant_Email__c];
             if (emailContactTest.size() > 0) {
-                //Soft Match found with zip
+                //Soft Match found with email
                 for (Contact c : emailContactTest) {
                     softEmailMatches += c.Id + ' ';
                 }
-                test += emailContactTest.size() + ' soft match(es) found with email! ' + emailContactTest[0].Id + '<br>';
                 contactCount++;
             }
 

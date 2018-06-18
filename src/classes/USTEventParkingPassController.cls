@@ -5,7 +5,6 @@
 public with sharing class USTEventParkingPassController {
     public String couponOut { get; set; }
     public String firstName { get; set; }
-    public String dateValid { get; set; }
     public String warning { get; set; }
     private USTEventShared USTShare = new USTEventShared();
 

@@ -1,5 +1,4 @@
-/* CastorStyles2017 */
-fieldset {margin:0px;padding:0px;}
+
 .noTableBorders {border:none; margin:0px;}
 .noTableBorders td {border:none; padding:0px;}
 .horzRadioTable {width:auto;}
@@ -14,6 +13,7 @@ fieldset {margin:0px;padding:0px;}
 .outlinedWithNumber .numWrap { position:absolute; top:0px; left:0px;  background:#8546B1; color:#fff; width:50px; height:50px; font-weight: bold; font-size: 24px; padding:10px 5px 5px 5px; text-align:center; vertical-align: middle;}
 .errorMessage {color:red; font-size:.9em; margin-top:-10px!important; font-style: italic;}
 .textError input {border:solid 1px red;}
+fieldset {margin:0px; padding:0px;}
 /* Small only */
 @media screen and (max-width: 39.9375em) {
     .horzRadioTable td, .horzRadioTable {width:100%; clear:both; position:relative; float:left;}

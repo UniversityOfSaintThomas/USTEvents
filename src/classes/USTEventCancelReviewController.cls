@@ -4,10 +4,8 @@
 
 public with sharing class USTEventCancelReviewController {
     public USTEventShared USTShared = new USTEventShared();
-    public String outString {get;set;}
     public UST_Event_Registration__c evt {get;set;}
     public List<UST_Event_Appointments__c> appt {get;set;}
-    public String eventDesc {get;set;}
     public String templateSelected { get; set; }
 
     public USTEventCancelReviewController() {

@@ -5,9 +5,6 @@
 public with sharing class USTEventConfirmationController {
     public USTEventShared USTShared = new USTEventShared();
     public USTEventShared.USTEventInfo evtInfo { get; set; }
-    public List<UST_Event_Appointment_Type__c> appts { get; set; }
-    public List<UST_Event_Appointments__c> chosenAppts { get; set; }
-    public String chosenFormatted { get; set; }
     public UST_Event__C eventPage { get; set; }
     public String templateSelected { get; set; }
 
