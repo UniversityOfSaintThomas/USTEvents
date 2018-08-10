@@ -1,14 +1,12 @@
 /**
- * Created by dahl3702 on 5/1/2018.
+ * Created by dahl3702 on 8/09/2018.
  */
+@RestResource(urlMapping='/usteventfeed/*')
 
-public with sharing class USTEventFeedController {
-    public USTEventShared USTShared = new USTEventShared();
-    public String jsonString { get; set; }
-    public DateTime viewStart { get; set; }
-    public DateTime viewEnd { get; set; }
-    public String feedType { get; set; }
-    public String audience { get; Set; }
+global with sharing class USTEventFeed {
+
+    private static String feedType { get; set; }
+    private static USTEventShared USTShared = new USTEventShared();
 
     private Class eventItem {
         public String ID { get; set; }
@@ -22,26 +20,36 @@ public with sharing class USTEventFeedController {
         public String className { get; set; }
     }
 
-    public USTEventFeedController() {
+    @HttpGet
+    global static void getUSTEventFeed() {
+        feedType = RestContext.request.params.get('feedType');
 
-        //Get passed parameters
-        feedType = ApexPages.currentPage().getParameters().get('feedType');
-        audience = ApexPages.currentPage().getParameters().get('audience');
-
+        RestResponse res = RestContext.response;
+        res.addHeader('Content-Type', 'application/json');
 
         if (feedType == 'audienceDD') {
-            jsonString = getAudienceDD(UST_Event__c.Audience__c.getDescribe());
+            res.responseBody = Blob.valueOf(JSON.serialize(getAudienceDD(UST_Event__c.Audience__c.getDescribe())));
         } else if (feedType == 'sexDD') {
-            jsonString = getAudienceDD(Contact.EnrollmentrxRx__Gender__c.getDescribe());
+            res.responseBody = Blob.valueOf(JSON.serialize(getAudienceDD(Contact.EnrollmentrxRx__Gender__c.getDescribe())));
         } else if (feedType == 'eventList') {
-            viewStart = DateTime.valueOf(ApexPages.currentPage().getParameters().get('viewStart'));
-            viewEnd = DateTime.valueOf(ApexPages.currentPage().getParameters().get('viewEnd'));
-            jsonString = getEventList();
+            String evtJSONString = JSON.serialize(getEventList());
+            evtJSONString = evtJSONString.replace('"endDate":', '"end":');
+            res.responseBody = Blob.valueOf(evtJSONString);
         }
     }
 
-    public String getEventList() {
-        String jsonHolder = '';
+    private static List<eventItem> getEventList() {
+        RestRequest req = RestContext.request;
+        String audience = req.params.get('audience');
+        DateTime viewStart = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(-1);
+        DateTime viewEnd = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(1);
+        if (!String.isBlank(req.params.get('viewStart'))) {
+            viewStart = DateTime.valueOf(req.params.get('viewStart'));
+        }
+        if (!String.isBlank(req.params.get('viewEnd'))) {
+            viewEnd = DateTime.valueOf(req.params.get('viewEnd'));
+        }
+
         DateTime regDateOpenDate = null;
         List<UST_Event_Session__c> EventSession = [
                 SELECT Id, Event__r.Name, Event__R.Event_Status__c, Active_Status__c, Session_Title__c, Session_Short_Description__c,
@@ -89,18 +97,17 @@ public with sharing class USTEventFeedController {
 
             EventList.add(evt);
         }
-        jsonHolder = JSON.serialize(EventList);
-        jsonHolder = jsonHolder.replace('"EndDate":', '"end":');
-        return jsonHolder;
+        return EventList;
     }
 
-    public String getAudienceDD(Schema.DescribeFieldResult fieldResult) {
+    private static Map<String, String> getAudienceDD(Schema.DescribeFieldResult fieldResult) {
         Map<String, String> fieldMap = new Map<String, String>();
         List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
         for (Schema.PicklistEntry f : ple) {
             fieldMap.put(f.getLabel(), f.getValue());
         }
-        return JSON.serialize(fieldMap);
+        return fieldMap;
     }
+
 
 }

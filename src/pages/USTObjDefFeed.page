@@ -1,3 +1,0 @@
-<!--
- - Created by dahl3702 on 3/8/2018.
- --><apex:page id="USTObjDefFeed" controller="USTObjDefFeedController" contentType="application/x-JavaScript; charset=utf-8" showHeader="false" standardStylesheets="false" sidebar="false">{!jsonString}</apex:page>
