@@ -134,6 +134,31 @@
         </div>
     </apex:outputPanel>
     <apex:outputPanel layout="block" id="pdfWrapWarning" styleClass="pdfWrap" rendered="{!IF(warning != '', true, false)}">
-        <apex:outputText escape="false" value="{!warning}"></apex:outputText>
+        <div id="coupon">
+            <h1>Parking pass error</h1>
+            <apex:outputText escape="false" value="{!warning}"></apex:outputText>
+            <table>
+                <th colspan="2">Contact Information:</th>
+                <tr>
+
+                    <td>
+                        Office of Admissions<br/>
+                        (651) 962-6150
+                    </td>
+                    <td>
+                        Public Safety<br/>
+                        (651) 962-5100
+                    </td>
+                </tr>
+                <tr>
+                    <td>Campus Emergencies<br/>
+                        (651) 962-5555
+                    </td>
+                    <td>Parking Services<br/>
+                        (651) 962-7275
+                    </td>
+                </tr>
+            </table>
+        </div>
     </apex:outputPanel>
 </apex:page>
