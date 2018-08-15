@@ -140,7 +140,7 @@ global with sharing class USTRestAdmissions {
             for (String fragment : RestContext.request.params.get('filter').split(' ')) {
                 filterHolder.add('*' + fragment + '*');
             }
-            filter = '{' + (String.Join(filterHolder, ' ')) + '}';
+            filter = String.Join(filterHolder, ' ');
         }
 
         if (!String.isBlank(state) && String.isBlank(city)) {
@@ -165,10 +165,13 @@ global with sharing class USTRestAdmissions {
         if (!String.isBlank(filter)) {
             schoolList = [
                     FIND :filter
-                    IN All FIELDS
-                            RETURNING EnrollmentrxRx__High_School__c(Name, EnrollmentrxRx__CEEB_Code__c, EnrollmentrxRx__High_School_State__c, EnrollmentrxRx__High_School_City__c WHERE RecordType.Name = :recTypeName)
+                    IN ALL FIELDS RETURNING EnrollmentrxRx__High_School__c(Name, EnrollmentrxRx__CEEB_Code__c, EnrollmentrxRx__High_School_State__c, EnrollmentrxRx__High_School_City__c WHERE RecordType.Name = :recTypeName)
             ][0];
+
+            System.Debug('-=-=0-0-0--- SCHOOL LIST SIZE: ' + schoolList.size() + ' FILTER: ' + filter);
         }
+
+
 
         For (EnrollmentrxRx__High_School__c sch : schoolList) {
             keyValOut.put(sch.EnrollmentrxRx__CEEB_Code__c, sch.Name + ' - ' + sch.EnrollmentrxRx__High_School_City__c + ', ' + sch.EnrollmentrxRx__High_School_State__c);

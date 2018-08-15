@@ -88,7 +88,7 @@ function loadJSONEvents() {
     viewStart = getCurrentSOQLDateTimeLiteral($("#fullCalendarView").fullCalendar('getView').start).toString();
     viewEnd = getCurrentSOQLDateTimeLiteral($("#fullCalendarView").fullCalendar('getView').end).toString();
     $.ajax({
-        url: "/applicantportal/USTEventFeed",
+        url: "/applicantportal/services/apexrest/usteventfeed",
         data: {'viewStart': viewStart, 'viewEnd': viewEnd, 'feedType': 'eventList', 'audience': $("#audienceDD").val()},
         dataType: "json",
         cache: false
@@ -150,7 +150,7 @@ function findEvents(edate, sessionID) {
 
 function loadAudienceDD() {
     $.ajax({
-        url: "/applicantportal/USTEventFeed",
+        url: "/applicantportal/services/apexrest/usteventfeed",
         data: {'feedType': 'audienceDD'},
         dataType: "json"
     }).done(function (data) {

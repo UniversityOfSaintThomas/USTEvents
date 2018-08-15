@@ -86,7 +86,7 @@
         </style>
     </head>
     <apex:outputPanel layout="block" id="pdfWrap" styleClass="pdfWrap" rendered="{!IF(warning == '', true, false)}">
-        <apex:image value="{!URLFOR($Resource.UGParkingPass)}" styleClass="backImg"/>
+        <apex:image value="{!URLFOR($Resource.USTEventAssets, '/img/UGParkingPass.gif')}" styleClass="backImg"/>
         <div class="textReference">
             <div id="coupon">
                 <apex:outputText value="{!couponOut}" escape="false" styleClass="firstNameGreeting"></apex:outputText>

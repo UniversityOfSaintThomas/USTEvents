@@ -6,11 +6,11 @@
     <apex:composition template="CastorTemplate2017">
         <apex:define name="pageTitle"><a href="/applicantportal/USTEvent">Events</a></apex:define>
         <apex:define name="afterJquery">
-            <link href="{!URLFOR($Resource.USTEventStyles)}" rel="stylesheet" type="text/css"/>
-            <link href="https://static.stthomas.edu/undergraduate-admissions/js/fullcalendar/fullcalendar-ust.css" rel="stylesheet" type="text/css"/>
-            <script src="{!URLFOR($Resource.USTEventScripts)}" type="text/javascript"/>
-            <script type="text/javascript" src="https://static.stthomas.edu/undergraduate-admissions/js/fullcalendar/moment.min.js"></script>
-            <script type="text/javascript" src="https://static.stthomas.edu/undergraduate-admissions/js/fullcalendar/fullcalendar.min.js"></script>
+            <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>
+            <link href="{!URLFOR($Resource.USTEventAssets, '/fullcalendar/fullcalendar-ust.css')}" rel="stylesheet" type="text/css"/>
+            <script src="{!URLFOR($Resource.USTEventAssets, '/js/eventList.js')}"/>
+            <script type="text/javascript" src="{!URLFOR($Resource.USTEventAssets, '/fullcalendar/moment.min.js')}"></script>
+            <script type="text/javascript" src="{!URLFOR($Resource.USTEventAssets, '/fullcalendar/fullcalendar.min.js')}"></script>
         </apex:define>
         <apex:define name="sectionNav">
             <!--

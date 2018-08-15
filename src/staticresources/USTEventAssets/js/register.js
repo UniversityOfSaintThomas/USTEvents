@@ -125,7 +125,7 @@ function getSchoolOptions(filter, type) {
     }
     ChosenProcessActive[type] = true;
     ChosenProcess[type] = $.ajax({
-        url: "/applicantportal/USTObjDefFeed",
+        url: "/applicantportal/services/apexrest/ustadmissionsrest",
         data: {'type': type, 'filter': filter},
         dataType: "json"
     }).done(function (data) {
