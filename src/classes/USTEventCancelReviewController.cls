@@ -27,7 +27,6 @@ public with sharing class USTEventCancelReviewController {
         }
     }
 
-
     public PageReference cancelRegistration() {
         if (evt != null) {
             evt.Status__c = 'Cancelled';

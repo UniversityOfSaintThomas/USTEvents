@@ -18,11 +18,16 @@
                     <apex:messages/>
                 </div>
             </div>
-            <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!IF(SessionInfo.Current_Available_Capacity__c > 0, true, false)}">
+            <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!IF(instanceInfo.Current_Available_Capacity__c > 0, true, false)}">
+                <!-- Function to set mailing country -->
+                <apex:actionFunction name="setParentSetting" immediate="true" onComplete="dynamicValidation();fadein();" reRender="parentAskSection">
+                    <apex:param name="parentType" value="" assignTo="{!parentSetting}"></apex:param>
+                </apex:actionFunction>
+
                 <div class="row">
                     <div class="columns">
                         <h2>
-                            <apex:outputText value="{!eventPage.Name}"></apex:outputText>
+                            <apex:outputText value="{!eventPage.Event_Name__c}"></apex:outputText>
                         </h2>
                     </div>
                 </div>
@@ -33,9 +38,48 @@
                         </p>
                     </div>
                 </div>
+                <apex:outputPanel layout="block" styleClass="row" id="parentAskSection" rendered="{!eventPage.Ask_If_Parent__c}">
+
+                    <div class="column small-12 medium-12 large-12">
+                        <apex:outputLabel for="iamthe" styleClass="required">I am:</apex:outputLabel>
+                        <apex:selectList multiSelect="false" value="{!parentSetting}" size="1" id="iamthe" styleClass="required requiredText" required="true" onchange="setParentSetting(this.value);">
+                            <apex:selectOption itemValue="" itemLabel="Select"/>
+                            <apex:selectOption itemValue="student" itemLabel="The student"/>
+                            <apex:selectOption itemValue="parent" itemLabel="A student's parent/guardian"/>
+                            <apex:selectOption itemValue="other" itemLabel="Other"/>
+                        </apex:selectList>
+                    </div>
+
+                    <apex:outputPanel layout="none" styleClass="row" rendered="{!IF(parentSetting == 'student' || parentSetting == '', false, true)}">
+                        <div class="column small-12 medium-12 large-12">
+                            <h3>{!IF(parentSetting=='other', 'Your', 'Parent')} Information</h3>
+                        </div>
+                        <div class="columns small-12 medium-6 large-6">
+                            <apex:outputLabel value="First Name" for="parentFirstName" styleClass="required"/>
+                            <apex:inputText value="{!newEvtReg.Registrant_Parent_First_Name__c}" id="parentFirstName" required="true" styleClass="required requiredText" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        </div>
+                        <div class="columns small-12 medium-6 large-6">
+                            <apex:outputLabel value="Last Name" for="parentLastName" styleClass="required"/>
+                            <apex:inputText value="{!newEvtReg.Registrant_Parent_Last_Name__c}" id="parentLastName" required="true" styleClass="required requiredText" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        </div>
+                        <div class="columns small-12 medium-6 large-6">
+                            <apex:outputLabel value="Email" for="parentEmail" styleClass="required"/>
+                            <apex:inputText value="{!newEvtReg.Registrant_Parent_Email__c}" id="parentEmail" required="true" styleClass="required requiredText validEmail" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        </div>
+                        <div class="columns small-12 medium-6 large-6">
+                            <apex:outputLabel value="Phone" for="parentPhone"/>
+                            <apex:inputText value="{!newEvtReg.Registrant_Parent_Phone__c}" id="parentPhone" maxLength="80" styleClass="validPhone" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        </div>
+                        <div class="column small-12 medium-12 large-12">
+                            <p>Enter the contact information of the student you are registering for this activity below.
+                                <br/><strong><em>Note: it is preferable that the student have a unique email (different then yours) for our records.</em></strong></p>
+                        </div>
+                    </apex:outputPanel>
+
+                </apex:outputPanel>
                 <div class="row">
                     <div class="columns">
-                        <h3>Student Information</h3>
+                        <h3>{!If(eventPage.Ask_If_Parent__c, 'Student', 'Registrant')} Information</h3>
                         <apex:outputText escape="false" value="<p>{!test}</p>"></apex:outputText>
                         <apex:outputText rendered="{!If(EvtUserType != 'Guest',true,false)}" escape="false">
                             <p>You are currently logged into a St. Thomas Portal and therefore your portal information is pre-filled below and cannot be changed.
@@ -180,8 +224,8 @@
                         <apex:inputHidden value="{!newEvtReg.Registrant_College_Code__c}" id="collegeCode"/>
                     </div>
                     <div class="column small-12 large-4 medium-4">
-                        <apex:outputLabel value="Last year attended" for="collegeYear" />
-                        <apex:inputText value="{!newEvtReg.Registrant_College_Year__c}" id="collegeYear" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_College_Year__c != null),true,false)}" styleClass="validYear" ></apex:inputText>
+                        <apex:outputLabel value="Last year attended" for="collegeYear"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_College_Year__c}" id="collegeYear" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_College_Year__c != null),true,false)}" styleClass="validYear"></apex:inputText>
                     </div>
                 </apex:outputPanel>
 
@@ -200,10 +244,10 @@
                     </div>
                 </div>
             </apex:form>
-            <apex:outputPanel rendered="{!IF(SessionInfo.Current_Available_Capacity__c <= 0, true, false)}" styleClass="row">
+            <apex:outputPanel rendered="{!IF(instanceInfo.Current_Available_Capacity__c <= 0, true, false)}" styleClass="row">
                 <div class="column">
                     <h2>
-                        <apex:outputText value="{!eventPage.Name}"></apex:outputText>
+                        <apex:outputText value="{!eventPage.Event_Name__c}"></apex:outputText>
                     </h2>
                     <p>
                         <apex:outputText escape="false" value="{!eventPage.Event_Full_Text__c}"></apex:outputText>

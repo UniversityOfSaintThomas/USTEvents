@@ -26,7 +26,7 @@ $(document).ready(function () {
             }
             if (event.eventUrl) {
                 if (!event.eventClosed) {
-                    evtTmplt += '<p><a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" class="button" onclick="return setSessionCookie(\'' + event.ID + '\');">Register</a></p>';
+                    evtTmplt += '<p><a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" class="button" onclick="return setInstanceCookie(\'' + event.ID + '\');">Register</a></p>';
                 } else {
                     evtTmplt += '<p><em>This event registration has closed. Thank you for your interest.</em></em></p>';
                 }
@@ -65,9 +65,9 @@ $(document).ready(function () {
 
 });
 
-function setSessionCookie(sessionID) {
+function setInstanceCookie(instanceID) {
     eraseCookie('USTEvent');
-    createCookie('USTEvent', '{"audience" : "' + $("#audienceDD").val() + '", "sessionID" : "' + sessionID + '" }', '');
+    createCookie('USTEvent', '{"audience" : "' + $("#audienceDD").val() + '", "instanceID" : "' + instanceID + '" }', '');
     return true;
 }
 
@@ -107,11 +107,11 @@ function loadJSONEvents() {
     });
 }
 
-function findEvents(edate, sessionID) {
+function findEvents(edate, instanceID) {
     var evOut, niceDate, dateSplit, results;
     edate = getCurrentSOQLDateTimeLiteral(edate, true);
     niceDate = new Date(edate);
-    if (sessionID) {
+    if (instanceID) {
         results = $.grep(eventsObj, function (n, i) {
             return n.start.indexOf(edate) > -1;            //edate == n.startDate;
         });
@@ -119,7 +119,7 @@ function findEvents(edate, sessionID) {
         edateSplit = edate.split("T");
         edate = edateSplit[0];
         results = $.grep(eventsObj, function (n, i) {
-            return sessionID == n.id;            //edate == n.startDate;
+            return instanceID == n.id;            //edate == n.startDate;
         });
     }
 
@@ -128,11 +128,11 @@ function findEvents(edate, sessionID) {
     $.each(results, function (index, value) {
         evOut += "<tr>";
         evOut += "<td><p><strong>" + value.title + "</strong>";
-        if (value.sessionTitle) {
-            evOut += "<br>" + value.sessionTitle;
+        if (value.instanceTitle) {
+            evOut += "<br>" + value.instanceTitle;
         }
-        if (value.sessionDesc) {
-            evOut += "<br>" + value.sessionDesc;
+        if (value.instanceDesc) {
+            evOut += "<br>" + value.instanceDesc;
         }
         evOut += "</p>";
         if (value.Description) {
@@ -140,7 +140,7 @@ function findEvents(edate, sessionID) {
         }
         alert(value.eventClosed);
         if (value.eventClosed != true) {
-            evOut += "<a href='/applicantportal/USTEventRegister?sessionID=" + value.ID + "&audience=" + encodeURI($("#audienceDD").val()) + "' class='button'>Register</a></td>"
+            evOut += "<a href='/applicantportal/USTEventRegister?instanceID=" + value.ID + "&audience=" + encodeURI($("#audienceDD").val()) + "' class='button'>Register</a></td>"
         }
         evOut += "</tr>"
     });

@@ -51,9 +51,7 @@ $(document).ready(function () {
     });
 
     //make sure phone is formated correctly
-    $('[id$=phone], [id$=mobile]').on('change', function () {
-        formatPhone($(this));
-    });
+    dynamicValidation();
 
     validYear();
 
@@ -101,6 +99,12 @@ $(document).ready(function () {
         }
     });
 });
+
+function dynamicValidation() {
+    $('[id$=phone], [id$=mobile], .validPhone').on('change', function () {
+        formatPhone($(this));
+    });
+}
 
 function populateHiddenSchoolValue() {
     if ($("[id$=school]").length > 0) {

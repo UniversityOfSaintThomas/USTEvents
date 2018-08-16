@@ -4,11 +4,11 @@
 
 public with sharing class USTEventRegisterController {
     public String test { get; set; }
-    public UST_Event_Session__c sessionInfo { get; set; }
+    public UST_Event_Instance__c instanceInfo { get; set; }
     public UST_Event__c eventPage { get; set; }
     public List<UST_Event_Appointment_Type__c> apptTypes { get; set; }
     public String ContactId { get; set; }
-    public String sessionName { get; set; }
+    public String instanceName { get; set; }
     public String EvtUserType { get; set; }
     public List<SelectOption> guestAmt { get; set; }
     public UST_Event_Registration__c newEvtReg { get; set; }
@@ -16,6 +16,7 @@ public with sharing class USTEventRegisterController {
     public USTEventShared.USTEventInfo evtInfo { get; set; }
     public String templateSelected { get; set; }
     public boolean contactSet { get; set; }
+    public String parentSetting { get; set; }
 
     public USTEventRegisterController() {
         newEvtReg = new UST_Event_Registration__c();
@@ -27,27 +28,27 @@ public with sharing class USTEventRegisterController {
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
 
-        //Get Session information
-        if (!String.isBlank(evtInfo.sessionID)) {
-            SessionInfo = [
-                    SELECT Id, Name, Event__r.Name, Event__r.Id, Session_Title__c,
+        //Get Instance information
+        if (!String.isBlank(evtInfo.instanceID)) {
+            instanceInfo = [
+                    SELECT Id, Name, Event__r.Name, Event__r.Event_Name__c, Event__r.Id, Instance_Title__c,
                             Event__r.Event_description__c, Event__r.Audience__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c
-                    FROM UST_Event_Session__c
-                    WHERE Id = :evtInfo.sessionID
+                    FROM UST_Event_Instance__c
+                    WHERE Id = :evtInfo.instanceID
                     LIMIT 1
             ][0];
 
-            //define Event ID from sessionInfo data
-            evtInfo.evtId = SessionInfo.Event__r.Id;
-            sessionName = SessionInfo.Name;
+            //define Event ID from instanceInfo data
+            evtInfo.evtId = instanceInfo.Event__r.Id;
+            instanceName = instanceInfo.Name;
         }
 
-        //Get Event Info off of session master detail id
+        //Get Event Info off of instance master detail id
         if (!String.isBlank(evtInfo.evtId)) {
             eventPage = [
-                    SELECT Name, Id, Event_description__c, Event_Footer__c, Event_Full_Text__c, Audience__c,Include_Time_frame_List__c,
+                    SELECT Name, Id, Event_Name__c, Event_description__c, Event_Footer__c, Event_Full_Text__c, Audience__c,Include_Time_frame_List__c,
                             Max_Other_Attendees__c, Allow_Other_Attendees__c, College_High_School_Ask__c, Ask_Gender__c, Template__c,
-                            Event_Home_Link_Title__c, Event_Home_Link_URL__c
+                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Ask_If_Parent__c
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1
@@ -116,12 +117,16 @@ public with sharing class USTEventRegisterController {
                                 Registrant_Gender__c,Registrant_Street_1__c,Registrant_Street_2__c, Registrant_State__c,Registrant_City__c, Preferred_Visit_Time__c,
                                 Registrant_Zip__c,Registrant_Phone__c,Registrant_Mobile_Phone__c, Registrant_College__c,Registrant_College_Code__c,Registrant_College_Year__c,
                                 Registrant_High_School__c,Registrant_High_School_Code__c, Registrant_Receive_Texts__c, Registrant_High_School_Grad_Year__c, Registrant_High_School_Not_Found__c,
-                                Registrant_College_Not_Found__c
+                                Registrant_College_Not_Found__c, Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c, Registrant_Parent_Phone__c
                         FROM UST_Event_Registration__c
                         WHERE id = :evtInfo.evtRegId
                 ][0];
             }
         }
+    }
+
+    public PageReference setParentInfo(String n) {
+        return null;
     }
 
     public PageReference checkEventDetails() {
@@ -223,12 +228,12 @@ public with sharing class USTEventRegisterController {
             //Create new contact
         }
         newEvtReg.Status__c = 'Started';
-        newEvtReg.Date__c = Date.valueof(SessionInfo.Start_Date_Time__c);
+        newEvtReg.Date__c = Date.valueof(instanceInfo.Start_Date_Time__c);
         //Create registration if event Registration does not exist
         if (!String.isBlank(contactId)) {
             if (String.isBlank(evtInfo.evtRegId) || evtInfo.evtRegId == 'COMING') {
                 newEvtReg.Event__c = evtInfo.evtId;
-                newEvtReg.Event_session__c = evtInfo.sessionID;
+                newEvtReg.Event_Instance__c = evtInfo.instanceID;
                 newEvtReg.Contact__c = contactId;
                 if (newContactCreated) {
                     newEvtReg.New_Contact_Created__c = true;
@@ -265,7 +270,7 @@ public with sharing class USTEventRegisterController {
             }
             // create cookie to pass on to next page
             //Posting along everything we need to build the next page
-            String encrytpString = USTShared.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"' + evtInfo.evtRegId + '","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
+            String encrytpString = USTShared.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"' + evtInfo.evtRegId + '","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
             //optionPage.getParameters().put('evt', encrytpString);
             return optionPage;
         }

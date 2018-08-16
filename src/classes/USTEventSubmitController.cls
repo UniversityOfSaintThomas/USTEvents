@@ -20,9 +20,10 @@ public with sharing class USTEventSubmitController {
         evtInfo = USTShared.getUSTEventInfo();
         chosenFormatted = '';
         if (!String.isEmpty(evtInfo.evtId)) {
-            eventPage = [SELECT Event_Submit_Title__c, Event_Submit_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
+            eventPage = [SELECT Event_Name__c, Event_Submit_Title__c, Event_Submit_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
             templateSelected = eventPage.Template__c;
         }
+
 
         if (!String.isBlank(evtinfo.evtRegId)) {
             chosenAppts = [SELECT Id, Appointment_Category__c, Event_Appointment_Type__c, Appointment_Type__c, Appointment_Title__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :evtinfo.evtRegId ORDER BY Appointment_Title__c];

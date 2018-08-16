@@ -9,17 +9,17 @@ public with sharing class USTEventShared {
 
     public class USTEventInfo {
         public String audience { get; set; }
-        public String sessionID { get; set; }
+        public String instanceID { get; set; }
         public String evtRegId { get; set; }
         public String evtId { get; set; }
     }
 
     public USTEventInfo getUSTEventInfo() {
-        //{"audience":"High School Senior","sessionID":"a320m000000A5fOAAS","evtRegId":"a350m0000008q63AAA,"evtId":"a330m0000001SOrAAM"}
+        //{"audience":"High School Senior","instanceID":"a320m000000A5fOAAS","evtRegId":"a350m0000008q63AAA,"evtId":"a330m0000001SOrAAM"}
         String jsonInput = '';
         USTEventInfo evtInfo = new USTEventInfo();
         String URLaudience = ApexPages.currentPage().getParameters().get('audience');
-        String URLsessionID = ApexPages.currentPage().getParameters().get('sessionID');
+        String URLinstanceID = ApexPages.currentPage().getParameters().get('instanceID');
         jsonInput = getDecryptCookie('USTEvent');
         if (!String.isBlank(jsonInput)) {
             try {
@@ -30,26 +30,26 @@ public with sharing class USTEventShared {
                 ApexPages.currentPage().setCookies(new Cookie[]{deleteCookie});
             }
         }
-        if (!String.isBlank(URLsessionID)) {
-            if (URLsessionID.length() > 14) {
-                if (URLsessionID != evtInfo.sessionID) {
-                    //event session has changed so delete cookie and reestablish with new session
+        if (!String.isBlank(URLinstanceID)) {
+            if (URLinstanceID.length() > 14) {
+                if (URLinstanceID != evtInfo.instanceID) {
+                    //event instance has changed so delete cookie and reestablish with new instance
                     Cookie deleteCookie = new Cookie('USTEvent', '', null, 0, false); // Note the 0 to delete the cookie
                     ApexPages.currentPage().setCookies(new Cookie[]{
                             deleteCookie
                     });
                     evtInfo = new USTEventInfo();
-                    evtInfo.sessionID = URLsessionID;
+                    evtInfo.instanceID = URLinstanceID;
                     if (!String.isBlank(URLaudience)) {
                         evtInfo.audience = URLaudience;
                     }
                     try {
-                        UST_Event_Session__c sessionInfo = [SELECT Event__c FROM UST_Event_Session__c WHERE ID = :evtInfo.sessionID][0];
-                        evtInfo.evtId = sessionInfo.Event__c;
+                        UST_Event_Instance__c instanceInfo = [SELECT Event__c FROM UST_Event_Instance__c WHERE ID = :evtInfo.instanceID][0];
+                        evtInfo.evtId = instanceInfo.Event__c;
                     } catch (Exception e) {
 
                     }
-                    createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"COMING","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
+                    createEncryptedCookie('{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"COMING","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
                 }
             }
         }
@@ -58,7 +58,7 @@ public with sharing class USTEventShared {
             UST_Event_Registration__c evtReg = [SELECT Status__c FROM UST_Event_Registration__c WHERE ID = :evtInfo.evtRegId][0];
             if (evtReg.Status__c != 'Started') {
                 //Registration is complete and a new form should be generated.
-                createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
+                createEncryptedCookie('{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
             }
         }
 
@@ -71,8 +71,8 @@ public with sharing class USTEventShared {
         USTEventInfo evt = new USTEventInfo();
         PageReference myVFPage = null;
         evt = getUSTEventInfo();
-        SYSTEM.debug('!!!!!!!!!!!!!!!  EVENT ID : ' + evt.evtId + ' , SESSION ID : ' + evt.sessionID + ' , EVENT REG ID : ' + evt.evtRegId);
-        if (String.isBlank(evt.evtRegId) || String.isBlank(evt.sessionID)) {
+        SYSTEM.debug('!!!!!!!!!!!!!!!  EVENT ID : ' + evt.evtId + ' , INSTANCE ID : ' + evt.instanceID + ' , EVENT REG ID : ' + evt.evtRegId);
+        if (String.isBlank(evt.evtRegId) || String.isBlank(evt.instanceID)) {
             if (!String.isBlank(evt.evtId)) {
                 UST_Event__c eventPage = [SELECT Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evt.evtId][0];
                 myVFPage = new PageReference(eventPage.Event_Home_Link_URL__c);

@@ -33,7 +33,7 @@ public with sharing class USTEventRegistrationOptionsController {
         Map<String, Integer> apptCount = new Map<String, Integer>();
 
         if (!String.isBlank(evtinfo.evtId)) {
-            eventPage = [SELECT Event_Appointment_Title__c, Event_Appointment_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
+            eventPage = [SELECT Event_Name__c, Event_description__c, Event_Appointment_Title__c, Event_Appointment_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
             templateSelected = eventPage.Template__c;
 
             if (!String.isBlank(evtinfo.evtRegId)) {
@@ -146,12 +146,7 @@ public with sharing class USTEventRegistrationOptionsController {
     public PageReference previousPage() {
         //if (!String.isBlank(eventRegId)) {
         PageReference registerPage = Page.USTEventRegister;
-        // create cookie to pass on to next page
-        //USTEventShared cookieWork = new USTEventShared();
-        //Posting along everything we need to build the next page
-        //String encrytpString = cookieWork.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","sessionID":"' + evtInfo.sessionID + '","evtRegId":"' + evtInfo.evtRegId + '","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
-        //String decryptCookie = cookieWork.getDecryptCookie('USTEvent');
-        //registerPage.getParameters().put('evt', encrytpString);
+
         return registerPage;
     }
 }

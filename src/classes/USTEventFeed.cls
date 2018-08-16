@@ -11,7 +11,7 @@ global with sharing class USTEventFeed {
     private Class eventItem {
         public String ID { get; set; }
         public String title { get; set; }
-        public String sessionDesc { get; set; }
+        public String instanceDesc { get; set; }
         public String description { get; set; }
         public Datetime endDate { get; set; }
         public DateTime start { get; set; }
@@ -39,6 +39,7 @@ global with sharing class USTEventFeed {
     }
 
     private static List<eventItem> getEventList() {
+        List<eventItem> EventList = new List<eventItem>();
         RestRequest req = RestContext.request;
         String audience = req.params.get('audience');
         DateTime viewStart = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(-1);
@@ -51,10 +52,10 @@ global with sharing class USTEventFeed {
         }
 
         DateTime regDateOpenDate = null;
-        List<UST_Event_Session__c> EventSession = [
-                SELECT Id, Event__r.Name, Event__R.Event_Status__c, Active_Status__c, Session_Title__c, Session_Short_Description__c,
+        List<UST_Event_Instance__c> EventInstance = [
+                SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__R.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c,
                         Event__r.Event_description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c
-                FROM UST_Event_Session__c
+                FROM UST_Event_Instance__c
                 WHERE Start_Date_Time__c >= :viewStart
                 AND Event__R.Event_Status__c = 'Active'
                 AND Active_Status__c = 'Active'
@@ -63,20 +64,19 @@ global with sharing class USTEventFeed {
                 AND Event__r.Audience__c INCLUDES(:audience)
         ];
 
-        List<eventItem> EventList = new List<eventItem>();
-        for (UST_Event_Session__c es : EventSession) {
+        for (UST_Event_Instance__c es : EventInstance) {
             regDateOpenDate = Datetime.now().addDays(-1);
             if (es.Event__r.Close_Event_Days_Before__c != null) {
                 regDateOpenDate = Datetime.now().addDays((Integer.valueOf(es.Event__r.Close_Event_Days_Before__c + 1 * -1)));
             }
             eventItem evt = new eventItem();
             evt.ID = es.Id;
-            evt.title = es.Event__r.Name;
-            if (es.Session_Title__c != null) {
-                evt.title += ' - ' + es.Session_Title__c;
+            evt.title = es.Event__r.Event_Name__c;
+            if (es.Instance_Title__c != null) {
+                evt.title += ' - ' + es.Instance_Title__c;
             }
 
-            evt.sessionDesc = es.Session_Short_Description__c;
+            evt.instanceDesc = es.Instance_Short_Description__c;
             evt.description = es.Event__r.Event_description__c;
             if (es.Start_Date_Time__c != null) {
                 evt.start = USTShared.adjustForCenteralTime(es.Start_Date_Time__c);
@@ -91,7 +91,7 @@ global with sharing class USTEventFeed {
                 evt.className = 'eventClosed';
             } else {
                 evt.eventClosed = false;
-                evt.eventUrl = '/applicantportal/USTEventRegister?sessionID=' + es.Id;
+                evt.eventUrl = '/applicantportal/USTEventRegister?instanceID=' + es.Id;
                 evt.className = 'eventOpened';
             }
 
