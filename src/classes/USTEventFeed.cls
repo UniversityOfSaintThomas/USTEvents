@@ -42,6 +42,14 @@ global with sharing class USTEventFeed {
         List<eventItem> EventList = new List<eventItem>();
         RestRequest req = RestContext.request;
         String audience = req.params.get('audience');
+        String audience2 = req.params.get('audience2');
+        String audience3 = req.params.get('audience3');
+        String audience4 = req.params.get('audience4');
+        String audience5 = req.params.get('audience5');
+        String audience6 = req.params.get('audience6');
+        String audience7 = req.params.get('audience7');
+        List<UST_Event_Instance__c> EventInstance = new List<UST_Event_Instance__c>();
+
         DateTime viewStart = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(-1);
         DateTime viewEnd = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(1);
         if (!String.isBlank(req.params.get('viewStart'))) {
@@ -51,19 +59,42 @@ global with sharing class USTEventFeed {
             viewEnd = DateTime.valueOf(req.params.get('viewEnd'));
         }
 
-        DateTime regDateOpenDate = null;
-        List<UST_Event_Instance__c> EventInstance = [
-                SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__R.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c,
-                        Event__r.Event_description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c
-                FROM UST_Event_Instance__c
-                WHERE Start_Date_Time__c >= :viewStart
-                AND Event__R.Event_Status__c = 'Active'
-                AND Active_Status__c = 'Active'
-                AND Start_Date_Time__c <= :viewEnd
-                AND (Current_Available_Capacity__c > 0 OR Capacity__c = null)
-                AND Event__r.Audience__c INCLUDES(:audience)
-        ];
+        if (audience == 'all') {
+            EventInstance = [
+                    SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__R.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c,
+                            Event__r.Event_description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c
+                    FROM UST_Event_Instance__c
+                    WHERE Start_Date_Time__c >= :viewStart
+                    AND Event__R.Event_Status__c = 'Active'
+                    AND Active_Status__c = 'Active'
+                    AND Start_Date_Time__c <= :viewEnd
+                    AND (Current_Available_Capacity__c > 0 OR Capacity__c = null)
+            ];
+        } else {
+            EventInstance = [
+                    SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__R.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c,
+                            Event__r.Event_description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c
+                    FROM UST_Event_Instance__c
+                    WHERE Start_Date_Time__c >= :viewStart
+                    AND Event__R.Event_Status__c = 'Active'
+                    AND Active_Status__c = 'Active'
+                    AND Start_Date_Time__c <= :viewEnd
+                    AND (Current_Available_Capacity__c > 0 OR Capacity__c = null)
+                    AND (
+                            Event__r.Audience__c INCLUDES (:audience)
+                            OR Event__r.Audience__c INCLUDES (:audience)
+                            OR Event__r.Audience__c INCLUDES (:audience2)
+                            OR Event__r.Audience__c INCLUDES (:audience3)
+                            OR Event__r.Audience__c INCLUDES (:audience4)
+                            OR Event__r.Audience__c INCLUDES (:audience5)
+                            OR Event__r.Audience__c INCLUDES (:audience6)
+                            OR Event__r.Audience__c INCLUDES (:audience7)
+                    )
+            ];
+        }
 
+
+        DateTime regDateOpenDate = null;
         for (UST_Event_Instance__c es : EventInstance) {
             regDateOpenDate = Datetime.now().addDays(-1);
             if (es.Event__r.Close_Event_Days_Before__c != null) {
