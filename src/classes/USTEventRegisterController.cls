@@ -16,7 +16,6 @@ public with sharing class USTEventRegisterController {
     public USTEventShared.USTEventInfo evtInfo { get; set; }
     public String templateSelected { get; set; }
     public boolean contactSet { get; set; }
-    public String parentSetting { get; set; }
 
     public USTEventRegisterController() {
         newEvtReg = new UST_Event_Registration__c();
@@ -100,13 +99,11 @@ public with sharing class USTEventRegisterController {
                 newEvtReg.Registrant_Zip__c = userContact.MailingZip__c;
                 newEvtReg.Registrant_Phone__c = userContact.Home_Phone__c;
                 newEvtReg.Registrant_Mobile_Phone__c = userContact.MobilePhone;
-                if (evtInfo.audience.contains('Transfer') || evtInfo.audience.contains('Graduate')) {
-                    newEvtReg.Registrant_College__c = userContact.EnrollmentrxRx__High_School__c;
-                    newEvtReg.Registrant_College_Code__c = userContact.EnrollmentrxRx__High_School_Code__c;
-                } else {
-                    newEvtReg.Registrant_High_School__c = userContact.EnrollmentrxRx__High_School__c;
-                    newEvtReg.Registrant_High_School_Code__c = userContact.EnrollmentrxRx__High_School_Code__c;
-                }
+                newEvtReg.Registrant_College__c = userContact.EnrollmentrxRx__High_School__c;
+                newEvtReg.Registrant_College_Code__c = userContact.EnrollmentrxRx__High_School_Code__c;
+                newEvtReg.Registrant_High_School__c = userContact.EnrollmentrxRx__High_School__c;
+                newEvtReg.Registrant_High_School_Code__c = userContact.EnrollmentrxRx__High_School_Code__c;
+
                 if (userContact.Receive_Texts__c == 'Yes') {
                     newEvtReg.Registrant_Receive_Texts__c = true;
                 }
@@ -117,7 +114,7 @@ public with sharing class USTEventRegisterController {
                                 Registrant_Gender__c,Registrant_Street_1__c,Registrant_Street_2__c, Registrant_State__c,Registrant_City__c, Preferred_Visit_Time__c,
                                 Registrant_Zip__c,Registrant_Phone__c,Registrant_Mobile_Phone__c, Registrant_College__c,Registrant_College_Code__c,Registrant_College_Year__c,
                                 Registrant_High_School__c,Registrant_High_School_Code__c, Registrant_Receive_Texts__c, Registrant_High_School_Grad_Year__c, Registrant_High_School_Not_Found__c,
-                                Registrant_College_Not_Found__c, Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c, Registrant_Parent_Phone__c
+                                Registrant_College_Not_Found__c, Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c, Registrant_Parent_Phone__c, Registrant_Parent_Status__c
                         FROM UST_Event_Registration__c
                         WHERE id = :evtInfo.evtRegId
                 ][0];
@@ -143,6 +140,10 @@ public with sharing class USTEventRegisterController {
 
     public List<SelectOption> getTimeFrame() {
         return GetDropdownOptions(UST_Event_Registration__c.Preferred_Visit_Time__c.getDescribe());
+    }
+
+    public List<SelectOption> getParentStatus() {
+        return GetDropdownOptions(UST_Event_Registration__c.Registrant_Parent_Status__c.getDescribe());
     }
 
     public List<SelectOption> GetDropdownOptions(Schema.DescribeFieldResult fieldResult) {
@@ -214,6 +215,9 @@ public with sharing class USTEventRegisterController {
             } else if (!String.isBlank(newEvtReg.Registrant_College_Code__c)) {
                 newEvtContact.EnrollmentrxRx__High_School_Code__c = newEvtReg.Registrant_College_Code__c;
             }
+
+
+
             if (newEvtReg.Registrant_Receive_Texts__c = true) {
                 newEvtContact.Receive_Texts__c = 'Yes';
             }

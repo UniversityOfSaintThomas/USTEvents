@@ -13,6 +13,7 @@ global with sharing class USTEventFeed {
         public String title { get; set; }
         public String instanceDesc { get; set; }
         public String description { get; set; }
+        public String longDesc {get;set;}
         public Datetime endDate { get; set; }
         public DateTime start { get; set; }
         public String eventUrl { get; set; }
@@ -48,6 +49,13 @@ global with sharing class USTEventFeed {
         String audience5 = req.params.get('audience5');
         String audience6 = req.params.get('audience6');
         String audience7 = req.params.get('audience7');
+        Boolean showLongDescription =  false;
+        String incomingShowLongDesc = req.params.get('longdesc');
+        if (incomingShowLongDesc != null) {
+            if (incomingShowLongDesc.toLowerCase() == '1' || incomingShowLongDesc.toLowerCase() == 'true') {
+                showLongDescription =  true;
+            }
+        }
         List<UST_Event_Instance__c> EventInstance = new List<UST_Event_Instance__c>();
 
         DateTime viewStart = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(-1);
@@ -62,7 +70,7 @@ global with sharing class USTEventFeed {
         if (audience == 'all') {
             EventInstance = [
                     SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__R.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c,
-                            Event__r.Event_description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c
+                            Event__r.Event_description__c, Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c
                     FROM UST_Event_Instance__c
                     WHERE Start_Date_Time__c >= :viewStart
                     AND Event__R.Event_Status__c = 'Active'
@@ -73,7 +81,7 @@ global with sharing class USTEventFeed {
         } else {
             EventInstance = [
                     SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__R.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c,
-                            Event__r.Event_description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c
+                            Event__r.Event_description__c, Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c
                     FROM UST_Event_Instance__c
                     WHERE Start_Date_Time__c >= :viewStart
                     AND Event__R.Event_Status__c = 'Active'
@@ -108,7 +116,12 @@ global with sharing class USTEventFeed {
             }
 
             evt.instanceDesc = es.Instance_Short_Description__c;
-            evt.description = es.Event__r.Event_description__c;
+            evt.description = es.Event__r.Event_Short_Listing_Description__c;
+            if (showLongDescription) {
+                evt.longDesc = es.Event__r.Event_description__c;
+            } else {
+                evt.longDesc = '';
+            }
             if (es.Start_Date_Time__c != null) {
                 evt.start = USTShared.adjustForCenteralTime(es.Start_Date_Time__c);
             }

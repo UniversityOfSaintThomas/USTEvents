@@ -20,27 +20,49 @@ $(document).ready(function () {
     if (!audience) {
         audience = "High School";
     }
-    //display correct school ask based on audience
-    // if (audience.indexOf("Graduate") >= 0 || audience.indexOf("Transfer") >= 0) {
-    //     $("#hsAsk").hide();
-    // } else {
-    //     $("#collegeAsk").hide();
-    // }
+
+    $("#cantFindHS").on("change", function () {
+        if ($(this).is(":checked")) {
+            $("#schoolSelector").val('').trigger('chosen:updated');
+            populateHiddenSchoolValue();
+            $("#schoolSelector_chosen").hide();
+            $("[id$=HSAltInput]").show();
+        } else {
+            $("[id$=HSAltInput]").val('').hide();
+            $("#schoolSelector_chosen").show();
+        }
+    });
+
+    $("#cantFindCollege").on("change", function () {
+        if ($(this).is(":checked")) {
+            $("#collegeSelector").val('').trigger('chosen:updated');
+            populateHiddenSchoolValue();
+            $("#collegeSelector_chosen").hide();
+            $("[id$=CollegeAltInput]").show();
+        } else {
+            $("[id$=CollegeAltInput]").val('').hide();
+            $("#collegeSelector_chosen").show();
+        }
+    });
 
     //Set up both school selectors
     //check if selection has already been made
     if ($("[id$=school]").val() && $("[id$=schoolCode]").val()) {
         $("#schoolSelector").append($('<option>', {value: $("[id$=schoolCode]").val(), text: $("[id$=school]").val(), selected: true}));
     }
-    if ($("[id$=college]").val() && $("[id$=collegelCode]").val()) {
-        $("#schoolSelector").append($('<option>', {value: $("[id$=collegelCode]").val(), text: $("[id$=college]").val(), selected: true}));
-    }
-    if ($("[id$=HSAltInput]").val()) {
-        $("#cantFindHS").click();
+    if ($("[id$=college]").val() && $("[id$=collegeCode]").val()) {
+        $("#collegeSelector").append($('<option>', {value: $("[id$=collegelCode]").val(), text: $("[id$=college]").val(), selected: true}));
     }
 
 
-    $("#schoolSelector, #collegeSelector").chosen({no_results_text: "No results yet, keep typing..."});
+    $("#schoolSelector, #collegeSelector").chosen(
+        {no_results_text: "<img src='//static.stthomas.edu/undergraduate-admissions/rfi/images/spinner.gif'/> No results yet, keep typing..."}
+    ).change(function () {
+        populateHiddenSchoolValue();
+    }).select(function () {
+        populateHiddenSchoolValue();
+    });
+
     ChosenSchoolFilter = $("#schoolSelector").next('.chosen-container').find('.chosen-search-input');
     ChosenCollegeFilter = $("#collegeSelector").next('.chosen-container').find('.chosen-search-input');
 
@@ -79,25 +101,14 @@ $(document).ready(function () {
         }
     });
 
-    $("#cantFindHS").on("change", function () {
-        if ($(this).is(":checked")) {
-            $("#schoolSelector_chosen").hide();
-            $("[id$=HSAltInput]").show();
-        } else {
-            $("[id$=HSAltInput]").val('').hide();
-            $("#schoolSelector_chosen").show();
-        }
-    });
+    if ($("[id$=HSAltInput]").val()) {
+        $("#cantFindHS").click();
+    }
+    if ($("[id$=CollegeAltInput]").val()) {
+        $("#cantFindCollege").click();
+    }
 
-    $("#cantFindCollege").on("change", function () {
-        if ($(this).is(":checked")) {
-            $("#collegeSelector_chosen").hide();
-            $("[id$=CollegeAltInput]").show();
-        } else {
-            $("[id$=CollegeAltInput]").val('').hide();
-            $("#collegeSelector_chosen").show();
-        }
-    });
+
 });
 
 function dynamicValidation() {
@@ -148,6 +159,7 @@ function getSchoolOptions(filter, type) {
 
 function populateschSel(data, selector, keyAsText) {
     selector.find("option").remove();
+    selector.append($('<option>').text('Select a school from results...').attr('value', ''));
     $.each(data, function (key, value) {
         selector.append($('<option>').text(value).attr('value', key));
     });
@@ -174,20 +186,26 @@ function checkForm() {
         }
     });
     // require school be filled in.
-    if ($("#collegeAsk").length > 0) {
-        if (!$("[id$=college]").val()) {
-            // alert( $("[id$=college]").val() );
+    if ($("[id$=collegeAsk]").length > 0) {
+        if (!$("[id$=college]").val() && !$("[id$=CollegeAltInput]").val()) {
             error_count++;
-            $("#collegeSelector").addClass("validationError");
+            if ($("[id$=CollegeAltInput]").val()) {
+                $("#collegeSelector").addClass("validationError");
+            } else {
+                $("[id$=CollegeAltInput]").addClass("validationError");
+            }
             $('label[for="collegeSelector"]').addClass("validationError");
         }
     }
 
-    if ($("#hsAsk").length > 0) {
-        if (!$("[id$=school]").val()) {
-            //  alert( $("[id$=school]").val() );
+    if ($("[id$=hsAsk]").length > 0) {
+        if (!$("[id$=school]").val() && !$("[id$=HSAltInput]").val()) {
             error_count++;
-            $("#schoolSelector").addClass("validationError");
+            if ($("[id$=HSAltInput]").val()) {
+                $("#schoolSelector").addClass("validationError");
+            } else {
+                $("[id$=HSAltInput]").addClass("validationError");
+            }
             $('label[for="schoolSelector"]').addClass("validationError");
         }
     }
@@ -204,6 +222,13 @@ function validationErrorAction() {
     $(".validationError").on("change", function () {
         // alert();
         $('label[for="' + $(this).attr("id") + '"]').removeClass("validationError");
+        $('label[for="' + $(this).attr("id") + '"]').removeClass("validationError");
+        if ($(this).hasClass("HSAltInput")) {
+            $('label[for="schoolSelector"]').removeClass("validationError");
+        }
+        if ($(this).hasClass("CollegeAltInput")) {
+            $('label[for="collegeSelector"]').removeClass("validationError");
+        }
         $(this).removeClass("validationError");
     });
 

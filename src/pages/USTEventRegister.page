@@ -21,7 +21,7 @@
             <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!IF(instanceInfo.Current_Available_Capacity__c > 0, true, false)}">
                 <!-- Function to set mailing country -->
                 <apex:actionFunction name="setParentSetting" immediate="true" onComplete="dynamicValidation();fadein();" reRender="parentAskSection">
-                    <apex:param name="parentType" value="" assignTo="{!parentSetting}"></apex:param>
+                    <apex:param name="parentType" value="" assignTo="{!newEvtReg.Registrant_Parent_Status__c}"></apex:param>
                 </apex:actionFunction>
 
                 <div class="row">
@@ -42,17 +42,15 @@
 
                     <div class="column small-12 medium-12 large-12">
                         <apex:outputLabel for="iamthe" styleClass="required">I am:</apex:outputLabel>
-                        <apex:selectList multiSelect="false" value="{!parentSetting}" size="1" id="iamthe" styleClass="required requiredText" required="true" onchange="setParentSetting(this.value);">
-                            <apex:selectOption itemValue="" itemLabel="Select"/>
-                            <apex:selectOption itemValue="student" itemLabel="The student"/>
-                            <apex:selectOption itemValue="parent" itemLabel="A student's parent/guardian"/>
-                            <apex:selectOption itemValue="other" itemLabel="Other"/>
+                        <apex:selectList multiSelect="false" value="{!newEvtReg.Registrant_Parent_Status__c}" size="1" id="iamthe" styleClass="required requiredText" required="true" onchange="setParentSetting(this.value);">
+                            <apex:selectOptions value="{!parentStatus}"/>
                         </apex:selectList>
                     </div>
 
-                    <apex:outputPanel layout="none" styleClass="row" rendered="{!IF(parentSetting == 'student' || parentSetting == '', false, true)}">
+                    <apex:outputPanel layout="none" styleClass="row" rendered="{!IF(newEvtReg.Registrant_Parent_Status__c == 'The student' || newEvtReg.Registrant_Parent_Status__c == '', false, true)}">
+
                         <div class="column small-12 medium-12 large-12">
-                            <h3>{!IF(parentSetting=='other', 'Your', 'Parent')} Information</h3>
+                            <h3>{!IF(newEvtReg.Registrant_Parent_Status__c=='Other', 'Your', 'Parent')} Information</h3>
                         </div>
                         <div class="columns small-12 medium-6 large-6">
                             <apex:outputLabel value="First Name" for="parentFirstName" styleClass="required"/>
@@ -190,14 +188,14 @@
                             <option value=""></option>
                             <option disabled="true">Searching...</option>
                         </select>
-                        <apex:inputText value="{!newEvtReg.Registrant_High_School_Not_Found__c}" id="HSAltInput" style="display:none;" maxLength="255" onKeyPress="return isNumberKey(event)"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_High_School_Not_Found__c}" id="HSAltInput" style="display:none;" maxLength="255" onKeyPress="return isNumberKey(event)" styleClass="HSAltInput"/>
                         <label><input type="checkbox" id="cantFindHS"/> I can't find my High School</label>
                         <apex:inputHidden value="{!newEvtReg.Registrant_High_School__c}" id="school"/>
                         <apex:inputHidden value="{!newEvtReg.Registrant_High_School_Code__c}" id="schoolCode"/>
                     </div>
                     <div class="column small-12 large-4 medium-4">
                         <apex:outputLabel value="Graduation Year" for="hsGradYear" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_High_School_Grad_Year__c}" id="hsGradYear" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_High_School_Grad_Year__c != null),true,false)}" styleClass="validYear" required="true"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_High_School_Grad_Year__c}" id="hsGradYear" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_High_School_Grad_Year__c != null),true,false)}" styleClass="validYear required" required="true"></apex:inputText>
                     </div>
                 </apex:outputPanel>
 
@@ -213,12 +211,12 @@
                         <p>Please indicate the last college you attended and the last year you attended that college.</p>
                     </div>
                     <div class="column small-12 large-8 medium-8">
-                        <label for="schoolSelector" class="required">School recently attended</label>
+                        <label for="collegeSelector" class="required">School recently attended</label>
                         <select data-placeholder="Begin typing your school name" class="chosen-select-no-results schoolSelector" tabindex="10" id="collegeSelector">
                             <option value=""></option>
                             <option disabled="true">Searching...</option>
                         </select>
-                        <apex:inputText value="{!newEvtReg.Registrant_College_Not_Found__c}" id="CollegeAltInput" style="display:none;" maxLength="255" onKeyPress="return isNumberKey(event)"/>
+                        <apex:inputText value="{!newEvtReg.Registrant_College_Not_Found__c}" id="CollegeAltInput" style="display:none;" maxLength="255" onKeyPress="return isNumberKey(event)" styleClass="CollegeAltInput"/>
                         <label><input type="checkbox" id="cantFindCollege"/> I can't find my School</label>
                         <apex:inputHidden value="{!newEvtReg.Registrant_College__c}" id="college"/>
                         <apex:inputHidden value="{!newEvtReg.Registrant_College_Code__c}" id="collegeCode"/>
