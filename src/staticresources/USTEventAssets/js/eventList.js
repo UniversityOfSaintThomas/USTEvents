@@ -3,29 +3,68 @@ var eventsObj, dMonth, dYear;
 var overlay = '<div class="waiting-overlay"></div>';
 //parse event cookie
 var USTSettings = JSON.parse(readCookie('USTEvent'));
+var fullCalType = 'month';
+
+$(window).on('load resize', function () {
+    getFullCalType();
+});
+
+
+function getFullCalType() {
+    var curWidth = (window.innerWidth > 0) ? window.innerWidth : screen.width;
+    if (curWidth >= 900) {
+        fullCalType = 'month';
+    } else {
+        fullCalType = 'listMonth';
+    }
+    $("#fullCalendarView").fullCalendar('changeView', fullCalType);
+}
+
 
 $(document).ready(function () {
-
+    getFullCalType();
+    $(document).tooltip({
+        content: function () {
+            return $(this).prop('title');
+        }
+    });
     $("#fullCalendarView").fullCalendar({
-        header: {
-            left: 'prev,next',
-            center: 'title'
-        },
+        defaultView: fullCalType,
         height: 'auto',
         events: eventsObj,
         viewRender: function (event, element) {
             loadJSONEvents();
             fullCalButtonEvts();
         },
-        eventRender: function (event, element) {
-            var evtTmplt = '<div class="ust-title"><h4>';
-            if (!event.eventClosed) {
-                evtTmplt += '<a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" onclick="return setInstanceCookie(\' + event.ID + \');">' + event.title + '</a></h4></div>';
-            } else {
-                evtTmplt += '<a href="' + event.eventUrl + '" >' + event.title + ' <em>(closed)</em></a></h4></div>';
+        eventRender: function (event, $el) {
+            var evtTmplt = '';
+            var eventClass = "ustEventItem";
+            if (event.eventClosed) {
+                eventClass += " ustEventItemClosed";
             }
-
-            element.find('.fc-title').closest('.fc-content').html(evtTmplt);
+            if (fullCalType == 'month') {
+                evtTmplt = '<div class="' + eventClass + ' ustMonthView">';
+                if (!event.eventClosed) {
+                    evtTmplt += '<p><a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" onclick="return setInstanceCookie(\' + event.ID + \');" title="' + event.description + '">' + event.title + '</a></p>';
+                } else {
+                    evtTmplt += '<p><a href="' + event.eventUrl + '" title="<em>Event Closed</em><br/>' + event.description + '"><em>' + event.title + '</em></a></p>';
+                }
+                evtTmplt += '</div>';
+                $el.find('.fc-title').closest('.fc-content').html(evtTmplt);
+            } else {
+                evtTmplt = '<div class="' + eventClass + ' ustListView">';
+                if (!event.eventClosed) {
+                    evtTmplt += '<p><a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" onclick="return setInstanceCookie(\' + event.ID + \');" class="USTEventTitle"><strong>' + event.title + '</strong></a></p>';
+                } else {
+                    evtTmplt += '<p class="USTEventTitle"><strong>' + event.title + '</strong> <em> - Event closed</em></p>';
+                }
+                evtTmplt += '<p>' + event.description + '</p>';
+                if (!event.eventClosed) {
+                    evtTmplt += '<p><a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" onclick="return setInstanceCookie(' + event.ID + ');" class="button">Register</a></p>';
+                }
+                $el.find('.fc-list-item-title').html(evtTmplt);
+                $el.find('.fc-list-item-time, .fc-list-item-marker').remove();
+            }
         }
     });
 
@@ -40,8 +79,10 @@ $(document).ready(function () {
         }
     });
 
+
     //initial load of dropdown audience type
     loadAudienceDD();
+
 
 });
 

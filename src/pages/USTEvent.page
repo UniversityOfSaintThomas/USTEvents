@@ -44,7 +44,6 @@
                             </select>
                         </div>
                         <div id="eventCalWrap">
-                            <p>Pick a date:</p>
                             <div id="datepickerOverlay">
                                 <div id="fullCalendarView">
                                 </div>
