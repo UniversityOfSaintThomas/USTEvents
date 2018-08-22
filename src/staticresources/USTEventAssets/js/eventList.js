@@ -8,9 +8,8 @@ $(document).ready(function () {
 
     $("#fullCalendarView").fullCalendar({
         header: {
-            left: 'prev,next today',
-            center: 'title',
-            right: 'month,basicWeek,basicDay'
+            left: 'prev,next',
+            center: 'title'
         },
         height: 'auto',
         events: eventsObj,
@@ -19,31 +18,14 @@ $(document).ready(function () {
             fullCalButtonEvts();
         },
         eventRender: function (event, element) {
-            var evtTmplt = '<div class="ust-title"><h4>' + event.title + '</h4></div>';
-            evtTmplt += '<div class="ust-desc">';
-            if (event.description) {
-                evtTmplt += "<p>" + event.description + "</p>";
+            var evtTmplt = '<div class="ust-title"><h4>';
+            if (!event.eventClosed) {
+                evtTmplt += '<a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" onclick="return setInstanceCookie(\' + event.ID + \');">' + event.title + '</a></h4></div>';
+            } else {
+                evtTmplt += '<a href="' + event.eventUrl + '" >' + event.title + ' <em>(closed)</em></a></h4></div>';
             }
-            if (event.eventUrl) {
-                if (!event.eventClosed) {
-                    evtTmplt += '<p><a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" class="button" onclick="return setInstanceCookie(\'' + event.ID + '\');">Register</a></p>';
-                } else {
-                    evtTmplt += '<p><em>This event registration has closed. Thank you for your interest.</em></em></p>';
-                }
-            }
-            evtTmplt += '</div>';
+
             element.find('.fc-title').closest('.fc-content').html(evtTmplt);
-        },
-        dayClick: function (date, jsEvent, view) {
-            $("#fullCalendarView").fullCalendar('gotoDate', date);
-            $("#fullCalendarView").fullCalendar('changeView', 'basicDay');
-        },
-        eventClick: function (event, jsEvent, view) {
-            $("#fullCalendarView").fullCalendar('gotoDate', event.start);
-            $("#fullCalendarView").fullCalendar('changeView', 'basicDay');
-            if (event.eventClosed) {
-                alert('Event Closed!');
-            }
         }
     });
 
@@ -58,10 +40,8 @@ $(document).ready(function () {
         }
     });
 
-
     //initial load of dropdown audience type
     loadAudienceDD();
-
 
 });
 

@@ -38,7 +38,7 @@
                 <div class="row">
                     <div class="column small-12 medium-12 large-12">
                         <div id="#audienceDDwrap">
-                            <label for="audienceDD">I am a:</label>
+                            <label for="audienceDD">Select who you are to see events that are curated for you</label>
                             <select id="audienceDD" name="audienceDD" required="true" title="Select an audience that matches you.">
                                 <option value="" selected="selected" default="true">Select...</option>
                             </select>
