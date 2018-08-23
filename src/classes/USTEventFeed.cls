@@ -110,7 +110,12 @@ global with sharing class USTEventFeed {
             }
             eventItem evt = new eventItem();
             evt.ID = es.Id;
-            evt.title = es.Event__r.Event_Name__c;
+            if(es.Event__r.Event_Name__c != null) {
+                evt.title = es.Event__r.Event_Name__c;
+            } else {
+                evt.title = es.Event__r.Name;
+            }
+
             if (es.Instance_Title__c != null) {
                 evt.title += ' - ' + es.Instance_Title__c;
             }

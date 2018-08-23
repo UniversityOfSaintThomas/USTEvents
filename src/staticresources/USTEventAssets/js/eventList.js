@@ -38,27 +38,33 @@ $(document).ready(function () {
         },
         eventRender: function (event, $el) {
             var evtTmplt = '';
+            var evtDesc = '';
             var eventClass = "ustEventItem";
             if (event.eventClosed) {
                 eventClass += " ustEventItemClosed";
             }
+            if (event.description != null) {
+                evtDesc = event.description;
+            }
             if (fullCalType == 'month') {
-                evtTmplt = '<div class="' + eventClass + ' ustMonthView">';
+                evtTmplt = '<div class="' + eventClass + ' ustMonthView"><p>';
                 if (!event.eventClosed) {
-                    evtTmplt += '<p><a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" onclick="return setInstanceCookie(\' + event.ID + \');" title="' + event.description + '">' + event.title + '</a></p>';
+                    evtTmplt += '<a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" onclick="return setInstanceCookie(' + event.ID + ');" title="' + evtDesc + '">' + event.title + '</a>';
                 } else {
-                    evtTmplt += '<p><a href="' + event.eventUrl + '" title="<em>Event Closed</em><br/>' + event.description + '"><em>' + event.title + '</em></a></p>';
+                    evtTmplt += '<a href="' + event.eventUrl + '" title="<em>Event Closed</em><br/>' + evtDesc + '"><em>' + event.title + '</em></a>';
                 }
-                evtTmplt += '</div>';
+                evtTmplt += '</p></div>';
                 $el.find('.fc-title').closest('.fc-content').html(evtTmplt);
             } else {
                 evtTmplt = '<div class="' + eventClass + ' ustListView">';
                 if (!event.eventClosed) {
-                    evtTmplt += '<p><a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" onclick="return setInstanceCookie(\' + event.ID + \');" class="USTEventTitle"><strong>' + event.title + '</strong></a></p>';
+                    evtTmplt += '<p><a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" onclick="return setInstanceCookie(' + event.ID + ');" class="USTEventTitle"><strong>' + event.title + '</strong></a></p>';
                 } else {
                     evtTmplt += '<p class="USTEventTitle"><strong>' + event.title + '</strong> <em> - Event closed</em></p>';
                 }
-                evtTmplt += '<p>' + event.description + '</p>';
+                if (evtDesc) {
+                    evtTmplt += '<p>' + evtDesc + '</p>';
+                }
                 if (!event.eventClosed) {
                     evtTmplt += '<p><a href="' + event.eventUrl + '&audience=' + $("#audienceDD").val() + '" onclick="return setInstanceCookie(' + event.ID + ');" class="button">Register</a></p>';
                 }
