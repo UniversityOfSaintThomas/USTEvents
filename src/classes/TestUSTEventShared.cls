@@ -199,22 +199,13 @@ public with sharing class TestUSTEventShared {
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
         ApexPages.currentPage().getParameters().put('instanceID', '000000000000000');
         USTShared.getUSTEventInfo();
-        //dataPrepare();
-        //Test.startTest();
-        //String TestEncryptedCookie = USTShared.createEncryptedCookie('{"audience":"' + mainEvent.Audience__c + '","instanceID":"' + mainInstance.Id + '","evtRegId":"'+ma+'","evtId":"a330m0000001SOrAAM"}');
-    }
-
-
-//    WHERE Start_Date_Time__c >= :viewStart
-//    AND Event__R.Event_Status__c = 'Active'
-//    AND Active_Status__c = 'Active'
-//    AND Start_Date_Time__c <= :viewEnd
-//    AND (Current_Available_Capacity__c > 0 OR Capacity__c = null)
-//            AND Event__r.Audience__c INCLUDES(:audience)
+ }
 
     private static void createTestEvent() {
         audience = pickOneOnPicklist(UST_Event__c.Audience__c.getDescribe());
         template = pickOneOnPicklist(UST_Event__C.Template__c.getDescribe());
+        String hscoll = pickOneOnPicklist(UST_Event__C.College_High_School_Ask__c.getDescribe());
+        String askGen = pickOneOnPicklist(UST_Event__C.Ask_Gender__c.getDescribe());
         //Create event
         testEvent = new UST_Event__c(
                 Name = 'Test Event',
@@ -225,8 +216,8 @@ public with sharing class TestUSTEventShared {
                 Template__c = template,
                 Event_Home_Link_Title__c = 'testHome',
                 Event_Home_Link_URL__c = '/',
-                College_High_School_Ask__c = 'Auto Select on Audience',
-                Ask_Gender__c = 'Ask and require',
+                College_High_School_Ask__c = hscoll,
+                Ask_Gender__c = askGen,
                 Include_Time_frame_List__c = true,
                 Allow_Other_Attendees__c = true,
                 Max_Other_Attendees__c = 5,
@@ -320,13 +311,15 @@ public with sharing class TestUSTEventShared {
             testAppointments = new UST_Event_Appointments__c(
                     Event_Registration__c = testRegistration.Id,
                     Event_Appointment_Type__c = testAppointmentTypes.Id,
-                    Client_Created_Appointment__c = true
+                    Client_Created_Appointment__c = true,
+                    Appointment_Status__c = 'Registered'
             );
             insert testAppointments;
             testAppointments2 = new UST_Event_Appointments__c(
                     Event_Registration__c = testRegistration.Id,
                     Event_Appointment_Type__c = testAppointmentTypes2.Id,
-                    Client_Created_Appointment__c = true
+                    Client_Created_Appointment__c = true,
+                    Appointment_Status__c = 'Registered'
             );
             insert testAppointments2;
         }

@@ -196,7 +196,17 @@ public with sharing class USTEventRegisterController {
             newEvtContact.FirstName = newEvtReg.Registrant_First_Name__c;
             newEvtContact.LastName = newEvtReg.Registrant_Last_Name__c;
             if (emailContactTest.size() > 0) {
-                newEvtContact.Email = 'Event_Dup_' + newEvtReg.Registrant_Email__c;
+                //Check dup number until you find a free one
+                String dupMatch = '';
+                for (Integer x = 1; x <= 10; x++) {
+                    dupMatch = 'Event_Dup_' + String.valueOf(x) + '_';
+                    String dupMatchTest = dupMatch + newEvtReg.Registrant_Email__c;
+                    List<Contact> dupMatches = [SELECT Id FROM Contact WHERE Email = :dupMatchTest];
+                    if (dupMatches.size() <= 0) {
+                        break;
+                    }
+                }
+                newEvtContact.Email = dupMatch + newEvtReg.Registrant_Email__c;
             } else {
                 newEvtContact.Email = newEvtReg.Registrant_Email__c;
             }
@@ -215,7 +225,6 @@ public with sharing class USTEventRegisterController {
             } else if (!String.isBlank(newEvtReg.Registrant_College_Code__c)) {
                 newEvtContact.EnrollmentrxRx__High_School_Code__c = newEvtReg.Registrant_College_Code__c;
             }
-
 
 
             if (newEvtReg.Registrant_Receive_Texts__c = true) {
