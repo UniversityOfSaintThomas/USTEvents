@@ -49,13 +49,6 @@ public with sharing class TestUSTEventShared {
         registerCtrl = new USTEventRegisterController();
         registerCtrl.saveContactRegistration();
 
-        // THANKS EnrollmentRx for making this query max out the queries for this test. Now I can only get 91.72% coverage
-        //        createEventWithRegistration('none');
-        //        eventForCookie = '{"audience":"' + audience + '","instanceID":"' + testInstance.Id + '","evtRegId":"' + testRegistration.id + '","evtId":"' + testEvent.Id + '"}';
-        //        USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
-        //        registerCtrl = new USTEventRegisterController();
-        //        registerCtrl.saveContactRegistration();
-
         createEventWithRegistration('');
         eventForCookie = '{"audience":"' + audience + '","instanceID":"' + testInstance.Id + '","evtRegId":"COMING","evtId":"' + testEvent.Id + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
@@ -90,8 +83,8 @@ public with sharing class TestUSTEventShared {
         submitCtrl.previousPage();
         submitCtrl.submitRegistration();
 
-        delete testAppointments;
-        delete testAppointments2;
+//        delete testAppointments;
+      //  delete testAppointments2;
         update testRegistration;
         submitCtrl.submitRegistration();
     }
@@ -116,7 +109,7 @@ public with sharing class TestUSTEventShared {
         optionsCtrl.saveOptions();
 
         //run constructor again to simulate page load after save
-        testRegistration.UG_Event_Appointments__r.add(testAppointments2);
+        testRegistration.UG_Event_Appointments__r.add(new UST_Event_Appointments__c( Client_Created_Appointment__c = true));
         optionsCtrl = new USTEventRegistrationOptionsController();
     }
 
@@ -202,10 +195,10 @@ public with sharing class TestUSTEventShared {
  }
 
     private static void createTestEvent() {
-        audience = pickOneOnPicklist(UST_Event__c.Audience__c.getDescribe());
-        template = pickOneOnPicklist(UST_Event__C.Template__c.getDescribe());
-        String hscoll = pickOneOnPicklist(UST_Event__C.College_High_School_Ask__c.getDescribe());
-        String askGen = pickOneOnPicklist(UST_Event__C.Ask_Gender__c.getDescribe());
+        audience = 'High School Senior';
+        template = 'CastorTemplate2017';
+        String hscoll = 'Auto Select on Audience';
+        String askGen = 'Ask and require';
         //Create event
         testEvent = new UST_Event__c(
                 Name = 'Test Event',
@@ -233,13 +226,12 @@ public with sharing class TestUSTEventShared {
         );
         insert testAppointmentTypes;
 
-        String apptCategory = pickOneOnPicklist(UST_Event_Appointment_Type__c.Appointment_Category__c.getDescribe());
         testAppointmentTypes2 = new UST_Event_Appointment_Type__c(
                 UST_Event__c = testEvent.Id,
                 Title__c = 'Test Appointment',
                 Appointment_Limits__c = '1',
                 Description__c = 'Test description',
-                Appointment_Category__c = apptCategory
+                Appointment_Category__c = 'Faculty Visit'
         );
         insert testAppointmentTypes2;
 
@@ -271,7 +263,8 @@ public with sharing class TestUSTEventShared {
                     Registrant_First_Name__c = student.firstName,
                     Registrant_Last_Name__c = student.lastname,
                     Registrant_Zip__c = student.mailingpostalcode,
-                    Registrant_High_School_Code__c = '000000'
+                    Registrant_High_School_Code__c = '000000',
+                    Status__c = 'Requested'
             );
         } else if (contactType == 'email') {
             testRegistration = new UST_Event_Registration__c(
@@ -282,7 +275,8 @@ public with sharing class TestUSTEventShared {
                     Registrant_Last_Name__c = 'NotaMatch',
                     Registrant_Zip__c = '00000',
                     Registrant_High_School_Code__c = '000000',
-                    Registrant_College_Code__c = '000000'
+                    Registrant_College_Code__c = '000000',
+                    Status__c = 'Requested'
             );
         } else if (contactType == 'none') {
             testRegistration = new UST_Event_Registration__c(
@@ -292,7 +286,8 @@ public with sharing class TestUSTEventShared {
                     Registrant_First_Name__c = 'None',
                     Registrant_Last_Name__c = 'Canmatch',
                     Registrant_Zip__c = '55413',
-                    Registrant_College_Code__c = '000000'
+                    Registrant_College_Code__c = '000000',
+                    Status__c = 'Requested'
             );
         } else {
             testRegistration = new UST_Event_Registration__c(
@@ -302,7 +297,8 @@ public with sharing class TestUSTEventShared {
                     Registrant_First_Name__c = student.firstname,
                     Registrant_Last_Name__c = student.lastname,
                     Registrant_Zip__c = student.mailingpostalcode,
-                    Registrant_College_Code__c = '000000'
+                    Registrant_College_Code__c = '000000',
+                    Status__c = 'Requested'
             );
         }
         insert testRegistration;
@@ -310,18 +306,17 @@ public with sharing class TestUSTEventShared {
         if (String.isBlank(contactType)) {
             testAppointments = new UST_Event_Appointments__c(
                     Event_Registration__c = testRegistration.Id,
-                    Event_Appointment_Type__c = testAppointmentTypes.Id,
                     Client_Created_Appointment__c = true,
                     Appointment_Status__c = 'Registered'
+
             );
-            insert testAppointments;
+            upsert testAppointments;
             testAppointments2 = new UST_Event_Appointments__c(
                     Event_Registration__c = testRegistration.Id,
-                    Event_Appointment_Type__c = testAppointmentTypes2.Id,
                     Client_Created_Appointment__c = true,
                     Appointment_Status__c = 'Registered'
             );
-            insert testAppointments2;
+            upsert testAppointments2;
         }
 
 
@@ -365,11 +360,4 @@ public with sharing class TestUSTEventShared {
         insert testUser;
     }
 
-    private static String pickOneOnPicklist(Schema.DescribeFieldResult fieldResult) {
-        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
-        if (ple.size() > 0) {
-            return ple[0].getValue();
-        }
-        return '';
-    }
 }
