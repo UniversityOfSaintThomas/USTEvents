@@ -13,7 +13,7 @@ global with sharing class USTEventFeed {
         public String title { get; set; }
         public String instanceDesc { get; set; }
         public String description { get; set; }
-        public String longDesc {get;set;}
+        public String longDesc { get; set; }
         public Datetime endDate { get; set; }
         public DateTime start { get; set; }
         public String eventUrl { get; set; }
@@ -27,17 +27,27 @@ global with sharing class USTEventFeed {
 
         RestResponse res = RestContext.response;
         res.addHeader('Content-Type', 'application/json');
+        String callback = RestContext.request.params.get('callback');
+        String serializedJSON = '';
+
+        if (String.isBlank(callback)) {
+            callback = '';
+        }
 
         if (feedType == 'audienceDD') {
-            res.responseBody = Blob.valueOf(JSON.serialize(getAudienceDD(UST_Event__c.Audience__c.getDescribe())));
+            serializedJSON = JSON.serialize(getAudienceDD(UST_Event__c.Audience__c.getDescribe()));
         } else if (feedType == 'sexDD') {
-            res.responseBody = Blob.valueOf(JSON.serialize(getAudienceDD(Contact.EnrollmentrxRx__Gender__c.getDescribe())));
+            serializedJSON = JSON.serialize(getAudienceDD(Contact.EnrollmentrxRx__Gender__c.getDescribe()));
         } else if (feedType == 'eventList') {
-            String evtJSONString = JSON.serialize(getEventList());
-            evtJSONString = evtJSONString.replace('"endDate":', '"end":');
-            res.responseBody = Blob.valueOf(evtJSONString);
+            serializedJSON = JSON.serialize(getEventList());
+            serializedJSON = serializedJSON.replace('"endDate":', '"end":');
         }
+        if (!String.isBlank(callback)) {
+            serializedJSON = callback + '(' + serializedJSON + ')';
+        }
+        res.responseBody = Blob.valueOf(serializedJSON);
     }
+
 
     private static List<eventItem> getEventList() {
         List<eventItem> EventList = new List<eventItem>();
@@ -49,11 +59,11 @@ global with sharing class USTEventFeed {
         String audience5 = req.params.get('audience5');
         String audience6 = req.params.get('audience6');
         String audience7 = req.params.get('audience7');
-        Boolean showLongDescription =  false;
+        Boolean showLongDescription = false;
         String incomingShowLongDesc = req.params.get('longdesc');
         if (incomingShowLongDesc != null) {
             if (incomingShowLongDesc.toLowerCase() == '1' || incomingShowLongDesc.toLowerCase() == 'true') {
-                showLongDescription =  true;
+                showLongDescription = true;
             }
         }
         List<UST_Event_Instance__c> EventInstance = new List<UST_Event_Instance__c>();
@@ -110,7 +120,7 @@ global with sharing class USTEventFeed {
             }
             eventItem evt = new eventItem();
             evt.ID = es.Id;
-            if(es.Event__r.Event_Name__c != null) {
+            if (es.Event__r.Event_Name__c != null) {
                 evt.title = es.Event__r.Event_Name__c;
             } else {
                 evt.title = es.Event__r.Name;

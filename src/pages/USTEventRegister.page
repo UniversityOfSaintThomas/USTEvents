@@ -15,15 +15,29 @@
         <apex:define name="body">
             <div class="row">
                 <div class="columns errorMessages">
-                    <apex:messages/>
+                    <apex:messages />
                 </div>
             </div>
-            <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!IF(instanceInfo.Current_Available_Capacity__c > 0, true, false)}">
+            <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!IF(evtInstance.Current_Available_Capacity__c > 0, true, false)}">
                 <!-- Function to set mailing country -->
                 <apex:actionFunction name="setParentSetting" immediate="true" onComplete="dynamicValidation();fadein();" reRender="parentAskSection">
                     <apex:param name="parentType" value="" assignTo="{!newEvtReg.Registrant_Parent_Status__c}"></apex:param>
                 </apex:actionFunction>
-
+                <div class="row">
+                    <div class="columns eventCrumb">
+                        <span class="eventName">{!evtInstance.Event__r.Event_Name__c}</span>
+                        <span class="bc-spacer"><span>»</span></span>
+                        <apex:outputPanel layout="none" rendered="{!!ISBLANK(evtInstance.Instance_Title__c)}">
+                            <span class="eventInstance">{!evtInstance.Instance_Title__c}</span>
+                            <span class="bc-spacer"><span>»</span></span>
+                        </apex:outputPanel>
+                        <span class="eventDate">
+                            <apex:outputText value=" {0,date,MMMM d, y}">
+                                <apex:param value="{!evtInstance.Start_Date_Time__c}"/>
+                            </apex:outputText>
+                        </span>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="columns">
                         <h2>
@@ -38,7 +52,7 @@
                         </p>
                     </div>
                 </div>
-                <apex:outputPanel layout="block" styleClass="row" id="parentAskSection" rendered="{!eventPage.Ask_If_Parent__c}">
+                <apex:outputPanel layout="block" styleClass="row" id="parentAskSection" rendered="{!eventPage.Ask_If_Parent__c && !contactSet}">
 
                     <div class="column small-12 medium-12 large-12">
                         <apex:outputLabel for="iamthe" styleClass="required">I am:</apex:outputLabel>
@@ -80,7 +94,7 @@
                         <h3>{!If(eventPage.Ask_If_Parent__c, 'Student', 'Registrant')} Information</h3>
                         <apex:outputText escape="false" value="<p>{!test}</p>"></apex:outputText>
                         <apex:outputText rendered="{!If(EvtUserType != 'Guest',true,false)}" escape="false">
-                            <p>You are currently logged into a St. Thomas Portal and therefore your portal information is pre-filled below and cannot be changed.
+                            <p class="errorMessage">You are currently logged into a St. Thomas Portal and therefore your portal information is pre-filled below and cannot be changed.
                             </p>
                         </apex:outputText>
                     </div>
@@ -88,17 +102,17 @@
                 <div class="row">
                     <div class="column small-12 medium-6 large-6">
                         <apex:outputLabel value="First Name" for="firstName" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_First_Name__c}" id="firstName" required="true" styleClass="required requiredText" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_First_Name__c}" id="firstName" required="true" styleClass="{!IF(!contactSet,'required requiredText', '')}" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
                     </div>
                     <div class="column small-12 medium-6 large-6">
                         <apex:outputLabel value="Last Name" for="lastName" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_Last_Name__c}" id="lastName" required="true" styleClass="required requiredText" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_Last_Name__c}" id="lastName" required="true" styleClass="{!IF(!contactSet,'required requiredText', '')}" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
                     </div>
                 </div>
                 <div class="row">
                     <div class="columns small-12 medium-6 large-6">
                         <apex:outputLabel value="Email" for="email" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_Email__c}" id="email" required="true" styleClass="required requiredText validEmail" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_Email__c}" id="email" required="true" styleClass="{!IF(!contactSet,'required requiredText validEmail', '')}" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
                     </div>
                     <apex:outputPanel styleClass="columns small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Ask_Gender__c != 'Do not ask', true, false)}">
                         <apex:outputLabel value="Sex" for="sex" styleClass="{!IF(eventPage.Ask_Gender__c == 'Ask and require', 'required', '')}"/>
@@ -108,13 +122,13 @@
                     </apex:outputPanel>
                     <apex:outputPanel styleClass="columns small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Include_Time_frame_List__c, true,false)}">
                         <apex:outputLabel value="Preferred visit time" for="timeframe" styleClass="required"/>
-                        <apex:selectList size="1" value="{!newEvtReg.Preferred_Visit_Time__c}" id="timeframe" required="true" styleClass="required">
+                        <apex:selectList size="1" value="{!newEvtReg.Preferred_Visit_Time__c}" id="timeframe" required="true" styleClass="{!IF(!contactSet,'required requiredText', '')}">
                             <apex:selectOptions value="{!timeFrame}"></apex:selectOptions>
                         </apex:selectList>
                     </apex:outputPanel>
                     <apex:outputPanel styleClass="columns small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Allow_Other_Attendees__c, true,false)}">
                         <apex:outputLabel value="Additional guests" for="guests"/>
-                        <apex:selectList size="1" value="{!newEvtReg.Number_of_Guests__c}" id="guests" styleClass="required">
+                        <apex:selectList size="1" value="{!newEvtReg.Number_of_Guests__c}" id="guests" styleClass="{!IF(!contactSet,'required requiredText', '')}">
                             <apex:selectOptions value="{!guestAmt}"></apex:selectOptions>
                         </apex:selectList>
                     </apex:outputPanel>
@@ -127,27 +141,27 @@
                 <div class="row">
                     <div class="columns">
                         <apex:outputLabel value="Street" for="street" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_Street_1__c}" id="street" required="true" styleClass="required requiredText" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Street_1__c != null),true,false)}" maxLength="95" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_Street_1__c}" id="street" required="true" styleClass="{!IF(!contactSet,'required requiredText', '')}" disabled="{!contactSet}" maxLength="95" onKeyPress="return isNumberKey(event)"></apex:inputText>
                     </div>
                 </div>
                 <div class="row">
                     <div class="columns">
                         <apex:outputLabel value="Street Line 2 (Optional)" for="street2"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_Street_2__c}" id="street2" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Street_2__c != null),true,false)}" maxLength="75" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_Street_2__c}" id="street2" disabled="{!contactSet}" maxLength="75" onKeyPress="return isNumberKey(event)"></apex:inputText>
                     </div>
                 </div>
                 <div class="row">
                     <div class="column small-12 medium-4 large-4">
                         <apex:outputLabel value="Zip" for="zip" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_Zip__c}" id="zip" required="true" styleClass="required requiredText" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Zip__c != null),true,false)}" maxLength="10" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_Zip__c}" id="zip" required="true" styleClass="{!IF(!contactSet,'required requiredText', '')}" disabled="{!contactSet}" maxLength="10" onKeyPress="return isNumberKey(event)"></apex:inputText>
                     </div>
                     <div class="column small-12 medium-4 large-4">
                         <apex:outputLabel value="City" for="city" styleClass="required"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_City__c}" id="city" required="true" styleClass="required requiredText" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_City__c != null),true,false)}" maxLength="100" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_City__c}" id="city" required="true" styleClass="{!IF(!contactSet,'required requiredText', '')}" disabled="{!contactSet}" maxLength="100" onKeyPress="return isNumberKey(event)"></apex:inputText>
                     </div>
                     <div class="column small-12 medium-4 large-4">
                         <apex:outputLabel value="State" for="state" styleClass="required"/>
-                        <apex:selectList value="{!newEvtReg.Registrant_State__c}" size="1" id="state" multiselect="false" required="true" styleClass="required" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_State__c != null),true,false)}">
+                        <apex:selectList value="{!newEvtReg.Registrant_State__c}" size="1" id="state" multiselect="false" required="true" styleClass="{!IF(!contactSet,'required requiredText', '')}" disabled="{!contactSet}">
                             <apex:selectOptions value="{!stateDD}"/>
                         </apex:selectList>
                     </div>
@@ -160,16 +174,16 @@
                 <div class="row">
                     <div class="column small-12 large-6 medium-6">
                         <apex:outputLabel value="Home Phone" for="phone"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_Phone__c}" id="phone" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Phone__c != null),true,false)}"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_Phone__c}" id="phone" disabled="{!contactSet}"></apex:inputText>
                     </div>
                     <div class="column small-12 large-6 medium-6">
                         <apex:outputLabel value="Mobile Phone" for="mobile"/>
-                        <apex:inputText value="{!newEvtReg.Registrant_Mobile_Phone__c}" id="mobile" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Mobile_Phone__c != null),true,false)}"></apex:inputText>
+                        <apex:inputText value="{!newEvtReg.Registrant_Mobile_Phone__c}" id="mobile" disabled="{!contactSet}"></apex:inputText>
                     </div>
                 </div>
                 <div class="row">
                     <div class="columns">
-                        <apex:inputCheckbox value="{!newEvtReg.Registrant_Receive_Texts__c}" id="AcceptTextMessage" disabled="{!If((EvtUserType != 'Guest' && newEvtReg.Registrant_Receive_Texts__c != null),true,false)}"/>
+                        <apex:inputCheckbox value="{!newEvtReg.Registrant_Receive_Texts__c}" id="AcceptTextMessage" disabled="{!contactSet}"/>
                         <apex:outputLabel value="I am willing to receive text messages about this event" for="AcceptTextMessage"/>
                     </div>
                 </div>
@@ -242,7 +256,7 @@
                     </div>
                 </div>
             </apex:form>
-            <apex:outputPanel rendered="{!IF(instanceInfo.Current_Available_Capacity__c <= 0, true, false)}" styleClass="row">
+            <apex:outputPanel rendered="{!IF(evtInstance.Current_Available_Capacity__c <= 0, true, false)}" styleClass="row">
                 <div class="column">
                     <h2>
                         <apex:outputText value="{!eventPage.Event_Name__c}"></apex:outputText>

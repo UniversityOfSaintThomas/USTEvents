@@ -39,7 +39,7 @@ public with sharing class USTEventParkingPassController {
                 warning = '<p>Sorry, this parking permit has expired or invalid. (' + regId + ')</p>';
             }
 
-
+            
         } else {
             warning = '<p>Sorry, We could not find your parking permit ID. (' + regId + ')</p>';
         }

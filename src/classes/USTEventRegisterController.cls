@@ -4,7 +4,7 @@
 
 public with sharing class USTEventRegisterController {
     public String test { get; set; }
-    public UST_Event_Instance__c instanceInfo { get; set; }
+    public UST_Event_Instance__c evtInstance { get; set; }
     public UST_Event__c eventPage { get; set; }
     public List<UST_Event_Appointment_Type__c> apptTypes { get; set; }
     public String ContactId { get; set; }
@@ -29,7 +29,7 @@ public with sharing class USTEventRegisterController {
 
         //Get Instance information
         if (!String.isBlank(evtInfo.instanceID)) {
-            instanceInfo = [
+            evtInstance = [
                     SELECT Id, Name, Event__r.Name, Event__r.Event_Name__c, Event__r.Id, Instance_Title__c,
                             Event__r.Event_description__c, Event__r.Audience__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c
                     FROM UST_Event_Instance__c
@@ -38,8 +38,8 @@ public with sharing class USTEventRegisterController {
             ][0];
 
             //define Event ID from instanceInfo data
-            evtInfo.evtId = instanceInfo.Event__r.Id;
-            instanceName = instanceInfo.Name;
+            evtInfo.evtId = evtInstance.Event__r.Id;
+            instanceName = evtInstance.Name;
         }
 
         //Get Event Info off of instance master detail id
@@ -118,6 +118,10 @@ public with sharing class USTEventRegisterController {
                         FROM UST_Event_Registration__c
                         WHERE id = :evtInfo.evtRegId
                 ][0];
+            }
+
+            if(EvtUserType != 'Guest') {
+                contactSet = true;
             }
         }
     }
@@ -241,7 +245,7 @@ public with sharing class USTEventRegisterController {
             //Create new contact
         }
         newEvtReg.Status__c = 'Started';
-        newEvtReg.Date__c = Date.valueof(instanceInfo.Start_Date_Time__c);
+        newEvtReg.Date__c = Date.valueof(evtInstance.Start_Date_Time__c);
         //Create registration if event Registration does not exist
         if (!String.isBlank(contactId)) {
             if (String.isBlank(evtInfo.evtRegId) || evtInfo.evtRegId == 'COMING') {
@@ -274,7 +278,11 @@ public with sharing class USTEventRegisterController {
         }
 
         if (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
-            List<UST_Event_Appointment_Type__c> apptTypes = [SELECT Id From UST_Event_Appointment_Type__c WHERE UST_Event__c = :evtInfo.evtId];
+            List<UST_Event_Appointment_Type__c> apptTypes = [
+                    SELECT Id From UST_Event_Appointment_Type__c
+                    WHERE UST_Event__c = :evtInfo.evtId
+                    AND (Restrict_To_Instance_Title__r.Instance_Title__c = :evtInstance.Instance_Title__c OR Restrict_To_Instance_Title__r.Instance_Title__c = null)
+            ];
             if (apptTypes.size() == 0) {
                 //If no options skip that step
                 optionPage = Page.USTEventSubmit;

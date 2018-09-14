@@ -210,9 +210,13 @@ function checkForm() {
         }
     }
 
-
     if (error_count > 0) {
         validationErrorAction();
+        //Scroll to first error
+        var firstInvalid = $(".validationError:first");
+        $([document.documentElement, document.body]).animate({
+            scrollTop: firstInvalid.offset().top - 10
+        }, 200);
         return false;
     }
     return true;

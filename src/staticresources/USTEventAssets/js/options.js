@@ -8,7 +8,9 @@ $(document).ready(function () {
         if (requiredSel.length > 0) {
             if (requiredSel.val() == '') {
                 error = true;
-                requiredSel.addClass('aptError').on('select, click, change', function() {$(this).removeClass("aptError");});
+                requiredSel.addClass('aptError').on('select, click, change', function () {
+                    $(this).removeClass("aptError");
+                });
             }
         }
         if (!error) {
@@ -39,44 +41,59 @@ $(document).ready(function () {
             var limit = Appt.data("limit");
             limit--;
             //build appointment list
-            var apptcat, apptid, appttype, appttext, appttitle;
+            var apptcat = '', apptid = '', appttype = '', appttitle = '', appChosenState = '', appSort = '', appDesc = '', appInput = '';
             apptid = Appt.attr('id');
             if (Appt.data('apptcat')) {
                 apptcat = Appt.data('apptcat');
-            } else {
-                apptcat =  '';
             }
-            if ( Appt.find(".appointmentType").val()) {
+            if (Appt.find(".appointmentType").val()) {
                 appttype = Appt.find(".appointmentType").val();
-            } else {
-                appttype = ''
             }
-            appttext = '';
+            if (Appt.data('appchosenstate')) {
+                appChosenState = Appt.data('appchosenstate')
+            }
+            if (Appt.data('appsort')) {
+                appSort = Appt.data('appsort')
+            }
+            if (Appt.data('appdesc')) {
+                appDesc = Appt.data('appdesc')
+            }
+            if (Appt.data('appinput')) {
+                appInput = Appt.data('appinput')
+            }
             appttitle = Appt.data('appttitle');
 
             addAppt = $('<div/>', {
                 //'id' : 'appt-' + appid,
-                'data-apptid' : apptid,
-                'data-apptcat' : apptcat,
-                'data-appttype' : appttype,
-                'data-appttitle' : appttitle,
-                'data-appttext' : appttext,
-                'class' : 'appointmentChoosen'
+                'data-apptid': apptid,
+                'data-apptcat': apptcat,
+                'data-appttype': appttype,
+                'data-appttitle': appttitle,
+                'data-appchosenstate': appChosenState,
+                'data-appsort': appSort,
+                'data-appdesc': appDesc,
+                'data-appinput': appInput,
+                'class': 'appointmentChoosen'
             });
             addAppt.append('<p class="appointmentTitle">' + Appt.find(".appointmentTitle a").html() + '</p>');
             addAppt.find('i').remove();
             if (Appt.find(".appointmentType").length > 0) {
                 addAppt.append('<p class="appointmentDesc">' + Appt.find(".appointmentType").val() + '</p>');
             }
+            if (Appt.find(".appointmentCustomInput").length > 0) {
+                addAppt.append('<p class="appointmentDesc">' + Appt.find(".appointmentCustomInput").val() + '</p>');
+            }
             addAppt.append(
                 $('<a/>', {class: "appointmentRemove"})
                     .html('<i class="fa fa-times-circle" aria-hidden="true"></i><span> Remove</span></span>')
-                    .on("click", function() {removeAppt($(this)); })
+                    .on("click", function () {
+                        removeAppt($(this));
+                    })
             );
 
             Appt.data("limit", limit);
             if (limit <= 0) {
-                Appt.delay(300).fadeOut("fast", function() {
+                Appt.delay(300).fadeOut("fast", function () {
                     $("#choosen").append(addAppt);
                 });
             } else {
@@ -100,7 +117,6 @@ $(document).ready(function () {
 });
 
 
-
 function removeAppt(rmvBtn) {
     var aptChoosen = rmvBtn.closest(".appointmentChoosen");
     var appChooser = $('#' + aptChoosen.data('apptid'));
@@ -111,13 +127,17 @@ function removeAppt(rmvBtn) {
 
 function populateApptJSON() {
     jsonOut = [];
-    $("#choosen div.appointmentChoosen").each( function() {
+    $("#choosen div.appointmentChoosen").each(function () {
         appt = {};
         appt['apptId'] = $(this).data('apptid');
         appt['apptCatagory'] = $(this).data('apptcat');
         appt['apptType'] = $(this).data('appttype');
         appt['apptText'] = $(this).data('appttext');
         appt['apptTitle'] = $(this).data('appttitle');
+        appt['appChosenState'] = $(this).data('appchosenstate');
+        appt['appSort'] = $(this).data('appsort');
+        appt['appInput'] = $(this).data('appinput');
+        appt['appDesc'] = $(this).find('.appointmentDesc').html();
         jsonOut.push(appt);
     });
     $('[id$=outgoingApptJSon]').val(JSON.stringify(jsonOut));

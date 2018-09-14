@@ -8,6 +8,7 @@ public with sharing class USTEventRegistrationOptionsController {
     public USTEventShared.USTEventInfo evtInfo { get; set; }
     public List<UST_Event_Appointment_Type__c> appts { get; set; }
     public List<UST_Event_Appointments__c> chosenAppts { get; set; }
+    public UST_Event_Instance__c evtInstance { get; set; }
     public String apptFormatted { get; set; }
     public String chosenFormatted { get; set; }
     public String incomingApptJSon { get; set; }
@@ -18,13 +19,16 @@ public with sharing class USTEventRegistrationOptionsController {
         String apptId;
         String apptCatagory;
         String apptType;
-        String apptText;
         String apptTitle;
+        String appChosenState;
+        String appDesc;
+        String appSort;
+        String appInput;
     }
 
     public USTEventRegistrationOptionsController() {
         test = '';
-        templateSelected =  USTShared.defaultTemplate;
+        templateSelected = USTShared.defaultTemplate;
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
         apptFormatted = '';
@@ -37,38 +41,64 @@ public with sharing class USTEventRegistrationOptionsController {
             templateSelected = eventPage.Template__c;
 
             if (!String.isBlank(evtinfo.evtRegId)) {
-                chosenAppts = [SELECT Id, Appointment_Category__c, Event_Appointment_Type__c, Appointment_Type__c, Appointment_Title__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :evtinfo.evtRegId AND Client_Created_Appointment__c = true];
-                for (UST_Event_appointments__c cappt : chosenAppts) {
+                evtInstance = [SELECT Instance_Title__c, Start_Date_Time__c FROM UST_Event_Instance__c WHERE Id = :evtinfo.instanceID LIMIT 1];
+                if (evtInstance != null) {
+                    chosenAppts = [
+                            SELECT Id, Appointment_Category__c, Event_Appointment_Type__c, Appointment_Type__c, Appointment_Title__c, Chosen_State__c, Description__c, Sort_Order__c,
+                                    Registrant_Input__c
+                            FROM UST_Event_Appointments__c
+                            WHERE Event_Registration__c = :evtinfo.evtRegId
+                            AND Client_Created_Appointment__c = true
+                    ];
+                    for (UST_Event_appointments__c cappt : chosenAppts) {
 
-                    //Keep track of appointment ids to not show in available appointments later
-                    if (!String.isBlank(cappt.Event_Appointment_Type__c)) {
-                        if (!apptCount.containsKey(cappt.Event_Appointment_Type__c)) {
-                            apptCount.put(cappt.Event_Appointment_Type__c, 0);
+                        //Keep track of appointment ids to not show in available appointments later
+                        if (!String.isBlank(cappt.Event_Appointment_Type__c)) {
+                            if (!apptCount.containsKey(cappt.Event_Appointment_Type__c)) {
+                                apptCount.put(cappt.Event_Appointment_Type__c, 0);
+                            }
+                            Integer increment = apptCount.get(cappt.Event_Appointment_Type__c) + 1;
+                            apptCount.put(cappt.Event_Appointment_Type__c, increment);
                         }
-                        Integer increment = apptCount.get(cappt.Event_Appointment_Type__c) + 1;
-                        apptCount.put(cappt.Event_Appointment_Type__c, increment);
-                    }
 
-                    //build chosen appointments for list
-                    chosenFormatted += '<div id="appt-' + cappt.Id + '"';
-                    chosenFormatted += ' data-apptid="' + cappt.Event_Appointment_Type__c + '"';
-                    chosenFormatted += ' data-apptcat="' + cappt.Appointment_Category__c + '"';
-                    chosenFormatted += ' data-appttype="' + cappt.Appointment_Type__c + '"';
-                    chosenFormatted += ' data-appttitle="' + cappt.Appointment_title__c + '"';
-                    chosenFormatted += ' data-appttext="" class="appointmentChoosen"';
-                    chosenFormatted += ' >';
-                    chosenFormatted += '<p class="appointmentTitle">' + cappt.Appointment_Title__c + '</p>';
-                    if (!String.isEmpty(cappt.Appointment_Type__c)) {
-                        chosenFormatted += '<p class="appointmentDesc">' + cappt.Appointment_Type__c + '</p>';
-                    }
-                    chosenFormatted += '<a href="javascript:;" onclick="removeAppt($(this))" class="appointmentRemove" title="Remove Appointment"><i class="fa fa-times-circle" aria-hidden="true"></i><span> Remove</span></span></a>';
-                    chosenFormatted += '</div>';
+                        //build chosen appointments for list
+                        chosenFormatted += '<div id="appt-' + cappt.Id + '"';
+                        chosenFormatted += ' data-apptid="' + cappt.Event_Appointment_Type__c + '"';
+                        chosenFormatted += ' data-apptcat="' + cappt.Appointment_Category__c + '"';
+                        chosenFormatted += ' data-appttype="' + cappt.Appointment_Type__c + '"';
+                        chosenFormatted += ' data-appttitle="' + cappt.Appointment_title__c + '"';
+                        chosenFormatted += ' data-appchosenstate="' + cappt.Chosen_State__c + '"';
+                        chosenFormatted += ' data-appsort="' + cappt.Sort_Order__c + '"';
+                        chosenFormatted += ' data-appreginput="' + cappt.Registrant_Input__c + '"';
+                        chosenFormatted += ' class="appointmentChoosen"';
+                        chosenFormatted += ' >';
+                        chosenFormatted += '<p class="appointmentTitle">' + cappt.Appointment_Title__c + '</p>';
+                        if (!String.isEmpty(cappt.Appointment_Type__c)) {
+                            chosenFormatted += '<p class="appointmentDesc">' + cappt.Appointment_Type__c + '</p>';
+                        } else if (!String.isBlank(cappt.Description__c)) {
+                            chosenFormatted += '<p class="appointmentDesc">' + cappt.Description__c + '</p>';
+                        }
+                        IF (cappt.Chosen_State__c != 'Added and Required') {
+                            chosenFormatted += '<a href="javascript:;" onclick="removeAppt($(this))" class="appointmentRemove" title="Remove Appointment"><i class="fa fa-times-circle" aria-hidden="true"></i><span> Remove</span></span></a>';
+                        }
 
+                        chosenFormatted += '</div>';
+
+                    }
                 }
             }
 
             //Build available appointments
-            appts = [SELECT Id, Name, Title__c, Description__c, Appointment_Type__c, Appointment_Category__c, Appointment_Limits__c FROM UST_Event_Appointment_Type__c WHERE UST_Event__c = :evtinfo.evtId];
+
+            appts = [
+                    SELECT Id, Name, Title__c, Description__c, Appointment_Type__c, Appointment_Category__c, Appointment_Limits__c, Chosen_State__c,
+                            Registrant_Input__c, Custom_Picklist__c, Sort_Order__c
+                    FROM UST_Event_Appointment_Type__c
+                    WHERE UST_Event__c = :evtinfo.evtId
+                    AND (Restrict_To_Instance_Title__r.Instance_Title__c = :evtInstance.Instance_Title__c OR Restrict_To_Instance_Title__r.Instance_Title__c = null)
+                    ORDER BY Sort_Order__c ASC NULLS LAST
+            ];
+
             for (UST_Event_Appointment_Type__c apt : appts) {
                 Integer apptLimit = 1;
                 if (!String.isBlank(apt.Appointment_Limits__c)) {
@@ -77,14 +107,21 @@ public with sharing class USTEventRegistrationOptionsController {
                 if (apptCount.containsKey(apt.Id)) {
                     apptLimit = apptLimit - (Integer.valueOf(apptCount.get(apt.Id)));
                 }
-                apptFormatted += '<div id="' + apt.Id + '" data-apptid="' + apt.Id + '" data-apptcat="' + apt.Appointment_Category__c + '" data-appttitle="' + apt.Title__c + '" ';
+                apptFormatted += '<div id="' + apt.Id + '"';
+                apptFormatted += ' data-apptid="' + apt.Id + '"';
+                apptFormatted += ' data-apptcat="' + apt.Appointment_Category__c + '"';
+                apptFormatted += ' data-appttype="' + apt.Appointment_Type__c + '"';
+                apptFormatted += ' data-appttitle="' + apt.Title__c + '"';
+                apptFormatted += ' data-appchosenstate="' + apt.Chosen_State__c + '"';
+                apptFormatted += ' data-appsort="' + apt.Sort_Order__c + '"';
+                apptFormatted += ' data-appinput="' + apt.Registrant_Input__c + '"';
                 apptFormatted += ' data-limit=' + String.valueOf(apptLimit) + ' ';
                 if (apptLimit <= 0) {
                     apptFormatted += ' style="display:none;" ';
                 } else {
                     apptFormatted += ' data-limit="1" ';
                 }
-                apptFormatted += 'class="appointment">';
+                apptFormatted += ' class="appointment">';
                 apptFormatted += '<p class="appointmentTitle"><a href="javascript:;" ><span>' + apt.Title__c + '</span><i class="fa fa-chevron-down" aria-hidden="true"></i></a></p>';
                 apptFormatted += '<div class="apptmentDetail">';
                 if (!String.isBlank(apt.Description__c)) {
@@ -103,6 +140,37 @@ public with sharing class USTEventRegistrationOptionsController {
                         apptFormatted += '</select>';
                     }
                 }
+                if (apt.Registrant_Input__c == 'Text box' || apt.Registrant_Input__c == 'Required text box') {
+                    apptFormatted += '<textarea rows="4" cols="50"';
+                    if (apt.Registrant_Input__c == 'Required text box') {
+                        apptFormatted += ' required="required" class="appointmentCustomInput required" ';
+                    } else {
+                        apptFormatted += ' class="appointmentCustomInput" ';
+                    }
+                    apptFormatted += '>';
+                    apptFormatted += '</textarea>';
+                }
+                if (apt.Registrant_Input__c == 'Custom pick list' || apt.Registrant_Input__c == 'Required custom pick list') {
+                    apptFormatted += '<select';
+                    if (apt.Registrant_Input__c == 'Required custom pick list') {
+                        apptFormatted += ' required="required" class="appointmentCustomInput required" ';
+                    } else {
+                        apptFormatted += ' class="appointmentCustomInput" ';
+                    }
+                    apptFormatted += '>';
+                    apptFormatted += '<option value="">Select...</option>';
+                    String custPickListText = apt.Custom_Picklist__c;
+                    custPickListText = custPickListText.Trim();
+                    custPickListText = custPickListText.replace('\n\n', '\n');
+                    String[] custPckListList = custPickListText.split('\n');
+
+                    for (String cp : custPckListList) {
+                        cp = cp.replaceAll('[^a-zA-Z0-9@<>?&;:\\[\\]!-. ]', '');
+                        apptFormatted += '<option value="' + cp + '">' + cp + '</option>';
+                    }
+                    apptFormatted += '</select>';
+                }
+
                 apptFormatted += '<a href="javascript:;" class="appointmentAdd"><span><i class="fa fa-plus" aria-hidden="true"></i> Add appointment</span></a>';
                 apptFormatted += '</div>';
                 apptFormatted += '</div>';
@@ -110,13 +178,54 @@ public with sharing class USTEventRegistrationOptionsController {
         }
     }
 
+
     public PageReference checkEventDetails() {
-        return USTShared.checkForEvent();
+        PageReference eventActivePg = USTShared.checkForEvent();
+        if (eventActivePg == null) {
+            //Get event into
+            evtInfo = USTShared.getUSTEventInfo();
+            Boolean addedAppts = false;
+            Id RegId = evtinfo.evtRegId;
+            evtInstance = [SELECT Instance_Title__c, Start_Date_Time__c FROM UST_Event_Instance__c WHERE Id = :evtinfo.instanceID LIMIT 1];
+            List<UST_Event_Appointment_Type__c> autoAddAppt = [
+                    SELECT Id, Name, Title__c, Description__c, Appointment_Type__c, Appointment_Category__c, Registrant_Input__c, Custom_Picklist__c, Appointment_Limits__c,
+                            Chosen_State__c, Sort_Order__c
+                    FROM UST_Event_Appointment_Type__c
+                    WHERE UST_Event__c = :evtinfo.evtId
+                    AND (Chosen_State__c = 'Added' OR Chosen_State__c = 'Added and Required')
+                    AND Id NOT IN (SELECT Event_Appointment_Type__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :RegId)
+                    AND (Restrict_To_Instance_Title__r.Instance_Title__c = :evtInstance.Instance_Title__c OR Restrict_To_Instance_Title__r.Instance_Title__c = null)
+                    ORDER BY Sort_Order__c ASC NULLS LAST
+            ];
+
+            for (UST_Event_Appointment_Type__c appt : autoAddAppt) {
+                UST_event_Appointments__c addAppt = new UST_Event_Appointments__c();
+                addAppt.Event_Appointment_Type__c = appt.Id;
+                addAppt.Event_Registration__c = RegId;
+                addAppt.Appointment_Title__c = appt.Title__c;
+                addAppt.Appointment_Status__c = 'Registered';
+                addAppt.Appointment_Category__c = appt.Appointment_Category__c;
+                addAppt.Appointment_Type__c = appt.Appointment_Type__c;
+                addAppt.Appointment_Detail__c = appt.Description__c;
+                addAppt.Client_Created_Appointment__c = true;
+                addAppt.Chosen_State__c = appt.Chosen_State__c;
+                addAppt.Sort_Order__c = appt.Sort_Order__c;
+                addAppt.Description__c = appt.Description__c;
+                addAppt.Registrant_Input__c = appt.Registrant_Input__c;
+                upsert addAppt;
+                addedAppts = true;
+            }
+
+            if (addedAppts) {
+                return new PageReference(ApexPages.currentPage().getUrl());
+            }
+        }
+        return eventActivePg;
     }
 
     public PageReference saveOptions() {
         //remove old client created appointments
-        UST_Event_Appointments__c[] deleteAppt = [SELECT Id, Event_Registration__c, Client_Created_Appointment__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :evtinfo.evtRegId AND Client_Created_Appointment__c = true];
+        UST_Event_Appointments__c[] deleteAppt = [SELECT Id, Event_Registration__c, Client_Created_Appointment__c, Chosen_State__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :evtinfo.evtRegId AND Client_Created_Appointment__c = true];
         try {
             delete deleteAppt;
         } catch (DmlException e) {
@@ -130,6 +239,7 @@ public with sharing class USTEventRegistrationOptionsController {
             addAppt.Appointment_Status__c = 'Registered';
             addAppt.Client_Created_Appointment__c = true;
             addAppt.Event_Appointment_Type__c = appt.apptId;
+            addAppt.Chosen_State__c = appt.appChosenState;
             if (!String.isBlank(appt.apptCatagory) && appt.apptCatagory != 'null' && appt.apptCatagory != 'undefined') {
                 addAppt.Appointment_Category__c = appt.apptCatagory;
             }
@@ -137,6 +247,9 @@ public with sharing class USTEventRegistrationOptionsController {
                 addAppt.Appointment_Type__c = appt.apptType;
             }
             addAppt.Appointment_title__c = appt.apptTitle;
+            addAppt.Sort_Order__c = Integer.valueOf(appt.appSort);
+            addAppt.Description__c = appt.appDesc;
+            addAppt.Registrant_Input__c = appt.appInput;
 
             upsert addAppt;
         }
@@ -144,7 +257,7 @@ public with sharing class USTEventRegistrationOptionsController {
     }
 
     public PageReference previousPage() {
-        //if (!String.isBlank(eventRegId)) {
+//if (!String.isBlank(eventRegId)) {
         PageReference registerPage = Page.USTEventRegister;
 
         return registerPage;

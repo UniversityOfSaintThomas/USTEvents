@@ -34,7 +34,7 @@ public with sharing class TestUSTRestAdmissions {
         insert gspo;
 
         Test.startTest();
-
+        
         getMaps('', '', '', '', '');
         getMaps('highschool', '', '', '', '');
         getMaps('ugmajors', '', '', '', '');
