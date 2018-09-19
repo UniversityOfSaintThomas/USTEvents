@@ -45,14 +45,14 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="columns small-12 menium-6 large-6">
-                        <h4>Choose appointments</h4>
+                    <apex:outputPanel layout="block" styleClass="columns small-12 menium-6 large-6" rendered="{!!noOptionalAppointments}">
+                        <h4>Choose your options</h4>
                         <div id="chooser">
                             <apex:outputText escape="false" value="{!apptFormatted}"/>
                         </div>
-                    </div>
-                    <div class="columns small-12 menium-6 large-6">
-                        <h4>Selected appointments</h4>
+                    </apex:outputPanel>
+                    <div class="{!IF(noOptionalAppointments, 'columns small-12 menium-12 large-12', 'columns small-12 menium-6 large-6')}">
+                        <h4>Selected options</h4>
                         <div id="choosen">
                             <apex:outputText escape="false" value="{!chosenFormatted}"/>
                         </div>

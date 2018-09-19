@@ -14,6 +14,7 @@ public with sharing class USTEventRegistrationOptionsController {
     public String incomingApptJSon { get; set; }
     public UST_Event__C eventPage { get; set; }
     public String templateSelected { get; set; }
+    public Boolean noOptionalAppointments { get; set; }
 
     public class incomingAppt {
         String apptId;
@@ -33,6 +34,7 @@ public with sharing class USTEventRegistrationOptionsController {
         evtInfo = USTShared.getUSTEventInfo();
         apptFormatted = '';
         chosenFormatted = '';
+        noOptionalAppointments = false;
 
         Map<String, Integer> apptCount = new Map<String, Integer>();
 
@@ -88,8 +90,21 @@ public with sharing class USTEventRegistrationOptionsController {
                 }
             }
 
-            //Build available appointments
 
+            //Check if all appointments are not optional - Will not show a list to choose from if there is nothing to choose.
+            List<UST_Event_Appointment_Type__c> apptChosenCount = [
+                    SELECT Id
+                    FROM UST_Event_Appointment_Type__c
+                    WHERE UST_Event__c = :evtinfo.evtId
+                    AND (Restrict_To_Instance_Title__r.Instance_Title__c = :evtInstance.Instance_Title__c OR Restrict_To_Instance_Title__r.Instance_Title__c = null)
+                    AND Chosen_State__c != 'Added and Required'
+            ];
+
+            if (apptChosenCount.size() < 1) {
+                noOptionalAppointments = true;
+            }
+
+            //Build available appointments
             appts = [
                     SELECT Id, Name, Title__c, Description__c, Appointment_Type__c, Appointment_Category__c, Appointment_Limits__c, Chosen_State__c,
                             Registrant_Input__c, Custom_Picklist__c, Sort_Order__c
