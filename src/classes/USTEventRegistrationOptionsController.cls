@@ -262,7 +262,12 @@ public with sharing class USTEventRegistrationOptionsController {
                 addAppt.Appointment_Type__c = appt.apptType;
             }
             addAppt.Appointment_title__c = appt.apptTitle;
-            addAppt.Sort_Order__c = Integer.valueOf(appt.appSort);
+            if(appt.appSort == null) {
+                addAppt.Sort_Order__c = 99;
+            } else {
+                addAppt.Sort_Order__c = Integer.valueOf(appt.appSort);
+            }
+
             addAppt.Description__c = appt.appDesc;
             addAppt.Registrant_Input__c = appt.appInput;
 
