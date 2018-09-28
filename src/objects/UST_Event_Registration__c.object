@@ -1,0 +1,1489 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Object to contain the parent Visit/Event registration infromation and become a parent to the related Appointments</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Actual_Number_of_Guests__c</fullName>
+        <externalId>false</externalId>
+        <label>Actual Number of Guests</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Admissions_Counselor__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contact__r.Assigned_ADM_Name__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Admissions Counselor</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Appointment_Table__c</fullName>
+        <externalId>false</externalId>
+        <label>Appointment Table</label>
+        <length>131072</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Campus_Tour_Location__c</fullName>
+        <externalId>false</externalId>
+        <label>Campus Tour Location</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Buildings</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Campus_Tour_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Campus Tour Time</label>
+        <length>10</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contact__r.FirstName &amp; &quot; &quot; &amp; Contact__r.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contact Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Soft_Match_Email__c</fullName>
+        <description>When a new contact is created by the event app this field displays possible matches to other contact records that have the same email address.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When a new contact is created by the event app this field displays possible matches to other contact records that have the same email address.</inlineHelpText>
+        <label>Contact Soft Match Email</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact_Soft_Match_First_Last_Zip__c</fullName>
+        <description>When a new contact is created by the event app this field displays possible matches to other contact records that have the same first name, last name and zip</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When a new contact is created by the event app this field displays possible matches to other contact records that have the same first name, last name and zip</inlineHelpText>
+        <label>Contact Soft Match First Last Zip</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>UST Event Registrations</relationshipLabel>
+        <relationshipName>UST_Event_Registrations</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Date_All_Appointments_Confirmed_del__c</fullName>
+        <externalId>false</externalId>
+        <label>Date All Appointments Confirmed</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Date_Time_Text__c</fullName>
+        <externalId>false</externalId>
+        <formula>(CASE(
+MOD( Date__c - DATE( 1900, 1, 7 ), 7 ),
+0, &quot;Sunday&quot;,
+1, &quot;Monday&quot;,
+2, &quot;Tuesday&quot;,
+3, &quot;Wednesday&quot;,
+4, &quot;Thursday&quot;,
+5, &quot;Friday&quot;, 
+&quot;Saturday&quot;
+))
+
+&amp;&quot;, &quot;&amp;
+
+(CASE(
+MONTH(Date__c),
+1, &quot;January&quot;,
+2, &quot;February&quot;,
+3, &quot;March&quot;,
+4, &quot;April&quot;,
+5, &quot;May&quot;,
+6, &quot;June&quot;,
+7, &quot;July&quot;,
+8, &quot;August&quot;,
+9, &quot;September&quot;,
+10, &quot;October&quot;,
+11, &quot;November&quot;,
+&quot;December&quot;))
+
+&amp;&quot; &quot;&amp;
+
+CASE(RIGHT(TEXT(Date__c),2),
+&quot;01&quot;, &quot;1st&quot;,
+&quot;21&quot;, &quot;21st&quot;,
+&quot;31&quot;, &quot;31st&quot;,
+&quot;02&quot;, &quot;2nd&quot;,
+&quot;22&quot;, &quot;22nd&quot;,
+&quot;03&quot;, &quot;3rd&quot;,
+&quot;23&quot;, &quot;23rd&quot;,
+&quot;04&quot;, &quot;4th&quot;,
+&quot;05&quot;, &quot;5th&quot;,
+&quot;06&quot;, &quot;6th&quot;,
+&quot;07&quot;, &quot;7th&quot;,
+&quot;08&quot;, &quot;8th&quot;,
+&quot;09&quot;, &quot;9th&quot;,
+(RIGHT(TEXT(Date__c),2)&amp;&quot;th&quot;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Date/Time Text</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Date__c</fullName>
+        <externalId>false</externalId>
+        <label>Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Event_Instance_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>Event_Instance__r.Event_Name__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Event Instance Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Instance__c</fullName>
+        <externalId>false</externalId>
+        <label>Event Instance</label>
+        <referenceTo>UST_Event_Instance__c</referenceTo>
+        <relationshipLabel>UST Event Registrations</relationshipLabel>
+        <relationshipName>Event_Registrations</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Event__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>UG Event</label>
+        <referenceTo>UST_Event__c</referenceTo>
+        <relationshipName>UG_Event_Registrations</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Financial_Aid_Counselor__c</fullName>
+        <externalId>false</externalId>
+        <formula>Contact__r.Assigned_FA_Counselor__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Financial Aid Counselor</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>New_Contact_Created__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>This is checked when while registering for an event on the Web a client&apos;s contact was not found and the event app created one for them.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This is checked when while registering for an event on the Web a client&apos;s contact was not found and the event app created one for them.</inlineHelpText>
+        <label>New Contact Created</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Number_of_Guests__c</fullName>
+        <description>Total Number of Guests not including the student</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Total Number of Guests not including the student</inlineHelpText>
+        <label>Number of Guests</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Preferred_Visit_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Preferred Visit Time</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Morning</fullName>
+                    <default>false</default>
+                    <label>Morning</label>
+                </value>
+                <value>
+                    <fullName>Afternoon</fullName>
+                    <default>false</default>
+                    <label>Afternoon</label>
+                </value>
+                <value>
+                    <fullName>All Day</fullName>
+                    <default>false</default>
+                    <label>All Day</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Presentation_Location__c</fullName>
+        <externalId>false</externalId>
+        <label>Presentation Location</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Buildings</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Presentation_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Presentation Time</label>
+        <length>10</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_City__c</fullName>
+        <description>The city that event registrant reported at time of registering for the event.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The city that event registrant reported at time of registering for the event.</inlineHelpText>
+        <label>Registrant City</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_College_Code__c</fullName>
+        <description>The college code reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The college code reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant College Code</label>
+        <length>9</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_College_Not_Found__c</fullName>
+        <description>College name filled in if our search did not find the registrants college.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>College name filled in if our search did not find the registrants college.</inlineHelpText>
+        <label>Registrant College Not Found</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_College_Year__c</fullName>
+        <description>The last year attended the indicated college</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The last year attended the indicated college</inlineHelpText>
+        <label>Registrant College Year</label>
+        <length>4</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_College__c</fullName>
+        <description>The most recent college attended name reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The most recent college attended name reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant College</label>
+        <length>200</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Do_Not_Call__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Preference to not call reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Preference to not call reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant Do Not Call</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Registrant_Email__c</fullName>
+        <description>The email reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The email reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_First_Name__c</fullName>
+        <description>The first name reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The first name reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant First Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Gender__c</fullName>
+        <description>The gender reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The gender reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant Gender</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Female</fullName>
+                    <default>false</default>
+                    <label>Female</label>
+                </value>
+                <value>
+                    <fullName>Male</fullName>
+                    <default>false</default>
+                    <label>Male</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Registrant_High_School_Code__c</fullName>
+        <description>The code of the high school reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The code of the high school reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant High School Code</label>
+        <length>9</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_High_School_Grad_Year__c</fullName>
+        <description>The high school graduation year the the event registrant recorded at the time of registering for an event.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The high school graduation year the the event registrant recorded at the time of registering for an event.</inlineHelpText>
+        <label>Registrant High School Grad Year</label>
+        <length>4</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_High_School_Not_Found__c</fullName>
+        <description>Field to record the name entered by registrant for a High School when they couldn&apos;t find it in our search.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Field to record the name entered by registrant for a High School when they couldn&apos;t find it in our search.</inlineHelpText>
+        <label>Registrant High School Not Found</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_High_School__c</fullName>
+        <description>The first name reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The first name reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant High School</label>
+        <length>200</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Last_Name__c</fullName>
+        <description>The last name reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The last name reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant Last Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Mobile_Phone__c</fullName>
+        <description>The mobile phone reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The mobile phone reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant Mobile Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Registrant_Parent_Email__c</fullName>
+        <description>Email of the parent of the student registered for the event.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Email of the parent of the student registered for the event.</inlineHelpText>
+        <label>Registrant Parent Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Parent_First_Name__c</fullName>
+        <description>First name of the parent of person registering for the event</description>
+        <externalId>false</externalId>
+        <inlineHelpText>First name of the parent of person registering for the event</inlineHelpText>
+        <label>Registrant Parent First Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Parent_Last_Name__c</fullName>
+        <description>Last name of parent of person registered for the event.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Last name of parent of person registered for the event.</inlineHelpText>
+        <label>Registrant Parent Last Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Parent_Phone__c</fullName>
+        <description>Phone number for the parent of the student registering for the event.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Phone number for the parent of the student registering for the event.</inlineHelpText>
+        <label>Registrant Parent Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Registrant_Parent_Status__c</fullName>
+        <description>Determines if the registrant is a student or a parent.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines if the registrant is a student or a parent.</inlineHelpText>
+        <label>Registrant Parent Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>The student</fullName>
+                    <default>false</default>
+                    <label>The student</label>
+                </value>
+                <value>
+                    <fullName>A student&apos;s parent/guardian</fullName>
+                    <default>false</default>
+                    <label>A student&apos;s parent/guardian</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Registrant_Phone__c</fullName>
+        <description>The phone number reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The phone number reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant Phone</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Registrant_Receive_Texts__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>The preference to receive text messages reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The preference to receive text messages reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant Receive Texts</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Registrant_State__c</fullName>
+        <description>The state reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The state reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant State</label>
+        <length>2</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Street_1__c</fullName>
+        <description>The street 1 reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The street 1 reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant Street 1</label>
+        <length>95</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Street_2__c</fullName>
+        <description>The street 2 reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The street 2 reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant Street 2</label>
+        <length>160</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Zip__c</fullName>
+        <description>The zip code reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The zip code reported by the event registrant upon registering. This may not be the same as on the contact record.</inlineHelpText>
+        <label>Registrant Zip</label>
+        <length>10</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Session__c</fullName>
+        <externalId>false</externalId>
+        <label>Session</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>AM</fullName>
+                    <default>false</default>
+                    <label>AM</label>
+                </value>
+                <value>
+                    <fullName>PM</fullName>
+                    <default>false</default>
+                    <label>PM</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Status__c</fullName>
+        <description>Status of Visit/Event</description>
+        <externalId>false</externalId>
+        <label>Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Started</fullName>
+                    <default>false</default>
+                    <label>Started</label>
+                </value>
+                <value>
+                    <fullName>Requested</fullName>
+                    <default>false</default>
+                    <label>Requested</label>
+                </value>
+                <value>
+                    <fullName>Received</fullName>
+                    <default>false</default>
+                    <label>Received</label>
+                </value>
+                <value>
+                    <fullName>Confirmed</fullName>
+                    <default>false</default>
+                    <label>Confirmed</label>
+                </value>
+                <value>
+                    <fullName>Ready</fullName>
+                    <default>false</default>
+                    <label>Ready</label>
+                </value>
+                <value>
+                    <fullName>Cancelled</fullName>
+                    <default>false</default>
+                    <label>Cancelled</label>
+                </value>
+                <value>
+                    <fullName>Rescheduled</fullName>
+                    <default>false</default>
+                    <label>Rescheduled</label>
+                </value>
+                <value>
+                    <fullName>Status</fullName>
+                    <default>false</default>
+                    <label>Status</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Substatus__c</fullName>
+        <externalId>false</externalId>
+        <label>Substatus</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Status__c</controllingField>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>On Hold</fullName>
+                    <default>false</default>
+                    <label>On Hold</label>
+                </value>
+                <value>
+                    <fullName>Pending Appointments</fullName>
+                    <default>false</default>
+                    <label>Pending Appointments</label>
+                </value>
+                <value>
+                    <fullName>No-Show</fullName>
+                    <default>false</default>
+                    <label>No-Show</label>
+                </value>
+                <value>
+                    <fullName>Declined</fullName>
+                    <default>false</default>
+                    <label>Declined</label>
+                </value>
+                <value>
+                    <fullName>Unavailable</fullName>
+                    <default>false</default>
+                    <label>Unavailable</label>
+                </value>
+                <value>
+                    <fullName>All Appointments Confirmed</fullName>
+                    <default>false</default>
+                    <label>All Appointments Confirmed</label>
+                </value>
+                <value>
+                    <fullName>Attended</fullName>
+                    <default>false</default>
+                    <label>Attended</label>
+                </value>
+                <value>
+                    <fullName>Attended - Incomplete</fullName>
+                    <default>false</default>
+                    <label>Attended - Incomplete</label>
+                </value>
+            </valueSetDefinition>
+            <valueSettings>
+                <controllingFieldValue>Requested</controllingFieldValue>
+                <controllingFieldValue>Received</controllingFieldValue>
+                <valueName>On Hold</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Received</controllingFieldValue>
+                <controllingFieldValue>Confirmed</controllingFieldValue>
+                <valueName>Pending Appointments</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Received</controllingFieldValue>
+                <controllingFieldValue>Confirmed</controllingFieldValue>
+                <controllingFieldValue>Cancelled</controllingFieldValue>
+                <valueName>No-Show</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Received</controllingFieldValue>
+                <controllingFieldValue>Confirmed</controllingFieldValue>
+                <valueName>Declined</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Received</controllingFieldValue>
+                <controllingFieldValue>Confirmed</controllingFieldValue>
+                <valueName>Unavailable</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Confirmed</controllingFieldValue>
+                <valueName>All Appointments Confirmed</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Confirmed</controllingFieldValue>
+                <valueName>Attended</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Confirmed</controllingFieldValue>
+                <valueName>Attended - Incomplete</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Total_Appointments__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Appointments</label>
+        <summaryForeignKey>UST_Event_Appointments__c.Event_Registration__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Confirmed_Appointments__c</fullName>
+        <externalId>false</externalId>
+        <label>Total Confirmed Appointments</label>
+        <summaryFilterItems>
+            <field>UST_Event_Appointments__c.Appointment_Status__c</field>
+            <operation>notEqual</operation>
+            <value>Registered, Pending First Request, Pending Second Request, Pending Final Request</value>
+        </summaryFilterItems>
+        <summaryForeignKey>UST_Event_Appointments__c.Event_Registration__c</summaryForeignKey>
+        <summaryOperation>count</summaryOperation>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Summary</type>
+    </fields>
+    <fields>
+        <fullName>Total_Number_of_Guests__c</fullName>
+        <description>Total Number of Guests INCLUDING the student</description>
+        <externalId>false</externalId>
+        <formula>Number_of_Guests__c + 1</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Total Number of Guests</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>UST Event Registration</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>Event__c</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>NAME</columns>
+        <columns>Date__c</columns>
+        <columns>Event_Instance__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Session__c</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>EVR-{000000}</displayFormat>
+        <label>Campus Event Registration</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>UST Event Registrations</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>AM_PM_Sessions</fullName>
+        <active>true</active>
+        <description>AM/PM Session Visit Days</description>
+        <label>AM/PM Sessions</label>
+        <picklistValues>
+            <picklist>Campus_Tour_Location__c</picklist>
+            <values>
+                <fullName>Anderson Student Center %28ASC%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Preferred_Visit_Time__c</picklist>
+            <values>
+                <fullName>Afternoon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>All Day</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Morning</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Presentation_Location__c</picklist>
+            <values>
+                <fullName>Anderson Student Center %28ASC%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Gender__c</picklist>
+            <values>
+                <fullName>Female</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Male</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Parent_Status__c</picklist>
+            <values>
+                <fullName>A student%27s parent%2Fguardian</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>The student</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Session__c</picklist>
+            <values>
+                <fullName>AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Received</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Requested</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rescheduled</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Substatus__c</picklist>
+            <values>
+                <fullName>All Appointments Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attended</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attended - Incomplete</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Declined</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No-Show</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>On Hold</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending Appointments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unavailable</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Individual_Campus_Visit</fullName>
+        <active>false</active>
+        <description>Individual Campus Visits - for Seniors and special requests</description>
+        <label>Individual Campus Visit</label>
+        <picklistValues>
+            <picklist>Campus_Tour_Location__c</picklist>
+            <values>
+                <fullName>Anderson Athletic %26 Recreation Complex %28ARC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Anderson Student Center %28ASC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aquinas Hall %28AQU%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Archbishop Ireland Memorial Library %28IRL%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Art History %2844C%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Binz Refectory %28BIN%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brady Educational Center %28BEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chapel of St%2E Thomas Aquinas %28CHA%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Child Development Center %28CDC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Facilities %26 Design Center %28FDC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>John P%2E Monahan Plaza</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>John R Roach Center for Liberal Arts %28JRC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Koch Commons %28KOC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Loras Hall %28LOR%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>McCarthy Gym%2C %28MCG%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>McNeely Hall %28MCH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Minneapolis Campus Buildings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Murray-Herrick Campus Center %28MHC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North Athletic Fields %28NAF%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaghnessy Science Hall %28OSS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaghnessy-Frey Library Center %28LIB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaughnessy Educational Center %28OEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%E2%80%99Shaughnessy Stadium %28STA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Opus Hall %28MOH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Owens Science Hall %28OWS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>School of Law %28MSL%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schulze Hall %28SCH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sitzmann Hall %2855S%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Athletic Fields %28SAF%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E John Vianney Seminary %28SJV%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E Mary%E2%80%99s Chapel %28SMC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E Paul School of Divinity %28SOD%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Summit Classroom Building %28SCB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Terrence Murphy Hall %28TMH%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Preferred_Visit_Time__c</picklist>
+            <values>
+                <fullName>Afternoon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>All Day</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Morning</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Presentation_Location__c</picklist>
+            <values>
+                <fullName>Anderson Athletic %26 Recreation Complex %28ARC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Anderson Student Center %28ASC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aquinas Hall %28AQU%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Archbishop Ireland Memorial Library %28IRL%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Art History %2844C%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Binz Refectory %28BIN%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brady Educational Center %28BEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chapel of St%2E Thomas Aquinas %28CHA%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Child Development Center %28CDC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Facilities %26 Design Center %28FDC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>John P%2E Monahan Plaza</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>John R Roach Center for Liberal Arts %28JRC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Koch Commons %28KOC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Loras Hall %28LOR%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>McCarthy Gym%2C %28MCG%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>McNeely Hall %28MCH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Minneapolis Campus Buildings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Murray-Herrick Campus Center %28MHC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North Athletic Fields %28NAF%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaghnessy Science Hall %28OSS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaghnessy-Frey Library Center %28LIB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaughnessy Educational Center %28OEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%E2%80%99Shaughnessy Stadium %28STA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Opus Hall %28MOH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Owens Science Hall %28OWS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>School of Law %28MSL%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schulze Hall %28SCH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sitzmann Hall %2855S%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Athletic Fields %28SAF%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E John Vianney Seminary %28SJV%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E Mary%E2%80%99s Chapel %28SMC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E Paul School of Divinity %28SOD%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Summit Classroom Building %28SCB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Terrence Murphy Hall %28TMH%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Gender__c</picklist>
+            <values>
+                <fullName>Female</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Male</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Parent_Status__c</picklist>
+            <values>
+                <fullName>A student%27s parent%2Fguardian</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>The student</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Session__c</picklist>
+            <values>
+                <fullName>AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Received</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Requested</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Substatus__c</picklist>
+            <values>
+                <fullName>All Appointments Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Declined</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No-Show</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>On Hold</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending Appointments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unavailable</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <visibility>Public</visibility>
+</CustomObject>

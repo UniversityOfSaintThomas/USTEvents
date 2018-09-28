@@ -1,0 +1,549 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Parent Event object to setup individual Event Sessions</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Academic_Program__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Define an academic program this event is tied.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Define an academic program this event is tied.</inlineHelpText>
+        <label>Academic Program</label>
+        <referenceTo>EnrollmentrxRx__Program_Offered__c</referenceTo>
+        <relationshipLabel>UST Events</relationshipLabel>
+        <relationshipName>UST_Events</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Allow_Other_Attendees__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Activate allowing other attendees to the event in addition to primary attendee</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Activate allowing other attendees to the event in addition to primary attendee</inlineHelpText>
+        <label>Allow Other Attendees</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Ask_Gender__c</fullName>
+        <description>Ask about a registrants gender</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Ask about a registrants gender</inlineHelpText>
+        <label>Ask Gender</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Do not ask</fullName>
+                    <default>false</default>
+                    <label>Do not ask</label>
+                </value>
+                <value>
+                    <fullName>Ask but do not require</fullName>
+                    <default>false</default>
+                    <label>Ask but do not require</label>
+                </value>
+                <value>
+                    <fullName>Ask and require</fullName>
+                    <default>false</default>
+                    <label>Ask and require</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Ask_If_Parent__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Ask whether the person filling out is a parent or student. This will helps when a parent is signing up for a student to come to an event (we then capture both sets of data).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Ask whether the person filling out is a parent or student. This will helps when a parent is signing up for a student to come to an event (we then capture both sets of data).</inlineHelpText>
+        <label>Ask If Parent</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Audience__c</fullName>
+        <description>Choose the audience that this event is targeted.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Choose the audience that this event is targeted.</inlineHelpText>
+        <label>Audience</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>High School Senior</fullName>
+                    <default>false</default>
+                    <label>High School Senior</label>
+                </value>
+                <value>
+                    <fullName>High School Junior or Younger</fullName>
+                    <default>false</default>
+                    <label>High School Junior or Younger</label>
+                </value>
+                <value>
+                    <fullName>Transfer</fullName>
+                    <default>false</default>
+                    <label>Transfer</label>
+                </value>
+                <value>
+                    <fullName>First-Year International</fullName>
+                    <default>false</default>
+                    <label>First-Year International</label>
+                </value>
+                <value>
+                    <fullName>Transfer International</fullName>
+                    <default>false</default>
+                    <label>Transfer International</label>
+                </value>
+                <value>
+                    <fullName>Graduate Student</fullName>
+                    <default>false</default>
+                    <label>Graduate Student</label>
+                </value>
+                <value>
+                    <fullName>International Graduate Student</fullName>
+                    <default>false</default>
+                    <label>International Graduate Student</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Close_Event_Days_Before__c</fullName>
+        <defaultValue>0</defaultValue>
+        <description>The amount of days before the event that you want registration to close (accepting no new registrants)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The amount of days before the event that you want registration to close (accepting no new registrants)</inlineHelpText>
+        <label>Close Event Days Before</label>
+        <precision>3</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>College_High_School_Ask__c</fullName>
+        <description>Get High School and College information and last attended/graduation date.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Get High School and College information and last attended/graduation date.</inlineHelpText>
+        <label>College High School Ask</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Don&apos;t ask</fullName>
+                    <default>false</default>
+                    <label>Don&apos;t ask</label>
+                </value>
+                <value>
+                    <fullName>Both College and HS</fullName>
+                    <default>false</default>
+                    <label>Both College and HS</label>
+                </value>
+                <value>
+                    <fullName>HS Only</fullName>
+                    <default>false</default>
+                    <label>HS Only</label>
+                </value>
+                <value>
+                    <fullName>College Only</fullName>
+                    <default>false</default>
+                    <label>College Only</label>
+                </value>
+                <value>
+                    <fullName>Auto Select on Audience</fullName>
+                    <default>false</default>
+                    <label>Auto Select on Audience</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>End_Date__c</fullName>
+        <description>Date event ends</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date event ends</inlineHelpText>
+        <label>End Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Event_Appointment_Description__c</fullName>
+        <description>If entered these instructions/description that appear before the appointment options section of the event</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If entered these instructions/description that appear before the appointment options section of the event</inlineHelpText>
+        <label>Event Appointment Description</label>
+        <length>3000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Appointment_Title__c</fullName>
+        <description>Title (heading) that appears before the appointments (if any) for the event.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Title (heading) that appears before the appointments (if any) for the event.</inlineHelpText>
+        <label>Event Appointment Title</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Event_Cancel_Review_Description__c</fullName>
+        <description>The instructions on the cancel review page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The instructions on the cancel review page.</inlineHelpText>
+        <label>Event Cancel Review Description</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Cancel_Review_Title__c</fullName>
+        <description>The title on the page for cancel an review</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The title on the page for cancel an review</inlineHelpText>
+        <label>Event Cancel Review Title</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Cancelled_Notification_Text__c</fullName>
+        <description>The text that appears to tell a client that their event is cancelled on the review cancel page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The text that appears to tell a client that their event is cancelled on the review cancel page.</inlineHelpText>
+        <label>Event Cancelled Notification Text</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Event_Confirmation_Description__c</fullName>
+        <description>The final page of the event registration. Thank for the registration and describe next steps.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The final page of the event registration. Thank for the registration and describe next steps.</inlineHelpText>
+        <label>Event Confirmation Description</label>
+        <length>15000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Confirmation_Title__c</fullName>
+        <description>The title that appears on the confirmation page of the event process</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The title that appears on the confirmation page of the event process</inlineHelpText>
+        <label>Event Confirmation Title</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Footer__c</fullName>
+        <description>Footer that follows through event process. Can contain contact information for issues and information</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Footer that follows through event process. Can contain contact information for issues and information</inlineHelpText>
+        <label>Event Footer</label>
+        <length>3000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Full_Text__c</fullName>
+        <description>The text that appears when an event has reached capacity</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The text that appears when an event has reached capacity</inlineHelpText>
+        <label>Event Is Full Display Text</label>
+        <length>12768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Home_Link_Title__c</fullName>
+        <defaultValue>&apos;Event Home&apos;</defaultValue>
+        <description>The title that will appear as a link at the top of the page to take you back to wherever you described the event on the Web.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The title that will appear as a link at the top of the page to take you back to wherever you described the event on the Web.</inlineHelpText>
+        <label>Event Home Link Title</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Home_Link_URL__c</fullName>
+        <description>The link to the page that initiated the event registration.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The link to the page that initiated the event registration.</inlineHelpText>
+        <label>Event Home Link URL</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Name__c</fullName>
+        <description>Event Name</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the event</inlineHelpText>
+        <label>Event Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Short_Listing_Description__c</fullName>
+        <description>This description displays on concise list of events and should not be verbose</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This description displays on concise list of events and should not be verbose</inlineHelpText>
+        <label>Event Short Listing Description</label>
+        <length>3000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Status__c</fullName>
+        <description>Status of event (Planning, Active, Inactive, Closed, Cancelled)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Status of event (Planning, Active, Inactive, Closed, Cancelled)</inlineHelpText>
+        <label>Event Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Active_Status</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Event_Submit_Description__c</fullName>
+        <description>This text appears at the top of the submit page where confirmation of selections is given and the user submits their registration.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This text appears at the top of the submit page where confirmation of selections is given and the user submits their registration.</inlineHelpText>
+        <label>Event Submit Description</label>
+        <length>3000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Submit_Title__c</fullName>
+        <description>Title that appears on the event submit registration page</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Title that appears on the event submit registration page</inlineHelpText>
+        <label>Event Submit Title</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_description__c</fullName>
+        <description>Description of Event</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Describe the event</inlineHelpText>
+        <label>Event Description</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Include_Time_frame_List__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Ask the client for a general time-frame for event (drop down)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Ask the client for a general time-frame for event (drop down)</inlineHelpText>
+        <label>Include Time frame List</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Max_Other_Attendees__c</fullName>
+        <description>If other attendees is active, how many other attendees are allowed to this event</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If other attendees is active, how many other attendees are allowed to this event</inlineHelpText>
+        <label>Max Other Attendees</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Portal_Login_Required__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Requires a registrant to be logged in through our Student Portal.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Requires a registrant to be logged in through our Student Portal.</inlineHelpText>
+        <label>Portal Login Required</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Start_Date__c</fullName>
+        <description>Date the event begins</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date the event begins</inlineHelpText>
+        <label>Start Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Template__c</fullName>
+        <defaultValue>&apos;CastorTemplate2017&apos;</defaultValue>
+        <description>Chose a pre-programmed template for your event site</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Chose a pre-programmed template for your event site</inlineHelpText>
+        <label>Template</label>
+        <required>true</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>CastorTemplate2017</fullName>
+                    <default>false</default>
+                    <label>CastorTemplate2017</label>
+                </value>
+                <value>
+                    <fullName>OPUSTemplate2018</fullName>
+                    <default>false</default>
+                    <label>OPUSTemplate2018</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <label>UST Event</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <label>Event Label</label>
+        <trackHistory>false</trackHistory>
+        <type>Text</type>
+    </nameField>
+    <pluralLabel>UST Events</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ReadWrite</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <visibility>Public</visibility>
+</CustomObject>

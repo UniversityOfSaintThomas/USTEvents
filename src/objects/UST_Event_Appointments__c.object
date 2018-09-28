@@ -1,0 +1,1926 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>The appointments and details related to the Event Registration (e.g. Classroom visits, Lunch, Coach Visit, etc.)</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableChangeDataCapture>false</enableChangeDataCapture>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Admissions_Counselor__c</fullName>
+        <externalId>false</externalId>
+        <formula>Event_Registration__r.Admissions_Counselor__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Admissions Counselor</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Appointment_Category__c</fullName>
+        <externalId>false</externalId>
+        <label>Appointment Category</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Appointment_Category</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Appointment_Contact_Email__c</fullName>
+        <description>Email address of department to request visit</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Email address of departmental contact or faculty/staff member to request visit</inlineHelpText>
+        <label>Appointment Contact Email</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Appointment_Contact_Name__c</fullName>
+        <description>Name (merged in email) of appointment contact requesting an appointment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name (merged in email) of appointment contact requesting an appointment</inlineHelpText>
+        <label>Appointment Contact Name</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>true</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Appointment_Date_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Appointment Date/Time</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Appointment_Date__c</fullName>
+        <defaultValue>DATEVALUE(&quot;Event_Registration_Date__c&quot;)</defaultValue>
+        <description>Date of Appointment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Date of Appointment</inlineHelpText>
+        <label>Appointment Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Appointment_Detail__c</fullName>
+        <description>Added detail about the appointment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Added detail about the appointment</inlineHelpText>
+        <label>Appointment Detail</label>
+        <length>5000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Appointment_Status__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>The current status of the Appointment</inlineHelpText>
+        <label>Appointment Status</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Registered</fullName>
+                    <default>false</default>
+                    <label>Registered</label>
+                </value>
+                <value>
+                    <fullName>Pending First Request</fullName>
+                    <default>false</default>
+                    <label>Pending First Request</label>
+                </value>
+                <value>
+                    <fullName>Pending Second Request</fullName>
+                    <default>false</default>
+                    <label>Pending Second Request</label>
+                </value>
+                <value>
+                    <fullName>Pending Final Request</fullName>
+                    <default>false</default>
+                    <label>Pending Final Request</label>
+                </value>
+                <value>
+                    <fullName>Confirmed</fullName>
+                    <default>false</default>
+                    <label>Confirmed</label>
+                </value>
+                <value>
+                    <fullName>Unavailable</fullName>
+                    <default>false</default>
+                    <label>Unavailable</label>
+                </value>
+                <value>
+                    <fullName>Cancelled</fullName>
+                    <default>false</default>
+                    <label>Cancelled</label>
+                </value>
+                <value>
+                    <fullName>Declined</fullName>
+                    <default>false</default>
+                    <label>Declined</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Appointment_Time_Options__c</fullName>
+        <externalId>false</externalId>
+        <label>Appointment Time Options</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>8:00 AM</fullName>
+                    <default>false</default>
+                    <label>8:00 AM</label>
+                </value>
+                <value>
+                    <fullName>8:15 AM</fullName>
+                    <default>false</default>
+                    <label>8:15 AM</label>
+                </value>
+                <value>
+                    <fullName>8:30 AM</fullName>
+                    <default>false</default>
+                    <label>8:30 AM</label>
+                </value>
+                <value>
+                    <fullName>8:45 AM</fullName>
+                    <default>false</default>
+                    <label>8:45 AM</label>
+                </value>
+                <value>
+                    <fullName>9:00 AM</fullName>
+                    <default>false</default>
+                    <label>9:00 AM</label>
+                </value>
+                <value>
+                    <fullName>9:15 AM</fullName>
+                    <default>false</default>
+                    <label>9:15 AM</label>
+                </value>
+                <value>
+                    <fullName>9:30 AM</fullName>
+                    <default>false</default>
+                    <label>9:30 AM</label>
+                </value>
+                <value>
+                    <fullName>9:45 AM</fullName>
+                    <default>false</default>
+                    <label>9:45 AM</label>
+                </value>
+                <value>
+                    <fullName>10:00 AM</fullName>
+                    <default>false</default>
+                    <label>10:00 AM</label>
+                </value>
+                <value>
+                    <fullName>10:15 AM</fullName>
+                    <default>false</default>
+                    <label>10:15 AM</label>
+                </value>
+                <value>
+                    <fullName>10:30 AM</fullName>
+                    <default>false</default>
+                    <label>10:30 AM</label>
+                </value>
+                <value>
+                    <fullName>10:45 AM</fullName>
+                    <default>false</default>
+                    <label>10:45 AM</label>
+                </value>
+                <value>
+                    <fullName>11:00 AM</fullName>
+                    <default>false</default>
+                    <label>11:00 AM</label>
+                </value>
+                <value>
+                    <fullName>11:15 AM</fullName>
+                    <default>false</default>
+                    <label>11:15 AM</label>
+                </value>
+                <value>
+                    <fullName>11:30 AM</fullName>
+                    <default>false</default>
+                    <label>11:30 AM</label>
+                </value>
+                <value>
+                    <fullName>11:45 AM</fullName>
+                    <default>false</default>
+                    <label>11:45 AM</label>
+                </value>
+                <value>
+                    <fullName>12:00 PM</fullName>
+                    <default>false</default>
+                    <label>12:00 PM</label>
+                </value>
+                <value>
+                    <fullName>12:15 PM</fullName>
+                    <default>false</default>
+                    <label>12:15 PM</label>
+                </value>
+                <value>
+                    <fullName>12:30 PM</fullName>
+                    <default>false</default>
+                    <label>12:30 PM</label>
+                </value>
+                <value>
+                    <fullName>12:45 PM</fullName>
+                    <default>false</default>
+                    <label>12:45 PM</label>
+                </value>
+                <value>
+                    <fullName>1:00 PM</fullName>
+                    <default>false</default>
+                    <label>1:00 PM</label>
+                </value>
+                <value>
+                    <fullName>1:15 PM</fullName>
+                    <default>false</default>
+                    <label>1:15 PM</label>
+                </value>
+                <value>
+                    <fullName>1:30 PM</fullName>
+                    <default>false</default>
+                    <label>1:30 PM</label>
+                </value>
+                <value>
+                    <fullName>1:45 PM</fullName>
+                    <default>false</default>
+                    <label>1:45 PM</label>
+                </value>
+                <value>
+                    <fullName>2:00 PM</fullName>
+                    <default>false</default>
+                    <label>2:00 PM</label>
+                </value>
+                <value>
+                    <fullName>2:15 PM</fullName>
+                    <default>false</default>
+                    <label>2:15 PM</label>
+                </value>
+                <value>
+                    <fullName>2:30 PM</fullName>
+                    <default>false</default>
+                    <label>2:30 PM</label>
+                </value>
+                <value>
+                    <fullName>2:45 PM</fullName>
+                    <default>false</default>
+                    <label>2:45 PM</label>
+                </value>
+                <value>
+                    <fullName>3:00 PM</fullName>
+                    <default>false</default>
+                    <label>3:00 PM</label>
+                </value>
+                <value>
+                    <fullName>3:15 PM</fullName>
+                    <default>false</default>
+                    <label>3:15 PM</label>
+                </value>
+                <value>
+                    <fullName>3:30 PM</fullName>
+                    <default>false</default>
+                    <label>3:30 PM</label>
+                </value>
+                <value>
+                    <fullName>3:45 PM</fullName>
+                    <default>false</default>
+                    <label>3:45 PM</label>
+                </value>
+                <value>
+                    <fullName>4:00 PM</fullName>
+                    <default>false</default>
+                    <label>4:00 PM</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Appointment_Time__c</fullName>
+        <externalId>false</externalId>
+        <label>Appointment Time</label>
+        <length>20</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Appointment_Title__c</fullName>
+        <description>Display title of appointment</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Display title of appointment</inlineHelpText>
+        <label>Appointment Title</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Appointment_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Appointment Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <controllingField>Appointment_Category__c</controllingField>
+            <restricted>true</restricted>
+            <valueSetName>Appointment_Type</valueSetName>
+            <valueSettings>
+                <controllingFieldValue>Additional Options</controllingFieldValue>
+                <valueName>Air Force ROTC</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Additional Options</controllingFieldValue>
+                <valueName>Campus Ministry</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Additional Options</controllingFieldValue>
+                <valueName>Career Development</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Admissions Visit</controllingFieldValue>
+                <valueName>Admissions Counselor</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Men&apos;s Baseball</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Men&apos;s Basketball</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Men&apos;s Cross Country</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Men&apos;s Football</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Men&apos;s Golf</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Men&apos;s Hockey</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Men&apos;s Soccer</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Men&apos;s Swimming and Diving</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Men&apos;s Tennis</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Men&apos;s Track and Field</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Women&apos;s Basketball</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Women&apos;s Cross Country</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Women&apos;s Golf</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Women&apos;s Hockey</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Women&apos;s Soccer</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Women&apos;s Softball</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Women&apos;s Swimming and Diving</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Women&apos;s Tennis</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Women&apos;s Track and Field</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Athletic Visit</controllingFieldValue>
+                <valueName>Women&apos;s Volleyball</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Campus Tour</controllingFieldValue>
+                <valueName>Residence Hall Tour</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Campus Tour</controllingFieldValue>
+                <valueName>Campus Tour</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Actuarial Science</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Art History</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Biochemistry</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Biology</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Biology of Global Health</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- Accounting</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- Communication</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- Entrepreneurship</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- Family Business</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- Financial Management</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- General Business Management</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- Human Resource Management</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- International Business</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- Leadership and Management</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- Legal Studies in Business</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- Marketing Management</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration- Operations Management</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Busienss Administration- Real Estate Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Catholic Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Chemistry</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Classical Civilization</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Classical Langauges</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Communication and Journalism</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Computer Science</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Criminal Justice</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Economics</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Education- Elementary</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Education- Secondary</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Engineering- Aerospace</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Engineering- Biomedical</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Engineering- Chemical</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Engineering- Civil</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Engineering- Computer</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Engineering- Electrical</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Engineering- Mechanical</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>English</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>English- Education</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>English- Creative Writing</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Environmental Science</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Environmental Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Exercise Science</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Family Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>French</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Geography</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Geography- Geographic Information Systems (GIS)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Geology</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>German</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Health Promotion Sciences</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>History</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>International Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Justice &amp; Peace Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Latin</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Literary Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Mathematics</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music Business</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music- Liturgical Music</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music- Performance</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music- Band</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music- Choir</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music- Orchestra</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music- Guitar</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music- Piano</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Neuroscience</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Philosophy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Physics</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Political Science</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Psychology</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Public Health Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Social Sciences</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Social Work</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Sociology</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Spanish</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Statistics</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Theology</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Women&apos;s Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Financial Aid Visit</controllingFieldValue>
+                <valueName>Financial Aid Counselor</valueName>
+            </valueSettings>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Building__c</fullName>
+        <externalId>false</externalId>
+        <label>Building</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Buildings</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Chosen_State__c</fullName>
+        <description>Shows whether the appointment was required by it&apos;s type</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Shows whether the appointment was required by it&apos;s type</inlineHelpText>
+        <label>Chosen State</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Added</fullName>
+                    <default>false</default>
+                    <label>Added</label>
+                </value>
+                <value>
+                    <fullName>Added and Required</fullName>
+                    <default>false</default>
+                    <label>Added and Required</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Class_Appointment__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <label>Class Appointment</label>
+        <referenceTo>Class_Appointments__c</referenceTo>
+        <relationshipLabel>UST Event Appointments</relationshipLabel>
+        <relationshipName>UST_Event_Appointments</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Class_Title__c</fullName>
+        <description>Classroom Title</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of class to show on student&apos;s itinerary</inlineHelpText>
+        <label>Class Title</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Client_Created_Appointment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>When check this signifies that the client created this appointment not the front office. This is helpful for automating the Web sign up for appointments.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When check this signifies that the client created this appointment not the front office. This is helpful for automating the Web sign up for appointments.</inlineHelpText>
+        <label>Client Created Appointment</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <externalId>false</externalId>
+        <formula>Event_Registration__r.Contact__r.FirstName &amp;&quot; &quot;&amp; Event_Registration__r.Contact__r.LastName</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contact</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Description__c</fullName>
+        <description>Description as defined by appointment type (carried over from event registrant web application).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Description as defined by appointment type (carried over from event registrant web application).</inlineHelpText>
+        <label>Description</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Event_Appointment_Type__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <externalId>false</externalId>
+        <inlineHelpText>Thad Appointment Definition</inlineHelpText>
+        <label>Event Appointment Type</label>
+        <referenceTo>UST_Event_Appointment_Type__c</referenceTo>
+        <relationshipLabel>UST Event Appointments</relationshipLabel>
+        <relationshipName>UG_Visit_Appointments</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Event_Registration_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT(MONTH(Event_Registration__r.Date__c))+&quot;/&quot; +TEXT(DAY(Event_Registration__r.Date__c))+&quot;/&quot; +TEXT(YEAR(Event_Registration__r.Date__c))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Event Registration Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Registration__c</fullName>
+        <externalId>false</externalId>
+        <label>Event Registration</label>
+        <referenceTo>UST_Event_Registration__c</referenceTo>
+        <relationshipName>UG_Event_Appointments</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Faculty_Staff_Member__c</fullName>
+        <externalId>false</externalId>
+        <label>Faculty/Staff Member</label>
+        <length>50</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Financial_Aid_Counselor__c</fullName>
+        <externalId>false</externalId>
+        <formula>Event_Registration__r.Financial_Aid_Counselor__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Financial Aid Counselor</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Registrant_Input__c</fullName>
+        <description>Optional: Alternative registrant input beyond picking appointment titles (text box, pick lists, etc.)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Optional: Alternative registrant input beyond picking appointment titles (text box, pick lists, etc.)</inlineHelpText>
+        <label>Registrant Input</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Room__c</fullName>
+        <externalId>false</externalId>
+        <inlineHelpText>Room Location</inlineHelpText>
+        <label>Room</label>
+        <length>30</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Sort_Order__c</fullName>
+        <description>The order appointments where added by the event registrant via the web.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The order appointments where added by the event registrant via the web.</inlineHelpText>
+        <label>Sort Order</label>
+        <precision>2</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>UG_Appointment_Category_Order__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISPICKVAL(Appointment_Category__c, &quot;Campus Tour&quot;), 1, 2)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>UG Appointment Category Order</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <label>UST Event Appointment</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
+    <nameField>
+        <displayFormat>APPT-{000000}</displayFormat>
+        <label>Event Appointments Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>UST Event Appointments</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>Daily_Visit</fullName>
+        <active>true</active>
+        <label>Daily Visit</label>
+        <picklistValues>
+            <picklist>Appointment_Category__c</picklist>
+            <values>
+                <fullName>Additional Options</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Admissions Visit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Athletic Visit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attend A Class</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Campus Tour</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Faculty Visit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Aid Visit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transportation</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Appointment_Status__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Declined</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending Final Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending First Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending Second Request</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Registered</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unavailable</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Appointment_Time_Options__c</picklist>
+            <values>
+                <fullName>1%3A00 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>1%3A15 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>1%3A30 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>1%3A45 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10%3A00 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10%3A15 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10%3A30 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>10%3A45 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>11%3A00 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>11%3A15 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>11%3A30 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>11%3A45 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>12%3A00 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>12%3A15 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>12%3A30 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>12%3A45 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%3A00 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%3A15 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%3A30 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>2%3A45 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3%3A00 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3%3A15 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3%3A30 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>3%3A45 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>4%3A00 PM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%3A00 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%3A15 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%3A30 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>8%3A45 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9%3A00 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9%3A15 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9%3A30 AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>9%3A45 AM</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Appointment_Type__c</picklist>
+            <values>
+                <fullName>Actuarial Science</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Admissions Counselor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Air Force ROTC</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Art History</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Biochemistry</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Biology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Biology of Global Health</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Busienss Administration- Real Estate Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- Accounting</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- Communication</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- Entrepreneurship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- Family Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- Financial Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- General Business Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- Human Resource Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- International Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- Leadership and Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- Legal Studies in Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- Marketing Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Business Administration- Operations Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Campus Ministry</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Campus Tour</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Career Development</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Catholic Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chemistry</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Classical Civilization</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Classical Langauges</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Communication and Journalism</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Complimentary Lunch on Campus</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Computer Science</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Criminal Justice</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disability Resources</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Economics</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Education- Elementary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Education- Secondary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering- Aerospace</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering- Biomedical</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering- Chemical</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering- Civil</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering- Computer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering- Electrical</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Engineering- Mechanical</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>English</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>English- Creative Writing</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>English- Education</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Environmental Science</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Environmental Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Exercise Science</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Family Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Financial Aid Counselor</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>French</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Geography</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Geography- Geographic Information Systems %28GIS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Geology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>German</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Health Promotion Sciences</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>History</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>International Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Justice %26 Peace Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Latin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Literary Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mathematics</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Men%27s Baseball</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Men%27s Basketball</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Men%27s Cross Country</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Men%27s Football</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Men%27s Golf</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Men%27s Hockey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Men%27s Soccer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Men%27s Swimming and Diving</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Men%27s Tennis</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Men%27s Track and Field</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Music</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Music Business</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Music- Band</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Music- Choir</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Music- Guitar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Music- Liturgical Music</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Music- Orchestra</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Music- Performance</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Music- Piano</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Neuroscience</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Philosophy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Physics</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Political Science</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Psychology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Public Health Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Residence Hall Tour</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social Sciences</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Social Work</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sociology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Spanish</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Statistics</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Student Diversity and Inclusion Services</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Theology</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Basketball</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Cross Country</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Golf</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Hockey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Soccer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Softball</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Swimming and Diving</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Tennis</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Track and Field</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Women%27s Volleyball</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Building__c</picklist>
+            <values>
+                <fullName>Anderson Athletic %26 Recreation Complex %28ARC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Anderson Student Center %28ASC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aquinas Hall %28AQU%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Archbishop Ireland Memorial Library %28IRL%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Art History %2844C%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Binz Refectory %28BIN%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brady Educational Center %28BEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chapel of St%2E Thomas Aquinas %28CHA%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Child Development Center %28CDC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Facilities %26 Design Center %28FDC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>John P%2E Monahan Plaza</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>John R Roach Center for Liberal Arts %28JRC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Koch Commons %28KOC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Loras Hall %28LOR%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>McCarthy Gym%2C %28MCG%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>McNeely Hall %28MCH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Minneapolis Campus Buildings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Murray-Herrick Campus Center %28MHC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North Athletic Fields %28NAF%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaghnessy Science Hall %28OSS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaghnessy-Frey Library Center %28LIB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaughnessy Educational Center %28OEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%E2%80%99Shaughnessy Stadium %28STA</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Opus Hall %28MOH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Owens Science Hall %28OWS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>School of Law %28MSL%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schulze Hall %28SCH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sitzmann Hall %2855S%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Athletic Fields %28SAF%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E John Vianney Seminary %28SJV%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E Mary%E2%80%99s Chapel %28SMC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E Paul School of Divinity %28SOD%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Summit Classroom Building %28SCB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Terrence Murphy Hall %28TMH%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Chosen_State__c</picklist>
+            <values>
+                <fullName>Added</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Added and Required</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <startsWith>Vowel</startsWith>
+    <visibility>Public</visibility>
+</CustomObject>
