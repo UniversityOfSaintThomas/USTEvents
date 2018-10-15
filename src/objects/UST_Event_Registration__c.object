@@ -46,7 +46,6 @@
     <description>Object to contain the parent Visit/Event registration infromation and become a parent to the related Appointments</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableEnhancedLookup>true</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
@@ -69,7 +68,7 @@
     <fields>
         <fullName>Admissions_Counselor__c</fullName>
         <externalId>false</externalId>
-        <formula>Contact__r.Assigned_ADM_Name__c</formula>
+        <formula>Contact__r.Suggested_UG_Adm4Y_Counselor_Role__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Admissions Counselor</label>
         <required>false</required>
@@ -257,7 +256,7 @@ CASE(RIGHT(TEXT(Date__c),2),
         <relationshipLabel>UST Event Registrations</relationshipLabel>
         <relationshipName>Event_Registrations</relationshipName>
         <relationshipOrder>0</relationshipOrder>
-        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
@@ -267,8 +266,9 @@ CASE(RIGHT(TEXT(Date__c),2),
         <fullName>Event__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
-        <label>UG Event</label>
+        <label>Event</label>
         <referenceTo>UST_Event__c</referenceTo>
+        <relationshipLabel>UST Event Registrations</relationshipLabel>
         <relationshipName>UG_Event_Registrations</relationshipName>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -278,7 +278,7 @@ CASE(RIGHT(TEXT(Date__c),2),
     <fields>
         <fullName>Financial_Aid_Counselor__c</fullName>
         <externalId>false</externalId>
-        <formula>Contact__r.Assigned_FA_Counselor__c</formula>
+        <formula>Contact__r.Suggested_UG_FinAid_Counselor_Role__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Financial Aid Counselor</label>
         <required>false</required>
@@ -286,6 +286,55 @@ CASE(RIGHT(TEXT(Date__c),2),
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Generated_Itinerary__c</fullName>
+        <description>Auto generated itinerary based on confirmed appointments.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto generated itinerary based on confirmed appointments.</inlineHelpText>
+        <label>Generated Itinerary</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Instance_Title__c</fullName>
+        <externalId>false</externalId>
+        <formula>Event_Instance__r.Instance_Title__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Instance Title</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Instance__c</fullName>
+        <externalId>false</externalId>
+        <label>Instance</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>AM</fullName>
+                    <default>false</default>
+                    <label>AM</label>
+                </value>
+                <value>
+                    <fullName>PM</fullName>
+                    <default>false</default>
+                    <label>PM</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>New_Contact_Created__c</fullName>
@@ -975,6 +1024,17 @@ CASE(RIGHT(TEXT(Date__c),2),
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Instance__c</picklist>
+            <values>
+                <fullName>AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Preferred_Visit_Time__c</picklist>
             <values>
                 <fullName>Afternoon</fullName>
@@ -1237,6 +1297,17 @@ CASE(RIGHT(TEXT(Date__c),2),
             </values>
             <values>
                 <fullName>Terrence Murphy Hall %28TMH%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Instance__c</picklist>
+            <values>
+                <fullName>AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

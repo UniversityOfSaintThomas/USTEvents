@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>false</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Object to define email receipts sent out on status changes in event registrations.</description>
+    <enableActivities>false</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>false</enableHistory>
+    <enableReports>false</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Action_Status__c</fullName>
+        <description>The status setting of and event registration that you wish to have this email sent.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The status setting of and event registration that you wish to have this email sent.</inlineHelpText>
+        <label>Action Status</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Started</fullName>
+                    <default>false</default>
+                    <label>Started</label>
+                </value>
+                <value>
+                    <fullName>Requested</fullName>
+                    <default>false</default>
+                    <label>Requested</label>
+                </value>
+                <value>
+                    <fullName>Received</fullName>
+                    <default>false</default>
+                    <label>Received</label>
+                </value>
+                <value>
+                    <fullName>Confirmed</fullName>
+                    <default>false</default>
+                    <label>Confirmed</label>
+                </value>
+                <value>
+                    <fullName>Ready</fullName>
+                    <default>false</default>
+                    <label>Ready</label>
+                </value>
+                <value>
+                    <fullName>Cancelled</fullName>
+                    <default>false</default>
+                    <label>Cancelled</label>
+                </value>
+                <value>
+                    <fullName>Rescheduled</fullName>
+                    <default>false</default>
+                    <label>Rescheduled</label>
+                </value>
+                <value>
+                    <fullName>Status</fullName>
+                    <default>false</default>
+                    <label>Status</label>
+                </value>
+                <value>
+                    <fullName>--Inactive--</fullName>
+                    <default>false</default>
+                    <label>--Inactive--</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>BCC_Email__c</fullName>
+        <description>Comma separated list of emails to blind carbon copy this email.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Comma separated list of emails to blind carbon copy this email.</inlineHelpText>
+        <label>BCC Email</label>
+        <length>1000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Email_Content__c</fullName>
+        <description>Main content of the email. Can include registration information.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Main content of the email. Can include registration information.</inlineHelpText>
+        <label>Email Content</label>
+        <length>32768</length>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Email_From__c</fullName>
+        <externalId>false</externalId>
+        <label>Email From</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Email_Subject__c</fullName>
+        <externalId>false</externalId>
+        <label>Email Subject</label>
+        <length>255</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event__c</fullName>
+        <description>The event for which this email is defined</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The event for which this email is defined</inlineHelpText>
+        <label>Event</label>
+        <referenceTo>UST_Event__c</referenceTo>
+        <relationshipLabel>UST Event Emails</relationshipLabel>
+        <relationshipName>UST_Event_Emails</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>false</reparentableMasterDetail>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Letterhead_HTML__c</fullName>
+        <description>The letterhead of the email in which the content will be placed</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The letterhead of the email in which the content will be placed</inlineHelpText>
+        <label>Letterhead HTML</label>
+        <length>32000</length>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Letterhead_Id__c</fullName>
+        <description>The idea of the selected letterhead from the org</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The idea of the selected letterhead from the org</inlineHelpText>
+        <label>Letterhead Id</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Letterhead__c</fullName>
+        <description>Choose the letterhead you would like to wrap your email message.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Choose the letterhead you would like to wrap your email message.</inlineHelpText>
+        <label>Letterhead</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>UG Admissions</fullName>
+                    <default>false</default>
+                    <label>UG Admissions</label>
+                </value>
+                <value>
+                    <fullName>DFC Letterhead</fullName>
+                    <default>false</default>
+                    <label>DFC Letterhead</label>
+                </value>
+                <value>
+                    <fullName>SOE School of Engineering</fullName>
+                    <default>false</default>
+                    <label>SOE School of Engineering</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Org_Email_Id__c</fullName>
+        <description>Id of the organizational email that allows for external sending out of Salesforce</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Id of the organizational email that allows for external sending out of Salesforce</inlineHelpText>
+        <label>Org Email Id</label>
+        <length>30</length>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Org_Email__c</fullName>
+        <description>Organizational email to send from</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Organizational email to send from</inlineHelpText>
+        <label>Org Email</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Email</type>
+        <unique>false</unique>
+    </fields>
+    <label>UST Event Email</label>
+    <listViews>
+        <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Event__c</columns>
+        <columns>Action_Status__c</columns>
+        <columns>Letterhead__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <nameField>
+        <displayFormat>Email-{0000}</displayFormat>
+        <label>UST Event Email Name</label>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>UST Event Emails</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Letter_Head_Definition</fullName>
+        <availability>online</availability>
+        <description>Set up letter head for this email to used to wrap this email</description>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>500</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Letter Head Definition</masterLabel>
+        <openType>newWindow</openType>
+        <page>USTEventLetterheadLookup</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <width>480</width>
+    </webLinks>
+</CustomObject>

@@ -46,7 +46,6 @@
     <description>Individual Event occurrence for Event Registrations</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
-    <enableChangeDataCapture>false</enableChangeDataCapture>
     <enableEnhancedLookup>true</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
@@ -88,6 +87,11 @@
         <inlineHelpText>Sum of Number of Guests plus 1 for the student registration</inlineHelpText>
         <label>Count of Attendees</label>
         <summarizedField>UST_Event_Registration__c.Total_Number_of_Guests__c</summarizedField>
+        <summaryFilterItems>
+            <field>UST_Event_Registration__c.Status__c</field>
+            <operation>equals</operation>
+            <value>Requested, Received, Confirmed</value>
+        </summaryFilterItems>
         <summaryForeignKey>UST_Event_Registration__c.Event_Instance__c</summaryForeignKey>
         <summaryOperation>sum</summaryOperation>
         <trackHistory>false</trackHistory>
