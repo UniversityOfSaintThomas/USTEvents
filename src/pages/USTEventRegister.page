@@ -84,7 +84,7 @@
                         </div>
                         <div class="column small-12 medium-12 large-12">
                             <p>Enter the contact information of the student you are registering for this activity below.
-                                <br/><strong><em>Note: it is preferable that the student have a unique email (different then yours) for our records.</em></strong></p>
+                                <br/><strong><em>Note: it is preferable that the student have a unique email (different than yours) for our records.</em></strong></p>
                         </div>
                     </apex:outputPanel>
 
