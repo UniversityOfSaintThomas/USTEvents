@@ -38,7 +38,7 @@ public with sharing class TestUSTRestAdmissions {
         getMaps('', '', '', '', '');
         getMaps('highschool', '', '', '', '');
         getMaps('ugmajors', '', '', '', '');
-        getMaps('ugactivites', '', '', '', '');
+        getMaps('ugactivities', '', '', '', '');
         getMaps('ugclubsports', '', '', '', '');
         getMaps('ugvarsitysports', '', '', '', '');
         getMaps('ugmusic', '', '', '', '');

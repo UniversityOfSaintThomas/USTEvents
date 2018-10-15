@@ -16,12 +16,14 @@ public with sharing class USTEventRegisterController {
     public USTEventShared.USTEventInfo evtInfo { get; set; }
     public String templateSelected { get; set; }
     public boolean contactSet { get; set; }
+    public boolean eventIsClosed {get;set;}
 
     public USTEventRegisterController() {
         newEvtReg = new UST_Event_Registration__c();
         templateSelected = USTShared.defaultTemplate;
         test = '';
         contactSet = false;
+        eventIsClosed = false;
 
         EvtUserType = UserInfo.getUserType();
         //Get cookie or URL string variable
@@ -30,7 +32,7 @@ public with sharing class USTEventRegisterController {
         //Get Instance information
         if (!String.isBlank(evtInfo.instanceID)) {
             evtInstance = [
-                    SELECT Id, Name, Event__r.Name, Event__r.Event_Name__c, Event__r.Id, Instance_Title__c,
+                    SELECT Id, Name, Event__r.Name, Event__r.Event_Name__c, Event__r.Id, Instance_Title__c, Active_Status__c, Capacity__c,
                             Event__r.Event_description__c, Event__r.Audience__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c
                     FROM UST_Event_Instance__c
                     WHERE Id = :evtInfo.instanceID
@@ -40,6 +42,9 @@ public with sharing class USTEventRegisterController {
             //define Event ID from instanceInfo data
             evtInfo.evtId = evtInstance.Event__r.Id;
             instanceName = evtInstance.Name;
+            if (evtInstance.Current_Available_Capacity__c == 0 || evtInstance.Active_Status__c != 'Active') {
+                eventIsClosed = true;
+            }
         }
 
         //Get Event Info off of instance master detail id
@@ -80,8 +85,9 @@ public with sharing class USTEventRegisterController {
             if (String.isBlank(evtInfo.evtRegId) || evtInfo.evtRegId == 'COMING') {
                 userContact = [
                         Select Id, Name, FirstName, LastName, Email, EnrollmentrxRx__Gender__c, MailingStreetLine1__c, MailingStreetLine2__c, MailingState__c,
-                                MailingZip__c, MailingCity__c, Home_Phone__c, MobilePhone, Receive_Texts__c, EnrollmentrxRx__High_School__c, EnrollmentrxRx__High_School_Code__c
-                        From Contact
+                                MailingZip__c, MailingCity__c, Home_Phone__c, MobilePhone, Receive_Texts__c, EnrollmentrxRx__High_School__c, EnrollmentrxRx__High_School_Code__c,
+                                EnrollmentrxRx__High_School__r.Name, EnrollmentrxRx__High_School__r.EnrollmentrxRx__CEEB_Code__c
+                        FROM Contact
                         Where Id In (
                                 Select ContactId
                                 From User
@@ -99,10 +105,10 @@ public with sharing class USTEventRegisterController {
                 newEvtReg.Registrant_Zip__c = userContact.MailingZip__c;
                 newEvtReg.Registrant_Phone__c = userContact.Home_Phone__c;
                 newEvtReg.Registrant_Mobile_Phone__c = userContact.MobilePhone;
-                newEvtReg.Registrant_College__c = userContact.EnrollmentrxRx__High_School__c;
-                newEvtReg.Registrant_College_Code__c = userContact.EnrollmentrxRx__High_School_Code__c;
-                newEvtReg.Registrant_High_School__c = userContact.EnrollmentrxRx__High_School__c;
-                newEvtReg.Registrant_High_School_Code__c = userContact.EnrollmentrxRx__High_School_Code__c;
+                newEvtReg.Registrant_College__c = userContact.EnrollmentrxRx__High_School__r.Name;
+                newEvtReg.Registrant_College_Code__c = userContact.EnrollmentrxRx__High_School__r.EnrollmentrxRx__CEEB_Code__c;
+                newEvtReg.Registrant_High_School__c = userContact.EnrollmentrxRx__High_School__r.Name;
+                newEvtReg.Registrant_High_School_Code__c = userContact.EnrollmentrxRx__High_School__r.EnrollmentrxRx__CEEB_Code__c;
 
                 if (userContact.Receive_Texts__c == 'Yes') {
                     newEvtReg.Registrant_Receive_Texts__c = true;

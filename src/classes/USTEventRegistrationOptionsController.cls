@@ -166,24 +166,29 @@ public with sharing class USTEventRegistrationOptionsController {
                     apptFormatted += '</textarea>';
                 }
                 if (apt.Registrant_Input__c == 'Custom pick list' || apt.Registrant_Input__c == 'Required custom pick list') {
-                    apptFormatted += '<select';
-                    if (apt.Registrant_Input__c == 'Required custom pick list') {
-                        apptFormatted += ' required="required" class="appointmentCustomInput required" ';
-                    } else {
-                        apptFormatted += ' class="appointmentCustomInput" ';
-                    }
-                    apptFormatted += '>';
-                    apptFormatted += '<option value="">Select...</option>';
-                    String custPickListText = apt.Custom_Picklist__c;
-                    custPickListText = custPickListText.Trim();
-                    custPickListText = custPickListText.replace('\n\n', '\n');
-                    String[] custPckListList = custPickListText.split('\n');
+                    if(!String.isBlank(apt.Custom_Picklist__c)) {
+                        apptFormatted += '<select';
+                        if (apt.Registrant_Input__c == 'Required custom pick list') {
+                            apptFormatted += ' required="required" class="appointmentCustomInput required" ';
+                        } else {
+                            apptFormatted += ' class="appointmentCustomInput" ';
+                        }
+                        apptFormatted += '>';
+                        apptFormatted += '<option value="">Select...</option>';
+                        String custPickListText = apt.Custom_Picklist__c;
+                        custPickListText = custPickListText.Trim();
+                        custPickListText = custPickListText.replace('\n\n', '\n');
+                        String[] custPckListList = custPickListText.split('\n');
 
-                    for (String cp : custPckListList) {
-                        cp = cp.replaceAll('[^a-zA-Z0-9@<>?&;:\\[\\]!-. ]', '');
-                        apptFormatted += '<option value="' + cp + '">' + cp + '</option>';
+                        for (String cp : custPckListList) {
+                            cp = cp.replaceAll('[^a-zA-Z0-9@<>?&;:\\[\\]!-. ]', '');
+                            apptFormatted += '<option value="' + cp + '">' + cp + '</option>';
+                        }
+                        apptFormatted += '</select>';
+                    } else {
+                        apptFormatted += 'MISSING PICKLIST VALUES';
                     }
-                    apptFormatted += '</select>';
+
                 }
 
                 apptFormatted += '<a href="javascript:;" class="appointmentAdd"><span><i class="fa fa-plus" aria-hidden="true"></i> Add appointment</span></a>';
@@ -244,7 +249,7 @@ public with sharing class USTEventRegistrationOptionsController {
         try {
             delete deleteAppt;
         } catch (DmlException e) {
-
+            System.Debug('HERE IS THE DROID YOU ARE LOKING FOR ======>' + e.getMessage());
         }
         List<incomingAppt> deserializedInvoices = (List<incomingAppt>) JSON.deserialize(incomingApptJSon, List<incomingAppt>.class);
         PageReference submitPage = Page.USTEventSubmit;

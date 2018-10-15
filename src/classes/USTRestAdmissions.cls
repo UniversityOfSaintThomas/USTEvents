@@ -25,7 +25,7 @@ global with sharing class USTRestAdmissions {
                 return getGradPrograms();
             } else if (feedType.toLowerCase() == 'ugmajors') {
                 return getUGMajors();
-            } else if (feedType.toLowerCase() == 'ugactivites') {
+            } else if (feedType.toLowerCase() == 'ugactivities') {
                 return getActivities('Clubs and Organizations');
             } else if (feedType.toLowerCase() == 'ugclubsports') {
                 return getActivities('Intramurals/Club Sports');

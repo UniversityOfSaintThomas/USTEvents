@@ -18,7 +18,7 @@
                     <apex:messages />
                 </div>
             </div>
-            <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!IF(evtInstance.Current_Available_Capacity__c > 0, true, false)}">
+            <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!!eventIsClosed}">
                 <!-- Function to set mailing country -->
                 <apex:actionFunction name="setParentSetting" immediate="true" onComplete="dynamicValidation();fadein();" reRender="parentAskSection">
                     <apex:param name="parentType" value="" assignTo="{!newEvtReg.Registrant_Parent_Status__c}"></apex:param>
@@ -256,7 +256,7 @@
                     </div>
                 </div>
             </apex:form>
-            <apex:outputPanel rendered="{!IF(evtInstance.Current_Available_Capacity__c <= 0, true, false)}" styleClass="row">
+            <apex:outputPanel rendered="{!eventIsClosed}" styleClass="row">
                 <div class="column">
                     <h2>
                         <apex:outputText value="{!eventPage.Event_Name__c}"></apex:outputText>

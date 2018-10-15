@@ -7,54 +7,78 @@ public with sharing class TestUSTEventShared {
     @testSetup static void insertCertainBaselineDataForTestsIfNotPresent() {
         Util.insertCertainBaselineDataForTestsIfNotPresent();
     }
-    private static USTEventShared USTShared = new USTEventShared();
-    private static USTEventCancelReviewController cancelReviewCtrl;
-    private static USTEventConfirmationController confirmCtrl;
-    private static USTEventParkingPassController parkingCtrl;
-    private static USTEventRegisterController registerCtrl;
-    private static USTEventRegistrationOptionsController optionsCtrl;
-    private static USTEventSubmitController submitCtrl;
+
     private static UST_Event__c testEvent;
+    private static UST_Event_Email__c testEvtEmail;
     private static UST_Event_Instance__c testInstance;
     private static UST_Event_Registration__c testRegistration;
     private static List<UST_Event_Appointment_Type__c> newApptTypes { get; set; }
-    private static List<UST_Event_Appointments__c> addToRegAppt{ get; set; }
+    private static List<UST_Event_Appointments__c> addToRegAppt { get; set; }
     private static User testUser;
     private static Contact student;
     private static String audience { get; set; }
     private static String template { get; set; }
 
-    @isTest static void testRegister() {
-
+    @isTest static void testBlankEvent() {
         Test.startTest();
-
         //Making bad cookies for exceptions
         String eventForCookie = '{"blah":"blah"}';
+        USTEventShared USTShared = new USTEventShared();
+        USTEventRegisterController registerCtrl = new USTEventRegisterController();
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
         USTShared.getUSTEventInfo();
 
         registerCtrl = new USTEventRegisterController();
         registerCtrl.checkEventDetails();
         registerCtrl.checkEventDetails();
+        Test.stopTest();
+    }
 
+    @isTest static void testRegWithFullEmailMatch() {
         createEventWithRegistration('email');
+        Test.startTest();
+        USTEventShared USTShared = new USTEventShared();
+        USTEventRegisterController registerCtrl = new USTEventRegisterController();
+        String eventForCookie = '{"blah":"blah"}';
         eventForCookie = '{"audience":"' + audience + '","instanceID":"' + testInstance.Id + '","evtRegId":"' + testRegistration.id + '","evtId":"' + testEvent.Id + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
         registerCtrl = new USTEventRegisterController();
         registerCtrl.saveContactRegistration();
+        Test.stopTest();
+    }
 
+    @isTest static void testRegWithZipMatch() {
         createEventWithRegistration('lastzip');
+        Test.startTest();
+        USTEventShared USTShared = new USTEventShared();
+        USTEventRegisterController registerCtrl = new USTEventRegisterController();
+        String eventForCookie = '{"blah":"blah"}';
         eventForCookie = '{"audience":"' + audience + '","instanceID":"' + testInstance.Id + '","evtRegId":"' + testRegistration.id + '","evtId":"' + testEvent.Id + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
         registerCtrl = new USTEventRegisterController();
         registerCtrl.saveContactRegistration();
+        Test.stopTest();
+    }
 
+    @isTest static void testFullRegister() {
         createEventWithRegistration('');
+        Test.startTest();
+        String eventForCookie = '{"blah":"blah"}';
+        USTEventShared USTShared = new USTEventShared();
+        USTEventRegisterController registerCtrl = new USTEventRegisterController();
         eventForCookie = '{"audience":"' + audience + '","instanceID":"' + testInstance.Id + '","evtRegId":"COMING","evtId":"' + testEvent.Id + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
         registerCtrl = new USTEventRegisterController();
         registerCtrl.saveContactRegistration();
+        Test.stopTest();
+    }
 
+    @isTest static void testRegWithPortalLogin() {
+        createEventWithRegistration('');
+        Test.startTest();
+        USTEventShared USTShared = new USTEventShared();
+        USTEventRegisterController registerCtrl = new USTEventRegisterController();
+        String eventForCookie = '{"blah":"blah"}';
         //Log in as portal user
         System.runAs(testUser) {
             eventForCookie = '{"audience":"' + audience + '","instanceID":"' + testInstance.Id + '","evtRegId":"COMING","evtId":"' + testEvent.Id + '"}';
@@ -78,19 +102,20 @@ public with sharing class TestUSTEventShared {
         }
 
         //Submit the registration
-        submitCtrl = new USTEventSubmitController();
+        USTEventSubmitController submitCtrl = new USTEventSubmitController();
         submitCtrl.checkEventDetails();
         submitCtrl.previousPage();
         submitCtrl.submitRegistration();
 
         update testRegistration;
         submitCtrl.submitRegistration();
+        Test.stopTest();
     }
 
-    @isTest static void testOptions() {
+    @isTest static void testRegWithOptions() {
         Test.startTest();
-        optionsCtrl = new USTEventRegistrationOptionsController();
-
+        USTEventRegistrationOptionsController optionsCtrl = new USTEventRegistrationOptionsController();
+        USTEventShared USTShared = new USTEventShared();
         createEventWithRegistration('');
         String eventForCookie = '{"audience":"Transfer","instanceID":"' + testInstance.Id + '","evtRegId":"' + testRegistration.Id + '","evtId":"' + testEvent.Id + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
@@ -106,7 +131,7 @@ public with sharing class TestUSTEventShared {
 
         String jsonAppts = '[';
         for (UST_Event_Appointment_Type__c at : newApptTypes) {
-            jsonAppts +='{"apptId":"' + at.Id + '","apptCatagory":"","apptType":"","apptText":"","apptTitle":"' + at.Title__c + '"},';
+            jsonAppts += '{"apptId":"' + at.Id + '","apptCatagory":"","apptType":"","apptText":"","apptTitle":"' + at.Title__c + '"},';
         }
         jsonAppts = jsonAppts.removeEnd(',');
         jsonAppts += ']';
@@ -116,42 +141,47 @@ public with sharing class TestUSTEventShared {
         //run constructor again to simulate page load after save
         testRegistration.UG_Event_Appointments__r.add(new UST_Event_Appointments__c(Client_Created_Appointment__c = true));
         optionsCtrl = new USTEventRegistrationOptionsController();
+        Test.stopTest();
     }
 
 
-    @isTest static void testCancel() {
+    @isTest static void testRegCancel() {
         createEventWithRegistration('');
         Test.startTest();
         PageReference pageRef = Page.USTEventCancelReview;
         Test.setCurrentPage(pageRef);
         ApexPages.currentPage().getParameters().put('regId', testRegistration.Id);
-        cancelReviewCtrl = new USTEventCancelReviewController();
+        USTEventCancelReviewController cancelReviewCtrl = new USTEventCancelReviewController();
         cancelReviewCtrl.cancelRegistration();
+        Test.stopTest();
     }
 
-    @isTest static void testConfirmation() {
+    @isTest static void testRegConfirmationPage() {
         createEventWithRegistration('');
         Test.startTest();
+        USTEventShared USTShared = new USTEventShared();
         //{"audience":"High School Senior","instanceID":"a320m000000A5fOAAS","evtRegId":"a350m0000008q63AAA","evtId":"a330m0000001SOrAAM"}
         String eventForCookie = '{"audience":"' + audience + '","instanceID":"' + testInstance.Id + '","evtRegId":"' + testRegistration.Id + '","evtId":"' + testEvent.Id + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
-        confirmCtrl = new USTEventConfirmationController();
+        USTEventConfirmationController confirmCtrl = new USTEventConfirmationController();
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
         confirmCtrl.checkEventDetails();
+        Test.stopTest();
     }
 
     @isTest static void testParkingPass() {
         createEventWithRegistration('');
         Test.startTest();
-        parkingCtrl = new USTEventParkingPassController();
+        USTEventParkingPassController parkingCtrl = new USTEventParkingPassController();
         ApexPages.currentPage().getParameters().put('regId', testRegistration.Id);
         parkingCtrl = new USTEventParkingPassController();
         testRegistration.Date__c = testInstance.Start_Date_Time__c.date();
         upsert testRegistration;
         parkingCtrl = new USTEventParkingPassController();
+        Test.stopTest();
     }
 
-    @isTest static void testFeed() {
+    @isTest static void testEventFeed() {
         createTestEvent();
         Test.startTest();
         RestRequest req = new RestRequest();
@@ -188,15 +218,49 @@ public with sharing class TestUSTEventShared {
         req.params.put('audience', audience);
         RestContext.request = req;
         USTEventFeed.getUSTEventFeed();
+        Test.stopTest();
     }
 
     @isTest static void testUSTEventShared() {
-        // USTShared = new USTEventShared();
         createEventWithRegistration('');
+        Test.startTest();
+        USTEventShared USTShared = new USTEventShared();
         String eventForCookie = '{"audience":"Transfer","instanceID":"' + testInstance.Id + '","evtRegId":"' + testRegistration.Id + '","evtId":"' + testEvent.Id + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
         ApexPages.currentPage().getParameters().put('instanceID', '000000000000000');
         USTShared.getUSTEventInfo();
+        Test.stopTest();
+    }
+
+    @isTest static void testLetterheadLookup() {
+
+        createTestEvent();
+        Test.startTest();
+        ApexPages.StandardController sc = new ApexPages.StandardController(testEvtEmail);
+        USTEventLetterheadLookupExtension emailController = new USTEventLetterheadLookupExtension(sc);
+        emailController.getOrgWideEmail();
+        emailController.getLetterheads();
+
+        //Create fake brandTemplate since SF won't let you insert one
+        BrandTemplate fakeBrandTemplate =  new BrandTemplate(
+                Id =  getFakeId(BrandTemplate.SObjectType),
+                Name = 'Test',
+                value = '<body class="setupTab" ><style background-color="#FFFFFF" bEditID="b1st1" bLabel="body" ></style><center ><table cellpadding="0" width="500" cellspacing="0" id="topTable" height="450" ><tr valign="top" ><td ><style background-color="#FFFFFF" bEditID="r1st1" bLabel="header" vertical-align="top" height="5" text-align="left" ></style><img border="0" bEditID="r1sp1" bLabel="headerImage" id="r1sp1"><![CDATA[/servlet/servlet.ImageServer?id=0150m000000AN8V&oid=00D0m000000Cra6]]></img></td></tr><tr valign="top" ><td ><style background-color="#6600CC" bEditID="r2st1" bLabel="accent1" height="5" ></style><![CDATA[]]></td></tr><tr valign="top" ><td styleInsert="1" height="300" ><style background-color="#FFFFFF" bEditID="r3st1" color="#000000" bLabel="main" font-size="12pt" font-family="arial" ></style><![CDATA[]]></td></tr><tr valign="top" ><td ><style background-color="#6600CC" bEditID="r4st1" bLabel="accent2" height="5" ></style><![CDATA[]]></td></tr><tr valign="top" ><td ><style background-color="#FFFFFF" bEditID="r5st1" bLabel="footer" vertical-align="top" height="125" text-align="left" ></style><img border="0" bEditID="r5sp1" bLabel="footerImage" id="r5sp1"><![CDATA[/servlet/servlet.ImageServer?id=0150m000000AN8U&oid=00D0m000000Cra6]]></img></td></tr><tr valign="top" ><td ><style background-color="#FFFFFF" bEditID="r6st1" bLabel="accent3" height="5" ></style><![CDATA[]]></td></tr></table></center></body>'
+        );
+        emailController.brandTemplates = new Map<Id, BrandTemplate>();
+        emailController.brandTemplates.put(fakeBrandTemplate.Id, fakeBrandTemplate);
+        emailController.USTEvt.Letterhead_Id__c = fakeBrandTemplate.Id;
+
+
+        OrgWideEmailAddress fakeOrgWideEmailAddress = new OrgWideEmailAddress (
+                Id =  getFakeId(OrgWideEmailAddress.SObjectType),
+                Address = 'thad+owe@valleyhill.net',
+                DisplayName = 'Test'
+        );
+        emailController.oweList = new Map<Id, OrgWideEmailAddress>();
+        emailController.oweList.put(fakeOrgWideEmailAddress.Id, fakeOrgWideEmailAddress);
+        emailController.USTEvt.Org_Email_Id__c = fakeOrgWideEmailAddress.Id;
+        emailController.save();
     }
 
     @isTest static void testUSTApptConfirmTigger() {
@@ -206,17 +270,19 @@ public with sharing class TestUSTEventShared {
         List<UST_Event_Appointments__c> dataApptAdd = new List<UST_Event_Appointments__c>();
         dataApptAdd.add(
                 new UST_Event_Appointments__c(
-                        Id = addToRegAppt[0].Id, Appointment_Status__c = 'Confirmed', Faculty_Staff_Member__c = 'Big Top', Appointment_Time__c = Time.newInstance(14,30,0,0)
+                        Id = addToRegAppt[0].Id, Appointment_Status__c = 'Confirmed', Faculty_Staff_Member__c = 'Big Top', Appointment_Time__c = Time.newInstance(14, 30, 0, 0)
                 )
         );
         dataApptAdd.add(
                 new UST_Event_Appointments__c(
-                        Id = addToRegAppt[1].Id, Appointment_Status__c = 'Confirmed', Faculty_Staff_Member__c = 'Big Top', Appointment_Time__c = Time.newInstance(16,30,0,0)
+                        Id = addToRegAppt[1].Id, Appointment_Status__c = 'Confirmed', Faculty_Staff_Member__c = 'Big Top', Appointment_Time__c = Time.newInstance(16, 30, 0, 0)
                 )
         );
         Database.update(dataApptAdd);
         Test.stopTest();
     }
+
+    //Create event data
 
     private static void createTestEvent() {
         audience = 'High School Senior';
@@ -241,6 +307,17 @@ public with sharing class TestUSTEventShared {
                 Close_Event_Days_Before__c = 0,
                 Audience__c = audience);
         insert testEvent;
+
+        // Add email on requeted status
+        testEvtEmail = new UST_Event_Email__c(
+                Action_Status__c = 'Requested',
+                BCC_Email__c = 'thad+test@valleyhill.net,thad+test2@valleyhill.net',
+                Email_Content__c = 'Name: {!Registrant_First_Name__c} {!Registrant_Last_Name__c} Event Date: {!Date_Time_Text__c} Event Session: {!Instance_Title__c} Attendees:{!Total_Number_of_Guests__c} Email: {!Registrant_Email__c} High School: {!Registrant_High_School__c}',
+                Letterhead_HTML__c = '<html><style> p { margin-top: 0px; margin-bottom: 0px;} </style><body id="body" style=" background-color:#FFFFFF; color:#FFFFFF; " ><center><table cellpadding="0" width="500" cellspacing="0" height="450">  <tr valign="top">    <td id="header" style=" background-color:#FFFFFF; color:#FFFFFF; height:100px; " ><img src="https://c.cs65.visual.force.com/servlet/servlet.ImageServer?id=0150m000000AN8V&oid=00D0m000000Cra6"/>    </td>  </tr><tr valign="top"><td id="accent1" style=" background-color:#FFFFFF; color:#FFFFFF; height:5px; " ></tr><tr valign="top"><td height="300" style=" background-color:#FFFFFF; font-family:arial; font-size:12pt; color:#000000; " ><table border="0" cellpadding="5" width="550" cellspacing="5" height="400"><tr valign="top" height="400"><td id="main" style=" background-color:#FFFFFF; font-family:arial; font-size:12pt; color:#000000; " >[[DONT_DELETE_CONTENT_HERE]]</td></tr></table></td></tr><tr valign="top"><td id="accent2" style=" background-color:#FFFFFF; color:#FFFFFF; height:5px; " ></tr>  <tr valign="top">    <td id="footer" style=" background-color:#FFFFFF; color:#FFFFFF; height:100px; " >    </td>  </tr><tr valign="top"><td id="accent3" style=" background-color:#FFFFFF; color:#FFFFFF; height:5px; " ></tr></table></center></body>',
+                Event__c = testEvent.Id
+        );
+        insert testEvtEmail;
+
 
         //Create appointment  types
         newApptTypes = new List<UST_Event_Appointment_Type__c>();
@@ -306,6 +383,7 @@ public with sharing class TestUSTEventShared {
                 Capacity__c = 500
         );
         insert testInstance;
+
     }
 
     private static void createEventWithRegistration(String contactType) {
@@ -412,6 +490,16 @@ public with sharing class TestUSTEventShared {
                 LanguageLocaleKey = 'en_US'
         );
         insert testUser;
+
+    }
+
+    static Integer s_num = 1;
+
+    public static String getFakeId(Schema.SObjectType sot)
+    {
+        String result = String.valueOf(s_num++);
+        return sot.getDescribe().getKeyPrefix() +
+                '0'.repeat(12-result.length()) + result;
     }
 
 }

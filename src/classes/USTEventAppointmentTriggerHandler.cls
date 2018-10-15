@@ -28,7 +28,7 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
     }
 
     public void afterDelete() {
-        getUniqueRegistrationIDs(Trigger.New);
+        getUniqueRegistrationIDs(Trigger.old);
     }
 
     public void beforeUndelete() {
@@ -36,7 +36,7 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
     }
 
     public void afterUnDelete() {
-        getUniqueRegistrationIDs(Trigger.New);
+        getUniqueRegistrationIDs(Trigger.old);
     }
 
     public void bulkBefore() {
