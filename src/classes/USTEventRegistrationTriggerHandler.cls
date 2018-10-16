@@ -56,6 +56,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
 
         Map<Id, Id> affectedIds = new Map<Id, Id>();
         List<UST_Event_Registration__c> affectedRegs = new List<UST_Event_Registration__c>();
+        ID contactId = [Select contactid from User where id =: Userinfo.getUserid()].contactId;
 
         for (UST_Event_Registration__c r : regs) {
 
@@ -81,6 +82,8 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                 FROM UST_Event_Email__c
                 WHERE Event__r.Id IN :affectedIds.values()
         ];
+
+        List<Task> activityUpdates = new List<Task>();
 
         //loop through affected event registrations - have status change from old
         for (UST_Event_Registration__c areg : affectedRegs) {
@@ -129,9 +132,20 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
 
                     //send the message
                     sendEmail2(areg.Registrant_Email__c, originalTemplate, emailContent, e.Email_Subject__c, e.Org_Email_Id__c, e.BCC_Email__c);
-
+                    Task nt = new Task();
+                    nt.WhatId = areg.id;
+                    nt.Type = 'Email';
+                    nt.ActivityDate = Date.today();
+                    nt.Subject = 'Event status email: ' + e.Action_Status__c + ' - ' + e.Email_Subject__c;
+                    nt.Status = 'Completed';
+                    nt.Priority = 'Low';
+                    activityUpdates.add(nt);
                 }
             }
+        }
+
+        if (activityUpdates.size() > 0) {
+            insert activityUpdates;
         }
     }
 
@@ -142,9 +156,9 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
         });
         mail.setSubject(Subject);
         if (!String.isBlank(BCCString)) {
-            BCCString = BCCString.replaceAll( '\\s+', '');
+            BCCString = BCCString.replaceAll('\\s+', '');
             List<String> bccList = BCCString.split(',');
-            if (bccList.size()>0) {
+            if (bccList.size() > 0) {
                 mail.setBccAddresses(bccList);
             }
         }
