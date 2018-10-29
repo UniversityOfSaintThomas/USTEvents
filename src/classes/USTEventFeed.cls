@@ -53,8 +53,8 @@ global with sharing class USTEventFeed {
         List<eventItem> EventList = new List<eventItem>();
         RestRequest req = RestContext.request;
         String eventQuery = '';
-        eventQuery += ' SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__R.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c, ';
-        eventQuery += ' Event__r.Event_description__c, Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c ';
+        eventQuery += ' SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__r.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c, Event__r.Program_Filter__c, Event__r.Location_Title__c,  ';
+        eventQuery += ' Event__r.Location_Address__c, Event__r.Event_description__c, Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c, Event__r.School__r.Name ';
         eventQuery += ' FROM UST_Event_Instance__c ';
         eventQuery += ' WHERE ';
         eventQuery += ' Event__R.Event_Status__c = \'Active\' ';
@@ -108,6 +108,21 @@ global with sharing class USTEventFeed {
             eventQuery += ' AND Event__r.Audience__c INCLUDES (' + audience + ') ';
         }
 
+        //get filter with like soql concatinated program,location, school, location address, location type
+        String filter = req.params.get('filter');
+        if(!String.isBlank(filter)) {
+            eventQuery += ' AND  (';
+            List<String> filterList = filter.split(',');
+            for (String f : filterList) {
+                eventQuery += ' Event__r.Program_Filter__c LIKE \'%' + f + '%\' OR ';
+                eventQuery += ' Event__r.Location_Title__c LIKE \'%' + f + '%\' OR ';
+                eventQuery += ' Event__r.Location_Address__c LIKE \'%' + f + '%\' OR ';
+                eventQuery += ' Event__r.Building__c LIKE \'%' + f + '%\' OR ';
+                eventQuery += ' Event__r.School__r.Name LIKE \'%' + f + '%\' OR ';
+            }
+            eventQuery = eventQuery.removeEnd('OR ');
+            eventQuery += ' ) ';
+        }
 
         String incomingShowLongDesc = req.params.get('longdesc');
         Boolean showLongDescription = false;

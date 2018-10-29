@@ -57,10 +57,19 @@ public class USTEventProgramLookupExtension {
     public void save() {
         // build a ; seperated string of selected Programs to insert into Academic_Program_List__c
         String selectString = '';
+        String progCodeString = '';
         for (SelectOption p : SelectedPrograms) {
             selectString += p.getValue() + ';';
         }
+
+        Pattern TAG_REGEX = Pattern.compile('\\((\\w+)\\)');
+        Matcher matcher = TAG_REGEX.matcher(selectString);
+        //loop through found hocks and add only unique
+        while (matcher.find()) {
+            progCodeString += matcher.group(1) + ';';
+        }
         USTEvt.Academic_Program_List__c = selectString;
+        USTEvt.Program_Filter__c = progCodeString;
         upsert USTEvt;
     }
 }
