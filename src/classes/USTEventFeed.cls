@@ -70,10 +70,18 @@ global with sharing class USTEventFeed {
         String formattedViewEnd;
         DateTime viewEnd = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(1);
         if (!String.isBlank(req.params.get('viewStart'))) {
-            viewStart = DateTime.valueOf(req.params.get('viewStart'));
+            String viewStartString = req.params.get('viewStart').trim();
+            if (!viewStartString.containsIgnoreCase(' ')) {
+                viewStartString = viewStartString + ' 00:00:00';
+            }
+            viewStart = DateTime.valueOf(viewStartString);
             formattedViewStart = viewStart.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
         }
         if (!String.isBlank(req.params.get('viewEnd'))) {
+            String viewEndString = req.params.get('viewEnd').trim();
+            if (!viewEndString.containsIgnoreCase(' ')) {
+                viewEndString = viewEndString + ' 23:59:59';
+            }
             viewEnd = DateTime.valueOf(req.params.get('viewEnd'));
             formattedViewEnd = viewEnd.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
         }
