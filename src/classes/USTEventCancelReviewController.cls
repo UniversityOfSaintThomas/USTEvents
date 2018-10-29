@@ -7,25 +7,38 @@ public with sharing class USTEventCancelReviewController {
     public UST_Event_Registration__c evt {get;set;}
     public List<UST_Event_Appointments__c> appt {get;set;}
     public String templateSelected { get; set; }
+    public Boolean eventOver {get;set;}
+    public Boolean eventNotFound {get;set;}
 
     public USTEventCancelReviewController() {
         templateSelected =  USTShared.defaultTemplate;
         String regId = ApexPages.currentPage().getParameters().get('regId');
+        eventNotFound = false;
+        eventOver = false;
 
         if (!String.isBlank(regId)) {
-            evt = [SELECT id, Status__c, Name, Event__r.Name, Event__r.Event_description__c,
-                    Event__r.Event_Footer__c, Event__r.Event_Cancel_Review_Title__c,
+            List<UST_Event_Registration__c> evtList = [SELECT id, Status__c, Name, Event__r.Name, Event__r.Event_Name__c, Event__r.Event_description__c,
+                    Event__r.Event_Footer__c, Event__r.Event_Cancel_Review_Title__c, Event_Name__c, Event_Instance_Title__c,
                     Event__r.Event_Cancel_Review_Description__c, Event__r.Event_Cancelled_Notification_Text__c,
                     Event__r.Template__c, Event__r.Event_Home_Link_Title__c, Event__r.Event_Home_Link_URL__c, Event_Instance__r.Instance_Title__c,
-                    Event_Instance__r.Start_Date_Time__c
-            FROM UST_Event_Registration__c WHERE id = :regId][0];
-            
-            templateSelected = evt.Event__r.Template__c;
+                    Event_Instance__r.Start_Date_Time__c, Event_Instance__r.End_Date_Time__c
+            FROM UST_Event_Registration__c WHERE id = :regId];
 
-            if (evt != null) {
+            if (evtList.size() > 0) {
+                evt = evtList[0];
+                templateSelected = evt.Event__r.Template__c;
                 appt = [SELECT Id, Appointment_Title__c, Appointment_Category__c, Appointment_Type__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :regId];
+                if (evt.Event_Instance__r.End_Date_Time__c < UStShared.adjustForCenteralTime(Datetime.now())) {
+                    eventOver = true;
+                }
+            } else {
+                eventNotFound = true;
             }
+
+        } else {
+            eventNotFound = true;
         }
+
     }
 
     public PageReference cancelRegistration() {

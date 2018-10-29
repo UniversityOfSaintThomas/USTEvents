@@ -5,7 +5,7 @@
 <apex:page id="USTEventLetterheadLookup" showHeader="false" sideBar="false" standardController="UST_Event_Email__c" extensions="USTEventLetterheadLookupExtension">
     <apex:form id="LetterheadConfig">
         <apex:pageBlock title="Letterhead Setup">
-            <apex:pageMessages/>
+            <apex:pageMessages />
             <apex:pageBlockSection title="Organizational Email to send from" columns="1">
                 <apex:outputText rendered="{!!ISBLANK(UST_Event_Email__c.Org_Email__c)}">
                     Currently selected: {!UST_Event_Email__c.Org_Email__c}
@@ -23,10 +23,10 @@
                 </apex:selectList>
             </apex:pageBlockSection>
             <apex:pageBlockSection columns="2">
-                <apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
                     <apex:commandButton value="Save" action="{!save}"></apex:commandButton>
                 </apex:pageBlockSectionItem>
-                <apex:pageBlockSectionItem>
+                <apex:pageBlockSectionItem >
                     <apex:commandButton value="Close" onClick="window.top.close();"></apex:commandButton>
                 </apex:pageBlockSectionItem>
             </apex:pageBlockSection>

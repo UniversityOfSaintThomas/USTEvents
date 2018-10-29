@@ -15,10 +15,10 @@
                     <apex:messages />
                 </div>
             </div>
-            <apex:form id="USTRegistrationCancelReview" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!IF (evt != null, true, false)}">
+            <apex:form id="USTRegistrationCancelReview" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!!eventOver && !eventNotFound}">
                 <div class="row">
                     <div class="columns eventCrumb">
-                        <span class="eventName">{!evt.Event__r..Event_Name__c}</span>
+                        <span class="eventName">{!evt.Event__r.Event_Name__c}</span>
                         <span class="bc-spacer"><span>»</span></span>
                         <apex:outputPanel layout="none" rendered="{!!ISBLANK(evt.Event_Instance__r.Instance_Title__c)}">
                             <span class="eventInstance">{!evtInstance.Event_Instance__r.Instance_Title__c}</span>
@@ -73,10 +73,16 @@
                     </div>
                 </div>
             </apex:form>
-            <apex:outputPanel layout="block" styleClass="row" rendered="{!IF(evt = null, true, false)}">
+            <apex:outputPanel layout="block" styleClass="row" rendered="{!eventNotFound && !eventOver}">
                 <div class="column">
                     <h2>No event found</h2>
                     <p>The link you followed doesn't contain information to any registration we have on file.</p>
+                </div>
+            </apex:outputPanel>
+            <apex:outputPanel layout="block" styleClass="row" rendered="{!eventOver}">
+                <div class="column">
+                    <h2>Event over</h2>
+                    <p>We're sorry, the event {!evt.Event_Name__c} {!IF(!ISBLANK(evt.Event_Instance_Title__c), ' - ' + evt.Event_Instance_Title__c, '')} has already occured and your registration can not be cancelled.</p>
                 </div>
             </apex:outputPanel>
         </apex:define>

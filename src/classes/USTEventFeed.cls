@@ -24,7 +24,6 @@ global with sharing class USTEventFeed {
     @HttpGet
     global static void getUSTEventFeed() {
         feedType = RestContext.request.params.get('feedType');
-
         RestResponse res = RestContext.response;
         res.addHeader('Content-Type', 'application/json');
         String callback = RestContext.request.params.get('callback');
@@ -33,6 +32,7 @@ global with sharing class USTEventFeed {
         if (String.isBlank(callback)) {
             callback = '';
         }
+
 
         if (feedType == 'audienceDD') {
             serializedJSON = JSON.serialize(getAudienceDD(UST_Event__c.Audience__c.getDescribe()));
@@ -52,65 +52,74 @@ global with sharing class USTEventFeed {
     private static List<eventItem> getEventList() {
         List<eventItem> EventList = new List<eventItem>();
         RestRequest req = RestContext.request;
+        String eventQuery = '';
+        eventQuery += ' SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__R.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c, ';
+        eventQuery += ' Event__r.Event_description__c, Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c ';
+        eventQuery += ' FROM UST_Event_Instance__c ';
+        eventQuery += ' WHERE ';
+        eventQuery += ' Event__R.Event_Status__c = \'Active\' ';
+        eventQuery += ' AND Active_Status__c = \'Active\' ';
+        eventQuery += ' AND (Current_Available_Capacity__c > 0 OR Capacity__c = null) ';
+
+        // build and sanitize the where statement that have variables
+
+        // get start and end view times convert string to datetime then convert back into string to sanitize
+        DateTime viewStart = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(-1);
+        ///.formatGmt('yyyy-MM-dd\'T\'HH:mm:ss\'Z\'');
+        String formattedViewStart;
+        String formattedViewEnd;
+        DateTime viewEnd = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(1);
+        if (!String.isBlank(req.params.get('viewStart'))) {
+            viewStart = DateTime.valueOf(req.params.get('viewStart'));
+            formattedViewStart = viewStart.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
+        }
+        if (!String.isBlank(req.params.get('viewEnd'))) {
+            viewEnd = DateTime.valueOf(req.params.get('viewEnd'));
+            formattedViewEnd = viewEnd.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
+        }
+
+        eventQuery += ' AND Start_Date_Time__c >= ' + formattedViewStart + ' ';
+        eventQuery += ' AND Start_Date_Time__c <= ' + formattedViewEnd + ' ';
+
+        //build and sanitize
+
+        //get event based on event id
+        String eventId = req.params.get('eventId');
+        Id evtId = null;
+        try {
+            evtId = (Id) eventId;
+            eventId = String.valueOf(evtId);
+        }catch (Exception e) {
+            eventId = null;
+        }
+        if (!String.isBlank(eventId)) {
+            eventQuery += ' AND Event__r.id = \'' + eventId + '\' ';
+        }
+
+        //get event based on audience (can be comma seperated)
         String audience = req.params.get('audience');
-        String audience2 = req.params.get('audience2');
-        String audience3 = req.params.get('audience3');
-        String audience4 = req.params.get('audience4');
-        String audience5 = req.params.get('audience5');
-        String audience6 = req.params.get('audience6');
-        String audience7 = req.params.get('audience7');
-        Boolean showLongDescription = false;
+        if (audience != 'all' && !String.isBlank(audience)) {
+            List<String> audienceList = new List<String>();
+            audienceList  = audience.split(',');
+            for (String aud : audienceList) {
+                audience = '\'' + String.escapeSingleQuotes(aud) + '\',';
+            }
+            audience = audience.removeEnd(',');
+            eventQuery += ' AND Event__r.Audience__c INCLUDES (' + audience + ') ';
+        }
+
+
         String incomingShowLongDesc = req.params.get('longdesc');
+        Boolean showLongDescription = false;
         if (incomingShowLongDesc != null) {
             if (incomingShowLongDesc.toLowerCase() == '1' || incomingShowLongDesc.toLowerCase() == 'true') {
                 showLongDescription = true;
             }
         }
-        List<UST_Event_Instance__c> EventInstance = new List<UST_Event_Instance__c>();
 
-        DateTime viewStart = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(-1);
-        DateTime viewEnd = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(1);
-        if (!String.isBlank(req.params.get('viewStart'))) {
-            viewStart = DateTime.valueOf(req.params.get('viewStart'));
-        }
-        if (!String.isBlank(req.params.get('viewEnd'))) {
-            viewEnd = DateTime.valueOf(req.params.get('viewEnd'));
-        }
+        System.debug('-----------------------------' + eventQuery);
 
-        if (audience == 'all') {
-            EventInstance = [
-                    SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__R.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c,
-                            Event__r.Event_description__c, Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c
-                    FROM UST_Event_Instance__c
-                    WHERE Start_Date_Time__c >= :viewStart
-                    AND Event__R.Event_Status__c = 'Active'
-                    AND Active_Status__c = 'Active'
-                    AND Start_Date_Time__c <= :viewEnd
-                    AND (Current_Available_Capacity__c > 0 OR Capacity__c = null)
-            ];
-        } else {
-            EventInstance = [
-                    SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__R.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c,
-                            Event__r.Event_description__c, Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c
-                    FROM UST_Event_Instance__c
-                    WHERE Start_Date_Time__c >= :viewStart
-                    AND Event__R.Event_Status__c = 'Active'
-                    AND Active_Status__c = 'Active'
-                    AND Start_Date_Time__c <= :viewEnd
-                    AND (Current_Available_Capacity__c > 0 OR Capacity__c = null)
-                    AND (
-                            Event__r.Audience__c INCLUDES (:audience)
-                            OR Event__r.Audience__c INCLUDES (:audience)
-                            OR Event__r.Audience__c INCLUDES (:audience2)
-                            OR Event__r.Audience__c INCLUDES (:audience3)
-                            OR Event__r.Audience__c INCLUDES (:audience4)
-                            OR Event__r.Audience__c INCLUDES (:audience5)
-                            OR Event__r.Audience__c INCLUDES (:audience6)
-                            OR Event__r.Audience__c INCLUDES (:audience7)
-                    )
-            ];
-        }
-
+        List<UST_Event_Instance__c> EventInstance = database.query(eventQuery);
 
         DateTime regDateOpenDate = null;
         for (UST_Event_Instance__c es : EventInstance) {

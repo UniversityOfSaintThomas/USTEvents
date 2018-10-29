@@ -1,0 +1,367 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionOverrides>
+        <actionName>Accept</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>CancelEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Clone</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Delete</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Edit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>List</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>New</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>SaveEdit</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>Tab</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <actionOverrides>
+        <actionName>View</actionName>
+        <type>Default</type>
+    </actionOverrides>
+    <allowInChatterGroups>true</allowInChatterGroups>
+    <compactLayoutAssignment>SYSTEM</compactLayoutAssignment>
+    <deploymentStatus>Deployed</deploymentStatus>
+    <description>Hosts that can be applied to appointments on an event registration record.</description>
+    <enableActivities>true</enableActivities>
+    <enableBulkApi>true</enableBulkApi>
+    <enableFeeds>false</enableFeeds>
+    <enableHistory>true</enableHistory>
+    <enableReports>true</enableReports>
+    <enableSearch>true</enableSearch>
+    <enableSharing>true</enableSharing>
+    <enableStreamingApi>true</enableStreamingApi>
+    <fields>
+        <fullName>Additional_Comments__c</fullName>
+        <description>Additional comments about the host that will appear in any generated itinerary.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Additional comments about the host that will appear in any generated itinerary.</inlineHelpText>
+        <label>Additional Comments</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Assigned__c</fullName>
+        <description>The number of registrants currently assigned to this host.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of registrants currently assigned to this host.</inlineHelpText>
+        <label>Assigned</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Building__c</fullName>
+        <description>The building where the hosting will be happening.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The building where the hosting will be happening.</inlineHelpText>
+        <label>Building</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Buildings</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Contact__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>The contact record in Salesforce for this host.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The contact record in Salesforce for this host.</inlineHelpText>
+        <label>Contact</label>
+        <referenceTo>Contact</referenceTo>
+        <relationshipLabel>UST Event Hosts</relationshipLabel>
+        <relationshipName>UST_Event_Hosts</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Course_Name__c</fullName>
+        <description>Name of the hosting course (if it is a course).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Name of the hosting course (if it is a course).</inlineHelpText>
+        <label>Course Name</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Department__c</fullName>
+        <description>The department a faculty or staff host works.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The department a faculty or staff host works.</inlineHelpText>
+        <label>Department</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Event_Instance__c</fullName>
+        <description>Event Instance in which hosts can be applied</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Event Instance in which hosts can be applied</inlineHelpText>
+        <label>UST Event Instance</label>
+        <referenceTo>UST_Event_Instance__c</referenceTo>
+        <relationshipLabel>UST Event Hosts</relationshipLabel>
+        <relationshipName>UST_Event_Hosts</relationshipName>
+        <relationshipOrder>0</relationshipOrder>
+        <reparentableMasterDetail>true</reparentableMasterDetail>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MasterDetail</type>
+        <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>First_Name__c</fullName>
+        <description>First name of the host.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>First name of the host.</inlineHelpText>
+        <label>First Name</label>
+        <length>40</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Formatted_Time__c</fullName>
+        <externalId>false</externalId>
+        <formula>TEXT( 
+IF((HOUR(Time__c) &gt; 12), 
+HOUR(Time__c) - 12, 
+IF(HOUR(Time__c) == 0, 12, HOUR(Time__c)) 
+) 
+
+) 
+&amp; 
+IF(!ISBLANK(HOUR(Time__c)),&apos;:&apos;,&apos;&apos;) 
+&amp; 
+IF(MINUTE(Time__c)&lt;10,&apos;0&apos;,&apos;&apos;) 
+&amp; 
+TEXT( 
+MINUTE(Time__c) 
+) 
+&amp; 
+IF(!ISBLANK(MINUTE(Time__c)),&apos; &apos;,&apos;&apos;) 
+&amp; 
+IF(!ISBLANK(HOUR(Time__c)), 
+IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos; 
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Formatted Time</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Gender__c</fullName>
+        <description>Gender of the host (important for overnight hosting).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Gender of the host (important for overnight hosting).</inlineHelpText>
+        <label>Gender</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>M</fullName>
+                    <default>false</default>
+                    <label>M</label>
+                </value>
+                <value>
+                    <fullName>F</fullName>
+                    <default>false</default>
+                    <label>F</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Host_Type__c</fullName>
+        <description>The category of host that defines the kind of host group</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The category of host that defines the kind of host group</inlineHelpText>
+        <label>Host Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>Class</fullName>
+                    <default>false</default>
+                    <label>Class</label>
+                </value>
+                <value>
+                    <fullName>Coach</fullName>
+                    <default>false</default>
+                    <label>Coach</label>
+                </value>
+                <value>
+                    <fullName>Faculty</fullName>
+                    <default>false</default>
+                    <label>Faculty</label>
+                </value>
+                <value>
+                    <fullName>Housing</fullName>
+                    <default>false</default>
+                    <label>Housing</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Last_Name__c</fullName>
+        <description>First name of the host</description>
+        <externalId>false</externalId>
+        <inlineHelpText>First name of the host</inlineHelpText>
+        <label>Last Name</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Location__c</fullName>
+        <description>Room and building number, address, where hosting will be happening.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Room and building number, address, where hosting will be happening.</inlineHelpText>
+        <label>Location</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Max_Available__c</fullName>
+        <description>The number of registrants this host can accommodate.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The number of registrants this host can accommodate.</inlineHelpText>
+        <label>Max Available</label>
+        <precision>5</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Preferred_Title__c</fullName>
+        <description>The preferred title of the host (Professor, Dr., Burgermeister Meisterburger).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The preferred title of the host (Professor, Dr., Burgermeister Meisterburger).</inlineHelpText>
+        <label>Preferred Title</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Remaining__c</fullName>
+        <description>The remaining amount of spaces left in the max capacity of registrants a host can take.</description>
+        <externalId>false</externalId>
+        <formula>Max_Available__c -  Assigned__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>The remaining amount of spaces left in the max capacity of registrants a host can take.</inlineHelpText>
+        <label>Remaining</label>
+        <precision>18</precision>
+        <required>false</required>
+        <scale>0</scale>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Time__c</fullName>
+        <description>The time of the hosting</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The time of the hosting</inlineHelpText>
+        <label>Time</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Time</type>
+    </fields>
+    <fields>
+        <fullName>Undergrad_Major__c</fullName>
+        <description>The major the host is pursuing at St. Thomas.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The major the host is pursuing at St. Thomas.</inlineHelpText>
+        <label>Undergrad Major</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Academic_Majors</valueSetName>
+        </valueSet>
+    </fields>
+    <label>UST Event Host</label>
+    <nameField>
+        <displayFormat>HOST-{0000}</displayFormat>
+        <label>UST Event Host Name</label>
+        <trackHistory>false</trackHistory>
+        <type>AutoNumber</type>
+    </nameField>
+    <pluralLabel>UST Event Hosts</pluralLabel>
+    <searchLayouts/>
+    <sharingModel>ControlledByParent</sharingModel>
+    <visibility>Public</visibility>
+</CustomObject>

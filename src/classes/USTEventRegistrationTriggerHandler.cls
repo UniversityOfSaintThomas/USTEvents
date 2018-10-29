@@ -56,7 +56,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
 
         Map<Id, Id> affectedIds = new Map<Id, Id>();
         List<UST_Event_Registration__c> affectedRegs = new List<UST_Event_Registration__c>();
-        ID contactId = [Select contactid from User where id =: Userinfo.getUserid()].contactId;
+        ID contactId = [Select contactid from User where id = :Userinfo.getUserid()].contactId;
 
         for (UST_Event_Registration__c r : regs) {
 
@@ -77,7 +77,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
 
         //Get any templates for events that have restistration status changes
         List<UST_Event_Email__c> matchEmail = [
-                SELECT Action_Status__c, Event__r.id, Letterhead__c, Letterhead_HTML__c, Email_Subject__c, Email_From__c,
+                SELECT Action_Status__c, Action_Sub_status__c, Event__r.id, Letterhead__c, Letterhead_HTML__c, Email_Subject__c, Email_From__c,
                         Email_Content__c, Letterhead_Id__c, Org_Email_Id__c, BCC_Email__c
                 FROM UST_Event_Email__c
                 WHERE Event__r.Id IN :affectedIds.values()
@@ -90,56 +90,71 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
 
             //Loop through gather email templates to get template and use registration fields to fill in hooks
             for (UST_Event_Email__c e : matchEmail) {
+                Boolean statusMatch = false;
                 if (e.Event__r.Id == areg.Event__c && e.Action_Status__c == areg.Status__c) {
-                    //Get email template
-                    String emailContent = e.Email_Content__c;
-                    String originalTemplate = e.Letterhead_HTML__c;
-
-                    //Regex to find all Apex delineators {! }
-                    Pattern TAG_REGEX = Pattern.compile('\\{!(.+?)\\}');
-                    Matcher matcher = TAG_REGEX.matcher(emailContent);
-                    Map<String, String> foundTags = new Map<String, String>();
-
-                    //loop through found hocks and add only unique
-                    while (matcher.find()) {
-                        foundTags.put(matcher.group(1), matcher.group(1));
-                    }
-
-                    for (String ft : foundTags.values()) {
-                        //add only found hooks and recreate regex with more percise
-                        Pattern TAG_REGEX2 = Pattern.compile('\\{!(' + ft + ')\\}');
-                        Matcher matcher2 = TAG_REGEX2.matcher(emailContent);
-                        while (matcher2.find()) {
-
-                            //Get the value for hook from registration have to remove any registration object names since we are already in the object
-                            String found = matcher2.group(1).replace('UST_Event_Registration__c.', '');
-                            found = String.valueOf(areg.get(found));
-                            //replaceAll doesn't like nulls
-                            if (String.isBlank(found)) {
-                                found = '';
+                    if (!String.isBlank(e.Action_Sub_status__c)) {
+                        if (!String.isBlank(e.Action_Status__c)) {
+                            if ((e.Action_Status__c == areg.Status__c) && (e.Action_Sub_status__c == areg.Substatus__c)) {
+                                statusMatch = true;
                             }
-                            //replace all hooks with found values from regstration
-                            emailContent = matcher2.replaceAll(found);
+                        } else if (e.Action_Sub_status__c == areg.Substatus__c) {
+                            statusMatch = true;
                         }
+                    } else if (!String.isBlank(e.Action_Status__c) && (e.Action_Status__c == areg.Status__c)) {
+                        statusMatch = true;
                     }
 
-                    //replace text in letterhead template
-                    Pattern CONTENT_HOOK = Pattern.compile('\\[\\[DONT_DELETE_CONTENT_HERE\\]\\]');
-                    Matcher matcher3 = CONTENT_HOOK.matcher(originalTemplate);
-                    while (matcher3.find()) {
-                        originalTemplate = matcher3.replaceAll(emailContent);
-                    }
+                    if (statusMatch) {
+                        //Get email template
+                        String emailContent = e.Email_Content__c;
+                        String originalTemplate = e.Letterhead_HTML__c;
 
-                    //send the message
-                    sendEmail2(areg.Registrant_Email__c, originalTemplate, emailContent, e.Email_Subject__c, e.Org_Email_Id__c, e.BCC_Email__c);
-                    Task nt = new Task();
-                    nt.WhatId = areg.id;
-                    nt.Type = 'Email';
-                    nt.ActivityDate = Date.today();
-                    nt.Subject = 'Event status email: ' + e.Action_Status__c + ' - ' + e.Email_Subject__c;
-                    nt.Status = 'Completed';
-                    nt.Priority = 'Low';
-                    activityUpdates.add(nt);
+                        //Regex to find all Apex delineators {! }
+                        Pattern TAG_REGEX = Pattern.compile('\\{!(.+?)\\}');
+                        Matcher matcher = TAG_REGEX.matcher(emailContent);
+                        Map<String, String> foundTags = new Map<String, String>();
+
+                        //loop through found hocks and add only unique
+                        while (matcher.find()) {
+                            foundTags.put(matcher.group(1), matcher.group(1));
+                        }
+
+                        for (String ft : foundTags.values()) {
+                            //add only found hooks and recreate regex with more percise
+                            Pattern TAG_REGEX2 = Pattern.compile('\\{!(' + ft + ')\\}');
+                            Matcher matcher2 = TAG_REGEX2.matcher(emailContent);
+                            while (matcher2.find()) {
+
+                                //Get the value for hook from registration have to remove any registration object names since we are already in the object
+                                String found = matcher2.group(1).replace('UST_Event_Registration__c.', '');
+                                found = String.valueOf(areg.get(found));
+                                //replaceAll doesn't like nulls
+                                if (String.isBlank(found)) {
+                                    found = '';
+                                }
+                                //replace all hooks with found values from regstration
+                                emailContent = matcher2.replaceAll(found);
+                            }
+                        }
+
+                        //replace text in letterhead template
+                        Pattern CONTENT_HOOK = Pattern.compile('\\[\\[DONT_DELETE_CONTENT_HERE\\]\\]');
+                        Matcher matcher3 = CONTENT_HOOK.matcher(originalTemplate);
+                        while (matcher3.find()) {
+                            originalTemplate = matcher3.replaceAll(emailContent);
+                        }
+
+                        //send the message
+                        sendEmail2(areg.Registrant_Email__c, originalTemplate, emailContent, e.Email_Subject__c, e.Org_Email_Id__c, e.BCC_Email__c);
+                        Task nt = new Task();
+                        nt.WhatId = areg.id;
+                        nt.Type = 'Email';
+                        nt.ActivityDate = Date.today();
+                        nt.Subject = 'Event status email: ' + e.Action_Status__c + ' - ' + e.Email_Subject__c;
+                        nt.Status = 'Completed';
+                        nt.Priority = 'Low';
+                        activityUpdates.add(nt);
+                    }
                 }
             }
         }
