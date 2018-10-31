@@ -7,6 +7,7 @@ global with sharing class USTEventFeed {
 
     private static String feedType { get; set; }
     private static USTEventShared USTShared = new USTEventShared();
+    private static Id recTypeId {get;set;}
 
     private Class eventItem {
         public String ID { get; set; }
@@ -24,6 +25,14 @@ global with sharing class USTEventFeed {
     @HttpGet
     global static void getUSTEventFeed() {
         feedType = RestContext.request.params.get('feedType');
+        String recType = RestContext.request.params.get('rectype');
+
+        if(!String.isBlank(recType)) {
+            List<RecordType> recTypeList = [SELECT Id,Name FROM RecordType WHERE SObjectType='UST_Event__c' AND Name = :recType];
+            if (recTypeList.size() > 0) {
+                recTypeId = recTypeList[0].Id;
+            }
+        }
         RestResponse res = RestContext.response;
         res.addHeader('Content-Type', 'application/json');
         String callback = RestContext.request.params.get('callback');
@@ -132,6 +141,10 @@ global with sharing class USTEventFeed {
             eventQuery += ' ) ';
         }
 
+        if (!String.isBlank(recTypeId)) {
+            eventQuery += ' AND Event__r.RecordType.Id = \'' + String.valueOf(recTypeId) + '\' ';
+        }
+
         String incomingShowLongDesc = req.params.get('longdesc');
         Boolean showLongDescription = false;
         if (incomingShowLongDesc != null) {
@@ -139,6 +152,7 @@ global with sharing class USTEventFeed {
                 showLongDescription = true;
             }
         }
+
 
         System.debug('-----------------------------' + eventQuery);
 
@@ -199,6 +213,5 @@ global with sharing class USTEventFeed {
         }
         return fieldMap;
     }
-
 
 }

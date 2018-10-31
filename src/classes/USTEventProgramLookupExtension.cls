@@ -5,8 +5,8 @@
 public class USTEventProgramLookupExtension {
 
     public UST_Event__c USTEvt;
-    public String progString {get;set;}
-    public List<SelectOption> SelectedPrograms {get;set;}
+    public String progString { get; set; }
+    public List<SelectOption> SelectedPrograms { get; set; }
     //public List<SelectOption> SelectedPrograms { set; get; }
 
     public USTEventProgramLookupExtension(ApexPages.StandardController stdController) {
@@ -19,6 +19,8 @@ public class USTEventProgramLookupExtension {
             for (String selItem : currentSelected) {
                 SelectedPrograms.add(new SelectOption(selItem, selItem));
             }
+        } else {
+            USTevt.Academic_Program_List__c = '';
         }
 
     }
@@ -32,7 +34,6 @@ public class USTEventProgramLookupExtension {
             schoolProgs = [
                     SELECT Program_Code__c, Name, School__c
                     FROM EnrollmentrxRx__Program_Offered__c
-                    //WHERE School__c = :schoolId
                     WHERE Status__c = 'Active'
                     AND Program_Code__c != NULL
                     AND School__c = :schoolId
@@ -61,15 +62,16 @@ public class USTEventProgramLookupExtension {
         for (SelectOption p : SelectedPrograms) {
             selectString += p.getValue() + ';';
         }
-
-        Pattern TAG_REGEX = Pattern.compile('\\((\\w+)\\)');
-        Matcher matcher = TAG_REGEX.matcher(selectString);
-        //loop through found hocks and add only unique
-        while (matcher.find()) {
-            progCodeString += matcher.group(1) + ';';
+        if (!String.isBlank(selectString)) {
+            Pattern TAG_REGEX = Pattern.compile('\\((\\w+)\\)');
+            Matcher matcher = TAG_REGEX.matcher(selectString);
+            //loop through found hocks and add only unique
+            while (matcher.find()) {
+                progCodeString += matcher.group(1) + ';';
+            }
+            USTEvt.Academic_Program_List__c = selectString;
+            USTEvt.Program_Filter__c = progCodeString;
+            upsert USTEvt;
         }
-        USTEvt.Academic_Program_List__c = selectString;
-        USTEvt.Program_Filter__c = progCodeString;
-        upsert USTEvt;
     }
 }

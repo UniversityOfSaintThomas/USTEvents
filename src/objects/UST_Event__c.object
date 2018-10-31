@@ -76,19 +76,349 @@
         <visibleLines>5</visibleLines>
     </fields>
     <fields>
-        <fullName>Academic_Program__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <description>Define an academic program this event is tied.</description>
+        <fullName>Add_Info_Question_Pick_List_1__c</fullName>
+        <description>return separated list that will be converted to a pick-list.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Define an academic program this event is tied.</inlineHelpText>
-        <label>Academic Program</label>
-        <referenceTo>EnrollmentrxRx__Program_Offered__c</referenceTo>
-        <relationshipLabel>UST Events</relationshipLabel>
-        <relationshipName>UST_Events</relationshipName>
+        <inlineHelpText>return separated list that will be converted to a pick-list.</inlineHelpText>
+        <label>Add Info Question Pick List 1</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>Lookup</type>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Pick_List_2__c</fullName>
+        <description>return separated list that will be converted to a pick-list.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>return separated list that will be converted to a pick-list.</inlineHelpText>
+        <label>Add Info Question Pick List 2</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Pick_List_3__c</fullName>
+        <description>return separated list that will be converted to a pick-list.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>return separated list that will be converted to a pick-list.</inlineHelpText>
+        <label>Add Info Question Pick List 3</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Pick_List_4__c</fullName>
+        <description>return separated list that will be converted to a pick-list.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>return separated list that will be converted to a pick-list.</inlineHelpText>
+        <label>Add Info Question Pick List 4</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Pick_List_5__c</fullName>
+        <description>return separated list that will be converted to a pick-list.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>return separated list that will be converted to a pick-list.</inlineHelpText>
+        <label>Add Info Question Pick List 5</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Text_1__c</fullName>
+        <description>The text of the question you are asking.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The text of the question you are asking.</inlineHelpText>
+        <label>Add Info Question Text 1</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Text_2__c</fullName>
+        <description>The text of the question you are asking.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The text of the question you are asking.</inlineHelpText>
+        <label>Add Info Question Text 2</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Text_3__c</fullName>
+        <description>The text of the question you are asking.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The text of the question you are asking.</inlineHelpText>
+        <label>Add Info Question Text 3</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Text_4__c</fullName>
+        <description>The text of the question you are asking.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The text of the question you are asking.</inlineHelpText>
+        <label>Add Info Question Text 4</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Text_5__c</fullName>
+        <description>The text of the question you are asking.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The text of the question you are asking.</inlineHelpText>
+        <label>Add Info Question Text 5</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Type_1__c</fullName>
+        <description>What type of additional question input do you require. If pick-list you will need to provide values in the Add Info Question Pick-list.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What type of additional question input do you require. If pick-list you will need to provide values in the Add Info Question Pick-list.</inlineHelpText>
+        <label>Add Info Question Type 1</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>Pick-list</fullName>
+                    <default>false</default>
+                    <label>Pick-list</label>
+                </value>
+                <value>
+                    <fullName>Pick-list required</fullName>
+                    <default>false</default>
+                    <label>Pick-list required</label>
+                </value>
+                <value>
+                    <fullName>Text area</fullName>
+                    <default>false</default>
+                    <label>Text area</label>
+                </value>
+                <value>
+                    <fullName>Text area required</fullName>
+                    <default>false</default>
+                    <label>Text area required</label>
+                </value>
+                <value>
+                    <fullName>Text box</fullName>
+                    <default>false</default>
+                    <label>Text box</label>
+                </value>
+                <value>
+                    <fullName>Text box required</fullName>
+                    <default>false</default>
+                    <label>Text box required</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Type_2__c</fullName>
+        <description>What type of additional question input do you require. If pick-list you will need to provide values in the Add Info Question Pick-list.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What type of additional question input do you require. If pick-list you will need to provide values in the Add Info Question Pick-list.</inlineHelpText>
+        <label>Add Info Question Type 2</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>Pick-list</fullName>
+                    <default>false</default>
+                    <label>Pick-list</label>
+                </value>
+                <value>
+                    <fullName>Pick-list required</fullName>
+                    <default>false</default>
+                    <label>Pick-list required</label>
+                </value>
+                <value>
+                    <fullName>Text area</fullName>
+                    <default>false</default>
+                    <label>Text area</label>
+                </value>
+                <value>
+                    <fullName>Text area required</fullName>
+                    <default>false</default>
+                    <label>Text area required</label>
+                </value>
+                <value>
+                    <fullName>Text box</fullName>
+                    <default>false</default>
+                    <label>Text box</label>
+                </value>
+                <value>
+                    <fullName>Text box required</fullName>
+                    <default>false</default>
+                    <label>Text box required</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Type_3__c</fullName>
+        <description>What type of additional question input do you require. If pick-list you will need to provide values in the Add Info Question Pick-list.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What type of additional question input do you require. If pick-list you will need to provide values in the Add Info Question Pick-list.</inlineHelpText>
+        <label>Add Info Question Type 3</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>Pick-list</fullName>
+                    <default>false</default>
+                    <label>Pick-list</label>
+                </value>
+                <value>
+                    <fullName>Pick-list required</fullName>
+                    <default>false</default>
+                    <label>Pick-list required</label>
+                </value>
+                <value>
+                    <fullName>Text area</fullName>
+                    <default>false</default>
+                    <label>Text area</label>
+                </value>
+                <value>
+                    <fullName>Text area required</fullName>
+                    <default>false</default>
+                    <label>Text area required</label>
+                </value>
+                <value>
+                    <fullName>Text box</fullName>
+                    <default>false</default>
+                    <label>Text box</label>
+                </value>
+                <value>
+                    <fullName>Text box required</fullName>
+                    <default>false</default>
+                    <label>Text box required</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Type_4__c</fullName>
+        <description>What type of additional question input do you require. If pick-list you will need to provide values in the Add Info Question Pick-list.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What type of additional question input do you require. If pick-list you will need to provide values in the Add Info Question Pick-list.</inlineHelpText>
+        <label>Add Info Question Type 4</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>Pick-list</fullName>
+                    <default>false</default>
+                    <label>Pick-list</label>
+                </value>
+                <value>
+                    <fullName>Pick-list required</fullName>
+                    <default>false</default>
+                    <label>Pick-list required</label>
+                </value>
+                <value>
+                    <fullName>Text area</fullName>
+                    <default>false</default>
+                    <label>Text area</label>
+                </value>
+                <value>
+                    <fullName>Text area required</fullName>
+                    <default>false</default>
+                    <label>Text area required</label>
+                </value>
+                <value>
+                    <fullName>Text box</fullName>
+                    <default>false</default>
+                    <label>Text box</label>
+                </value>
+                <value>
+                    <fullName>Text box required</fullName>
+                    <default>false</default>
+                    <label>Text box required</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
+        <fullName>Add_Info_Question_Type_5__c</fullName>
+        <description>What type of additional question input do you require. If pick-list you will need to provide values in the Add Info Question Pick-list.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>What type of additional question input do you require. If pick-list you will need to provide values in the Add Info Question Pick-list.</inlineHelpText>
+        <label>Add Info Question Type 5</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>Pick-list</fullName>
+                    <default>false</default>
+                    <label>Pick-list</label>
+                </value>
+                <value>
+                    <fullName>Pick-list required</fullName>
+                    <default>false</default>
+                    <label>Pick-list required</label>
+                </value>
+                <value>
+                    <fullName>Text area</fullName>
+                    <default>false</default>
+                    <label>Text area</label>
+                </value>
+                <value>
+                    <fullName>Text area required</fullName>
+                    <default>false</default>
+                    <label>Text area required</label>
+                </value>
+                <value>
+                    <fullName>Text box</fullName>
+                    <default>false</default>
+                    <label>Text box</label>
+                </value>
+                <value>
+                    <fullName>Text box required</fullName>
+                    <default>false</default>
+                    <label>Text box required</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Allow_Other_Attendees__c</fullName>
@@ -205,12 +535,11 @@
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
-        <type>MultiselectPicklist</type>
+        <type>Picklist</type>
         <valueSet>
             <restricted>true</restricted>
             <valueSetName>Buildings</valueSetName>
         </valueSet>
-        <visibleLines>10</visibleLines>
     </fields>
     <fields>
         <fullName>Close_Event_Days_Before__c</fullName>
@@ -591,18 +920,6 @@ TEXT(YEAR( End_Date__c))
         <visibleLines>10</visibleLines>
     </fields>
     <fields>
-        <fullName>Generated_Audience_Filter_del__c</fullName>
-        <description>Audience that feeds will look to to identify this event.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Audience that feeds will look to to identify this event.</inlineHelpText>
-        <label>Generated Audience Filter</label>
-        <length>8000</length>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
-    </fields>
-    <fields>
         <fullName>Include_Time_frame_List__c</fullName>
         <defaultValue>false</defaultValue>
         <description>Ask the client for a general time-frame for event (drop down)</description>
@@ -725,6 +1042,17 @@ TEXT(YEAR( End_Date__c))
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Program_Filter__c</fullName>
+        <description>Text version of program pick-list for filtering. No for user display or editing.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Text version of program pick-list for filtering. No for user display or editing.</inlineHelpText>
+        <label>Program Filter</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>School__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>School this event is representing.</description>
@@ -800,6 +1128,141 @@ TEXT(YEAR( End_Date__c))
             <picklist>Academic_Program_List__c</picklist>
             <values>
                 <fullName>All</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Add_Info_Question_Type_1__c</picklist>
+            <values>
+                <fullName>Pick-list</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pick-list required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box required</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Add_Info_Question_Type_2__c</picklist>
+            <values>
+                <fullName>Pick-list</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pick-list required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box required</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Add_Info_Question_Type_3__c</picklist>
+            <values>
+                <fullName>Pick-list</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pick-list required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box required</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Add_Info_Question_Type_4__c</picklist>
+            <values>
+                <fullName>Pick-list</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pick-list required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box required</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Add_Info_Question_Type_5__c</picklist>
+            <values>
+                <fullName>Pick-list</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pick-list required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box required</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1101,6 +1564,141 @@ TEXT(YEAR( End_Date__c))
             <picklist>Academic_Program_List__c</picklist>
             <values>
                 <fullName>All</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Add_Info_Question_Type_1__c</picklist>
+            <values>
+                <fullName>Pick-list</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pick-list required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box required</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Add_Info_Question_Type_2__c</picklist>
+            <values>
+                <fullName>Pick-list</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pick-list required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box required</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Add_Info_Question_Type_3__c</picklist>
+            <values>
+                <fullName>Pick-list</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pick-list required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box required</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Add_Info_Question_Type_4__c</picklist>
+            <values>
+                <fullName>Pick-list</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pick-list required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box required</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Add_Info_Question_Type_5__c</picklist>
+            <values>
+                <fullName>Pick-list</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pick-list required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text area required</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Text box required</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

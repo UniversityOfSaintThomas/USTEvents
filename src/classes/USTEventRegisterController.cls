@@ -16,9 +16,20 @@ public with sharing class USTEventRegisterController {
     public USTEventShared.USTEventInfo evtInfo { get; set; }
     public String templateSelected { get; set; }
     public boolean contactSet { get; set; }
-    public boolean eventIsClosed {get;set;}
+    public boolean eventIsClosed { get; set; }
+    public List<String> questionNum { get; set; }
+    public List<SelectOption> addPick1 { get; set; }
+    public List<SelectOption> addPick2 { get; set; }
+    public List<SelectOption> addPick3 { get; set; }
+    public List<SelectOption> addPick4 { get; set; }
+    public List<SelectOption> addPick5 { get; set; }
+
+
 
     public USTEventRegisterController() {
+        questionNum = new List<String>{
+                '1', '2', '3', '4', '5'
+        };
         newEvtReg = new UST_Event_Registration__c();
         templateSelected = USTShared.defaultTemplate;
         test = '';
@@ -52,7 +63,12 @@ public with sharing class USTEventRegisterController {
             eventPage = [
                     SELECT Name, Id, Event_Name__c, Event_description__c, Event_Footer__c, Event_Full_Text__c, Audience__c,Include_Time_frame_List__c,
                             Max_Other_Attendees__c, Allow_Other_Attendees__c, College_High_School_Ask__c, Ask_Gender__c, Template__c,
-                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Ask_If_Parent__c
+                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Ask_If_Parent__c,
+                            Add_Info_Question_Pick_List_1__c, Add_Info_Question_Text_1__c, Add_Info_Question_Type_1__c,
+                            Add_Info_Question_Pick_List_2__c, Add_Info_Question_Text_2__c, Add_Info_Question_Type_2__c,
+                            Add_Info_Question_Pick_List_3__c, Add_Info_Question_Text_3__c, Add_Info_Question_Type_3__c,
+                            Add_Info_Question_Pick_List_4__c, Add_Info_Question_Text_4__c, Add_Info_Question_Type_4__c,
+                            Add_Info_Question_Pick_List_5__c, Add_Info_Question_Text_5__c, Add_Info_Question_Type_5__c
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1
@@ -72,7 +88,6 @@ public with sharing class USTEventRegisterController {
                     }
                 }
             }
-
 
             //Get Appoitment Types for event
             apptTypes = [SELECT Id, Title__c, Appointment_Category__c, Appointment_Type__c, Description__c FROM UST_Event_Appointment_Type__c WHERE UST_Event__c = :evtInfo.evtId];
@@ -116,20 +131,27 @@ public with sharing class USTEventRegisterController {
                 contactSet = true;
             } else {
                 newEvtReg = [
-                        SELECT Contact__c, Registrant_First_Name__c, Registrant_Last_Name__c, Registrant_Email__c,Number_of_Guests__c,
-                                Registrant_Gender__c,Registrant_Street_1__c,Registrant_Street_2__c, Registrant_State__c,Registrant_City__c, Preferred_Visit_Time__c,
-                                Registrant_Zip__c,Registrant_Phone__c,Registrant_Mobile_Phone__c, Registrant_College__c,Registrant_College_Code__c,Registrant_College_Year__c,
-                                Registrant_High_School__c,Registrant_High_School_Code__c, Registrant_Receive_Texts__c, Registrant_High_School_Grad_Year__c, Registrant_High_School_Not_Found__c,
-                                Registrant_College_Not_Found__c, Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c, Registrant_Parent_Phone__c, Registrant_Parent_Status__c
+                        SELECT Contact__c, Registrant_First_Name__c, Registrant_Last_Name__c, Registrant_Email__c, Number_of_Guests__c,
+                                Registrant_Gender__c, Registrant_Street_1__c, Registrant_Street_2__c, Registrant_State__c, Registrant_City__c, Preferred_Visit_Time__c,
+                                Registrant_Zip__c, Registrant_Phone__c, Registrant_Mobile_Phone__c, Registrant_College__c, Registrant_College_Code__c, Registrant_College_Year__c,
+                                Registrant_High_School__c, Registrant_High_School_Code__c, Registrant_Receive_Texts__c, Registrant_High_School_Grad_Year__c, Registrant_High_School_Not_Found__c,
+                                Registrant_College_Not_Found__c, Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c, Registrant_Parent_Phone__c, Registrant_Parent_Status__c,
+                                Add_Info_Answer_1__c, Add_Info_Answer_2__c, Add_Info_Answer_3__c, Add_Info_Answer_4__c, Add_Info_Answer_5__c
                         FROM UST_Event_Registration__c
                         WHERE id = :evtInfo.evtRegId
                 ][0];
             }
 
-            if(EvtUserType != 'Guest') {
+            if (EvtUserType != 'Guest') {
                 contactSet = true;
             }
         }
+
+        addPick1 = createPicklists(eventPage.Add_Info_Question_Pick_List_1__c);
+        addPick2 = createPicklists(eventPage.Add_Info_Question_Pick_List_2__c);
+        addPick3 = createPicklists(eventPage.Add_Info_Question_Pick_List_3__c);
+        addPick4 = createPicklists(eventPage.Add_Info_Question_Pick_List_4__c);
+        addPick5 = createPicklists(eventPage.Add_Info_Question_Pick_List_5__c);
     }
 
     public PageReference setParentInfo(String n) {
@@ -164,6 +186,22 @@ public with sharing class USTEventRegisterController {
             options.add(new SelectOption(f.getValue(), f.getLabel()));
         }
         return options;
+    }
+
+    public List<SelectOption> createPicklists(String returnSepStringList) {
+        if (String.isBlank(returnSepStringList)) {
+            return null;
+        }
+        List<SelectOption> cpl = new List<SelectOption>();
+        cpl.add(new SelectOption('', 'Select...'));
+        returnSepStringList = returnSepStringList.Trim();
+        returnSepStringList = returnSepStringList.replace('\n\n', '\n');
+        String[] splitList = returnSepStringList.split('\n');
+        for (String p : splitList) {
+            p = p.replaceAll('[^a-zA-Z0-9@<>?&;:\\[\\]!-. ]', '');
+            cpl.add(new SelectOption(p, p));
+        }
+        return cpl;
     }
 
     public PageReference saveContactRegistration() {
@@ -276,8 +314,8 @@ public with sharing class USTEventRegisterController {
                 try {
                     upsert newEvtReg;
                 } catch (Exception ex) {
-                    //   ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
-                    //   ApexPages.addMessage(myMsg);
+                //   ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                     //   ApexPages.addMessage(myMsg);
                 }
 
             }
@@ -285,12 +323,13 @@ public with sharing class USTEventRegisterController {
 
         if (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
             List<UST_Event_Appointment_Type__c> apptTypes = [
-                    SELECT Id From UST_Event_Appointment_Type__c
+                    SELECT Id
+                    From UST_Event_Appointment_Type__c
                     WHERE UST_Event__c = :evtInfo.evtId
                     AND (Restrict_To_Instance_Title__r.Instance_Title__c = :evtInstance.Instance_Title__c OR Restrict_To_Instance_Title__r.Instance_Title__c = null)
             ];
             if (apptTypes.size() == 0) {
-                //If no options skip that step
+            //If no options skip that step
                 optionPage = Page.USTEventSubmit;
             } else {
                 optionPage = Page.USTEventRegistrationOptions;
