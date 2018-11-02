@@ -35,7 +35,6 @@ public with sharing class USTEventRegisterController {
         test = '';
         contactSet = false;
         eventIsClosed = false;
-
         EvtUserType = UserInfo.getUserType();
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
@@ -91,6 +90,12 @@ public with sharing class USTEventRegisterController {
 
             //Get Appoitment Types for event
             apptTypes = [SELECT Id, Title__c, Appointment_Category__c, Appointment_Type__c, Description__c FROM UST_Event_Appointment_Type__c WHERE UST_Event__c = :evtInfo.evtId];
+
+            addPick1 = createPicklists(eventPage.Add_Info_Question_Pick_List_1__c);
+            addPick2 = createPicklists(eventPage.Add_Info_Question_Pick_List_2__c);
+            addPick3 = createPicklists(eventPage.Add_Info_Question_Pick_List_3__c);
+            addPick4 = createPicklists(eventPage.Add_Info_Question_Pick_List_4__c);
+            addPick5 = createPicklists(eventPage.Add_Info_Question_Pick_List_5__c);
         }
 
         //If the user is logged in use that data
@@ -147,11 +152,6 @@ public with sharing class USTEventRegisterController {
             }
         }
 
-        addPick1 = createPicklists(eventPage.Add_Info_Question_Pick_List_1__c);
-        addPick2 = createPicklists(eventPage.Add_Info_Question_Pick_List_2__c);
-        addPick3 = createPicklists(eventPage.Add_Info_Question_Pick_List_3__c);
-        addPick4 = createPicklists(eventPage.Add_Info_Question_Pick_List_4__c);
-        addPick5 = createPicklists(eventPage.Add_Info_Question_Pick_List_5__c);
     }
 
     public PageReference setParentInfo(String n) {
@@ -189,17 +189,16 @@ public with sharing class USTEventRegisterController {
     }
 
     public List<SelectOption> createPicklists(String returnSepStringList) {
-        if (String.isBlank(returnSepStringList)) {
-            return null;
-        }
         List<SelectOption> cpl = new List<SelectOption>();
-        cpl.add(new SelectOption('', 'Select...'));
-        returnSepStringList = returnSepStringList.Trim();
-        returnSepStringList = returnSepStringList.replace('\n\n', '\n');
-        String[] splitList = returnSepStringList.split('\n');
-        for (String p : splitList) {
-            p = p.replaceAll('[^a-zA-Z0-9@<>?&;:\\[\\]!-. ]', '');
-            cpl.add(new SelectOption(p, p));
+        if (!String.isBlank(returnSepStringList)) {
+            cpl.add(new SelectOption('', 'Select...'));
+            returnSepStringList = returnSepStringList.Trim();
+            returnSepStringList = returnSepStringList.replace('\n\n', '\n');
+            String[] splitList = returnSepStringList.split('\n');
+            for (String p : splitList) {
+                p = p.replaceAll('[^a-zA-Z0-9@<>?&;:\\[\\]!-. ]', '');
+                cpl.add(new SelectOption(p, p));
+            }
         }
         return cpl;
     }

@@ -218,7 +218,13 @@ public with sharing class TestUSTEventShared {
         req.params.put('audience', audience);
         RestContext.request = req;
         USTEventFeed.getUSTEventFeed();
+
+        //test filter
+        req.params.put('filter', 'OCB');
+        RestContext.request = req;
+        USTEventFeed.getUSTEventFeed();
         Test.stopTest();
+
     }
 
     @isTest static void testUSTEventShared() {
@@ -305,7 +311,11 @@ public with sharing class TestUSTEventShared {
                 Allow_Other_Attendees__c = true,
                 Max_Other_Attendees__c = 5,
                 Close_Event_Days_Before__c = 0,
-                Audience__c = audience);
+                Audience__c = audience,
+                Add_Info_Question_Type_1__c = 'Pick-list',
+                Add_Info_Question_Text_1__c = 'What is your favorite color?',
+                Add_Info_Question_Pick_List_1__c = 'Red\nGreen\nYellow\nBlue'
+        );
         insert testEvent;
 
         // Add email on requeted status
@@ -436,19 +446,27 @@ public with sharing class TestUSTEventShared {
                     Registrant_Last_Name__c = student.lastname,
                     Registrant_Zip__c = student.mailingpostalcode,
                     Registrant_College_Code__c = '000000',
-                    Status__c = 'Requested'
+                    Status__c = 'Confirmed'
             );
         }
         insert testRegistration;
 
         addToRegAppt = new List<UST_Event_Appointments__c>();
+        Integer aptNum = 0;
         for (UST_Event_Appointment_Type__c nat : newApptTypes) {
-            addToRegAppt.add(new UST_Event_Appointments__c (
+            UST_Event_Appointments__c addThisAppt = new UST_Event_Appointments__c (
                     Event_Appointment_Type__c = nat.Id,
                     Event_Registration__c = testRegistration.Id,
-                    Client_Created_Appointment__c = true,
-                    Appointment_Status__c = 'Registered'
-            ));
+                    Client_Created_Appointment__c = true
+            );
+            if(math.mod(aptNum, 2) == 0){
+                addThisAppt.Appointment_Status__c = 'Registered';
+            }else{
+                addThisAppt.Appointment_Status__c = 'Confirmed';
+            }
+
+            addToRegAppt.add(addThisAppt);
+            aptNum++;
         }
         insert addToRegAppt;
 

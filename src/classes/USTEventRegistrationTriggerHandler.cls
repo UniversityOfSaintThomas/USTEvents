@@ -12,7 +12,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
     }
 
     public void afterInsert() {
-        sendSatusEmails(Trigger.new, Trigger.oldMap);
+        doOnStatusChange(Trigger.new, Trigger.oldMap);
     }
 
 
@@ -21,7 +21,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
     }
 
     public void afterUpdate() {
-        sendSatusEmails(Trigger.new, Trigger.oldMap);
+        doOnStatusChange(Trigger.new, Trigger.oldMap);
     }
 
     public void beforeDelete() {
@@ -52,11 +52,12 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
 
     }
 
-    private void sendSatusEmails(List<UST_Event_Registration__c> regs, Map<Id, Object> oldRegs) {
+    private void doOnStatusChange(List<UST_Event_Registration__c> regs, Map<Id, Object> oldRegs) {
 
         Map<Id, Id> affectedIds = new Map<Id, Id>();
+        Map<Id, Id> affectedContactIds = new Map<Id, Id>();
         List<UST_Event_Registration__c> affectedRegs = new List<UST_Event_Registration__c>();
-        ID contactId = [Select contactid from User where id = :Userinfo.getUserid()].contactId;
+        List<Contact> footOnCampus = new List<Contact>();
 
         for (UST_Event_Registration__c r : regs) {
 
@@ -69,11 +70,26 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
             }
 
             //Get all new trigger UST_Event_Registration__c that have a status change by comparing old map
-            if (r.Status__c != oldReg.Status__c) {
+            if (r.Status__c != oldReg.Status__c || r.Substatus__c != oldReg.Substatus__c) {
                 affectedIds.put(r.Event__c, r.Event__c);
                 affectedRegs.add(r);
+
+                If (r.Status__c == 'Confirmed' && r.Substatus__c == 'Attended') {
+                    affectedContactIds.put(r.Contact__c, r.Contact__c);
+                }
             }
         }
+
+        List<Contact> contactUpdates = [SELECT Id, Initial_Foot_on_Campus__c, Last_Time_on_Campus__c FROM Contact WHERE Id IN :affectedContactIds.values()];
+
+        for (Contact cu: contactUpdates) {
+            if (cu.Initial_Foot_on_Campus__c == null) {
+                footOnCampus.add(new Contact(id = cu.Id, Initial_Foot_on_Campus__c = Date.today(), Last_Time_on_Campus__c = Date.today()));
+            } else {
+                footOnCampus.add(new Contact(id = cu.Id, Last_Time_on_Campus__c = Date.today()));
+            }
+        }
+        upsert footOnCampus;
 
         //Get any templates for events that have restistration status changes
         List<UST_Event_Email__c> matchEmail = [
@@ -87,27 +103,26 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
 
         //loop through affected event registrations - have status change from old
         for (UST_Event_Registration__c areg : affectedRegs) {
-
             //Loop through gather email templates to get template and use registration fields to fill in hooks
-            for (UST_Event_Email__c e : matchEmail) {
+            for (UST_Event_Email__c em : matchEmail) {
                 Boolean statusMatch = false;
-                if (e.Event__r.Id == areg.Event__c && e.Action_Status__c == areg.Status__c) {
-                    if (!String.isBlank(e.Action_Sub_status__c)) {
-                        if (!String.isBlank(e.Action_Status__c)) {
-                            if ((e.Action_Status__c == areg.Status__c) && (e.Action_Sub_status__c == areg.Substatus__c)) {
+                if (em.Event__r.Id == areg.Event__c && em.Action_Status__c == areg.Status__c) {
+                    if (!String.isBlank(em.Action_Sub_status__c)) {
+                        if (!String.isBlank(em.Action_Status__c)) {
+                            if ((em.Action_Status__c == areg.Status__c) && (em.Action_Sub_status__c == areg.Substatus__c)) {
                                 statusMatch = true;
                             }
-                        } else if (e.Action_Sub_status__c == areg.Substatus__c) {
+                        } else if (em.Action_Sub_status__c == areg.Substatus__c) {
                             statusMatch = true;
                         }
-                    } else if (!String.isBlank(e.Action_Status__c) && (e.Action_Status__c == areg.Status__c)) {
+                    } else if (!String.isBlank(em.Action_Status__c) && (em.Action_Status__c == areg.Status__c)) {
                         statusMatch = true;
                     }
 
                     if (statusMatch) {
                         //Get email template
-                        String emailContent = e.Email_Content__c;
-                        String originalTemplate = e.Letterhead_HTML__c;
+                        String emailContent = em.Email_Content__c;
+                        String originalTemplate = em.Letterhead_HTML__c;
 
                         //Regex to find all Apex delineators {! }
                         Pattern TAG_REGEX = Pattern.compile('\\{!(.+?)\\}');
@@ -127,7 +142,12 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
 
                                 //Get the value for hook from registration have to remove any registration object names since we are already in the object
                                 String found = matcher2.group(1).replace('UST_Event_Registration__c.', '');
-                                found = String.valueOf(areg.get(found));
+                                try {
+                                    found = String.valueOf(areg.get(found));
+                                } catch( Exception e) {
+                                    found ='';
+                                }
+
                                 //replaceAll doesn't like nulls
                                 if (String.isBlank(found)) {
                                     found = '';
@@ -145,12 +165,12 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                         }
 
                         //send the message
-                        sendEmail2(areg.Registrant_Email__c, originalTemplate, emailContent, e.Email_Subject__c, e.Org_Email_Id__c, e.BCC_Email__c);
+                        sendEmail2(areg.Registrant_Email__c, originalTemplate, emailContent, em.Email_Subject__c, em.Org_Email_Id__c, em.BCC_Email__c);
                         Task nt = new Task();
                         nt.WhatId = areg.id;
                         nt.Type = 'Email';
                         nt.ActivityDate = Date.today();
-                        nt.Subject = 'Event status email: ' + e.Action_Status__c + ' - ' + e.Email_Subject__c;
+                        nt.Subject = 'Event status email: ' + em.Action_Status__c + ' - ' + em.Email_Subject__c;
                         nt.Status = 'Completed';
                         nt.Priority = 'Low';
                         activityUpdates.add(nt);

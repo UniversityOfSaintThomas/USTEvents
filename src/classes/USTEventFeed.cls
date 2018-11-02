@@ -74,17 +74,17 @@ global with sharing class USTEventFeed {
 
         // get start and end view times convert string to datetime then convert back into string to sanitize
         DateTime viewStart = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(-1);
+        DateTime viewEnd = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(1);
         ///.formatGmt('yyyy-MM-dd\'T\'HH:mm:ss\'Z\'');
         String formattedViewStart;
         String formattedViewEnd;
-        DateTime viewEnd = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(1);
+
         if (!String.isBlank(req.params.get('viewStart'))) {
             String viewStartString = req.params.get('viewStart').trim();
             if (!viewStartString.containsIgnoreCase(' ')) {
                 viewStartString = viewStartString + ' 00:00:00';
             }
             viewStart = DateTime.valueOf(viewStartString);
-            formattedViewStart = viewStart.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
         }
         if (!String.isBlank(req.params.get('viewEnd'))) {
             String viewEndString = req.params.get('viewEnd').trim();
@@ -92,9 +92,9 @@ global with sharing class USTEventFeed {
                 viewEndString = viewEndString + ' 23:59:59';
             }
             viewEnd = DateTime.valueOf(req.params.get('viewEnd'));
-            formattedViewEnd = viewEnd.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
         }
-
+        formattedViewStart = viewStart.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
+        formattedViewEnd = viewEnd.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
         eventQuery += ' AND Start_Date_Time__c >= ' + formattedViewStart + ' ';
         eventQuery += ' AND Start_Date_Time__c <= ' + formattedViewEnd + ' ';
 
