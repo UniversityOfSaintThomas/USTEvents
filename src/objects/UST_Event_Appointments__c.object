@@ -1043,6 +1043,21 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Event_Host__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Link to the host assigned to for this appointment.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Link to the host assigned to for this appointment.</inlineHelpText>
+        <label>Event Host</label>
+        <referenceTo>UST_Event_Host__c</referenceTo>
+        <relationshipLabel>UST Event Appointments</relationshipLabel>
+        <relationshipName>UST_Event_Appointments</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Event_Registration_Date__c</fullName>
         <externalId>false</externalId>
         <formula>TEXT(MONTH(Event_Registration__r.Date__c))+&quot;/&quot; +TEXT(DAY(Event_Registration__r.Date__c))+&quot;/&quot; +TEXT(YEAR(Event_Registration__r.Date__c))</formula>
@@ -1952,4 +1967,23 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Assign_Host</fullName>
+        <availability>online</availability>
+        <description>Assign a host for this appointment.</description>
+        <displayType>button</displayType>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>page</linkType>
+        <masterLabel>Assign Host</masterLabel>
+        <openType>newWindow</openType>
+        <page>USTEventHostAssignment</page>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+    </webLinks>
 </CustomObject>
