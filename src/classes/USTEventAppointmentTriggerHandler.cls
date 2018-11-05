@@ -69,18 +69,34 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
         List<UST_Event_Registration__c> newItineraryRegs = new List<UST_Event_Registration__c>();
         String generatedItinerary = '';
         String generatedAppts = '';
-        String tableHead = '<tr>';
-        tableHead += '<th align="left" style="text-align:left;">Time</th>';
-        tableHead += '<th align="left" style="text-align:left;">Description</th>';
-        tableHead += '</tr>';
+        String tableHead = '';
         if (AllAppts.size() > 0) {
+            Boolean appointmentsHaveTime = false;
+            for (UST_Event_Appointments__c apptTime : AllAppts) {
+                if (!String.isBlank(apptTime.Appointment_Time_Formatted__c)) {
+                    appointmentsHaveTime = true;
+                }
+            }
+            tableHead = '<tr>';
+            if (appointmentsHaveTime) {
+                tableHead += '<th align="left" style="text-align:left;">Time</th>';
+            }
+            tableHead += '<th align="left" style="text-align:left;">Description</th>';
+            tableHead += '</tr>';
             String lastID = AllAppts[0].Id;
             for (Integer i = 0; i < AllAppts.size(); i++) {
                 // add all confirmed appointments
                 if (allAppts[i].Appointment_Status__c == 'Confirmed') {
                     generatedItinerary += '<tr>';
-                    generatedItinerary += '<td style="text-align:left;">' + AllAppts[i].Appointment_Time_Formatted__c + '</td>';
-                    generatedItinerary += '<td style="text-align:left;">' + AllAppts[i].Appointment_Title__c;
+                    if (appointmentsHaveTime) {
+                        generatedItinerary += '<td style="text-align:left;">';
+                        if (!String.isBlank(AllAppts[i].Appointment_Time_Formatted__c)) {
+                            generatedItinerary += AllAppts[i].Appointment_Time_Formatted__c;
+                        }
+                        generatedItinerary += '</td>';
+                    }
+
+                    generatedItinerary += '<td style="text-align:left;padding-left:10px;">' + AllAppts[i].Appointment_Title__c;
                     if (!String.isBlank(AllAppts[i].Faculty_Staff_Member__c)) {
                         generatedItinerary += ' - ' + AllAppts[i].Faculty_Staff_Member__c;
                     }
@@ -90,12 +106,21 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
 
                 // add all requested appointments
                 generatedAppts += '<tr>';
-                generatedAppts += '<td style="text-align:left;">' + AllAppts[i].Appointment_Time_Formatted__c + '</td>';
-                generatedAppts += '<td style="text-align:left;">' + AllAppts[i].Appointment_Title__c;
+
+                if (appointmentsHaveTime) {
+                    generatedAppts += '<td style="text-align:left;">';
+                    if (!String.isBlank(AllAppts[i].Appointment_Time_Formatted__c)) {
+                        generatedAppts += AllAppts[i].Appointment_Time_Formatted__c;
+                    }
+                    generatedAppts += '</td>';
+                }
+
+                generatedAppts += '<td style="text-align:left;padding-left:10px;">' + AllAppts[i].Appointment_Title__c;
                 if (!String.isBlank(AllAppts[i].Faculty_Staff_Member__c)) {
                     generatedAppts += ' - ' + AllAppts[i].Faculty_Staff_Member__c;
                 }
                 generatedAppts += '</td>';
+
                 generatedAppts += '</tr>';
 
 
@@ -111,7 +136,7 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
                 generatedAppts = '<table>' + tableHead + generatedAppts + '</table>';
             }
 
-            newItineraryRegs.add(new UST_Event_Registration__c(id = AllAppts[AllAppts.size()-1].Event_Registration__r.Id, Generated_Itinerary__c = generatedItinerary, Generated_Requested_Appointments__c = generatedAppts));
+            newItineraryRegs.add(new UST_Event_Registration__c(id = AllAppts[AllAppts.size() - 1].Event_Registration__r.Id, Generated_Itinerary__c = generatedItinerary, Generated_Requested_Appointments__c = generatedAppts));
         }
         upsert newItineraryRegs;
     }
