@@ -56,6 +56,9 @@ public class USTEventProgramLookupExtension {
     }
 
     public void save() {
+        USTEvt.Academic_Program_List__c = '';
+        USTEvt.Program_Filter__c = '';
+        upsert USTEvt;
         // build a ; seperated string of selected Programs to insert into Academic_Program_List__c
         String selectString = '';
         String progCodeString = '';
