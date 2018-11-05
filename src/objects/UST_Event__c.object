@@ -522,6 +522,26 @@
                     <default>false</default>
                     <label>International Graduate Student</label>
                 </value>
+                <value>
+                    <fullName>Prospective Graduate Student</fullName>
+                    <default>false</default>
+                    <label>Prospective Graduate Student</label>
+                </value>
+                <value>
+                    <fullName>Graduate Alumni</fullName>
+                    <default>false</default>
+                    <label>Graduate Alumni</label>
+                </value>
+                <value>
+                    <fullName>Graduate Public</fullName>
+                    <default>false</default>
+                    <label>Graduate Public</label>
+                </value>
+                <value>
+                    <fullName>Graduate Staff</fullName>
+                    <default>false</default>
+                    <label>Graduate Staff</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
         <visibleLines>4</visibleLines>
@@ -1284,11 +1304,27 @@ TEXT(YEAR( End_Date__c))
         <picklistValues>
             <picklist>Audience__c</picklist>
             <values>
+                <fullName>Graduate Alumni</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Graduate Public</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Graduate Staff</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Graduate Student</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>International Graduate Student</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prospective Graduate Student</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
