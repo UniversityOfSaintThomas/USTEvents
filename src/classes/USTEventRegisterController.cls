@@ -23,13 +23,15 @@ public with sharing class USTEventRegisterController {
     public List<SelectOption> addPick3 { get; set; }
     public List<SelectOption> addPick4 { get; set; }
     public List<SelectOption> addPick5 { get; set; }
-
-
+    public List<String> selectedPrograms { get; set; }
 
     public USTEventRegisterController() {
+
+        //array for looping through additional information questions
         questionNum = new List<String>{
                 '1', '2', '3', '4', '5'
         };
+
         newEvtReg = new UST_Event_Registration__c();
         templateSelected = USTShared.defaultTemplate;
         test = '';
@@ -62,12 +64,13 @@ public with sharing class USTEventRegisterController {
             eventPage = [
                     SELECT Name, Id, Event_Name__c, Event_description__c, Event_Footer__c, Event_Full_Text__c, Audience__c,Include_Time_frame_List__c,
                             Max_Other_Attendees__c, Allow_Other_Attendees__c, College_High_School_Ask__c, Ask_Gender__c, Template__c,
-                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Ask_If_Parent__c,
+                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Ask_If_Parent__c, Ask_Program_Interest__c,
                             Add_Info_Question_Pick_List_1__c, Add_Info_Question_Text_1__c, Add_Info_Question_Type_1__c,
                             Add_Info_Question_Pick_List_2__c, Add_Info_Question_Text_2__c, Add_Info_Question_Type_2__c,
                             Add_Info_Question_Pick_List_3__c, Add_Info_Question_Text_3__c, Add_Info_Question_Type_3__c,
                             Add_Info_Question_Pick_List_4__c, Add_Info_Question_Text_4__c, Add_Info_Question_Type_4__c,
-                            Add_Info_Question_Pick_List_5__c, Add_Info_Question_Text_5__c, Add_Info_Question_Type_5__c
+                            Add_Info_Question_Pick_List_5__c, Add_Info_Question_Text_5__c, Add_Info_Question_Type_5__c,
+                            Academic_Program_List__c, School__c
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1
@@ -141,7 +144,7 @@ public with sharing class USTEventRegisterController {
                                 Registrant_Zip__c, Registrant_Phone__c, Registrant_Mobile_Phone__c, Registrant_College__c, Registrant_College_Code__c, Registrant_College_Year__c,
                                 Registrant_High_School__c, Registrant_High_School_Code__c, Registrant_Receive_Texts__c, Registrant_High_School_Grad_Year__c, Registrant_High_School_Not_Found__c,
                                 Registrant_College_Not_Found__c, Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c, Registrant_Parent_Phone__c, Registrant_Parent_Status__c,
-                                Add_Info_Answer_1__c, Add_Info_Answer_2__c, Add_Info_Answer_3__c, Add_Info_Answer_4__c, Add_Info_Answer_5__c
+                                Add_Info_Answer_1__c, Add_Info_Answer_2__c, Add_Info_Answer_3__c, Add_Info_Answer_4__c, Add_Info_Answer_5__c, Registrant_Program_Interest__c
                         FROM UST_Event_Registration__c
                         WHERE id = :evtInfo.evtRegId
                 ][0];
@@ -178,6 +181,88 @@ public with sharing class USTEventRegisterController {
         return GetDropdownOptions(UST_Event_Registration__c.Registrant_Parent_Status__c.getDescribe());
     }
 
+
+    public List<SelectOption> getProgramsAvailable() {
+        String prgString = eventPage.Academic_Program_List__c;
+        String prgSelectedAlready = newEvtReg.Registrant_Program_Interest__c;
+
+        //If program list is empty then get the full list
+        If (String.isBlank(prgString)) {
+            List<Major__c> schoolProgs = new List<Major__c>();
+            if (!String.isBlank(eventPage.School__c)) {
+                Id schoolId = eventPage.School__c;
+                schoolProgs = [
+                        SELECT Id,Name, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c
+                        FROM Major__c
+                        WHERE Status__c = 'Active'
+                        AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                        AND Program_Offered__r.Program_Code__c != NULL
+                        AND Program_Offered__r.School__c = :schoolId
+                        ORDER BY Major_Name__c
+                ];
+            } else {
+                schoolProgs = [
+                        SELECT Id,Name, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c
+                        FROM Major__c
+                        WHERE Status__c = 'Active'
+                        AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                        AND Program_Offered__r.Program_Code__c != NULL
+                        ORDER BY Major_Name__c
+                ];
+            }
+            //turn list into a ; separated string to consume below
+            prgString = '';
+            For (Major__c prog : schoolProgs) {
+                prgString += prog.Major_Name__c + ' (' + prog.Program_Offered__r.Program_Code__c;
+                if (!String.isBlank(prog.Major_Code__c)) {
+                    prgString += '|' + prog.Major_Code__c;
+                }
+                prgString += ');';
+            }
+            prgString = prgString.removeEnd(';');
+        }
+
+        List<SelectOption> progSelOpt = new List<SelectOption>();
+        progSelOpt.add(new SelectOption('', 'Select...'));
+        //Pattern TAG_REGEX = Pattern.compile('\\((\\w+|\\w+\\|\\w+)\\)');
+        List<String> prgList = prgString.split(';');
+        selectedPrograms = new List<String>();
+        for (String prg : prgList) {
+            progSelOpt.add(
+                    new SelectOption(
+                            prg,
+                            prg.replaceAll('\\(\\w+\\|\\w+\\)|\\(\\w+\\)', '').trim()
+                    )
+            );
+            if (!String.isBlank(prgSelectedAlready)) {
+                if (prgSelectedAlready.indexOf(prg)> -1) {
+                    selectedPrograms.add(prg);
+                }
+            }
+
+//
+//            Matcher matcher = TAG_REGEX.matcher(prg);
+//            while (matcher.find()) {
+//                progSelOpt.add(
+//                        new SelectOption(
+//                                matcher.group(1).trim(),
+//                                prg.replaceAll('\\(\\w+\\|\\w+\\)|\\(\\w+\\)', '').trim()
+//                        )
+//                );
+//            }
+        }
+        return progSelOpt;
+
+    }
+
+    public List<SelectOption> setProgramsAvailable() {
+        String prgString = eventPage.Academic_Program_List__c;
+        String prgSelectedAlready = newEvtReg.Registrant_Program_Interest__c;
+        List<SelectOption> previousSelected = new List<SelectOption>();
+        previousSelected.add(new SelectOption('Digital Experience (BU_GR_CER|BUDE)', 'Digital Experience'));
+        return previousSelected;
+    }
+
     public List<SelectOption> GetDropdownOptions(Schema.DescribeFieldResult fieldResult) {
         List<SelectOption> options = new List<SelectOption>();
         List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
@@ -210,8 +295,18 @@ public with sharing class USTEventRegisterController {
         String softFirstLastZipMatches = '';
         boolean newContactCreated = false;
         PageReference optionPage;
-        //Test to find if contact already exists - HARD TEST last name and email match
 
+        //Record selected programs of interest
+        String recordSelPrg = '';
+        if (!selectedPrograms.isEmpty()) {
+            for (String selPrg : selectedPrograms) {
+                recordSelPrg += selPrg + ';';
+            }
+            recordSelPrg.removeEnd(';');
+        }
+        newEvtReg.Registrant_Program_Interest__c = recordSelPrg;
+
+        //Test to find if contact already exists - HARD TEST last name and email match
         String lastName = newEvtReg.Registrant_Last_Name__c;
         String email = newEvtReg.Registrant_Email__c;
         List<Contact> hardContactTest = [SELECT Id FROM Contact WHERE LastName = :lastName AND Email = :email];
@@ -304,8 +399,8 @@ public with sharing class USTEventRegisterController {
                 try {
                     insert newEvtReg;
                 } catch (Exception ex) {
-                    //  ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
-                    //  ApexPages.addMessage(myMsg);
+                    ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                    ApexPages.addMessage(myMsg);
                 }
                 evtInfo.evtRegId = newEvtReg.Id;
             } else {
@@ -313,8 +408,8 @@ public with sharing class USTEventRegisterController {
                 try {
                     upsert newEvtReg;
                 } catch (Exception ex) {
-                //   ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
-                     //   ApexPages.addMessage(myMsg);
+                    ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                    ApexPages.addMessage(myMsg);
                 }
 
             }
@@ -328,7 +423,7 @@ public with sharing class USTEventRegisterController {
                     AND (Restrict_To_Instance_Title__r.Instance_Title__c = :evtInstance.Instance_Title__c OR Restrict_To_Instance_Title__r.Instance_Title__c = null)
             ];
             if (apptTypes.size() == 0) {
-            //If no options skip that step
+                //If no options skip that step
                 optionPage = Page.USTEventSubmit;
             } else {
                 optionPage = Page.USTEventRegistrationOptions;

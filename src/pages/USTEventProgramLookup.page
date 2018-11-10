@@ -32,7 +32,6 @@
                                leftOption="{!Programs}"
                                rightLabel="Selected Programs"
                                rightOption="{!SelectedPrograms}"
-                               showUpDownButtons="false"
                                size="10"
                                width="150px"/>
 

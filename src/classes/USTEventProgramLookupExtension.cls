@@ -28,26 +28,34 @@ public class USTEventProgramLookupExtension {
     public List<SelectOption> getPrograms() {
         // Get a list of programs
         List<SelectOption> programs = new List<SelectOption>();
-        List<EnrollmentrxRx__Program_Offered__c> schoolProgs = new List<EnrollmentrxRx__Program_Offered__c>();
+        List<Major__c> schoolProgs = new List<Major__c>();
         if (!String.isBlank(USTEvt.School__c)) {
             Id schoolId = USTEvt.School__c;
             schoolProgs = [
-                    SELECT Program_Code__c, Name, School__c
-                    FROM EnrollmentrxRx__Program_Offered__c
+                    SELECT Id,Name, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c
+                    FROM Major__c
                     WHERE Status__c = 'Active'
-                    AND Program_Code__c != NULL
-                    AND School__c = :schoolId
+                    AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                    AND Program_Offered__r.Program_Code__c != NULL
+                    AND Program_Offered__r.School__c = :schoolId
+                    ORDER BY Major_Name__c
             ];
         } else {
             schoolProgs = [
-                    SELECT Program_Code__c, Name, School__c
-                    FROM EnrollmentrxRx__Program_Offered__c
+                    SELECT Id,Name, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c
+                    FROM Major__c
                     WHERE Status__c = 'Active'
-                    AND Program_Code__c != NULL
+                    AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                    AND Program_Offered__r.Program_Code__c != NULL
+                    ORDER BY Major_Name__c
             ];
         }
-        For (EnrollmentrxRx__Program_Offered__c prog : schoolProgs) {
-            String progName = prog.Name + ' (' + prog.Program_Code__c + ')';
+        For (Major__c prog : schoolProgs) {
+            String progName = prog.Major_Name__c + ' (' + prog.Program_Offered__r.Program_Code__c;
+            if (!String.isBlank(prog.Major_Code__c)) {
+                progName += '|' + prog.Major_Code__c;
+            }
+            progName += ')';
             if (USTevt.Academic_Program_List__c.indexOf(progName) == -1) {
                 programs.add(new SelectOption(progName, progName));
             }
@@ -66,7 +74,7 @@ public class USTEventProgramLookupExtension {
             selectString += p.getValue() + ';';
         }
         if (!String.isBlank(selectString)) {
-            Pattern TAG_REGEX = Pattern.compile('\\((\\w+)\\)');
+            Pattern TAG_REGEX = Pattern.compile('\\((\\w+|\\w+\\|\\w+)\\)');
             Matcher matcher = TAG_REGEX.matcher(selectString);
             //loop through found hocks and add only unique
             while (matcher.find()) {

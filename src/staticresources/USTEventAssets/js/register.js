@@ -108,6 +108,7 @@ $(document).ready(function () {
         $("#cantFindCollege").click();
     }
 
+    $('[id$=progInterest]').chosen({max_selected_options: 4});
 
 });
 
@@ -428,3 +429,14 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
 };
+
+/* isNumberKey
+    Only allows NUMBERS to be keyed into a text field.
+    @environment ALL
+    @param evt - The specified EVENT that happens on the element.
+    @return True if number, false otherwise.
+*/
+function isNumberKey(evt) {
+
+    return true;
+} // isNumberKey

@@ -15,7 +15,7 @@
         <apex:define name="body">
             <div class="row">
                 <div class="columns errorMessages">
-                    <apex:messages />
+                    <apex:messages/>
                 </div>
             </div>
             <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!!eventIsClosed}">
@@ -247,32 +247,46 @@
                             <h3>Additional Information</h3>
                         </div>
                     </div>
+
+                    <!-- Program of interest question -->
+                    <apex:outputPanel layout="block" styleClass="row" rendered="{!IF(eventPage.Ask_Program_Interest__c, true, false)}">
+                        <div class="column">
+                            <apex:outputLabel for="progInterest">Program of interest</apex:outputLabel>
+                            <apex:selectList size="4" multiSelect="true" value="{!selectedPrograms}" id="progInterest" html-data-placeholder="Choose programs...">
+                                <apex:selectOptions value="{!programsAvailable}"></apex:selectOptions>
+                            </apex:selectList>
+                        </div>
+                    </apex:outputPanel>
+                    <!-- END Program of interest question -->
+
+
                     <apex:repeat value="{!questionNum}" var="q">
                         <apex:outputPanel layout="block" styleClass="row" rendered="{!IF(!ISBLANK(eventPage['Add_Info_Question_Text_' + q + '__c']),true, false)}">
                             <div class="column">
-                                <p class="{!IF(
+                                <apex:outputLabel for="{!'AddInfo' + q}" styleClass="{!IF(
                                         eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Pick-list required' ||
                                                 eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text area required'||
                                                 eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text box required'
                                         , 'required' , '')}">
                                         {!eventPage['Add_Info_Question_Text_' + q + '__c']}
-                                </p>
+                                </apex:outputLabel>
                                 <!--Text area -->
                                 <apex:outputPanel layout="none" rendered="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text area' || eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text area required', true, false)}">
-                                    <apex:inputTextarea value="{!newEvtReg['Add_Info_Answer_' + q + '__c']}" required="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text area required', true, false)}" styleClass="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text area required', 'required requiredText', '')}"></apex:inputTextarea>
+                                    <apex:inputTextarea label="{!'AddInfo' + q}" value="{!newEvtReg['Add_Info_Answer_' + q + '__c']}" required="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text area required', true, false)}" styleClass="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text area required', 'required requiredText', '')}"></apex:inputTextarea>
                                 </apex:outputPanel>
 
                                 <!--Text box-->
                                 <apex:outputPanel layout="none" rendered="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text box' || eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text box required', true, false)}">
-                                    <apex:inputText value="{!newEvtReg['Add_Info_Answer_' + q + '__c']}" required="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text box required', true, false)}" styleClass="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text box required', 'required requiredText', '')}"></apex:inputText>
+                                    <apex:inputText label="{!'AddInfo' + q}" value="{!newEvtReg['Add_Info_Answer_' + q + '__c']}" required="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text box required', true, false)}" styleClass="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text box required', 'required requiredText', '')}"></apex:inputText>
                                 </apex:outputPanel>
 
                                 <!--Pick List-->
                                 <apex:outputPanel layout="none" rendered="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Pick-list' || eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Pick-list required', true, false)}">
-                                    <apex:selectList value="{!newEvtReg['Add_Info_Answer_' + q + '__c']}" size="1" required="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Pick-list required', true, false)}" styleClass="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Pick-list required', 'required requiredText', '')}">
+                                    <apex:selectList label="{!'AddInfo' + q}" value="{!newEvtReg['Add_Info_Answer_' + q + '__c']}" size="1" required="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Pick-list required', true, false)}" styleClass="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Pick-list required', 'required requiredText', '')}">
                                         <apex:selectOptions value="{!CASE(q, '1', addPick1, '2', addPick2, '3', addPick3, '4', addPick4, addPick5) }"/>
                                     </apex:selectList>
                                 </apex:outputPanel>
+
                             </div>
                         </apex:outputPanel>
                     </apex:repeat>
