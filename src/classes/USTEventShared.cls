@@ -12,6 +12,7 @@ public with sharing class USTEventShared {
         public String instanceID { get; set; }
         public String evtRegId { get; set; }
         public String evtId { get; set; }
+        public String recordTypeName {get;set;}
     }
 
     public USTEventInfo getUSTEventInfo() {
@@ -44,8 +45,9 @@ public with sharing class USTEventShared {
                         evtInfo.audience = URLaudience;
                     }
                     try {
-                        UST_Event_Instance__c instanceInfo = [SELECT Event__c FROM UST_Event_Instance__c WHERE ID = :evtInfo.instanceID][0];
+                        UST_Event_Instance__c instanceInfo = [SELECT Event__c, Event__r.RecordType.Name FROM UST_Event_Instance__c WHERE ID = :evtInfo.instanceID][0];
                         evtInfo.evtId = instanceInfo.Event__c;
+
                     } catch (Exception e) {
 
                     }
@@ -53,6 +55,14 @@ public with sharing class USTEventShared {
                 }
             }
         }
+        //Get record type
+        UST_Event_Instance__c recTypeInfo = [SELECT Event__r.RecordType.Name FROM UST_Event_Instance__c WHERE ID = :evtInfo.instanceID][0];
+        if (String.isBlank(recTypeInfo.event__r.RecordType.Name)) {
+            evtInfo.recordTypeName = 'Undergraduate';
+        } else {
+            evtInfo.recordTypeName = recTypeInfo.event__r.RecordType.Name;
+        }
+
         //check if regid is there  and whether status it is set to registered. IF so reset cookie if it is.
         if (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
             UST_Event_Registration__c evtReg = [SELECT Status__c FROM UST_Event_Registration__c WHERE ID = :evtInfo.evtRegId][0];

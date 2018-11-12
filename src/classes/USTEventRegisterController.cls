@@ -224,7 +224,7 @@ public with sharing class USTEventRegisterController {
 
         List<SelectOption> progSelOpt = new List<SelectOption>();
         progSelOpt.add(new SelectOption('', 'Select...'));
-        //Pattern TAG_REGEX = Pattern.compile('\\((\\w+|\\w+\\|\\w+)\\)');
+
         List<String> prgList = prgString.split(';');
         selectedPrograms = new List<String>();
         for (String prg : prgList) {
@@ -235,21 +235,10 @@ public with sharing class USTEventRegisterController {
                     )
             );
             if (!String.isBlank(prgSelectedAlready)) {
-                if (prgSelectedAlready.indexOf(prg)> -1) {
+                if (prgSelectedAlready.indexOf(prg) > -1) {
                     selectedPrograms.add(prg);
                 }
             }
-
-//
-//            Matcher matcher = TAG_REGEX.matcher(prg);
-//            while (matcher.find()) {
-//                progSelOpt.add(
-//                        new SelectOption(
-//                                matcher.group(1).trim(),
-//                                prg.replaceAll('\\(\\w+\\|\\w+\\)|\\(\\w+\\)', '').trim()
-//                        )
-//                );
-//            }
         }
         return progSelOpt;
 
@@ -298,13 +287,55 @@ public with sharing class USTEventRegisterController {
 
         //Record selected programs of interest
         String recordSelPrg = '';
+        Pattern TAG_REGEX = Pattern.compile('\\((\\w+|\\w+\\|\\w+)\\)');
+        List<String> majorCodes = new List<String>();
+        Boolean progSelectionMade = true;
+
+        // Populate top 4 majors if no selection was made by client or no selection was asked of client
+        if (selectedPrograms.isEmpty() && !String.isBlank(eventPage.Academic_Program_List__c)) {
+            selectedPrograms = eventPage.Academic_Program_List__c.split(';');
+            progSelectionMade = false;
+        }
+
         if (!selectedPrograms.isEmpty()) {
+            //Harvested the major truncated code from the description (in parenthesis)
             for (String selPrg : selectedPrograms) {
                 recordSelPrg += selPrg + ';';
+                Matcher matcher = TAG_REGEX.matcher(selPrg);
+                while (matcher.find()) {
+                    String StringCode = matcher.group(1).trim();
+                    List<String> StringMajor = StringCode.split('\\|');
+                    majorCodes.add(StringMajor[0]);
+                }
             }
             recordSelPrg.removeEnd(';');
+
+            //Query for majors via program code
+            List<Major__c> majorIdList = [SELECT Id From Major__c Where Program_Code__c IN :majorCodes];
+
+            //Add 4  Major Ids to Registration
+            if (majorIdList.size() > 0) {
+                for (Integer mc = 0; mc < 4; mc++) {
+                    if (mc < majorIdList.size()) {
+                        if (mc == 0) {
+                            newEvtReg.Registrant_Major__c = majorIdList[0].id;
+                        } else {
+                            newEvtReg.put('Registrant_Major_' + (mc + 1) + '__c', majorIdList[mc].id);
+                        }
+                    } else {
+                        newEvtReg.put('Registrant_Major_' + (mc + 1) + '__c', '');
+                    }
+                }
+            }
+            //get major ids and save them
         }
-        newEvtReg.Registrant_Program_Interest__c = recordSelPrg;
+
+        //Don't record prog interest if none were defined by client to prevent filling in hidden prog interests
+        if (eventPage.Ask_Program_Interest__c && progSelectionMade) {
+            newEvtReg.Registrant_Program_Interest__c = recordSelPrg;
+        } else {
+            newEvtReg.Registrant_Program_Interest__c = '';
+        }
 
         //Test to find if contact already exists - HARD TEST last name and email match
         String lastName = newEvtReg.Registrant_Last_Name__c;
