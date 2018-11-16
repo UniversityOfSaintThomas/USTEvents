@@ -432,6 +432,17 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Alternate_Registration_URL__c</fullName>
+        <description>If you don not wish to use Salesforce for event registration but rather another event system enter the URL to that registration page here.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If you don not wish to use Salesforce for event registration but rather another event system enter the URL to that registration page here.</inlineHelpText>
+        <label>Alternate Registration URL</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
+    </fields>
+    <fields>
         <fullName>Ask_Gender__c</fullName>
         <description>Ask about a registrants gender</description>
         <externalId>false</externalId>
@@ -469,6 +480,17 @@
         <externalId>false</externalId>
         <inlineHelpText>Ask whether the person filling out is a parent or student. This will helps when a parent is signing up for a student to come to an event (we then capture both sets of data).</inlineHelpText>
         <label>Ask If Parent</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Ask_Program_Interest__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>During registration ask about program interest as defined in available programs.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>During registration ask about program interest as defined in available programs.</inlineHelpText>
+        <label>Ask Program Interest</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
@@ -623,18 +645,18 @@
         <description>The base URL of the Salesforce community. This is not the start of the event app, just the start of the orgs community.</description>
         <externalId>false</externalId>
         <formula>/* GET SUB-DOMAIN OF CURRENT SALESFORCE ORG - cs65  is dev, cs18 is staging, else production na54 which we will default to*/
-CASE(
+            CASE(
 
-    /* Parse out the sub-domain of current org */
-    RIGHT(
-       LEFT($Api.Partner_Server_URL_260, FIND( &apos;.&apos;, $Api.Partner_Server_URL_260) - 1), 
-       FIND(&apos;//&apos;, LEFT($Api.Partner_Server_URL_260, FIND( &apos;.&apos;, $Api.Partner_Server_URL_260) - 1)) - 3)
-    /* End parse of sub-domain of current org */
+            /* Parse out the sub-domain of current org */
+            RIGHT(
+            LEFT($Api.Partner_Server_URL_260, FIND( &apos;.&apos;, $Api.Partner_Server_URL_260) - 1),
+            FIND(&apos;//&apos;, LEFT($Api.Partner_Server_URL_260, FIND( &apos;.&apos;, $Api.Partner_Server_URL_260) - 1)) - 3)
+            /* End parse of sub-domain of current org */
 
-    /* Start cases to apply hard coded base url of community */
-    ,&apos;cs65&apos;, &apos;https://dev-stthomas.cs65.force.com/applicantportal/&apos;
-    ,&apos;cs18&apos;, &apos;https://staging-stthomas.cs18.force.com/applicantportal/&apos;,
-    &apos;https://stthomas.force.com/applicantportal/&apos;
+            /* Start cases to apply hard coded base url of community */
+            ,&apos;cs65&apos;, &apos;https://dev-stthomas.cs65.force.com/applicantportal/&apos;
+            ,&apos;cs18&apos;, &apos;https://staging-stthomas.cs18.force.com/applicantportal/&apos;,
+            &apos;https://stthomas.force.com/applicantportal/&apos;
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>The base URL of the Salesforce community. This is not the start of the event app, just the start of the orgs community.</inlineHelpText>

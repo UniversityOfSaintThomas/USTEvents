@@ -32,7 +32,7 @@ public class USTEventProgramLookupExtension {
         if (!String.isBlank(USTEvt.School__c)) {
             Id schoolId = USTEvt.School__c;
             schoolProgs = [
-                    SELECT Id,Name, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c
+                    SELECT Id,Name, Major_Display_Name__c, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c
                     FROM Major__c
                     WHERE Status__c = 'Active'
                     AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
@@ -42,7 +42,7 @@ public class USTEventProgramLookupExtension {
             ];
         } else {
             schoolProgs = [
-                    SELECT Id,Name, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c
+                    SELECT Id,Name, Major_Display_Name__c, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c
                     FROM Major__c
                     WHERE Status__c = 'Active'
                     AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
@@ -51,7 +51,7 @@ public class USTEventProgramLookupExtension {
             ];
         }
         For (Major__c prog : schoolProgs) {
-            String progName = prog.Major_Name__c + ' (' + prog.Program_Offered__r.Program_Code__c;
+            String progName = prog.Major_Display_Name__c + ' (' + prog.Program_Offered__r.Program_Code__c;
             if (!String.isBlank(prog.Major_Code__c)) {
                 progName += '|' + prog.Major_Code__c;
             }

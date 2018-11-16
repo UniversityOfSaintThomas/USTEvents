@@ -6,14 +6,14 @@ public with sharing class USTEventConfirmationController {
     public USTEventShared USTShared = new USTEventShared();
     public USTEventShared.USTEventInfo evtInfo { get; set; }
     public UST_Event__C eventPage { get; set; }
-    public UST_Event_Instance__c evtInstance {get;set;}
+    public UST_Event_Instance__c evtInstance { get; set; }
     public String templateSelected { get; set; }
-    public String rName {get;set;}
+    public String rName { get; set; }
 
 
     public USTEventConfirmationController() {
 
-        templateSelected =  USTShared.defaultTemplate;
+        templateSelected = USTShared.defaultTemplate;
         evtInfo = USTShared.getUSTEventInfo();
 
         if (!String.isEmpty(evtInfo.evtId)) {
@@ -28,7 +28,7 @@ public with sharing class USTEventConfirmationController {
         //PageReference resultPageRef =  USTShared.checkForEvent();
         evtInfo = USTShared.getUSTEventInfo();
         String eventTitle = '';
-        if(!String.isBlank(evtInfo.evtRegId)) {
+        if (!String.isBlank(evtInfo.evtRegId)) {
             UST_Event_Registration__c evtReg = [
                     SELECT Id, Status__c, Contact__c, Event_Name__c, Event_Instance_Title__c,
                             Registrant_First_Name__c, Registrant_Last_Name__c,Registrant_Gender__c,
@@ -36,7 +36,16 @@ public with sharing class USTEventConfirmationController {
                             Registrant_State__c, Registrant_Zip__c, Registrant_Email__c, Registrant_High_School_Grad_Year__c,
                             Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c,
                             Registrant_Program_Interest__c, Registrant_Major__c, Registrant_Major_2__c, Registrant_Major_3__c,
-                            Registrant_Major_4__c
+                            Registrant_Major_4__c,
+                            Registrant_Major__r.Program_Offered__r.School__c,
+                            Registrant_Major_2__r.Program_Offered__r.School__c,
+                            Registrant_Major_3__r.Program_Offered__r.School__c,
+                            Registrant_Major_4__r.Program_Offered__r.School__c,
+                            Registrant_Major__r.Program_Offered__c,
+                            Registrant_Major_2__r.Program_Offered__c,
+                            Registrant_Major_3__r.Program_Offered__c,
+                            Registrant_Major_4__r.Program_Offered__c
+
                     FROM UST_Event_Registration__c
                     WHERE id = :evtInfo.evtRegId
             ][0];
@@ -71,10 +80,29 @@ public with sharing class USTEventConfirmationController {
             tp.Major2__c = evtReg.Registrant_Major_2__c;
             tp.Major3__c = evtReg.Registrant_Major_3__c;
             tp.Major4__c = evtReg.Registrant_Major_4__c;
+            tp.School__c = evtReg.Registrant_Major__r.Program_Offered__r.School__c;
+            tp.School2__c = evtReg.Registrant_Major_2__r.Program_Offered__r.School__c;
+            tp.School3__c = evtReg.Registrant_Major_3__r.Program_Offered__r.School__c;
+            tp.School4__c = evtReg.Registrant_Major_4__r.Program_Offered__r.School__c;
+            tp.Program_Offered__c = evtReg.Registrant_Major__r.Program_Offered__c;
+            tp.Program_Offered_2__c = evtReg.Registrant_Major_2__r.Program_Offered__c;
+            tp.Program_Offered_3__c = evtReg.Registrant_Major_3__r.Program_Offered__c;
+            tp.Program_Offered_4__c = evtReg.Registrant_Major_4__r.Program_Offered__c;
 
-            if (evtInfo.recordTypeName == 'Undergraduate') {
-                tp.Degree_Sought_Program_Catalog__c = 'Undergraduate';
+            if (evtInfo.recordTypeName == 'Undergraduate' || String.isBlank(evtInfo.recordTypeName)) {
+                List<EnrollmentrxRx__Program_Offered__c> UgProgOffered = [SELECT Id, EnrollmentrxRx__Program_Catalog__c, School__c FROM EnrollmentrxRx__Program_Offered__c WHERE Name = 'Undergraduate' AND Status__c = 'Active'];
+                if (UgProgOffered.size() > 0) {
+                    tp.Program_Offered__c = UgProgOffered[0].Id;
+                    tp.Degree_Sought_Program_Catalog__c = UgProgOffered[0].EnrollmentrxRx__Program_Catalog__c;
+                    tp.School__c = UgProgOffered[0].School__c;
+                }
+            } else if (evtInfo.recordTypeName == 'Graduate') {
+                List<EnrollmentrxRx__Program_Catalog__c> UgProgOffered = [SELECT Name, Id FROM EnrollmentrxRx__Program_Catalog__c WHERE Name = 'Graduate'];
+                if (UgProgOffered.size() > 0) {
+                    tp.Degree_Sought_Program_Catalog__c = UgProgOffered[0].Id;
+                }
             }
+
             insert tp;
         }
 

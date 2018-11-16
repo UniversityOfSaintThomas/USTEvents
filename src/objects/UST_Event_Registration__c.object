@@ -196,6 +196,20 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Add_To_Calendar_Link__c</fullName>
+        <description>Link to add to your calendar event feature.</description>
+        <externalId>false</externalId>
+        <formula>Event__r.Community_Base_URL__c + &apos;usteventcancelreview?regId=&apos; +  Event_Instance__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Link to add to your calendar event feature.</inlineHelpText>
+        <label>Add To Calendar Link</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Admissions_Counselor__c</fullName>
         <externalId>false</externalId>
         <formula>Contact__r.Suggested_UG_Adm4Y_Counselor_Role__c</formula>
@@ -361,6 +375,17 @@ CASE(RIGHT(TEXT(Date__c),2),
         <fullName>Date__c</fullName>
         <externalId>false</externalId>
         <label>Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Event_Instance_Date__c</fullName>
+        <externalId>false</externalId>
+        <formula>DATEVALUE(Event_Instance__r.Start_Date_Time__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Event Instance Date</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -582,6 +607,30 @@ CASE(RIGHT(TEXT(Date__c),2),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Registrant_Applicant_Type__c</fullName>
+        <externalId>false</externalId>
+        <label>Registrant Applicant Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>First-Year</fullName>
+                    <default>false</default>
+                    <label>First-Year</label>
+                </value>
+                <value>
+                    <fullName>Transfer</fullName>
+                    <default>false</default>
+                    <label>Transfer</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Registrant_City__c</fullName>
         <description>The city that event registrant reported at time of registering for the event.</description>
         <externalId>false</externalId>
@@ -775,6 +824,66 @@ CASE(RIGHT(TEXT(Date__c),2),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Registrant_Major_2__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Program of interest 2</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Program of interest 2</inlineHelpText>
+        <label>Registrant Major 2</label>
+        <referenceTo>Major__c</referenceTo>
+        <relationshipLabel>UST Event Registrations (Registrant Major 2)</relationshipLabel>
+        <relationshipName>UST_Event_Registrations1</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Registrant_Major_3__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Program of interest 3</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Program of interest 3</inlineHelpText>
+        <label>Registrant Major 3</label>
+        <referenceTo>Major__c</referenceTo>
+        <relationshipLabel>UST Event Registrations (Registrant Major 3)</relationshipLabel>
+        <relationshipName>UST_Event_Registrations2</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Registrant_Major_4__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Program of interest 4</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Program of interest 4</inlineHelpText>
+        <label>Registrant Major 4</label>
+        <referenceTo>Major__c</referenceTo>
+        <relationshipLabel>UST Event Registrations (Registrant Major 4)</relationshipLabel>
+        <relationshipName>UST_Event_Registrations3</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
+        <fullName>Registrant_Major__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Program of interest 1</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Program of interest 1</inlineHelpText>
+        <label>Registrant Major</label>
+        <referenceTo>Major__c</referenceTo>
+        <relationshipLabel>UST Event Registrations</relationshipLabel>
+        <relationshipName>UST_Event_Registrations</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Registrant_Mobile_Phone__c</fullName>
         <description>The mobile phone reported by the event registrant upon registering. This may not be the same as on the contact record.</description>
         <externalId>false</externalId>
@@ -876,6 +985,28 @@ CASE(RIGHT(TEXT(Date__c),2),
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Phone</type>
+    </fields>
+    <fields>
+        <fullName>Registrant_Program_Interest__c</fullName>
+        <description>The program the registrant expressed interest in learning about.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The program the registrant expressed interest in learning about.</inlineHelpText>
+        <label>Registrant Program Interest</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>All</fullName>
+                    <default>false</default>
+                    <label>All</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
     </fields>
     <fields>
         <fullName>Registrant_Receive_Texts__c</fullName>
@@ -1244,6 +1375,17 @@ CASE(RIGHT(TEXT(Date__c),2),
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Registrant_Applicant_Type__c</picklist>
+            <values>
+                <fullName>First-Year</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Registrant_Gender__c</picklist>
             <values>
                 <fullName>Female</fullName>
@@ -1266,6 +1408,13 @@ CASE(RIGHT(TEXT(Date__c),2),
             </values>
             <values>
                 <fullName>The student</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Program_Interest__c</picklist>
+            <values>
+                <fullName>All</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

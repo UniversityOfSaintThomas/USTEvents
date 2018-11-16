@@ -62,7 +62,7 @@ public with sharing class USTEventShared {
         } else {
             evtInfo.recordTypeName = recTypeInfo.event__r.RecordType.Name;
         }
-
+        
         //check if regid is there  and whether status it is set to registered. IF so reset cookie if it is.
         if (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
             UST_Event_Registration__c evtReg = [SELECT Status__c FROM UST_Event_Registration__c WHERE ID = :evtInfo.evtRegId][0];

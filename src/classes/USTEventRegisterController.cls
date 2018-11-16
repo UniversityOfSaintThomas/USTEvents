@@ -26,7 +26,7 @@ public with sharing class USTEventRegisterController {
     public List<String> selectedPrograms { get; set; }
 
     public USTEventRegisterController() {
-
+        selectedPrograms = new List<String>();
         //array for looping through additional information questions
         questionNum = new List<String>{
                 '1', '2', '3', '4', '5'
@@ -192,7 +192,7 @@ public with sharing class USTEventRegisterController {
             if (!String.isBlank(eventPage.School__c)) {
                 Id schoolId = eventPage.School__c;
                 schoolProgs = [
-                        SELECT Id,Name, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c
+                        SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
                         FROM Major__c
                         WHERE Status__c = 'Active'
                         AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
@@ -202,7 +202,7 @@ public with sharing class USTEventRegisterController {
                 ];
             } else {
                 schoolProgs = [
-                        SELECT Id,Name, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c
+                        SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
                         FROM Major__c
                         WHERE Status__c = 'Active'
                         AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
@@ -213,7 +213,7 @@ public with sharing class USTEventRegisterController {
             //turn list into a ; separated string to consume below
             prgString = '';
             For (Major__c prog : schoolProgs) {
-                prgString += prog.Major_Name__c + ' (' + prog.Program_Offered__r.Program_Code__c;
+                prgString += prog.Major_Display_Name__c + ' - ' + prog.Program_Offered__r.Degree_Level__c + ' (' + prog.Program_Offered__r.Program_Code__c;
                 if (!String.isBlank(prog.Major_Code__c)) {
                     prgString += '|' + prog.Major_Code__c;
                 }
@@ -226,7 +226,6 @@ public with sharing class USTEventRegisterController {
         progSelOpt.add(new SelectOption('', 'Select...'));
 
         List<String> prgList = prgString.split(';');
-        selectedPrograms = new List<String>();
         for (String prg : prgList) {
             progSelOpt.add(
                     new SelectOption(
@@ -244,13 +243,13 @@ public with sharing class USTEventRegisterController {
 
     }
 
-    public List<SelectOption> setProgramsAvailable() {
-        String prgString = eventPage.Academic_Program_List__c;
-        String prgSelectedAlready = newEvtReg.Registrant_Program_Interest__c;
-        List<SelectOption> previousSelected = new List<SelectOption>();
-        previousSelected.add(new SelectOption('Digital Experience (BU_GR_CER|BUDE)', 'Digital Experience'));
-        return previousSelected;
-    }
+//    public List<SelectOption> setProgramsAvailable() {
+//        String prgString = eventPage.Academic_Program_List__c;
+//        String prgSelectedAlready = newEvtReg.Registrant_Program_Interest__c;
+//        List<SelectOption> previousSelected = new List<SelectOption>();
+//        previousSelected.add(new SelectOption('Digital Experience (BU_GR_CER|BUDE)', 'Digital Experience'));
+//        return previousSelected;
+//    }
 
     public List<SelectOption> GetDropdownOptions(Schema.DescribeFieldResult fieldResult) {
         List<SelectOption> options = new List<SelectOption>();
@@ -291,29 +290,23 @@ public with sharing class USTEventRegisterController {
         List<String> majorCodes = new List<String>();
         Boolean progSelectionMade = true;
 
-        // Populate top 4 majors if no selection was made by client or no selection was asked of client
         if (selectedPrograms.isEmpty() && !String.isBlank(eventPage.Academic_Program_List__c)) {
             selectedPrograms = eventPage.Academic_Program_List__c.split(';');
             progSelectionMade = false;
         }
 
         if (!selectedPrograms.isEmpty()) {
-            //Harvested the major truncated code from the description (in parenthesis)
             for (String selPrg : selectedPrograms) {
                 recordSelPrg += selPrg + ';';
                 Matcher matcher = TAG_REGEX.matcher(selPrg);
                 while (matcher.find()) {
-                    String StringCode = matcher.group(1).trim();
-                    List<String> StringMajor = StringCode.split('\\|');
-                    majorCodes.add(StringMajor[0]);
+                    majorCodes.add(matcher.group(1).trim());
                 }
             }
             recordSelPrg.removeEnd(';');
 
-            //Query for majors via program code
-            List<Major__c> majorIdList = [SELECT Id From Major__c Where Program_Code__c IN :majorCodes];
+            List<Major__c> majorIdList = [SELECT Id From Major__c Where Prog_Major_Conc_Code__c IN :majorCodes];
 
-            //Add 4  Major Ids to Registration
             if (majorIdList.size() > 0) {
                 for (Integer mc = 0; mc < 4; mc++) {
                     if (mc < majorIdList.size()) {
@@ -330,7 +323,6 @@ public with sharing class USTEventRegisterController {
             //get major ids and save them
         }
 
-        //Don't record prog interest if none were defined by client to prevent filling in hidden prog interests
         if (eventPage.Ask_Program_Interest__c && progSelectionMade) {
             newEvtReg.Registrant_Program_Interest__c = recordSelPrg;
         } else {
@@ -348,7 +340,13 @@ public with sharing class USTEventRegisterController {
             contactCount++;
         } else {
             //Check if first name last name zip match
-            List<Contact> zipContactTest = [SELECT Id FROM Contact WHERE FirstName = :newEvtReg.Registrant_First_Name__c AND LastName = :newEvtReg.Registrant_Last_Name__c AND MailingZip__c = :newEvtReg.Registrant_Zip__c];
+            List<Contact> zipContactTest = [
+                    SELECT Id
+                    FROM Contact
+                    WHERE FirstName = :newEvtReg.Registrant_First_Name__c
+                    AND LastName = :newEvtReg.Registrant_Last_Name__c
+                    AND MailingZip__c = :newEvtReg.Registrant_Zip__c
+            ];
             if (zipContactTest.size() > 0) {
                 //Soft Match found with zip
                 for (Contact c : zipContactTest) {
@@ -356,7 +354,11 @@ public with sharing class USTEventRegisterController {
                 }
                 contactCount++;
             }
-            List<Contact> emailContactTest = [SELECT Id FROM Contact WHERE Email = :newEvtReg.Registrant_Email__c];
+            List<Contact> emailContactTest = [
+                    SELECT Id
+                    FROM Contact
+                    WHERE Email = :newEvtReg.Registrant_Email__c
+            ];
             if (emailContactTest.size() > 0) {
                 //Soft Match found with email
                 for (Contact c : emailContactTest) {
@@ -391,14 +393,14 @@ public with sharing class USTEventRegisterController {
             newEvtContact.MailingState__c = newEvtReg.Registrant_State__c;
             newEvtContact.MobilePhone = newEvtReg.Registrant_Mobile_Phone__c;
             newEvtContact.HomePhone = newEvtReg.Registrant_Phone__c;
-
+            newEvtContact.High_School_Expected_Graduation_Year__c = newEvtReg.Registrant_High_School_Grad_Year__c;
+            newEvtContact.LeadSource = 'Event';
 
             if (!String.isBlank(newEvtReg.Registrant_High_School_Code__c) && String.isBlank(newEvtReg.Registrant_College_Code__c)) {
                 newEvtContact.EnrollmentrxRx__High_School_Code__c = newEvtReg.Registrant_High_School_Code__c;
             } else if (!String.isBlank(newEvtReg.Registrant_College_Code__c)) {
                 newEvtContact.EnrollmentrxRx__High_School_Code__c = newEvtReg.Registrant_College_Code__c;
             }
-
 
             if (newEvtReg.Registrant_Receive_Texts__c = true) {
                 newEvtContact.Receive_Texts__c = 'Yes';

@@ -7,7 +7,7 @@ global with sharing class USTEventFeed {
 
     private static String feedType { get; set; }
     private static USTEventShared USTShared = new USTEventShared();
-    private static Id recTypeId {get;set;}
+    private static Id recTypeId { get; set; }
 
     private Class eventItem {
         public String ID { get; set; }
@@ -20,6 +20,11 @@ global with sharing class USTEventFeed {
         public String eventUrl { get; set; }
         public Boolean eventClosed { get; set; }
         public String className { get; set; }
+        public String locationTitle { get; set; }
+        public String locationType {get;set;}
+        public String locationAddress { get; set; }
+        public String locationMapLink { get; set; }
+        public String locationBuilding {get;set;}
     }
 
     @HttpGet
@@ -27,8 +32,8 @@ global with sharing class USTEventFeed {
         feedType = RestContext.request.params.get('feedType');
         String recType = RestContext.request.params.get('rectype');
 
-        if(!String.isBlank(recType)) {
-            List<RecordType> recTypeList = [SELECT Id,Name FROM RecordType WHERE SObjectType='UST_Event__c' AND Name = :recType];
+        if (!String.isBlank(recType)) {
+            List<RecordType> recTypeList = [SELECT Id,Name FROM RecordType WHERE SObjectType = 'UST_Event__c' AND Name = :recType];
             if (recTypeList.size() > 0) {
                 recTypeId = recTypeList[0].Id;
             }
@@ -62,8 +67,10 @@ global with sharing class USTEventFeed {
         List<eventItem> EventList = new List<eventItem>();
         RestRequest req = RestContext.request;
         String eventQuery = '';
-        eventQuery += ' SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__r.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c, Event__r.Program_Filter__c, Event__r.Location_Title__c,  ';
-        eventQuery += ' Event__r.Location_Address__c, Event__r.Event_description__c, Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c, Event__r.School__r.Name ';
+        eventQuery += ' SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__r.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c, Event__r.Program_Filter__c, Event__r.Alternate_Registration_URL__c, ';
+        eventQuery += ' Event__r.Location_Title__c, Event__r.Location_Type__c, Event__r.Location_Address__c, Event__r.Location_Map_Link__c, Event__r.Building__c, Event__r.Event_description__c, Event__r.Community_Base_URL__c, ';
+        eventQuery += ' Building_Override__c, Alternate_Registration_URL_Override__c, Location_Address_Override__c, Location_Map_Link_Override__c, Location_Title_Override__c, Location_Type_Override__c,  ';
+        eventQuery += ' Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c, Event__r.School__r.Name ';
         eventQuery += ' FROM UST_Event_Instance__c ';
         eventQuery += ' WHERE ';
         eventQuery += ' Event__R.Event_Status__c = \'Active\' ';
@@ -106,7 +113,7 @@ global with sharing class USTEventFeed {
         try {
             evtId = (Id) eventId;
             eventId = String.valueOf(evtId);
-        }catch (Exception e) {
+        } catch (Exception e) {
             eventId = null;
         }
         if (!String.isBlank(eventId)) {
@@ -117,7 +124,7 @@ global with sharing class USTEventFeed {
         String audience = req.params.get('audience');
         if (audience != 'all' && !String.isBlank(audience)) {
             List<String> audienceList = new List<String>();
-            audienceList  = audience.split(',');
+            audienceList = audience.split(',');
             for (String aud : audienceList) {
                 audience = '\'' + String.escapeSingleQuotes(aud) + '\',';
             }
@@ -127,7 +134,7 @@ global with sharing class USTEventFeed {
 
         //get filter with like soql concatinated program,location, school, location address, location type
         String filter = req.params.get('filter');
-        if(!String.isBlank(filter)) {
+        if (!String.isBlank(filter)) {
             eventQuery += ' AND  (';
             List<String> filterList = filter.split(',');
             for (String f : filterList) {
@@ -153,9 +160,6 @@ global with sharing class USTEventFeed {
             }
         }
 
-
-        System.debug('-----------------------------' + eventQuery);
-
         List<UST_Event_Instance__c> EventInstance = database.query(eventQuery);
 
         DateTime regDateOpenDate = null;
@@ -176,18 +180,61 @@ global with sharing class USTEventFeed {
                 evt.title += ' - ' + es.Instance_Title__c;
             }
 
-            evt.instanceDesc = es.Instance_Short_Description__c;
-            evt.description = es.Event__r.Event_Short_Listing_Description__c;
+
+            if (!String.isBlank(es.Instance_Short_Description__c)) {
+                evt.instanceDesc = es.Instance_Short_Description__c;
+            } else {
+                evt.instanceDesc = '';
+            }
+
+
+            if (!String.isBlank(es.Event__r.Event_Short_Listing_Description__c)) {
+                evt.description = es.Event__r.Event_Short_Listing_Description__c;
+            } else {
+                evt.description = '';
+            }
+
             if (showLongDescription) {
                 evt.longDesc = es.Event__r.Event_description__c;
             } else {
                 evt.longDesc = '';
             }
+
             if (es.Start_Date_Time__c != null) {
                 evt.start = USTShared.adjustForCenteralTime(es.Start_Date_Time__c);
             }
             if (es.End_Date_Time__c != null) {
                 evt.endDate = USTShared.adjustForCenteralTime(es.End_Date_Time__c);
+            }
+
+            if (!String.isBlank(es.Event__r.Location_Title__c) || !String.isBlank(es.Location_Title_Override__c)) {
+                if (!String.isBlank(es.Location_Title_Override__c)) {
+                    evt.locationTitle = es.Location_Title_Override__c;
+                } else {
+                    evt.locationTitle = es.Event__r.Location_Title__c;
+                }
+            } else {
+                evt.locationTitle = '';
+            }
+
+            if (!String.isBlank(es.Event__r.Location_Address__c) || !String.isBlank(es.Location_Address_Override__c)) {
+                if (!String.isBlank(es.Location_Address_Override__c)) {
+                    evt.locationAddress = es.Location_Address_Override__c;
+                } else {
+                    evt.locationAddress = es.Event__r.Location_Address__c;
+                }
+            } else {
+                evt.locationAddress = '';
+            }
+
+            if (!String.isBlank(es.Event__r.Location_Map_Link__c) || !String.isBlank(es.Location_Map_Link_Override__c)) {
+                if (!String.isBlank(es.Location_Map_Link_Override__c)) {
+                    evt.locationMapLink = es.Location_Map_Link_Override__c;
+                } else {
+                    evt.locationMapLink = es.Event__r.Location_Map_Link__c;
+                }
+            } else {
+                evt.locationMapLink = '';
             }
 
             if (evt.start < regDateOpenDate) {
@@ -196,7 +243,16 @@ global with sharing class USTEventFeed {
                 evt.className = 'eventClosed';
             } else {
                 evt.eventClosed = false;
-                evt.eventUrl = '/applicantportal/USTEventRegister?instanceID=' + es.Id;
+                if (!String.isBlank(es.Event__r.Alternate_Registration_URL__c) || !String.isBlank(es.Alternate_Registration_URL_Override__c)) {
+                    if (!String.isBlank(es.Alternate_Registration_URL_Override__c)) {
+                        evt.eventUrl = es.Alternate_Registration_URL_Override__c;
+                    } else {
+                        evt.eventUrl = es.Event__r.Alternate_Registration_URL__c;
+                    }
+
+                } else {
+                    evt.eventUrl = es.Event__r.Community_Base_URL__c + 'USTEventRegister?instanceID=' + es.Id;
+                }
                 evt.className = 'eventOpened';
             }
 
