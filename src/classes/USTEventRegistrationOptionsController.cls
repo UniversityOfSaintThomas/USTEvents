@@ -6,7 +6,7 @@ public with sharing class USTEventRegistrationOptionsController {
     public USTEventShared USTShared = new USTEventShared();
     public String test { get; set; }
     public USTEventShared.USTEventInfo evtInfo { get; set; }
-    public List<UST_Event_Appointment_Type__c> appts { get; set; }
+    public Map<Id, UST_Event_Appointment_Type__c> appts { get; set; }
     public List<UST_Event_Appointments__c> chosenAppts { get; set; }
     public UST_Event_Instance__c evtInstance { get; set; }
     public String apptFormatted { get; set; }
@@ -105,16 +105,16 @@ public with sharing class USTEventRegistrationOptionsController {
             }
 
             //Build available appointments
-            appts = [
+            appts = new Map<ID, UST_Event_Appointment_Type__c>( [
                     SELECT Id, Name, Title__c, Description__c, Appointment_Type__c, Appointment_Category__c, Appointment_Limits__c, Chosen_State__c,
-                            Registrant_Input__c, Custom_Picklist__c, Sort_Order__c
+                            Registrant_Input__c, Custom_Picklist__c, Sort_Order__c, Auto_Confirm_Appointment__c, Auto_add_building__c
                     FROM UST_Event_Appointment_Type__c
                     WHERE UST_Event__c = :evtinfo.evtId
                     AND (Restrict_To_Instance_Title__r.Instance_Title__c = :evtInstance.Instance_Title__c OR Restrict_To_Instance_Title__r.Instance_Title__c = null)
                     ORDER BY Sort_Order__c ASC NULLS LAST
-            ];
+            ]);
 
-            for (UST_Event_Appointment_Type__c apt : appts) {
+            for (UST_Event_Appointment_Type__c apt : appts.values()) {
                 Integer apptLimit = 1;
                 if (!String.isBlank(apt.Appointment_Limits__c)) {
                     apptLimit = Integer.valueOf(apt.Appointment_Limits__c);
@@ -209,7 +209,7 @@ public with sharing class USTEventRegistrationOptionsController {
             evtInstance = [SELECT Instance_Title__c, Start_Date_Time__c FROM UST_Event_Instance__c WHERE Id = :evtinfo.instanceID LIMIT 1];
             List<UST_Event_Appointment_Type__c> autoAddAppt = [
                     SELECT Id, Name, Title__c, Description__c, Appointment_Type__c, Appointment_Category__c, Registrant_Input__c, Custom_Picklist__c, Appointment_Limits__c,
-                            Chosen_State__c, Sort_Order__c
+                            Chosen_State__c, Sort_Order__c, Auto_Confirm_Appointment__c, Auto_add_building__c
                     FROM UST_Event_Appointment_Type__c
                     WHERE UST_Event__c = :evtinfo.evtId
                     AND (Chosen_State__c = 'Added' OR Chosen_State__c = 'Added and Required')
@@ -245,11 +245,16 @@ public with sharing class USTEventRegistrationOptionsController {
 
     public PageReference saveOptions() {
         //remove old client created appointments
-        UST_Event_Appointments__c[] deleteAppt = [SELECT Id, Event_Registration__c, Client_Created_Appointment__c, Chosen_State__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :evtinfo.evtRegId AND Client_Created_Appointment__c = true];
+        UST_Event_Appointments__c[] deleteAppt = [
+                SELECT Id, Event_Registration__c, Client_Created_Appointment__c, Chosen_State__c
+                FROM UST_Event_Appointments__c
+                WHERE Event_Registration__c = :evtinfo.evtRegId
+                AND Client_Created_Appointment__c = true
+        ];
         try {
             delete deleteAppt;
         } catch (DmlException e) {
-            System.Debug('HERE IS THE DROID YOU ARE LOKING FOR ======>' + e.getMessage());
+            System.Debug('HERE IS THE DROID YOU ARE LOOKING FOR ======>' + e.getMessage());
         }
         List<incomingAppt> deserializedInvoices = (List<incomingAppt>) JSON.deserialize(incomingApptJSon, List<incomingAppt>.class);
         PageReference submitPage = Page.USTEventSubmit;
@@ -259,6 +264,7 @@ public with sharing class USTEventRegistrationOptionsController {
             addAppt.Appointment_Status__c = 'Registered';
             addAppt.Client_Created_Appointment__c = true;
             addAppt.Event_Appointment_Type__c = appt.apptId;
+            UST_Event_Appointment_Type__c apptDefinition = appts.get(appt.apptId);
             addAppt.Chosen_State__c = appt.appChosenState;
             if (!String.isBlank(appt.apptCatagory) && appt.apptCatagory != 'null' && appt.apptCatagory != 'undefined') {
                 addAppt.Appointment_Category__c = appt.apptCatagory;
@@ -272,7 +278,12 @@ public with sharing class USTEventRegistrationOptionsController {
             } else {
                 addAppt.Sort_Order__c = Integer.valueOf(appt.appSort);
             }
-
+            if (!String.isBlank(apptDefinition.Auto_add_building__c)) {
+                addAppt.Building__c = apptDefinition.Auto_add_building__c;
+            }
+            if (apptDefinition.Auto_Confirm_Appointment__c) {
+                addAppt.Appointment_Status__c = 'Confirmed';
+            }
             addAppt.Description__c = appt.appDesc;
             addAppt.Registrant_Input__c = appt.appInput;
 

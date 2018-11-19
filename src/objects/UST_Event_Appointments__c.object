@@ -1106,6 +1106,41 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Host_Location__c</fullName>
+        <externalId>false</externalId>
+        <formula>TRIM(
+/*Location free text */
+IF(!ISBLANK(Event_Host__r.Location__c), Event_Host__r.Location__c + &apos; &apos;, &apos;&apos;) +
+
+/*Building if selected*/
+IF(!ISBLANK(TEXT(Event_Host__r.Building__c)), TEXT(Event_Host__r.Building__c) + &apos; &apos;, &apos;&apos;)
++ 
+
+/*Building if selected*/
+IF(!ISBLANK(Event_Host__r.Course_Name__c), Event_Host__r.Course_Name__c + &apos; &apos;, &apos;&apos;)
+)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Host Location</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Host_Name__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , Event_Host__r.Preferred_Title__c + &apos; &apos;,&apos;&apos;) +
+Event_Host__r.First_Name__c + &apos; &apos; + Event_Host__r.Last_Name__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Host Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Registrant_Input__c</fullName>
         <description>Optional: Alternative registrant input beyond picking appointment titles (text box, pick lists, etc.)</description>
         <externalId>false</externalId>
@@ -1978,7 +2013,7 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
         <height>600</height>
         <isResizable>true</isResizable>
         <linkType>page</linkType>
-        <masterLabel>Assign Host</masterLabel>
+        <masterLabel>Assign/Unassign Host</masterLabel>
         <openType>newWindow</openType>
         <page>USTEventHostAssignment</page>
         <position>none</position>

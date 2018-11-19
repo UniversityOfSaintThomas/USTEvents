@@ -589,6 +589,30 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Auto_Confirm_Appointment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>When the appointment is added to the event a confirm status, rather than a requested status, will be applied.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When the appointment is added to the event a confirm status, rather than a requested status, will be applied.</inlineHelpText>
+        <label>Auto Confirm Appointment</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Auto_add_building__c</fullName>
+        <description>Auto assign this building to a requested appointment.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto assign this building to a requested appointment.</inlineHelpText>
+        <label>Auto add building</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Buildings</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Chosen_State__c</fullName>
         <description>Defines the state of the appointment. None: must be selected by user, Added: Added to selected appointments but can be removed, Added and Required: Added to appointments and can not be removed.</description>
         <externalId>false</externalId>

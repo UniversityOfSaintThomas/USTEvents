@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Anderson Student Center (ASC)</fullName>
+        <default>false</default>
+        <label>Anderson Student Center (ASC)</label>
+    </customValue>
+    <customValue>
+        <fullName>Aquinas Hall (AQU)</fullName>
+        <default>false</default>
+        <label>Aquinas Hall (AQU)</label>
+    </customValue>
+    <customValue>
+        <fullName>Anderson Athletic &amp; Recreation Complex (ARC)</fullName>
+        <default>false</default>
+        <label>Anderson Athletic &amp; Recreation Complex (ARC)</label>
+    </customValue>
+    <customValue>
+        <fullName>Archbishop Ireland Memorial Library (IRL)</fullName>
+        <default>false</default>
+        <label>Archbishop Ireland Memorial Library (IRL)</label>
+    </customValue>
+    <customValue>
+        <fullName>Art History (44C)</fullName>
+        <default>false</default>
+        <label>Art History (44C)</label>
+    </customValue>
+    <customValue>
+        <fullName>Binz Refectory (BIN)</fullName>
+        <default>false</default>
+        <label>Binz Refectory (BIN)</label>
+    </customValue>
+    <customValue>
+        <fullName>Brady Educational Center (BEC)</fullName>
+        <default>false</default>
+        <label>Brady Educational Center (BEC)</label>
+    </customValue>
+    <customValue>
+        <fullName>Chapel of St. Thomas Aquinas (CHA)</fullName>
+        <default>false</default>
+        <label>Chapel of St. Thomas Aquinas (CHA)</label>
+    </customValue>
+    <customValue>
+        <fullName>Child Development Center (CDC)</fullName>
+        <default>false</default>
+        <label>Child Development Center (CDC)</label>
+    </customValue>
+    <customValue>
+        <fullName>Facilities &amp; Design Center (FDC)</fullName>
+        <default>false</default>
+        <label>Facilities &amp; Design Center (FDC)</label>
+    </customValue>
+    <customValue>
+        <fullName>John P. Monahan Plaza</fullName>
+        <default>false</default>
+        <label>John P. Monahan Plaza</label>
+    </customValue>
+    <customValue>
+        <fullName>John R Roach Center for Liberal Arts (JRC)</fullName>
+        <default>false</default>
+        <label>John R Roach Center for Liberal Arts (JRC)</label>
+    </customValue>
+    <customValue>
+        <fullName>Koch Commons (KOC)</fullName>
+        <default>false</default>
+        <label>Koch Commons (KOC)</label>
+    </customValue>
+    <customValue>
+        <fullName>Loras Hall (LOR)</fullName>
+        <default>false</default>
+        <label>Loras Hall (LOR)</label>
+    </customValue>
+    <customValue>
+        <fullName>McCarthy Gym, (MCG)</fullName>
+        <default>false</default>
+        <label>McCarthy Gym, (MCG)</label>
+    </customValue>
+    <customValue>
+        <fullName>McNeely Hall (MCH)</fullName>
+        <default>false</default>
+        <label>McNeely Hall (MCH)</label>
+    </customValue>
+    <customValue>
+        <fullName>Murray-Herrick Campus Center (MHC)</fullName>
+        <default>false</default>
+        <label>Murray-Herrick Campus Center (MHC)</label>
+    </customValue>
+    <customValue>
+        <fullName>North Athletic Fields (NAF)</fullName>
+        <default>false</default>
+        <label>North Athletic Fields (NAF)</label>
+    </customValue>
+    <customValue>
+        <fullName>O&apos;Shaughnessy Educational Center (OEC)</fullName>
+        <default>false</default>
+        <label>O&apos;Shaughnessy Educational Center (OEC)</label>
+    </customValue>
+    <customValue>
+        <fullName>O&apos;Shaghnessy-Frey Library Center (LIB)</fullName>
+        <default>false</default>
+        <label>O&apos;Shaghnessy-Frey Library Center (LIB)</label>
+    </customValue>
+    <customValue>
+        <fullName>O&apos;Shaghnessy Science Hall (OSS)</fullName>
+        <default>false</default>
+        <label>O&apos;Shaghnessy Science Hall (OSS)</label>
+    </customValue>
+    <customValue>
+        <fullName>O’Shaughnessy Stadium (STA</fullName>
+        <default>false</default>
+        <label>O’Shaughnessy Stadium (STA</label>
+    </customValue>
+    <customValue>
+        <fullName>Owens Science Hall (OWS)</fullName>
+        <default>false</default>
+        <label>Owens Science Hall (OWS)</label>
+    </customValue>
+    <customValue>
+        <fullName>Sitzmann Hall (55S)</fullName>
+        <default>false</default>
+        <label>Sitzmann Hall (55S)</label>
+    </customValue>
+    <customValue>
+        <fullName>South Athletic Fields (SAF)</fullName>
+        <default>false</default>
+        <label>South Athletic Fields (SAF)</label>
+    </customValue>
+    <customValue>
+        <fullName>St. Mary’s Chapel (SMC)</fullName>
+        <default>false</default>
+        <label>St. Mary’s Chapel (SMC)</label>
+    </customValue>
+    <customValue>
+        <fullName>St. John Vianney Seminary (SJV)</fullName>
+        <default>false</default>
+        <label>St. John Vianney Seminary (SJV)</label>
+    </customValue>
+    <customValue>
+        <fullName>St. Paul School of Divinity (SOD)</fullName>
+        <default>false</default>
+        <label>St. Paul School of Divinity (SOD)</label>
+    </customValue>
+    <customValue>
+        <fullName>Summit Classroom Building (SCB)</fullName>
+        <default>false</default>
+        <label>Summit Classroom Building (SCB)</label>
+    </customValue>
+    <customValue>
+        <fullName>Minneapolis Campus Buildings</fullName>
+        <default>false</default>
+        <label>Minneapolis Campus Buildings</label>
+    </customValue>
+    <customValue>
+        <fullName>Opus Hall (MOH)</fullName>
+        <default>false</default>
+        <label>Opus Hall (MOH)</label>
+    </customValue>
+    <customValue>
+        <fullName>Schulze Hall (SCH)</fullName>
+        <default>false</default>
+        <label>Schulze Hall (SCH)</label>
+    </customValue>
+    <customValue>
+        <fullName>School of Law (MSL)</fullName>
+        <default>false</default>
+        <label>School of Law (MSL)</label>
+    </customValue>
+    <customValue>
+        <fullName>Terrence Murphy Hall (TMH)</fullName>
+        <default>false</default>
+        <label>Terrence Murphy Hall (TMH)</label>
+    </customValue>
+    <customValue>
+        <fullName>Office of Admissions</fullName>
+        <default>false</default>
+        <label>Office of Admissions</label>
+    </customValue>
+    <customValue>
+        <fullName>Office of Financial Aid</fullName>
+        <default>false</default>
+        <label>Office of Financial Aid</label>
+    </customValue>
+    <masterLabel>Buildings</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

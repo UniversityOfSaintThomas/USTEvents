@@ -655,8 +655,10 @@
 
             /* Start cases to apply hard coded base url of community */
             ,&apos;cs65&apos;, &apos;https://dev-stthomas.cs65.force.com/applicantportal/&apos;
-            ,&apos;cs18&apos;, &apos;https://staging-stthomas.cs18.force.com/applicantportal/&apos;,
-            &apos;https://stthomas.force.com/applicantportal/&apos;
+            ,&apos;cs18&apos;, &apos;https://staging-stthomas.cs18.force.com/applicantportal/&apos;
+            ,&apos;na54&apos;,  &apos;https://stthomas.force.com/applicantportal/&apos;
+            , LEFT($Api.Partner_Server_URL_260, FIND( &apos;/service&apos;, $Api.Partner_Server_URL_260) - 1) + &apos;/&apos;
+
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>The base URL of the Salesforce community. This is not the start of the event app, just the start of the orgs community.</inlineHelpText>
@@ -1064,7 +1066,7 @@ TEXT(YEAR( End_Date__c))
         <externalId>false</externalId>
         <inlineHelpText>If other attendees is active, how many other attendees are allowed to this event</inlineHelpText>
         <label>Max Other Attendees</label>
-        <precision>2</precision>
+        <precision>4</precision>
         <required>false</required>
         <scale>0</scale>
         <trackHistory>false</trackHistory>
@@ -1151,8 +1153,11 @@ TEXT(YEAR( End_Date__c))
     <label>UST Event</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+        <language>en_US</language>
     </listViews>
     <nameField>
         <label>Event Label</label>
