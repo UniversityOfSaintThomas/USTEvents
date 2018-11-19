@@ -67,6 +67,6 @@ public with sharing class TestUSTRestAdmissions {
         req.addHeader('Content-Type', 'application/json');
         RestContext.request = req;
         RestContext.response = res;
-        Map<String, String> returnedMap = USTRestAdmissions.getUstAdmissionsRest();
+        USTRestAdmissions.getUstAdmissionsRest();
     }
 }

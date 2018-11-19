@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomObject xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fields>
+        <fullName>Initial_Foot_on_Campus__c</fullName>
+        <description>Populated when the Contact initially attended an event on campus</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Populated when the Contact initially attended an event on campus</inlineHelpText>
+        <label>Initial Foot on Campus</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Last_Time_on_Campus__c</fullName>
+        <description>Populated/updated when the Contact last attended an event on campus</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Populated/updated when the Contact last attended an event on campus</inlineHelpText>
+        <label>Last Time on Campus</label>
+        <required>false</required>
+        <trackFeedHistory>false</trackFeedHistory>
+        <trackHistory>false</trackHistory>
+        <type>Date</type>
+    </fields>
+</CustomObject>
