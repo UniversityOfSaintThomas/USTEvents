@@ -6,12 +6,17 @@
 global with sharing class USTRestAdmissions {
 
     private class programData {
+        String majorId { get; set; }
+        String programId { get; set; }
+        String schoolId { get; set; }
         String title { get; set; }
         String link { get; set; }
         String learningStyle { get; set; }
         String school { get; set; }
         String degreeLevel { get; set; }
         String interest { get; set; }
+        String programCode { get; set; }
+        String programMajorCode { get; set; }
     }
 
     @HttpGet
@@ -60,85 +65,95 @@ global with sharing class USTRestAdmissions {
     }
 
     private static List<programData> programFinder() {
-        String filter = String.isBlank(RestContext.request.params.get('filter')) ? '' : RestContext.request.params.get('filter');
         List<programData> programList = new List<programData>();
         List<Major__c> majorList = new List<Major__c>();
-        if (!String.isBlank(filter)) {
-            List<String> filterHolder = new List<String>();
-            for (String fragment : RestContext.request.params.get('filter').split(' ')) {
-                filterHolder.add('*' + fragment + '*');
+        String majorQuery = '';
+
+        // Build the query as a string for flexibility
+        majorQuery += ' SELECT Id,Display_on_Program_Finder__c, Display_on_RFI__c, Major_Display_Name__c, Prog_Major_Conc_Code__c, Program_Code__c, Status__c, ';
+        majorQuery += ' Program_Offered__r.Degree_Level__c, Keyword_for_Program_Finder__c,Major_Web_URL__c, Program_Offered__r.Program_Code__c, ';
+        majorQuery += ' Areas_of_Interest_for_program_finder__c,Learning_Style_for_program_finder__c, Program_Offered__r.School__r.Name, Program_Offered__r.School__c ';
+        majorQuery += ' FROM Major__c ';
+        majorQuery += ' WHERE Display_on_Program_Finder__c = true AND';
+
+        // Possible URL variables
+        // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/ustadmissionsrest.json?
+        // any combination of the following parameters can be sent to the API request
+        // &interest=  <- program of intereest  (Education,Engineering, etc)
+        // &degree= <- Master of Science, Certificate,etc
+        // &style= <- Learning Style (Traditional,Blended, etc)
+        // &school= <- Name of the school (College of Arts and Sciences, Opus College of Business, etc)
+        // &schoolId= <- Salesforce ID for a school
+        // &filter= <- comma separate list of text that the query will test against the name of the program, major, degree, learning style, and area of interest
+        // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/ustadmissionsrest.json?interest=&degree=&style=&schoolId=&filter=
+
+
+        if (!String.isBlank(RestContext.request.params.get('interest'))) {
+            String majorInterest = String.valueOf(RestContext.request.params.get('interest'));
+            majorQuery += ' Areas_of_Interest_for_program_finder__c  IN (\'' + majorInterest + '\') AND' ;
+        }
+
+        If (!String.isBlank(RestContext.request.params.get('degree'))) {
+            String majorDegree = String.valueOf(RestContext.request.params.get('degree'));
+            majorQuery += ' Program_Offered__r.Degree_Level__c = \'' + majorDegree + '\'  AND' ;
+        }
+
+        if (!String.isBlank(RestContext.request.params.get('style'))) {
+            String majorStyle = String.valueOf(RestContext.request.params.get('style'));
+            majorQuery += ' Learning_Style_for_program_finder__c IN (\'' + majorStyle + '\') AND' ;
+        }
+
+        if (!String.isBlank(RestContext.request.params.get('school'))) {
+            String majorSchool = String.valueOf(RestContext.request.params.get('school'));
+            majorQuery += ' Program_Offered__r.School__r.Name = \'' + majorSchool + '\' AND' ;
+        }
+
+        if (!String.isBlank(RestContext.request.params.get('schoolId'))) {
+            String majorSchoolId = String.valueOf(RestContext.request.params.get('schoolId'));
+            majorQuery += ' Program_Offered__r.School__c = \'' + majorSchoolId + '\' AND' ;
+        }
+
+        majorQuery = majorQuery.removeEnd('AND');
+
+        //split apart the filter on commas and test against the fields in the query
+        if (!String.isBlank(RestContext.request.params.get('filter'))) {
+            String majorFilter = String.valueOf(RestContext.request.params.get('filter'));
+            majorQuery += ' AND  (';
+            List<String> filterList = majorFilter.split(',');
+            for (String f : filterList) {
+                majorQuery += ' Program_Offered__r.School__r.Name LIKE \'%' + f + '%\' OR ';
+                majorQuery += ' Learning_Style_for_program_finder__c LIKE \'%' + f + '%\' OR ';
+                majorQuery += ' Program_Offered__r.Degree_Level__c LIKE \'%' + f + '%\' OR ';
+                majorQuery += ' Areas_of_Interest_for_program_finder__c IN (\'' + f + '\') OR ';
+                majorQuery += ' Major_Display_Name__c LIKE \'%' + f + '%\' OR ';
             }
-            filter = String.Join(filterHolder, ' ');
+            majorQuery = majorQuery.removeEnd('OR ');
+            majorQuery += ' ) ';
         }
 
+        majorQuery = majorQuery.removeEnd('AND');
 
-        String interest = (String.isBlank(RestContext.request.params.get('interest')) ? '' : RestContext.request.params.get('interest'));
-        String degree = (String.isBlank(RestContext.request.params.get('degree')) ? '' : RestContext.request.params.get('degree'));
-        String style = (String.isBlank(RestContext.request.params.get('style')) ? '' : RestContext.request.params.get('style'));
-        String school = (String.isBlank(RestContext.request.params.get('school')) ? '' : RestContext.request.params.get('school'));
+        majorQuery += ' ORDER BY Major_Display_Name__c';
 
-        if (!String.isBlank(filter)) {
-            majorList = [
-                    FIND :filter
-                    IN ALL FIELDS
-                            RETURNING Major__c(
-                            Program_Offered__c,
-                                    Program_Offered__r.Degree_Level__c,
-                                    Major_Display_Name__c,
-                                    Program_Offered__r.School__r.Name,
-                                    Learning_Style_for_program_finder__c,
-                                    Major_Web_URL__c,
-                                    Areas_of_Interest_for_program_finder__c
-                            WHERE Display_on_Program_Finder__c = true
-                    )
-            ][0];
-        } else {
-            majorList = [
-                    SELECT Id,Display_on_Program_Finder__c, Display_on_RFI__c, Major_Display_Name__c, Prog_Major_Conc_Code__c, Program_Code__c, Status__c,
-                            Program_Offered__r.Degree_Level__c,Keyword_for_Program_Finder__c,Major_Web_URL__c, Program_Offered__r.Program_Code__c,
-                            Areas_of_Interest_for_program_finder__c,Learning_Style_for_program_finder__c, Program_Offered__r.School__r.Name
-                    FROM Major__c
-                    WHERE Display_on_Program_Finder__c = true
-            ];
-        }
+        System.Debug('================================> ' + majorQuery);
 
+        majorList = database.query(majorQuery);
+
+        //load up the custom object class to send back to be parsed into JSON
         for (Major__c m : majorList) {
-            Boolean addTolist = false;
-
-            if (String.isblank(interest + degree + style + school)) {
-                addTolist = true;
-            }
-
-            if (
-                    (!String.isBlank(m.Areas_of_Interest_for_program_finder__c) && m.Areas_of_Interest_for_program_finder__c.contains(interest))
-                            &&
-                            (!String.isBlank(m.Program_Offered__r.Degree_Level__c) && m.Program_Offered__r.Degree_Level__c == degree)
-                    ) {
-                addTolist = true;
-            }
-
-            if (!String.isBlank(m.Program_Offered__r.Degree_Level__c) && m.Program_Offered__r.Degree_Level__c == degree) {
-                addTolist = true;
-            } else if (!String.isBlank(m.Program_Offered__r.Degree_Level__c) && m.Program_Offered__r.Degree_Level__c != degree) {
-                addTolist = false;
-            }
-            if (!String.isBlank(m.Learning_Style_for_program_finder__c) && m.Learning_Style_for_program_finder__c.contains(style)) {
-                addTolist = true;
-            }
-            if (!String.isBlank(m.Program_Offered__r.School__r.Name) && m.Program_Offered__r.School__r.Name == school) {
-                addTolist = true;
-            }
-
-            if (addTolist) {
-                programData pd = new programData();
-                pd.title = m.Major_Display_Name__c;
-                pd.link = (!String.isBlank(m.Major_Web_URL__c) ? m.Major_Web_URL__c : '');
-                pd.degreeLevel = (!String.isBlank(m.Program_Offered__r.Degree_Level__c) ? m.Program_Offered__r.Degree_Level__c : '');
-                pd.learningStyle = (!String.isBlank(m.Learning_Style_for_program_finder__c) ? m.Learning_Style_for_program_finder__c : '');
-                pd.school = (!String.isBlank(m.Program_Offered__r.School__r.Name) ? m.Program_Offered__r.School__r.Name : '');
-                pd.interest = (!String.isBlank(m.Areas_of_Interest_for_program_finder__c) ? m.Areas_of_Interest_for_program_finder__c : '');
-                programList.add(pd);
-            }
+            programData pd = new programData();
+            pd.title = m.Major_Display_Name__c;
+            pd.link = (!String.isBlank(m.Major_Web_URL__c) ? m.Major_Web_URL__c : '');
+            pd.degreeLevel = (!String.isBlank(m.Program_Offered__r.Degree_Level__c) ? m.Program_Offered__r.Degree_Level__c : '');
+            pd.learningStyle = (!String.isBlank(m.Learning_Style_for_program_finder__c) ? m.Learning_Style_for_program_finder__c : '');
+            pd.school = (!String.isBlank(m.Program_Offered__r.School__r.Name) ? m.Program_Offered__r.School__r.Name : '');
+            pd.interest = (!String.isBlank(m.Areas_of_Interest_for_program_finder__c) ? m.Areas_of_Interest_for_program_finder__c : '');
+            pd.majorId = (!String.isBlank(m.Id) ? m.Id : '');
+            pd.schoolId = (!String.isBlank(String.valueOf(m.Program_Offered__r.School__c)) ? String.valueOf(m.Program_Offered__r.School__c) : '');
+            pd.programId = (!String.isBlank(String.valueOf(m.Program_Offered__c)) ? String.valueOf(m.Program_Offered__c) : '');
+            pd.programCode = (!String.isBlank(m.Program_Code__c) ? m.Program_Code__c : '');
+            pd.programMajorCode = (!String.isBlank(m.Prog_Major_Conc_Code__c) ? m.Prog_Major_Conc_Code__c : '');
+            programList.add(pd);
         }
         return programList;
     }
@@ -179,26 +194,30 @@ global with sharing class USTRestAdmissions {
     global static Map<String, String> getGradPrograms() {
         Map<String, String> keyValOut = new Map<String, String>();
         String schoolId = '';
-        List<EnrollmentrxRx__Program_Offered__c> schoolProgs = new List<EnrollmentrxRx__Program_Offered__c>();
+        List<Major__c> schoolProgs = new List<Major__c>();
         if (!String.isBlank(RestContext.request.params.get('schoolid'))) {
             schoolId = RestContext.request.params.get('schoolid');
             schoolProgs = [
-                    SELECT Program_Code__c, Name
-                    FROM EnrollmentrxRx__Program_Offered__c
-                    WHERE School__c = :schoolId
-                    AND Status__c = 'Active'
-                    AND Program_Code__c != NULL
+                    SELECT Id,Name, Major_Display_Name__c, Major_Name__c, Major_Code__c, Prog_Major_Conc_Code__c, Program_Offered__r.Program_Code__c
+                    FROM Major__c
+                    WHERE Status__c = 'Active'
+                    AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                    AND Program_Offered__r.Program_Code__c != NULL
+                    AND Program_Offered__r.School__c = :schoolId
+                    ORDER BY Major_Name__c
             ];
         } else {
             schoolProgs = [
-                    SELECT Program_Code__c, Name
-                    FROM EnrollmentrxRx__Program_Offered__c
+                    SELECT Id,Name, Major_Display_Name__c, Major_Name__c, Major_Code__c, Prog_Major_Conc_Code__c, Program_Offered__r.Program_Code__c
+                    FROM Major__c
                     WHERE Status__c = 'Active'
-                    AND Program_Code__c != NULL
+                    AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                    AND Program_Offered__r.Program_Code__c != NULL
+                    ORDER BY Major_Name__c
             ];
         }
-        For (EnrollmentrxRx__Program_Offered__c prog : schoolProgs) {
-            keyValOut.put(prog.Program_Code__c, prog.Name);
+        For (Major__c prog : schoolProgs) {
+            keyValOut.put(prog.Prog_Major_Conc_Code__c, prog.Major_Display_Name__c);
         }
         return keyValOut;
     }

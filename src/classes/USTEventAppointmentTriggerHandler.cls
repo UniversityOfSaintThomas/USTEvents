@@ -58,8 +58,8 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
         if (newAppts != null) {
             for (UST_Event_Appointments__c na : newAppts.values()) {
                 uniqueRegIds.put(na.Event_Registration__c, na.Event_Registration__c);
-                if (na.Event_Host__c != oldAppts.get(na.Id).Event_Host__c) {
-                }
+//                if (na.Event_Host__c != oldAppts.get(na.Id).Event_Host__c) {
+//                }
             }
         } else {
             for (UST_Event_Appointments__c oa : oldAppts.values()) {
