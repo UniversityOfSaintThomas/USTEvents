@@ -169,13 +169,16 @@ function populateschSel(data, selector, keyAsText) {
 
 //Validation for the page
 function checkForm() {
+    console.log('Check the form begins.....')
     populateHiddenSchoolValue();
     var error_count = 0;
     var emailReg = /^([a-zA-Z0-9_.\-.'.+])+@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+
     $.each($('[id$=USTRegistraterForm] input, [id$=USTRegistraterForm] select'), function (i, v) {
         if ($(this).hasClass("required") && !$(this).val()) {
             $(this).addClass("validationError");
             $('label[for="' + $(this).attr("id") + '"]').addClass("validationError");
+            console.log('THIS ERRORED:' + $(this).attr('id'));
             error_count++;
         }
         if ($(this).hasClass("validEmail")) {
@@ -183,6 +186,7 @@ function checkForm() {
                 $(this).addClass("validationError");
                 $('label[for="' + $(this).attr("id") + '"]').addClass("validationError");
                 error_count++;
+                console.log('THIS EMAIL ERRORED:' + $(this).attr('id'));
             }
         }
     });
@@ -211,7 +215,9 @@ function checkForm() {
         }
     }
 
+    console.log(error_count);
     if (error_count > 0) {
+        fadein();
         validationErrorAction();
         //Scroll to first error
         var firstInvalid = $(".validationError:first");
@@ -220,6 +226,7 @@ function checkForm() {
         }, 200);
         return false;
     }
+
     return true;
 }
 

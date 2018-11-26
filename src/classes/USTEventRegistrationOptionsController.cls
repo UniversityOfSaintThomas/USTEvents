@@ -39,7 +39,10 @@ public with sharing class USTEventRegistrationOptionsController {
         Map<String, Integer> apptCount = new Map<String, Integer>();
 
         if (!String.isBlank(evtinfo.evtId)) {
-            eventPage = [SELECT Event_Name__c, Event_description__c, Event_Appointment_Title__c, Event_Appointment_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
+            eventPage = [
+                    SELECT Event_Name__c, Event_description__c, Event_Appointment_Title__c, Event_Appointment_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c
+                    FROM UST_Event__c
+                    WHERE Id = :evtinfo.evtId][0];
             templateSelected = eventPage.Template__c;
 
             if (!String.isBlank(evtinfo.evtRegId)) {

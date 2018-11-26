@@ -56,13 +56,17 @@ public with sharing class USTEventShared {
             }
         }
         //Get record type
-        UST_Event_Instance__c recTypeInfo = [SELECT Event__r.RecordType.Name FROM UST_Event_Instance__c WHERE ID = :evtInfo.instanceID][0];
-        if (String.isBlank(recTypeInfo.event__r.RecordType.Name)) {
-            evtInfo.recordTypeName = 'Undergraduate';
-        } else {
-            evtInfo.recordTypeName = recTypeInfo.event__r.RecordType.Name;
+
+        List<UST_Event_Instance__c> recTypeInfo = [SELECT Event__r.RecordType.Name, Id FROM UST_Event_Instance__c WHERE ID = :evtInfo.instanceID];
+
+        if (recTypeInfo.size() > 0 ) {
+            if (String.isBlank(recTypeInfo[0].event__r.RecordType.Name)) {
+                evtInfo.recordTypeName = 'Undergraduate';
+            } else {
+                evtInfo.recordTypeName = recTypeInfo[0].event__r.RecordType.Name;
+            }
         }
-        
+
         //check if regid is there  and whether status it is set to registered. IF so reset cookie if it is.
         if (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
             UST_Event_Registration__c evtReg = [SELECT Status__c FROM UST_Event_Registration__c WHERE ID = :evtInfo.evtRegId][0];

@@ -4,6 +4,11 @@
 
 <apex:page id="USTEventCancelReview" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" docType="html-5.0" cache="false" controller="USTEventCancelReviewController">
     <apex:composition template="{!templateSelected}">
+        <apex:define name="metaPageTitle">
+            {!evtInstance.Event__r.Event_Name__c}
+            <apex:outputText rendered="{!!ISBLANK(evtInstance.Instance_Title__c)}" value="{! ' - ' + evtInstance.Instance_Title__c}" />
+            - Cancel
+        </apex:define>
         <apex:define name="pageTitle"><a href="{!evt.Event__r.Event_Home_Link_URL__c}">{!evt.Event__r.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>

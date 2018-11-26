@@ -4,6 +4,11 @@
 
 <apex:page id="USTEventRegistrationOptions" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" docType="html-5.0" cache="false" controller="USTEventRegistrationOptionsController" action="{!checkEventDetails}">
     <apex:composition template="{!templateSelected}">
+        <apex:define name="metaPageTitle">
+            {!eventPage.Event_Name__c}
+            <apex:outputText rendered="{!!ISBLANK(evtInstance.Instance_Title__c)}" value="{! ' - ' + evtInstance.Instance_Title__c}" />
+            - Options
+        </apex:define>
         <apex:define name="pageTitle"><a href="{!eventPage.Event_Home_Link_URL__c}">{!eventPage.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>
@@ -59,8 +64,8 @@
                         <p>&nbsp;</p>
                         <p><em>Once you have selected all your appointments click next.</em></p>
                         <p>
-                            <apex:commandLink action="{!saveOptions}" onClick="return populateApptJSON();" Value="Next" id="submitOptions" styleClass="button confirmContinue"/>
-                            <apex:commandLink action="{!previousPage}" onClick="" Value="Previous" id="previousPage" styleClass="button previous"/>
+                            <apex:commandLink action="{!saveOptions}" onClick="fadeout(); return populateApptJSON();" Value="Next" id="submitOptions" styleClass="button confirmContinue"/>
+                            <apex:commandLink action="{!previousPage}" onClick="fadeout();" Value="Previous" id="previousPage" styleClass="button previous"/>
                         </p>
                     </div>
                 </div>

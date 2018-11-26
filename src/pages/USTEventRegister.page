@@ -4,6 +4,11 @@
 
 <apex:page id="USTEventRegister" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" docType="html-5.0" cache="false" controller="USTEventRegisterController" action="{!checkEventDetails}">
     <apex:composition template="{!templateSelected}">
+        <apex:define name="metaPageTitle">
+            {!evtInstance.Event__r.Event_Name__c}
+            <apex:outputText rendered="{!!ISBLANK(evtInstance.Instance_Title__c)}" value="{! ' - ' + evtInstance.Instance_Title__c}" />
+            - Registration
+        </apex:define>
         <apex:define name="pageTitle"><a href="{!eventPage.Event_home_Link_URL__c}">{!eventPage.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>
@@ -15,10 +20,10 @@
         <apex:define name="body">
             <div class="row">
                 <div class="columns errorMessages">
-                    <apex:messages />
+                    <apex:messages/>
                 </div>
             </div>
-            <apex:form id="USTRegistraterForm" html-data-abide="ajax" html-novalidate="novalidate" rendered="{!!eventIsClosed}">
+            <apex:form id="USTRegistraterForm" rendered="{!!eventIsClosed}">
                 <!-- Function to set mailing country -->
                 <apex:actionFunction name="setParentSetting" immediate="true" onComplete="dynamicValidation();fadein();" reRender="parentAskSection">
                     <apex:param name="parentType" value="" assignTo="{!newEvtReg.Registrant_Parent_Status__c}"></apex:param>
@@ -268,7 +273,7 @@
                                                 eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text area required'||
                                                 eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text box required'
                                         , 'required' , '')}">
-                                        {!eventPage['Add_Info_Question_Text_' + q + '__c']}
+                                    {!eventPage['Add_Info_Question_Text_' + q + '__c']}
                                 </apex:outputLabel>
                                 <!--Text area -->
                                 <apex:outputPanel layout="none" rendered="{!IF(eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text area' || eventPage['Add_Info_Question_Type_' + q + '__c'] == 'Text area required', true, false)}">
@@ -295,7 +300,7 @@
                 <div class="row">
                     <div class="columns">
                         <p>
-                            <apex:commandLink action="{!saveContactRegistration}" onClick="return checkForm();" Value="Next" id="submitReg1" styleClass="button confirmContinue"/>
+                            <apex:commandLink html-formnovalidate="formnovalidate" action="{!saveContactRegistration}" onClick="fadeout(); return checkForm();" Value="Next" id="submitReg1" styleClass="button confirmContinue"/>
                         </p>
                     </div>
                 </div>

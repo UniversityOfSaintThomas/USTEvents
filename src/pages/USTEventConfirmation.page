@@ -3,6 +3,11 @@
  -->
 <apex:page id="USTEventConfirmation" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" docType="html-5.0" cache="false" controller="USTEventConfirmationController" action="{!checkEventDetails}">
     <apex:composition template="{!templateSelected}">
+        <apex:define name="metaPageTitle">
+            {!eventPage.Event_Name__c}
+            <apex:outputText rendered="{!!ISBLANK(evtInstance.Instance_Title__c)}" value="{! ' - ' + evtInstance.Instance_Title__c}" />
+            - Confirmation
+        </apex:define>
         <apex:define name="pageTitle"><a href="{!eventPage.Event_Home_Link_URL__c}">{!eventPage.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>

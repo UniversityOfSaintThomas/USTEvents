@@ -141,6 +141,6 @@ function populateApptJSON() {
         jsonOut.push(appt);
     });
     $('[id$=outgoingApptJSon]').val(JSON.stringify(jsonOut));
-    console.log(JSON.stringify(jsonOut));
+    //console.log(JSON.stringify(jsonOut));
     return true;
 }

@@ -4,6 +4,11 @@
 
 <apex:page id="USTEventSubmit" showHeader="false" sidebar="false" applyHtmlTag="false" applyBodyTag="false" standardStylesheets="false" docType="html-5.0" cache="false" controller="USTEventSubmitController" action="{!checkEventDetails}">
     <apex:composition template="{!templateSelected}">
+        <apex:define name="metaPageTitle">
+            {!eventPage.Event_Name__c}
+            <apex:outputText rendered="{!!ISBLANK(evtInstance.Instance_Title__c)}" value="{! ' - ' + evtInstance.Instance_Title__c}" />
+            - Submit
+        </apex:define>
         <apex:define name="pageTitle"><a href="{!eventPage.Event_Home_Link_URL__c}">{!eventPage.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>
@@ -49,8 +54,8 @@
                 <div class="row">
                     <div class="column">
                         <p>
-                            <apex:commandLink action="{!submitRegistration}" Value="Submit Registration" id="submitOptions" styleClass="button confirmContinue"/>
-                            <apex:commandLink action="{!previousPage}" onClick="" Value="Previous" id="previousPage" styleClass="button previous"/>
+                            <apex:commandLink action="{!submitRegistration}" onClick="fadeout();" Value="Submit Registration" id="submitOptions" styleClass="button confirmContinue"/>
+                            <apex:commandLink action="{!previousPage}" onClick="fadeout();" Value="Previous" id="previousPage" styleClass="button previous"/>
                         </p>
                     </div>
                 </div>
