@@ -14,4 +14,5 @@
     <tabs>UST_Event_Appointment_Type__c</tabs>
     <tabs>UST_Event_Instance__c</tabs>
     <tabs>standard-report</tabs>
+    <tabs>UST_Event_Host__c</tabs>
 </CustomApplication>

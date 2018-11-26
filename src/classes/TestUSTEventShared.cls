@@ -10,10 +10,12 @@ public with sharing class TestUSTEventShared {
 
     private static UST_Event__c testEvent;
     private static UST_Event_Email__c testEvtEmail;
+    private static List<UST_Event_Host__c> testHosts;
     private static UST_Event_Instance__c testInstance;
     private static UST_Event_Registration__c testRegistration;
     private static List<UST_Event_Appointment_Type__c> newApptTypes { get; set; }
     private static List<UST_Event_Appointments__c> addToRegAppt { get; set; }
+    private static Major__c testMajor;
     private static User testUser;
     private static Contact student;
     private static String audience { get; set; }
@@ -61,6 +63,7 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testFullRegister() {
+        creatTestPrograms();
         createEventWithRegistration('');
         Test.startTest();
         String eventForCookie = '{"blah":"blah"}';
@@ -69,6 +72,8 @@ public with sharing class TestUSTEventShared {
         eventForCookie = '{"audience":"' + audience + '","instanceID":"' + testInstance.Id + '","evtRegId":"COMING","evtId":"' + testEvent.Id + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
         registerCtrl = new USTEventRegisterController();
+        registerCtrl.getParentStatus();
+        registerCtrl.getProgramsAvailable();
         registerCtrl.saveContactRegistration();
         Test.stopTest();
     }
@@ -239,7 +244,6 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testLetterheadLookup() {
-
         createTestEvent();
         Test.startTest();
         ApexPages.StandardController sc = new ApexPages.StandardController(testEvtEmail);
@@ -248,8 +252,8 @@ public with sharing class TestUSTEventShared {
         emailController.getLetterheads();
 
         //Create fake brandTemplate since SF won't let you insert one
-        BrandTemplate fakeBrandTemplate =  new BrandTemplate(
-                Id =  getFakeId(BrandTemplate.SObjectType),
+        BrandTemplate fakeBrandTemplate = new BrandTemplate(
+                Id = getFakeId(BrandTemplate.SObjectType),
                 Name = 'Test',
                 value = '<body class="setupTab" ><style background-color="#FFFFFF" bEditID="b1st1" bLabel="body" ></style><center ><table cellpadding="0" width="500" cellspacing="0" id="topTable" height="450" ><tr valign="top" ><td ><style background-color="#FFFFFF" bEditID="r1st1" bLabel="header" vertical-align="top" height="5" text-align="left" ></style><img border="0" bEditID="r1sp1" bLabel="headerImage" id="r1sp1"><![CDATA[/servlet/servlet.ImageServer?id=0150m000000AN8V&oid=00D0m000000Cra6]]></img></td></tr><tr valign="top" ><td ><style background-color="#6600CC" bEditID="r2st1" bLabel="accent1" height="5" ></style><![CDATA[]]></td></tr><tr valign="top" ><td styleInsert="1" height="300" ><style background-color="#FFFFFF" bEditID="r3st1" color="#000000" bLabel="main" font-size="12pt" font-family="arial" ></style><![CDATA[]]></td></tr><tr valign="top" ><td ><style background-color="#6600CC" bEditID="r4st1" bLabel="accent2" height="5" ></style><![CDATA[]]></td></tr><tr valign="top" ><td ><style background-color="#FFFFFF" bEditID="r5st1" bLabel="footer" vertical-align="top" height="125" text-align="left" ></style><img border="0" bEditID="r5sp1" bLabel="footerImage" id="r5sp1"><![CDATA[/servlet/servlet.ImageServer?id=0150m000000AN8U&oid=00D0m000000Cra6]]></img></td></tr><tr valign="top" ><td ><style background-color="#FFFFFF" bEditID="r6st1" bLabel="accent3" height="5" ></style><![CDATA[]]></td></tr></table></center></body>'
         );
@@ -259,7 +263,7 @@ public with sharing class TestUSTEventShared {
 
 
         OrgWideEmailAddress fakeOrgWideEmailAddress = new OrgWideEmailAddress (
-                Id =  getFakeId(OrgWideEmailAddress.SObjectType),
+                Id = getFakeId(OrgWideEmailAddress.SObjectType),
                 Address = 'thad+owe@valleyhill.net',
                 DisplayName = 'Test'
         );
@@ -285,6 +289,61 @@ public with sharing class TestUSTEventShared {
                 )
         );
         Database.update(dataApptAdd);
+        Test.stopTest();
+    }
+
+    //Test the add to calendar page
+    @isTest static void testUSTAddToCalendar() {
+        createTestEvent();
+        Test.startTest();
+        ApexPages.currentPage().getParameters().put('instanceID', testInstance.Id);
+        USTEventAddToCalendarController add2Cal = new USTEventAddToCalendarController();
+        Test.stopTest();
+    }
+
+    //Test the add to calendar page
+    @isTest static void testUSTHostAssignment() {
+        createEventWithRegistration('');
+        Test.startTest();
+        // ApexPages.currentPage().getParameters().put('instanceID', testInstance.Id);
+        ApexPages.StandardController sc = new ApexPages.StandardController(addToRegAppt[0]);
+        USTEventHostAssignmentExtension hostController = new USTEventHostAssignmentExtension(sc);
+        hostController.getRecordTypes();
+        hostController.getListHost();
+        hostController.assignHost();
+
+        //Assign a host from test data
+        hostController.hostId = testHosts[0].Id;
+        hostController.hostAction = 'assign';
+        hostController.assignHost();
+        //Get list with already assigned host
+        hostController.getListHost();
+
+        //Unassign current host
+        hostController.hostId = testHosts[0].Id;
+        hostController.hostAction = 'unassign';
+        hostController.assignHost();
+
+        //Assign a host with capacity reached
+        hostController.hostId = testHosts[1].Id;
+        hostController.hostAction = 'assign';
+        hostController.assignHost();
+
+        Test.stopTest();
+    }
+
+
+    //Test the add to calendar page
+    @isTest static void testUSTProgramFinder() {
+        createEventWithRegistration('');
+        creatTestPrograms();
+        Test.startTest();
+        // ApexPages.currentPage().getParameters().put('instanceID', testInstance.Id);
+        ApexPages.StandardController sc = new ApexPages.StandardController(testEvent);
+        USTEventProgramLookupExtension progLookupController = new USTEventProgramLookupExtension(sc);
+        progLookupController.getPrograms();
+        progLookupController.save();
+        progLookupController.getPrograms();
         Test.stopTest();
     }
 
@@ -314,7 +373,8 @@ public with sharing class TestUSTEventShared {
                 Audience__c = audience,
                 Add_Info_Question_Type_1__c = 'Pick-list',
                 Add_Info_Question_Text_1__c = 'What is your favorite color?',
-                Add_Info_Question_Pick_List_1__c = 'Red\nGreen\nYellow\nBlue'
+                Add_Info_Question_Pick_List_1__c = 'Red\nGreen\nYellow\nBlue',
+                Academic_Program_List__c = 'This(THIS_THIS|THAT);That(THAT_THAT|THIS);'
         );
         insert testEvent;
 
@@ -382,7 +442,6 @@ public with sharing class TestUSTEventShared {
 
         insert newApptTypes;
 
-
         //Create event instance
         testInstance = new UST_Event_Instance__c(
                 Event__c = testEvent.Id,
@@ -393,6 +452,35 @@ public with sharing class TestUSTEventShared {
                 Capacity__c = 500
         );
         insert testInstance;
+
+
+        Id classRecType = Schema.SObjectType.UST_Event_Host__c.getRecordTypeInfosByName().get('Class').getRecordTypeId();
+        testHosts = new List<UST_Event_Host__c>();
+        testHosts.add(new UST_Event_Host__c(
+                Event_Instance__c = testInstance.Id,
+                First_Name__c = 'Host1',
+                Last_Name__c = 'Host1',
+                RecordTypeId = classRecType,
+                Preferred_Title__c = 'Mr.',
+                Gender__c = 'M',
+                Department__c = 'Host Dept 1',
+                Course_Name__c = 'Host 1 Course',
+                Max_Available__c = 10
+        ));
+
+        testHosts.add(new UST_Event_Host__c(
+                Event_Instance__c = testInstance.Id,
+                First_Name__c = 'Host2',
+                Last_Name__c = 'Host2',
+                RecordTypeId = classRecType,
+                Preferred_Title__c = 'Mr.',
+                Gender__c = 'M',
+                Department__c = 'Host Dept 2',
+                Course_Name__c = 'Host 2 Course',
+                Max_Available__c = 10,
+                Assigned__c = 10
+        ));
+        insert testHosts;
 
     }
 
@@ -459,9 +547,9 @@ public with sharing class TestUSTEventShared {
                     Event_Registration__c = testRegistration.Id,
                     Client_Created_Appointment__c = true
             );
-            if(math.mod(aptNum, 2) == 0){
+            if (math.mod(aptNum, 2) == 0) {
                 addThisAppt.Appointment_Status__c = 'Registered';
-            }else{
+            } else {
                 addThisAppt.Appointment_Status__c = 'Confirmed';
             }
 
@@ -511,13 +599,27 @@ public with sharing class TestUSTEventShared {
 
     }
 
+    private static void creatTestPrograms() {
+        EnrollmentrxRx__School__c gs = new EnrollmentrxRx__School__c(Name = 'TEST', Active_Display_on_Portal__c = true, Display_Order__c = 1);
+        insert gs;
+
+        EnrollmentrxRx__Program_Offered__c gspo = new EnrollmentrxRx__Program_Offered__c(Program_Code__c = 'TEST', Name = 'TEST', Status__c = 'Active', School__c = gs.Id);
+        insert gspo;
+
+        EnrollmentrxRx__Program_Offered__c prog = New EnrollmentrxRx__Program_Offered__c(Name = 'Undeclared BA', Program_Code__c = 'THIS_THIS|THAT', School__c = gs.Id);
+        insert prog;
+
+        testMajor = new Major__c(Major_code__c = 'TEST', Major_Display_Name__c = 'Test Display', Program_offered__c = prog.Id, Status__c = 'Active', Display_on_Program_Finder__c = true);
+        insert testMajor;
+
+    }
+
     static Integer s_num = 1;
 
-    public static String getFakeId(Schema.SObjectType sot)
-    {
+    public static String getFakeId(Schema.SObjectType sot) {
         String result = String.valueOf(s_num++);
         return sot.getDescribe().getKeyPrefix() +
-                '0'.repeat(12-result.length()) + result;
+                '0'.repeat(12 - result.length()) + result;
     }
 
 }

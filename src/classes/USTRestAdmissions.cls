@@ -23,7 +23,12 @@ global with sharing class USTRestAdmissions {
     global static void getUstAdmissionsRest() {
         RestResponse res = RestContext.response;
         res.addHeader('Content-Type', 'application/json');
+        String callback = RestContext.request.params.get('callback');
         String serializedJSON = '';
+
+        if (String.isBlank(callback)) {
+            callback = '';
+        }
 
         String feedType = RestContext.request.params.get('type');
         if (!String.isBlank(feedType)) {
@@ -89,6 +94,9 @@ global with sharing class USTRestAdmissions {
             } else if (feedType.toLowerCase() == 'programfinder') {
                 serializedJSON = JSON.serialize(programFinder());
             }
+        }
+        if (!String.isBlank(callback)) {
+            serializedJSON = callback + '(' + serializedJSON + ')';
         }
         res.responseBody = Blob.valueOf(serializedJSON);
     }

@@ -12,7 +12,7 @@ public with sharing class TestUSTRestAdmissions {
         EnrollmentrxRx__Program_Offered__c prog = New EnrollmentrxRx__Program_Offered__c(Name = 'Undeclared BA');
         insert prog;
 
-        Major__c maj = new Major__c(Major_code__c = 'TEST', Major_Display_Name__c = 'Test Display', Program_offered__c = prog.Id, Status__c = 'Active');
+        Major__c maj = new Major__c(Major_code__c = 'TEST', Major_Display_Name__c = 'Test Display', Program_offered__c = prog.Id, Status__c = 'Active', Display_on_Program_Finder__c = true);
         insert maj;
 
         Activities__c activ = new Activities__c(Club_type__c = 'Clubs and Organizations', Club_Description__c = 'Test', Display_on_Portal__c = 'Yes');
@@ -34,7 +34,6 @@ public with sharing class TestUSTRestAdmissions {
         insert gspo;
 
         Test.startTest();
-        
         getMaps('', '', '', '', '');
         getMaps('highschool', '', '', '', '');
         getMaps('ugmajors', '', '', '', '');
@@ -51,7 +50,12 @@ public with sharing class TestUSTRestAdmissions {
         getMaps('college', '', '', 'Beth', '');
         getMaps('gradschools', '', '', '', '');
         getMaps('gradprograms', '', '', '', gs.Id);
-
+        getMaps('areaofinterest','','','','');
+        getMaps('degree','','','','');
+        getMaps('learningstyle','','','','');
+        getMaps('programfinder','','','','');
+        getMaps('programfinder','','','College','');
+        Test.stopTest();
     }
 
     private static void getMaps(String type, String state, String city, String filter, String schoolID) {

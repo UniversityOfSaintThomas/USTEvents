@@ -5,9 +5,7 @@
 public class USTEventProgramLookupExtension {
 
     public UST_Event__c USTEvt;
-    public String progString { get; set; }
     public List<SelectOption> SelectedPrograms { get; set; }
-    //public List<SelectOption> SelectedPrograms { set; get; }
 
     public USTEventProgramLookupExtension(ApexPages.StandardController stdController) {
         USTEvt = (UST_Event__c) stdController.getRecord();

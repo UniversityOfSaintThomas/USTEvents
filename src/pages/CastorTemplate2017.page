@@ -154,7 +154,7 @@
                     </div>
                 </div>
             </div>
-            <site:googleAnalyticsTracking/>
+            <site:googleAnalyticsTracking />
         </apex:insert>
     </footer>
     <script src="{!URLFOR($Resource.USTEventAssets, '/js/loading.js')}" type="text/javascript"/>

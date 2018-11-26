@@ -199,7 +199,7 @@
         <fullName>Add_To_Calendar_Link__c</fullName>
         <description>Link to add to your calendar event feature.</description>
         <externalId>false</externalId>
-        <formula>Event__r.Community_Base_URL__c + &apos;usteventcancelreview?regId=&apos; +  Event_Instance__r.Id</formula>
+        <formula>Event__r.Community_Base_URL__c + &apos;usteventaddtocalendar?regId=&apos; +  Event_Instance__r.Id</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Link to add to your calendar event feature.</inlineHelpText>
         <label>Add To Calendar Link</label>

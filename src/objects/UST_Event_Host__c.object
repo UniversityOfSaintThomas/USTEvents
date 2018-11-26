@@ -318,6 +318,11 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
         </valueSet>
     </fields>
     <label>UST Event Host</label>
+    <listViews>
+        <fullName>All</fullName>
+        <filterScope>Everything</filterScope>
+        <label>All</label>
+    </listViews>
     <nameField>
         <displayFormat>HOST-{0000}</displayFormat>
         <label>UST Event Host Name</label>
@@ -329,7 +334,7 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
     <recordTypes>
         <fullName>Class</fullName>
         <active>true</active>
-        <description>Host is a classroom visit</description>
+        <description>Visit a class</description>
         <label>Class</label>
         <picklistValues>
             <picklist>Building__c</picklist>
@@ -828,6 +833,7 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
     <recordTypes>
         <fullName>Coach</fullName>
         <active>true</active>
+        <description>Visit with a coach</description>
         <label>Coach</label>
         <picklistValues>
             <picklist>Building__c</picklist>
@@ -1326,6 +1332,7 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
     <recordTypes>
         <fullName>Faculty</fullName>
         <active>true</active>
+        <description>Visit with a faculty member</description>
         <label>Faculty</label>
         <picklistValues>
             <picklist>Building__c</picklist>
