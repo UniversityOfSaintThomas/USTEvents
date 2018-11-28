@@ -429,4 +429,30 @@
 &amp;QueryId=[USTEventReg]a210m0000002V9b</url>
         <width>900</width>
     </webLinks>
+    <webLinks>
+        <fullName>Registration_Printouts</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Registration Printouts</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://composer.congamerge.com?SolMgr=1 
+&amp;sessionId={!API.Session_ID} 
+&amp;serverUrl={!API.Partner_Server_URL_290} 
+&amp;Id={!UST_Event_Instance__c.Id} 
+&amp;ReportId=[EventInst]00O0a000004s8YM 
+&amp;ReportId=[EventAppt]00O0a000004s8YN 
+&amp;QueryId=[Appointments]a210a00000Xzmu6 
+&amp;TemplateGroup=UGVisit</url>
+    </webLinks>
 </CustomObject>

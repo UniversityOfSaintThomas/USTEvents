@@ -26,6 +26,7 @@ public with sharing class USTEventHostAssignmentExtension {
                     WHERE Event_Instance__c = :instanceID
                     AND RecordType.Id = :recordTypeId
                     AND Remaining__c > 0
+                    ORDER BY Last_Name__c, First_Name__c, Course_Name__c
             ];
         } else {
             listHost = [
@@ -36,6 +37,7 @@ public with sharing class USTEventHostAssignmentExtension {
                     From UST_Event_Host__c
                     WHERE Event_Instance__c = :instanceID
                     AND Id = :USTApt.Event_Host__c
+                    ORDER BY Last_Name__c, First_Name__c, Course_Name__c
             ];
         }
 

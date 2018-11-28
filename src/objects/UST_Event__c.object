@@ -76,6 +76,21 @@
         <visibleLines>5</visibleLines>
     </fields>
     <fields>
+        <fullName>Academic_Program__c</fullName>
+        <deleteConstraint>SetNull</deleteConstraint>
+        <description>Define an academic program this event is tied.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Define an academic program this event is tied.</inlineHelpText>
+        <label>Academic Program</label>
+        <referenceTo>EnrollmentrxRx__Program_Offered__c</referenceTo>
+        <relationshipLabel>UST Events</relationshipLabel>
+        <relationshipName>UST_Events</relationshipName>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Lookup</type>
+    </fields>
+    <fields>
         <fullName>Add_Info_Question_Pick_List_1__c</fullName>
         <description>return separated list that will be converted to a pick-list.</description>
         <externalId>false</externalId>
@@ -563,6 +578,12 @@
                     <fullName>Graduate Staff</fullName>
                     <default>false</default>
                     <label>Graduate Staff</label>
+                </value>
+                <value>
+                    <fullName>Dougherty Family College (2-Year)</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Dougherty Family College (2-Year)</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -2070,4 +2091,23 @@ TEXT(YEAR( End_Date__c))
     <sharingModel>ReadWrite</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Preview_Event_Webform</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <encodingKey>UTF-8</encodingKey>
+        <hasMenubar>false</hasMenubar>
+        <hasScrollbars>true</hasScrollbars>
+        <hasToolbar>false</hasToolbar>
+        <height>600</height>
+        <isResizable>true</isResizable>
+        <linkType>url</linkType>
+        <masterLabel>Preview Event Webform</masterLabel>
+        <openType>newWindow</openType>
+        <position>none</position>
+        <protected>false</protected>
+        <showsLocation>false</showsLocation>
+        <showsStatus>false</showsStatus>
+        <url>https://stthomas.force.com/applicantportal/USTEvent</url>
+    </webLinks>
 </CustomObject>

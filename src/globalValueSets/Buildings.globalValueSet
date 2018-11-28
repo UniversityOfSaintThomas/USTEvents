@@ -181,6 +181,24 @@
         <label>Office of Financial Aid</label>
     </customValue>
     <customValue>
+        <fullName>O’Shaughnessy Educational Center</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>O’Shaughnessy Educational Center</label>
+    </customValue>
+    <customValue>
+        <fullName>O’Shaughnessy-Frey Library Center</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>O’Shaughnessy-Frey Library Center</label>
+    </customValue>
+    <customValue>
+        <fullName>O’Shaughnessy Stadium (STA)</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>O’Shaughnessy Stadium (STA)</label>
+    </customValue>
+    <customValue>
         <fullName>Dowling Hall (DOW)</fullName>
         <default>false</default>
         <isActive>false</isActive>

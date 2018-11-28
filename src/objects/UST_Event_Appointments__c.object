@@ -1045,6 +1045,18 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Event_Reg_ID__c</fullName>
+        <externalId>false</externalId>
+        <formula>Event_Registration__r.Event_Instance__r.Id</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Event Reg ID</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Event_Registration_Date__c</fullName>
         <externalId>false</externalId>
         <formula>TEXT(MONTH(Event_Registration__r.Date__c))+&quot;/&quot; +TEXT(DAY(Event_Registration__r.Date__c))+&quot;/&quot; +TEXT(YEAR(Event_Registration__r.Date__c))</formula>
@@ -1101,10 +1113,6 @@ IF(!ISBLANK(Event_Host__r.Location__c), Event_Host__r.Location__c + &apos; &apos
 
 /*Building if selected*/
 IF(!ISBLANK(TEXT(Event_Host__r.Building__c)), TEXT(Event_Host__r.Building__c) + &apos; &apos;, &apos;&apos;)
-+ 
-
-/*Building if selected*/
-IF(!ISBLANK(Event_Host__r.Course_Name__c), Event_Host__r.Course_Name__c + &apos; &apos;, &apos;&apos;)
 )</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Host Location</label>

@@ -535,6 +535,12 @@
         <default>false</default>
         <label>Campus Tour</label>
     </customValue>
+    <customValue>
+        <fullName>Data Analytics</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Data Analytics</label>
+    </customValue>
     <masterLabel>Appointment Type</masterLabel>
     <sorted>false</sorted>
 </GlobalValueSet>

@@ -45,51 +45,24 @@
                                 <apex:param name="action" value="unassign" assignTo="{!hostAction}"/>
                             </apex:commandButton>
                         </apex:column>
-                        
-                        <apex:column >
-                            <apex:facet name="header">First Name</apex:facet>
-                            <apex:outputText value="{!host.First_Name__c}"/>
-                        </apex:column>
 
-                        <apex:column >
-                            <apex:facet name="header">Last Name</apex:facet>
-                            <apex:outputText value="{!host.Last_Name__c}"/>
-                        </apex:column>
+                        <apex:column headerValue="First Name" headerClass="TableTitle" value="{!host.First_Name__c}"/>
 
-                        <apex:column >
-                            <apex:facet name="header">Course</apex:facet>
-                            <apex:outputText value="{!host.Course_Name__c}"/>
-                        </apex:column>
+                        <apex:column headerValue="Last Name" headerClass="TableTitle" value="{!host.Last_Name__c}"/>
 
-                        <apex:column >
-                            <apex:facet name="header">Type</apex:facet>
-                            <apex:outputText value="{!host.RecordType.Name}"/>
-                        </apex:column>
+                        <apex:column headerValue="Course" headerClass="TableTitle" value="{!host.Course_Name__c}" />
 
-                        <apex:column >
-                            <apex:facet name="header">Remaining</apex:facet>
-                            <apex:outputText value="{!host.Remaining__c}"/>
-                        </apex:column>
+                        <apex:column headerValue="Type" headerClass="TableTitle" value="{!host.RecordType.Name}"/>
 
-                        <apex:column >
-                            <apex:facet name="header">Location</apex:facet>
-                            <apex:outputText value="{!host.Location__c}"/>
-                        </apex:column>
+                        <apex:column headerValue="Remaining" headerClass="TableTitle" value="{!host.Remaining__c}"/>
 
-                        <apex:column >
-                            <apex:facet name="header">Building</apex:facet>
-                            <apex:outputText value="{!host.Building__c}"/>
-                        </apex:column>
+                        <apex:column headerValue="Location" headerClass="TableTitle" value="{!host.Location__c}"/>
 
-                        <apex:column >
-                            <apex:facet name="header">Building</apex:facet>
-                            <apex:outputText value="{!host.Department__c}"/>
-                        </apex:column>
+                        <apex:column headerValue="Building" headerClass="TableTitle" value="{!host.Building__c}"/>
 
-                        <apex:column >
-                            <apex:facet name="header">Comments</apex:facet>
-                            <apex:outputText value="{!host.Additional_Comments__c}"/>
-                        </apex:column>
+                        <apex:column headerValue="Dept" headerClass="TableTitle" value="{!host.Department__c}"/>
+
+                        <apex:column headerValue="Comments" headerClass="TableTitle" value="{!host.Additional_Comments__c}"/>
 
                     </apex:dataTable>
                 </apex:outputPanel>
