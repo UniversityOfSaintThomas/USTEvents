@@ -2,7 +2,7 @@
  - Created by dahl3702 on 10/30/2018.
  -->
 
-<apex:page id="USTEventHostAssignment"  showHeader="false" sideBar="false" standardController="UST_Event_Appointments__c" extensions="USTEventHostAssignmentExtension">
+<apex:page id="USTEventHostAssignment" showHeader="false" sideBar="false" standardController="UST_Event_Appointments__c" extensions="USTEventHostAssignmentExtension">
 
     <script>
         function CloseAndRefresh() {
@@ -45,8 +45,7 @@
                                 <apex:param name="action" value="unassign" assignTo="{!hostAction}"/>
                             </apex:commandButton>
                         </apex:column>
-
-
+                        
                         <apex:column >
                             <apex:facet name="header">First Name</apex:facet>
                             <apex:outputText value="{!host.First_Name__c}"/>
@@ -58,7 +57,12 @@
                         </apex:column>
 
                         <apex:column >
-                            <apex:facet name="header">Host Type</apex:facet>
+                            <apex:facet name="header">Course</apex:facet>
+                            <apex:outputText value="{!host.Course_Name__c}"/>
+                        </apex:column>
+
+                        <apex:column >
+                            <apex:facet name="header">Type</apex:facet>
                             <apex:outputText value="{!host.RecordType.Name}"/>
                         </apex:column>
 

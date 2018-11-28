@@ -69,11 +69,13 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
 
         AllAppts = [
                 SELECT Id, Name, Appointment_Time__c, Appointment_Time_Formatted__c, Event_Registration__r.Id, Appointment_Status__c,
-                        Faculty_Staff_Member__c, Appointment_Title__c, Event_Host__c, Event_Host__r.Assigned__c,
-                        Host_Location__c, Host_Name__c, Building__c, Room__c
+                        Faculty_Staff_Member__c, Appointment_Title__c, Event_Host__c, Host_Name__c, Event_Host__r.Assigned__c,
+                        Host_Location__c, Building__c, Room__c, Event_Host__r.Time__c, Event_Host__r.Course_Name__c, Event_Host__r.RecordType.Name
                 FROM UST_Event_Appointments__c
                 WHERE Event_Registration__r.Id IN :uniqueRegIds.values()
-                ORDER BY Event_Registration__r.Id, Appointment_Time__c
+                ORDER BY Appointment_Time__c ASC, Event_Host__r.Time__c ASC, Appointment_Title__c ASC
+
+                //TODO: If there is no time on the appointment and there is host time use the host time.
         ];
 
         List<UST_Event_Registration__c> newItineraryRegs = new List<UST_Event_Registration__c>();
@@ -131,15 +133,19 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
                     }
 
                     //Appointment Description
-                    generatedItinerary += '<td style="text-align:left;padding-left:10px;">' + AllAppts[i].Appointment_Title__c;
-                    if (!String.isBlank(AllAppts[i].Faculty_Staff_Member__c)) {
-                        generatedItinerary += ' - ' + AllAppts[i].Faculty_Staff_Member__c;
-                    }
+                    generatedItinerary += '<td style="text-align:left;padding-left:10px;">';
+                    generatedItinerary += AllAppts[i].Appointment_Title__c;
                     generatedItinerary += '</td>';
 
                     //Appointment Host
                     if (appointmentsHaveHost) {
                         generatedItinerary += '<td style="text-align:left;">';
+                        if (!String.isBlank(AllAppts[i].Event_Host__r.Course_Name__c)) {
+                            generatedItinerary += AllAppts[i].Event_Host__r.Course_Name__c;
+                        }
+                        if  (!String.isBlank(AllAppts[i].Event_Host__r.Course_Name__c) && !String.isBlank(AllAppts[i].Host_Name__c)) {
+                            generatedItinerary += '<br/>';
+                        }
                         if (!String.isBlank(AllAppts[i].Host_Name__c)) {
                             generatedItinerary += AllAppts[i].Host_Name__c;
                         }
@@ -176,10 +182,9 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
                     generatedAppts += '</td>';
                 }
 
-                generatedAppts += '<td style="text-align:left;padding-left:10px;">' + AllAppts[i].Appointment_Title__c;
-                if (!String.isBlank(AllAppts[i].Faculty_Staff_Member__c)) {
-                    generatedAppts += ' - ' + AllAppts[i].Faculty_Staff_Member__c;
-                }
+                //Appointment Description
+                generatedAppts += '<td style="text-align:left;padding-left:10px;">';
+                generatedAppts += AllAppts[i].Appointment_Title__c;
                 generatedAppts += '</td>';
 
                 generatedAppts += '</tr>';

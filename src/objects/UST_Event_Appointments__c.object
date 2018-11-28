@@ -1117,8 +1117,8 @@ IF(!ISBLANK(Event_Host__r.Course_Name__c), Event_Host__r.Course_Name__c + &apos;
     <fields>
         <fullName>Host_Name__c</fullName>
         <externalId>false</externalId>
-        <formula>IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , Event_Host__r.Preferred_Title__c + &apos; &apos;,&apos;&apos;) +
-Event_Host__r.First_Name__c + &apos; &apos; + Event_Host__r.Last_Name__c</formula>
+        <formula>Event_Host__r.First_Name__c + &apos; &apos; + Event_Host__r.Last_Name__c +
+IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.Preferred_Title__c,&apos;&apos;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Host Name</label>
         <required>false</required>
