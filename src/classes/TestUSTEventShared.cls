@@ -347,6 +347,29 @@ public with sharing class TestUSTEventShared {
         Test.stopTest();
     }
 
+    //Test itinerary printout
+    @isTest static void testItineraryPrint() {
+        createEventWithRegistration('');
+        creatTestPrograms();
+        Test.startTest();
+        ApexPages.StandardController sc = new ApexPages.StandardController(testInstance);
+        USTEventPrintItinerariesExtension itPrint = new USTEventPrintItinerariesExtension(sc);
+        itPrint.getChooseRender();
+        itPrint.getIsItWord();
+        itPrint.generateDoc();
+        itPrint.generatePDF();
+
+        itPrint = new USTEventPrintItinerariesExtension(sc);
+        itPrint.docName ='admissOvernight';
+        ApexPages.currentPage().getParameters().put('docType', 'word');
+        itPrint.getChooseRender();
+        itPrint.getIsItWord();
+        itPrint.generateDoc();
+        itPrint.generatePDF();
+        //itPrint = new USTEventPrintItinerariesExtension(sc);
+        Test.stopTest();
+    }
+
     //Create event data
 
     private static void createTestEvent() {
@@ -562,7 +585,8 @@ public with sharing class TestUSTEventShared {
 
     private static void creatTestUser() {
         //Querying on profile
-
+        EnrollmentrxRx__Enrollment_Opportunity__c app = new EnrollmentrxRx__Enrollment_Opportunity__c();
+        insert app;
 
         //Creating a student contact
         student = new Contact(
@@ -575,7 +599,8 @@ public with sharing class TestUSTEventShared {
                 MailingPostalCode = '55418',
                 MailingZip__c = '55418',
                 MailingCountry = 'US',
-                Receive_Texts__c = 'Yes'
+                Receive_Texts__c = 'Yes',
+                EnrollmentrxRx__Active_Enrollment_Opportunity__c = app.Id
         );
         insert student;
 
