@@ -107,6 +107,11 @@
     </layoutSections>
     <relatedLists>
         <fields>NAME</fields>
+        <fields>Appointment_Contact_Name__c</fields>
+        <fields>Appointment_Title__c</fields>
+        <fields>Appointment_Time_Formatted__c</fields>
+        <fields>Appointment_Type__c</fields>
+        <fields>Event_Registration__c</fields>
         <relatedList>UST_Event_Appointments__c.Event_Host__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

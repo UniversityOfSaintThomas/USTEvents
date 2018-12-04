@@ -1191,8 +1191,14 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
     <label>UST Event Appointment</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Appointment_Title__c</columns>
+        <columns>Appointment_Status__c</columns>
+        <columns>Appointment_Time_Formatted__c</columns>
+        <columns>Host_Name__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+        <language>en_US</language>
     </listViews>
     <nameField>
         <displayFormat>APPT-{000000}</displayFormat>

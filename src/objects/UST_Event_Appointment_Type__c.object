@@ -589,6 +589,16 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Auto_Add_Time__c</fullName>
+        <description>Auto populate this appointment time when this appointment is added to a registration</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Auto populate this appointment time when this appointment is added to a registration</inlineHelpText>
+        <label>Auto Add Time</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Time</type>
+    </fields>
+    <fields>
         <fullName>Auto_Confirm_Appointment__c</fullName>
         <defaultValue>false</defaultValue>
         <description>When the appointment is added to the event a confirm status, rather than a requested status, will be applied.</description>
@@ -634,6 +644,11 @@
                     <fullName>Added and Required</fullName>
                     <default>false</default>
                     <label>Added and Required</label>
+                </value>
+                <value>
+                    <fullName>Added but not shown</fullName>
+                    <default>false</default>
+                    <label>Added but not shown</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

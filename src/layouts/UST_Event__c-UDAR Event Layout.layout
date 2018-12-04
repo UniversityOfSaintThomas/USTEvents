@@ -337,6 +337,8 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>Action_Status__c</fields>
+        <fields>Action_Sub_status__c</fields>
+        <fields>Org_Email__c</fields>
         <relatedList>UST_Event_Email__c.Event__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>

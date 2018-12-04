@@ -181,24 +181,6 @@
         <label>Office of Financial Aid</label>
     </customValue>
     <customValue>
-        <fullName>O’Shaughnessy Educational Center</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>O’Shaughnessy Educational Center</label>
-    </customValue>
-    <customValue>
-        <fullName>O’Shaughnessy-Frey Library Center</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>O’Shaughnessy-Frey Library Center</label>
-    </customValue>
-    <customValue>
-        <fullName>O’Shaughnessy Stadium (STA)</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>O’Shaughnessy Stadium (STA)</label>
-    </customValue>
-    <customValue>
         <fullName>Dowling Hall (DOW)</fullName>
         <default>false</default>
         <isActive>false</isActive>
@@ -259,10 +241,10 @@
         <label>2109 Grand Avenue (09G)</label>
     </customValue>
     <customValue>
-        <fullName>Morrison Hall (MOR)</fullName>
+        <fullName>2151 Grand Avenue (51G)</fullName>
         <default>false</default>
         <isActive>false</isActive>
-        <label>Morrison Hall (MOR)</label>
+        <label>2151 Grand Avenue (51G)</label>
     </customValue>
     <customValue>
         <fullName>2085/87 Grand Avenue (SJV Grand) (85G)</fullName>
@@ -271,10 +253,28 @@
         <label>2085/87 Grand Avenue (SJV Grand) (85G)</label>
     </customValue>
     <customValue>
-        <fullName>2151 Grand Avenue (51G)</fullName>
+        <fullName>Morrison Hall (MOR)</fullName>
         <default>false</default>
         <isActive>false</isActive>
-        <label>2151 Grand Avenue (51G)</label>
+        <label>Morrison Hall (MOR)</label>
+    </customValue>
+    <customValue>
+        <fullName>O’Shaughnessy Educational Center</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>O’Shaughnessy Educational Center</label>
+    </customValue>
+    <customValue>
+        <fullName>O’Shaughnessy-Frey Library Center</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>O’Shaughnessy-Frey Library Center</label>
+    </customValue>
+    <customValue>
+        <fullName>O’Shaughnessy Stadium (STA)</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>O’Shaughnessy Stadium (STA)</label>
     </customValue>
     <masterLabel>Buildings</masterLabel>
     <sorted>false</sorted>

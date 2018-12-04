@@ -582,7 +582,6 @@
                 <value>
                     <fullName>Dougherty Family College (2-Year)</fullName>
                     <default>false</default>
-                    <isActive>false</isActive>
                     <label>Dougherty Family College (2-Year)</label>
                 </value>
             </valueSetDefinition>

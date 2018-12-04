@@ -5,7 +5,7 @@
 <apex:page id="USTEventPrintItineraries" showHeader="false" applyHtmlTag="false" renderAs="{!chooseRender}" contentType="{!isItWord}" standardController="UST_Event_Instance__c" extensions="USTEventPrintItinerariesExtension">
 
     <apex:form rendered="{!If(ISBLANK(docName), true, false)}">
-        <apex:messages/>
+        <apex:messages />
         <apex:pageBlock title="Assign Hosts">
             <apex:pageBlockSection title="Choose what document to generate" columns="2" collapsible="false">
                 <apex:selectList value="{!docName}" multiselect="false" size="1" required="true">
@@ -13,7 +13,7 @@
                     <apex:selectOption itemValue="admissOvernight" itemLabel="Admissions Overnight Itineraries"/>
                 </apex:selectList>
             </apex:pageBlockSection>
-            <apex:pageBlockButtons>
+            <apex:pageBlockButtons >
                 <apex:commandButton action="{!generatePDF}" value="Generate PDF"></apex:commandButton>
                 <apex:commandButton action="{!generateDoc}" value="Generate Word"></apex:commandButton>
             </apex:pageBlockButtons>
@@ -21,7 +21,7 @@
     </apex:form>
 
     <apex:outputPanel layout="none" rendered="{!If(docName== 'admissOvernight', true, false)}">
-        <apex:messages/>
+        <apex:messages />
         <apex:stylesheet value="{!URLFOR($Resource.USTEventAssets, '/css/admissOvernight.css')}"/>
         <div class="Section1">
             <apex:repeat value="{!eventRegs}" var="reg">

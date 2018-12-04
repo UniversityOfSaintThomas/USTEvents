@@ -320,8 +320,13 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
     <label>UST Event Host</label>
     <listViews>
         <fullName>All</fullName>
+        <columns>NAME</columns>
+        <columns>Last_Name__c</columns>
+        <columns>First_Name__c</columns>
+        <columns>Max_Available__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+        <language>en_US</language>
     </listViews>
     <nameField>
         <displayFormat>HOST-{0000}</displayFormat>

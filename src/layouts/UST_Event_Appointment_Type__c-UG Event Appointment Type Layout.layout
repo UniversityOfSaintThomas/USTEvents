@@ -35,6 +35,10 @@
                 <behavior>Edit</behavior>
                 <field>Auto_add_building__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Auto_Add_Time__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
