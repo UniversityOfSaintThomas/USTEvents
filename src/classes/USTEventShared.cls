@@ -16,7 +16,7 @@ public with sharing class USTEventShared {
     }
 
     public USTEventInfo getUSTEventInfo() {
-        //{"audience":"High School Senior","instanceID":"a320m000000A5fOAAS","evtRegId":"a350m0000008q63AAA,"evtId":"a330m0000001SOrAAM"}
+        //{"audience":"High School Senior","instanceID":"a320m000000A5fOAAS","evtRegId":"a350m0000008q63AAA,"evtId":"a330m0000001SOrAAM", "recordTypeName" :"Undergraduate"}
         String jsonInput = '';
         USTEventInfo evtInfo = new USTEventInfo();
         String URLaudience = ApexPages.currentPage().getParameters().get('audience');
@@ -25,6 +25,9 @@ public with sharing class USTEventShared {
         if (!String.isBlank(jsonInput)) {
             try {
                 evtInfo = (USTEventInfo) JSON.deserialize(jsonInput, USTEventInfo.class);
+                if (!String.isBlank(URLaudience)) {
+                    evtInfo.audience = URLaudience;
+                }
             } catch (Exception e) {
                 //Cookie was un-serializable so delete it
                 Cookie deleteCookie = new Cookie('USTEvent', '', null, 0, false); // Note the 0 to delete the cookie

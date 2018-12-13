@@ -75,25 +75,37 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                 affectedRegs.add(r);
 
                 If (r.Status__c == 'Confirmed' && r.Substatus__c == 'Attended') {
-                    affectedContactIds.put(r.Contact__c, r.Contact__c);
+                    affectedContactIds.put(r.Id, r.Id);
                 }
             }
         }
 
-        List<Contact> contactUpdates = [SELECT Id, Initial_Foot_on_Campus__c, Last_Time_on_Campus__c FROM Contact WHERE Id IN :affectedContactIds.values()];
+        List<UST_Event_Registration__c> contactUpdates = [
+                SELECT Id, Event_Instance_Date__c, Contact__r.Id, Contact__r.Initial_Foot_on_Campus__c, Contact__r.Last_Time_on_Campus__c, Contact__r.Foot_On_Campus__c
+                FROM UST_Event_Registration__c
+                WHERE Id IN :affectedContactIds.values()
+        ];
 
-        for (Contact cu: contactUpdates) {
-            if (cu.Initial_Foot_on_Campus__c == null) {
-                footOnCampus.add(new Contact(id = cu.Id, Initial_Foot_on_Campus__c = Date.today(), Last_Time_on_Campus__c = Date.today()));
+        for (UST_Event_Registration__c cu: contactUpdates) {
+            Contact footContact = new Contact();
+            footContact.id = cu.Contact__r.Id;
+            if (cu.Contact__r.Initial_Foot_on_Campus__c == null) {
+                footContact.Initial_Foot_on_Campus__c = cu.Event_Instance_Date__c;
+                footContact.Last_Time_on_Campus__c = cu.Event_Instance_Date__c;
             } else {
-                footOnCampus.add(new Contact(id = cu.Id, Last_Time_on_Campus__c = Date.today()));
+                footContact.Last_Time_on_Campus__c = cu.Event_Instance_Date__c;
+
             }
+            if (cu.Contact__r.Foot_On_Campus__c == false) {
+                footContact.Foot_On_Campus__c = true;
+            }
+            footOnCampus.add(footContact);
         }
         upsert footOnCampus;
 
         //Get any templates for events that have restistration status changes
         List<UST_Event_Email__c> matchEmail = [
-                SELECT Action_Status__c, Action_Sub_status__c, Event__r.id, Letterhead__c, Letterhead_HTML__c, Email_Subject__c, Email_From__c,
+                SELECT Action_Status__c, Action_Sub_status__c, Event__r.id, Letterhead_HTML__c, Email_Subject__c,
                         Email_Content__c, Letterhead_Id__c, Org_Email_Id__c, BCC_Email__c
                 FROM UST_Event_Email__c
                 WHERE Event__r.Id IN :affectedIds.values()
@@ -122,7 +134,11 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                     if (statusMatch) {
                         //Get email template
                         String emailContent = em.Email_Content__c;
-                        String originalTemplate = em.Letterhead_HTML__c;
+                        String originalTemplate = '[[DONT_DELETE_CONTENT_HERE]]';
+                        if (!String.isBlank(em.Letterhead_HTML__c)) {
+                            originalTemplate = em.Letterhead_HTML__c;
+                        }
+
 
                         //Regex to find all Apex delineators {! }
                         Pattern TAG_REGEX = Pattern.compile('\\{!(.+?)\\}');
@@ -153,6 +169,14 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                                     found = '';
                                 }
                                 //replace all hooks with found values from regstration
+
+                                if (matcher2.group(1) == 'UG_Parking_Pass_Link__c' || matcher2.group(1) == 'Add_To_Calendar_Link__c' || matcher2.group(1) == 'Event_Registration_Cancel_Link__c') {
+                                    found = found.replace('_HL_ENCODED_', '<a href="');
+                                    found = found.replace('_HL__blank_HL_', '</a>');
+                                    found = found.replace('_HL_',' target="_blank">');
+                                    found = found.replace(' target=', '');
+                                }
+
                                 emailContent = matcher2.replaceAll(found);
                             }
                         }
@@ -163,7 +187,6 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                         while (matcher3.find()) {
                             originalTemplate = matcher3.replaceAll(emailContent);
                         }
-
                         //send the message
                         sendEmail2(areg.Registrant_Email__c, originalTemplate, emailContent, em.Email_Subject__c, em.Org_Email_Id__c, em.BCC_Email__c);
                         Task nt = new Task();

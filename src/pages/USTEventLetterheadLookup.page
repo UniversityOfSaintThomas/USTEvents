@@ -3,6 +3,12 @@
  -->
 
 <apex:page id="USTEventLetterheadLookup" showHeader="false" sideBar="false" standardController="UST_Event_Email__c" extensions="USTEventLetterheadLookupExtension">
+    <script>
+        function CloseAndRefresh() {
+            window.opener.location.href = "/{!UST_Event_Email__c.Id}";
+            self.close();
+        }
+    </script>
     <apex:form id="LetterheadConfig">
         <apex:pageBlock title="Letterhead Setup">
             <apex:pageMessages />
@@ -24,7 +30,7 @@
             </apex:pageBlockSection>
             <apex:pageBlockSection columns="2">
                 <apex:pageBlockSectionItem >
-                    <apex:commandButton value="Save" action="{!save}"></apex:commandButton>
+                    <apex:commandButton value="Save" action="{!save}" onComplete="CloseAndRefresh();"></apex:commandButton>
                 </apex:pageBlockSectionItem>
                 <apex:pageBlockSectionItem >
                     <apex:commandButton value="Close" onClick="window.top.close();"></apex:commandButton>

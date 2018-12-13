@@ -19,7 +19,7 @@ public with sharing class USTEventConfirmationController {
         if (!String.isEmpty(evtInfo.evtId)) {
             eventPage = [SELECT Event_Confirmation_Title__c, Event_Name__c, Template__c, Event_Confirmation_Description__c, Event_Footer__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evtinfo.evtId][0];
             templateSelected = eventPage.Template__c;
-            evtInstance = [SELECT Instance_Title__c, Start_Date_Time__c FROM UST_Event_Instance__c WHERE Id = :evtinfo.instanceID LIMIT 1];
+            evtInstance = [SELECT Instance_Title__c, Start_Date_Time__c, End_Date_Time__c FROM UST_Event_Instance__c WHERE Id = :evtinfo.instanceID LIMIT 1];
         }
 
     }

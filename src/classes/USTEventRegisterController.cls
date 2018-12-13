@@ -17,6 +17,7 @@ public with sharing class USTEventRegisterController {
     public String templateSelected { get; set; }
     public boolean contactSet { get; set; }
     public boolean eventIsClosed { get; set; }
+    public boolean additionalQuestions { get; set; }
     public List<String> questionNum { get; set; }
     public List<SelectOption> addPick1 { get; set; }
     public List<SelectOption> addPick2 { get; set; }
@@ -24,6 +25,11 @@ public with sharing class USTEventRegisterController {
     public List<SelectOption> addPick4 { get; set; }
     public List<SelectOption> addPick5 { get; set; }
     public List<String> selectedPrograms { get; set; }
+    public boolean showAddress {get;set;}
+    public boolean showPhone {get;set;}
+    public String applicantType {get;set;}
+    public String locationCrumb {get;set;}
+
 
     public USTEventRegisterController() {
         selectedPrograms = new List<String>();
@@ -37,15 +43,29 @@ public with sharing class USTEventRegisterController {
         test = '';
         contactSet = false;
         eventIsClosed = false;
+        additionalQuestions = false;
+        showAddress = false;
+        showPhone = false;
+        locationCrumb = '';
         EvtUserType = UserInfo.getUserType();
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
+
+        //Set applicant type if audience is passed
+        if (!String.isBlank(evtInfo.audience)) {
+            if(evtInfo.audience == 'Transfer' || evtInfo.audience == 'Transfer International') {
+                applicantType = 'Transfer';
+            } else if (evtInfo.audience == 'High School Senior' || evtInfo.audience == 'High School Junior or Younger'  || evtInfo.audience == 'First-Year International'  || evtInfo.audience == 'Dougherty Family College (2-Year)') {
+                applicantType = 'First-Year';
+            }
+        }
 
         //Get Instance information
         if (!String.isBlank(evtInfo.instanceID)) {
             evtInstance = [
                     SELECT Id, Name, Event__r.Name, Event__r.Event_Name__c, Event__r.Id, Instance_Title__c, Active_Status__c, Capacity__c,
-                            Event__r.Event_description__c, Event__r.Audience__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c
+                            Event__r.Event_description__c, Event__r.Audience__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c,
+                            Location_Type_Override__c, Location_Address_Override__c, Location_Map_Link_Override__c, Location_Title_Override__c
                     FROM UST_Event_Instance__c
                     WHERE Id = :evtInfo.instanceID
                     LIMIT 1
@@ -64,17 +84,79 @@ public with sharing class USTEventRegisterController {
             eventPage = [
                     SELECT Name, Id, Event_Name__c, Event_description__c, Event_Footer__c, Event_Full_Text__c, Audience__c,Include_Time_frame_List__c,
                             Max_Other_Attendees__c, Allow_Other_Attendees__c, College_High_School_Ask__c, Ask_Gender__c, Template__c,
-                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Ask_If_Parent__c, Ask_Program_Interest__c,
+                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Ask_If_Parent__c, Ask_Registrant_Program_Of_Interest__c,
                             Add_Info_Question_Pick_List_1__c, Add_Info_Question_Text_1__c, Add_Info_Question_Type_1__c,
                             Add_Info_Question_Pick_List_2__c, Add_Info_Question_Text_2__c, Add_Info_Question_Type_2__c,
                             Add_Info_Question_Pick_List_3__c, Add_Info_Question_Text_3__c, Add_Info_Question_Type_3__c,
                             Add_Info_Question_Pick_List_4__c, Add_Info_Question_Text_4__c, Add_Info_Question_Type_4__c,
                             Add_Info_Question_Pick_List_5__c, Add_Info_Question_Text_5__c, Add_Info_Question_Type_5__c,
-                            Academic_Program_List__c, School__c
+                            Academic_Program_List__c, School__c, Ask_Mailing_Address__c, Ask_Phone__c, Event_Sponsor__c,
+                            Applicant_Type__c, Location_Type__c, Location_Title__c, Location_Address__c, Location_Map_Link__c
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1
             ][0];
+            showAddress = eventPage.Ask_Mailing_Address__c;
+            showPhone = eventPage.Ask_Phone__c;
+
+            if (!String.isBlank(eventPage.Applicant_Type__c)) {
+                applicantType = eventPage.Applicant_Type__c;
+            }
+
+            if (
+                    !String.isBlank(eventPage.Add_Info_Question_Type_1__c) ||
+                            !String.isBlank(eventPage.Add_Info_Question_Type_1__c) ||
+                            !String.isBlank(eventPage.Add_Info_Question_Type_1__c) ||
+                            !String.isBlank(eventPage.Add_Info_Question_Type_1__c) ||
+                            !String.isBlank(eventPage.Add_Info_Question_Type_1__c) ||
+                            eventPage.Include_Time_frame_List__c ||
+                            eventPage.Allow_Other_Attendees__c ||
+                            (eventPage.Ask_Gender__c != 'Do not ask' && eventPage.Ask_Gender__c != null) ||
+                            (eventPage.Ask_Registrant_Program_Of_Interest__c  != 'Do not ask' && eventPage.Ask_Registrant_Program_Of_Interest__c  != null)
+                    ) {
+                additionalQuestions = true;
+            }
+
+            String locationTitle = '';
+            if (!String.isBlank(evtInstance.Location_Title_Override__c)) {
+                locationTitle = evtInstance.Location_Title_Override__c;
+            } else if (!String.isBlank(eventPage.Location_Title__c)) {
+                locationTitle = eventPage.Location_Title__c;
+            }
+
+            String locationMapLink = '';
+            if (!String.isBlank(evtInstance.Location_Map_Link_Override__c)) {
+                locationMapLink = evtInstance.Location_Map_Link_Override__c;
+            } else if (!String.isBlank(eventPage.Location_Map_Link__c)) {
+                locationMapLink = eventPage.Location_Map_Link__c;
+            }
+
+            String locationAddress = '';
+            if (!String.isBlank(evtInstance.Location_Address_Override__c)) {
+                locationAddress = evtInstance.Location_Address_Override__c;
+            } else if (!String.isBlank(eventPage.Location_Title__c)) {
+                locationAddress = eventPage.Location_Title__c;
+            }
+
+            if (!String.isBlank(locationTitle)) {
+                locationCrumb = locationTitle + '<br/>';
+            }
+
+            if (!String.isBlank(locationAddress) && !String.isBlank(locationMapLink)) {
+                locationCrumb += ' <a href="' + locationMapLink + '" target="_blank">' + locationAddress + '</a><br/>';
+            } else if (!String.isBlank(locationMapLink)) {
+                locationCrumb += ' <a href="' + locationMapLink + '" target="_blank">Map</a><br/>';
+            }
+
+            if (!String.isBlank(locationCrumb)) {
+                locationCrumb = locationCrumb.removeEnd('<br/>');
+                String eventTime = evtInstance.Start_Date_Time__c.format('EEEE MMMM d , YYYY');
+                eventTime +=  '<br/>' + evtInstance.Start_Date_Time__c.format('h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
+                locationCrumb = eventTime + '<br/>' + locationCrumb;
+                locationCrumb = '<h3>Event Details</h3> <p>' + locationCrumb + '</p>';
+            }
+
+
 
             //Grab the template if defined
             if (!String.isBlank(eventPage.Template__c)) {
@@ -109,7 +191,7 @@ public with sharing class USTEventRegisterController {
                 userContact = [
                         Select Id, Name, FirstName, LastName, Email, EnrollmentrxRx__Gender__c, MailingStreetLine1__c, MailingStreetLine2__c, MailingState__c,
                                 MailingZip__c, MailingCity__c, Home_Phone__c, MobilePhone, Receive_Texts__c, EnrollmentrxRx__High_School__c, EnrollmentrxRx__High_School_Code__c,
-                                EnrollmentrxRx__High_School__r.Name, EnrollmentrxRx__High_School__r.EnrollmentrxRx__CEEB_Code__c
+                                EnrollmentrxRx__High_School__r.Name, EnrollmentrxRx__High_School__r.EnrollmentrxRx__CEEB_Code__c, Preferred_First_Name__c
                         FROM Contact
                         Where Id In (
                                 Select ContactId
@@ -132,6 +214,7 @@ public with sharing class USTEventRegisterController {
                 newEvtReg.Registrant_College_Code__c = userContact.EnrollmentrxRx__High_School__r.EnrollmentrxRx__CEEB_Code__c;
                 newEvtReg.Registrant_High_School__c = userContact.EnrollmentrxRx__High_School__r.Name;
                 newEvtReg.Registrant_High_School_Code__c = userContact.EnrollmentrxRx__High_School__r.EnrollmentrxRx__CEEB_Code__c;
+                newEvtReg.Registrant_Preferred_First_Name__c = userContact.Preferred_First_Name__c;
 
                 if (userContact.Receive_Texts__c == 'Yes') {
                     newEvtReg.Registrant_Receive_Texts__c = true;
@@ -144,7 +227,7 @@ public with sharing class USTEventRegisterController {
                                 Registrant_Zip__c, Registrant_Phone__c, Registrant_Mobile_Phone__c, Registrant_College__c, Registrant_College_Code__c, Registrant_College_Year__c,
                                 Registrant_High_School__c, Registrant_High_School_Code__c, Registrant_Receive_Texts__c, Registrant_High_School_Grad_Year__c, Registrant_High_School_Not_Found__c,
                                 Registrant_College_Not_Found__c, Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c, Registrant_Parent_Phone__c, Registrant_Parent_Status__c,
-                                Add_Info_Answer_1__c, Add_Info_Answer_2__c, Add_Info_Answer_3__c, Add_Info_Answer_4__c, Add_Info_Answer_5__c, Registrant_Program_Interest__c
+                                Add_Info_Answer_1__c, Add_Info_Answer_2__c, Add_Info_Answer_3__c, Add_Info_Answer_4__c, Add_Info_Answer_5__c, Registrant_Program_Interest__c, Registrant_Preferred_First_Name__c
                         FROM UST_Event_Registration__c
                         WHERE id = :evtInfo.evtRegId
                 ][0];
@@ -181,6 +264,9 @@ public with sharing class USTEventRegisterController {
         return GetDropdownOptions(UST_Event_Registration__c.Registrant_Parent_Status__c.getDescribe());
     }
 
+    public List<SelectOption> getApplicantTypeDD() {
+        return GetDropdownOptions(UST_Event_Registration__c.Registrant_Applicant_Type__c.getDescribe());
+    }
 
     public List<SelectOption> getProgramsAvailable() {
         String prgString = eventPage.Academic_Program_List__c;
@@ -243,13 +329,6 @@ public with sharing class USTEventRegisterController {
 
     }
 
-//    public List<SelectOption> setProgramsAvailable() {
-//        String prgString = eventPage.Academic_Program_List__c;
-//        String prgSelectedAlready = newEvtReg.Registrant_Program_Interest__c;
-//        List<SelectOption> previousSelected = new List<SelectOption>();
-//        previousSelected.add(new SelectOption('Digital Experience (BU_GR_CER|BUDE)', 'Digital Experience'));
-//        return previousSelected;
-//    }
 
     public List<SelectOption> GetDropdownOptions(Schema.DescribeFieldResult fieldResult) {
         List<SelectOption> options = new List<SelectOption>();
@@ -323,7 +402,7 @@ public with sharing class USTEventRegisterController {
             //get major ids and save them
         }
 
-        if (eventPage.Ask_Program_Interest__c && progSelectionMade) {
+        if ((eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask but do not require' || eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require') && progSelectionMade) {
             newEvtReg.Registrant_Program_Interest__c = recordSelPrg;
         } else {
             newEvtReg.Registrant_Program_Interest__c = '';
@@ -428,7 +507,9 @@ public with sharing class USTEventRegisterController {
                     newEvtReg.Contact_Soft_Match_Email__c = softEmailMatches;
                     newEvtReg.Contact_Soft_Match_First_Last_Zip__c = softFirstLastZipMatches;
                 }
-
+                if (!String.isBlank(applicantType)) {
+                    newEvtReg.Registrant_Applicant_Type__c = applicantType;
+                }
                 try {
                     insert newEvtReg;
                 } catch (Exception ex) {

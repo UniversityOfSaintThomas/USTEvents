@@ -21,10 +21,12 @@ global with sharing class USTEventFeed {
         public Boolean eventClosed { get; set; }
         public String className { get; set; }
         public String locationTitle { get; set; }
-        public String locationType {get;set;}
+        public String locationType { get; set; }
         public String locationAddress { get; set; }
         public String locationMapLink { get; set; }
-        public String locationBuilding {get;set;}
+        public String locationBuilding { get; set; }
+        public String feedButtonText { get; set; }
+        public String sponsors {get;set;}
     }
 
     @HttpGet
@@ -70,12 +72,14 @@ global with sharing class USTEventFeed {
         eventQuery += ' SELECT Id, Event__r.Name, Event__r.Event_Name__c, Event__r.Event_Status__c, Active_Status__c, Instance_Title__c, Instance_Short_Description__c, Event__r.Program_Filter__c, Event__r.Alternate_Registration_URL__c, ';
         eventQuery += ' Event__r.Location_Title__c, Event__r.Location_Type__c, Event__r.Location_Address__c, Event__r.Location_Map_Link__c, Event__r.Building__c, Event__r.Event_description__c, Event__r.Community_Base_URL__c, ';
         eventQuery += ' Building_Override__c, Alternate_Registration_URL_Override__c, Location_Address_Override__c, Location_Map_Link_Override__c, Location_Title_Override__c, Location_Type_Override__c,  ';
-        eventQuery += ' Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c, Event__r.School__r.Name ';
+        eventQuery += ' Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c, Event__r.School__r.Name, Event__r.Event_Sponsor__c, ';
+        eventQuery += ' Event__r.Feed_Registration_Button_Text__c, Feed_Registration_Button_Text_Override__c ';
         eventQuery += ' FROM UST_Event_Instance__c ';
         eventQuery += ' WHERE ';
         eventQuery += ' Event__R.Event_Status__c = \'Active\' ';
         eventQuery += ' AND Active_Status__c = \'Active\' ';
         eventQuery += ' AND (Current_Available_Capacity__c > 0 OR Capacity__c = null) ';
+        eventQuery += ' AND Event__r.Audience__c EXCLUDES (\'No Audience\') ';
 
         // build and sanitize the where statement that have variables
 
@@ -132,6 +136,18 @@ global with sharing class USTEventFeed {
             eventQuery += ' AND Event__r.Audience__c INCLUDES (' + audience + ') ';
         }
 
+        //Sponsor filter (can be comma seperated)
+        String sponsor = req.params.get('sponsor');
+        if (!String.isBlank(sponsor)) {
+            List<String> sponsorList = new List<String>();
+            sponsorList = sponsor.split(',');
+            for (String spon : sponsorList) {
+                sponsor = '\'' + String.escapeSingleQuotes(spon) + '\',';
+            }
+            sponsor = sponsor.removeEnd(',');
+            eventQuery += ' AND Event__r.Event_Sponsor__c INCLUDES (' + sponsor + ') ';
+        }
+
         //get filter with like soql concatinated program,location, school, location address, location type
         String filter = req.params.get('filter');
         if (!String.isBlank(filter)) {
@@ -180,13 +196,39 @@ global with sharing class USTEventFeed {
                 evt.title += ' - ' + es.Instance_Title__c;
             }
 
-
             if (!String.isBlank(es.Instance_Short_Description__c)) {
                 evt.instanceDesc = es.Instance_Short_Description__c;
             } else {
                 evt.instanceDesc = '';
             }
 
+            if (!String.isBlank(es.Feed_Registration_Button_Text_Override__c)) {
+                evt.FeedButtonText = es.Feed_Registration_Button_Text_Override__c;
+            } else if (!String.isBlank(es.Event__r.Feed_Registration_Button_Text__c)) {
+                evt.FeedButtonText = es.Event__r.Feed_Registration_Button_Text__c;
+            } else {
+                evt.FeedButtonText = 'Register';
+            }
+
+            if (!String.isBlank(es.Location_Type_Override__c)) {
+                evt.locationType = es.Location_Type_Override__c;
+            } else if (!String.isBlank(es.Event__r.Location_Type__c)) {
+                evt.locationType = es.Event__r.Location_Type__c;
+            } else {
+                evt.locationType = '';
+            }
+
+            if (!String.isBlank(es.Event__r.Event_Sponsor__c)) {
+                evt.sponsors = es.Event__r.Event_Sponsor__c;
+            } else {
+                evt.sponsors = '';
+            }
+
+            if (!String.isBlank(es.Event__r.Building__c)) {
+                evt.locationBuilding = es.Event__r.Building__c;
+            } else {
+                evt.locationBuilding = '';
+            }
 
             if (!String.isBlank(es.Event__r.Event_Short_Listing_Description__c)) {
                 evt.description = es.Event__r.Event_Short_Listing_Description__c;

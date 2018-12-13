@@ -1016,6 +1016,17 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
+        <fullName>Do_Not_Show_Time__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Do not show the time on generated itineraries. This will allow you to order in the itinerary without showing time.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Do not show the time on generated itineraries. This will allow you to order in the itinerary without showing time.</inlineHelpText>
+        <label>Do Not Show Time</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Event_Appointment_Type__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -1198,6 +1209,150 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
         <columns>Host_Name__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_Appointments</fullName>
+        <columns>NAME</columns>
+        <columns>Appointment_Category__c</columns>
+        <columns>Appointment_Date_Time__c</columns>
+        <columns>Appointment_Status__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Faculty_Staff_Member__c</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Appointments</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>FA_Appt_Next_3_Weeks</fullName>
+        <columns>NAME</columns>
+        <columns>Appointment_Status__c</columns>
+        <columns>Event_Registration_Date__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Faculty_Staff_Member__c</columns>
+        <columns>Appointment_Time_Formatted__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Appointment_Category__c</field>
+            <operation>equals</operation>
+            <value>Financial Aid Visit</value>
+        </filters>
+        <filters>
+            <field>Appointment_Date_Time__c</field>
+            <operation>equals</operation>
+            <value>NEXT_N_WEEKS:3</value>
+        </filters>
+        <label>FA Appt Next 3 Weeks</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>FA_Appt_Next_Month</fullName>
+        <columns>NAME</columns>
+        <columns>Appointment_Status__c</columns>
+        <columns>Event_Registration_Date__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Faculty_Staff_Member__c</columns>
+        <columns>Appointment_Time_Formatted__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Appointment_Category__c</field>
+            <operation>equals</operation>
+            <value>Financial Aid Visit</value>
+        </filters>
+        <filters>
+            <field>Appointment_Date_Time__c</field>
+            <operation>equals</operation>
+            <value>NEXT_MONTH</value>
+        </filters>
+        <label>FA Appt Next Month</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>FA_Appt_This_Month</fullName>
+        <columns>NAME</columns>
+        <columns>Appointment_Status__c</columns>
+        <columns>Event_Registration_Date__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Faculty_Staff_Member__c</columns>
+        <columns>Appointment_Time_Formatted__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Appointment_Category__c</field>
+            <operation>equals</operation>
+            <value>Financial Aid Visit</value>
+        </filters>
+        <filters>
+            <field>Appointment_Date_Time__c</field>
+            <operation>equals</operation>
+            <value>THIS_MONTH</value>
+        </filters>
+        <label>FA Appt This Month</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>FA_Appt_This_Week</fullName>
+        <columns>NAME</columns>
+        <columns>Appointment_Status__c</columns>
+        <columns>Event_Registration_Date__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Faculty_Staff_Member__c</columns>
+        <columns>Appointment_Time_Formatted__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Appointment_Category__c</field>
+            <operation>equals</operation>
+            <value>Financial Aid Visit</value>
+        </filters>
+        <filters>
+            <field>Appointment_Date_Time__c</field>
+            <operation>equals</operation>
+            <value>THIS_WEEK</value>
+        </filters>
+        <label>FA Appt This Week</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>FA_Appt_Today</fullName>
+        <columns>NAME</columns>
+        <columns>Appointment_Status__c</columns>
+        <columns>Event_Registration_Date__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Faculty_Staff_Member__c</columns>
+        <columns>Appointment_Time_Formatted__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Appointment_Category__c</field>
+            <operation>equals</operation>
+            <value>Financial Aid Visit</value>
+        </filters>
+        <filters>
+            <field>Appointment_Date_Time__c</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>FA Appt Today</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>FA_Appt_Tomorrow</fullName>
+        <columns>NAME</columns>
+        <columns>Appointment_Status__c</columns>
+        <columns>Event_Registration_Date__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Faculty_Staff_Member__c</columns>
+        <columns>Appointment_Time_Formatted__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Appointment_Category__c</field>
+            <operation>equals</operation>
+            <value>Financial Aid Visit</value>
+        </filters>
+        <filters>
+            <field>Appointment_Date_Time__c</field>
+            <operation>equals</operation>
+            <value>TOMORROW</value>
+        </filters>
+        <label>FA Appt Tomorrow</label>
         <language>en_US</language>
     </listViews>
     <nameField>

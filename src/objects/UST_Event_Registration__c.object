@@ -199,7 +199,11 @@
         <fullName>Add_To_Calendar_Link__c</fullName>
         <description>Link to add to your calendar event feature.</description>
         <externalId>false</externalId>
-        <formula>Event__r.Community_Base_URL__c + &apos;usteventaddtocalendar?regId=&apos; +  Event_Instance__r.Id</formula>
+        <formula>HYPERLINK(
+Event__r.Community_Base_URL__c
+&amp; &quot;usteventaddtocalendar?instanceID=&quot;
+&amp; Id
+,&quot;Add to Calendar&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>Link to add to your calendar event feature.</inlineHelpText>
         <label>Add To Calendar Link</label>
@@ -254,6 +258,56 @@
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Confirmation_Call_Result__c</fullName>
+        <externalId>false</externalId>
+        <label>Confirmation Call Result</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Talked to Prospect</fullName>
+                    <default>false</default>
+                    <label>Talked to Prospect</label>
+                </value>
+                <value>
+                    <fullName>Talked to Parent</fullName>
+                    <default>false</default>
+                    <label>Talked to Parent</label>
+                </value>
+                <value>
+                    <fullName>Left Message</fullName>
+                    <default>false</default>
+                    <label>Left Message</label>
+                </value>
+                <value>
+                    <fullName>No Answer</fullName>
+                    <default>false</default>
+                    <label>No Answer</label>
+                </value>
+                <value>
+                    <fullName>Disconnected</fullName>
+                    <default>false</default>
+                    <label>Disconnected</label>
+                </value>
+                <value>
+                    <fullName>Wrong Number</fullName>
+                    <default>false</default>
+                    <label>Wrong Number</label>
+                </value>
+                <value>
+                    <fullName>Change needed-Call Logged</fullName>
+                    <default>false</default>
+                    <label>Change needed-Call Logged</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Contact_Banner_ID__c</fullName>
@@ -456,7 +510,11 @@ CASE(RIGHT(TEXT(Date__c),2),
     <fields>
         <fullName>Event_Registration_Cancel_Link__c</fullName>
         <externalId>false</externalId>
-        <formula>Event__r.Community_Base_URL__c + &apos;usteventcancelreview?regId=&apos; + Id</formula>
+        <formula>HYPERLINK(
+Event__r.Community_Base_URL__c
+&amp; &quot;usteventcancelreview?regId=&quot;
+&amp; Id
+,&quot;Cancel Registration&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Event Registration Cancel Link</label>
         <required>false</required>
@@ -574,6 +632,19 @@ CASE(RIGHT(TEXT(Date__c),2),
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Number</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Preferred_First_Name_Formatted__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(!ISBLANK(Registrant_Preferred_First_Name__c), Registrant_Preferred_First_Name__c, Registrant_First_Name__c) + &apos; &apos; +
+Registrant_Last_Name__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Preferred First Name Formatted</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
         <unique>false</unique>
     </fields>
     <fields>
@@ -1011,6 +1082,17 @@ CASE(RIGHT(TEXT(Date__c),2),
         <type>Phone</type>
     </fields>
     <fields>
+        <fullName>Registrant_Preferred_First_Name__c</fullName>
+        <description>A registrants preferred name (may be a nick name)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>A registrants preferred name (may be a nick name)</inlineHelpText>
+        <label>Registrant Preferred First Name</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>TextArea</type>
+    </fields>
+    <fields>
         <fullName>Registrant_Program_Interest__c</fullName>
         <description>The program the registrant expressed interest in learning about.</description>
         <externalId>false</externalId>
@@ -1094,6 +1176,17 @@ CASE(RIGHT(TEXT(Date__c),2),
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Reminder_Call_Complete__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Has the attendee been called to remind them of the event?</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Has the attendee been called to remind them of the event?</inlineHelpText>
+        <label>Reminder Call Complete?</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Session__c</fullName>
@@ -1321,7 +1414,11 @@ CASE(RIGHT(TEXT(Date__c),2),
     <fields>
         <fullName>UG_Parking_Pass_Link__c</fullName>
         <externalId>false</externalId>
-        <formula>Event__r.Community_Base_URL__c + &apos;usteventparkingpass?regId=&apos; + Id</formula>
+        <formula>HYPERLINK(
+Event__r.Community_Base_URL__c
+&amp; &quot;usteventparkingpass?regId=&quot;
+&amp; Id
+,&quot;Parking Pass&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>UG Parking Pass Link</label>
         <required>false</required>
@@ -1493,6 +1590,105 @@ CASE(RIGHT(TEXT(Date__c),2),
             <group>UG_Enrollment</group>
         </sharedTo>
     </listViews>
+    <listViews>
+        <fullName>Test_List</fullName>
+        <columns>NAME</columns>
+        <columns>Registrant_First_Name__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Date__c</columns>
+        <columns>Registrant_High_School__c</columns>
+        <columns>Status__c</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Event__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Date__c</field>
+            <operation>equals</operation>
+        </filters>
+        <label>Test List</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>UG_Enrollment</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>This_Month_s_Visits</fullName>
+        <columns>NAME</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Contact__c</columns>
+        <columns>Date__c</columns>
+        <columns>Number_of_Guests__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <columns>Registrant_High_School_Grad_Year__c</columns>
+        <columns>Registrant_Mobile_Phone__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Date__c</field>
+            <operation>equals</operation>
+            <value>THIS_MONTH</value>
+        </filters>
+        <label>This Month&apos;s Visits</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Upcoming_Registrations_Confirmed</fullName>
+        <columns>NAME</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Contact_Name__c</columns>
+        <columns>Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <columns>Date_All_Appointments_Confirmed_del__c</columns>
+        <columns>Event_Instance__c</columns>
+        <columns>Financial_Aid_Counselor__c</columns>
+        <columns>New_Contact_Created__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Confirmed</value>
+        </filters>
+        <filters>
+            <field>Date__c</field>
+            <operation>greaterThan</operation>
+            <value>YESTERDAY</value>
+        </filters>
+        <filters>
+            <field>Event_Instance_Name__c</field>
+            <operation>equals</operation>
+            <value>Personalized Visit</value>
+        </filters>
+        <label>Upcoming Registrations Confirmed</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Upcoming_Registrations_Not_Confirmed</fullName>
+        <columns>NAME</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Contact_Name__c</columns>
+        <columns>Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Requested,Received</value>
+        </filters>
+        <filters>
+            <field>Date__c</field>
+            <operation>greaterThan</operation>
+            <value>YESTERDAY</value>
+        </filters>
+        <filters>
+            <field>Event_Instance_Name__c</field>
+            <operation>equals</operation>
+            <value>Personalized Visit</value>
+        </filters>
+        <label>Upcoming Registrations Not Confirmed</label>
+        <language>en_US</language>
+    </listViews>
     <nameField>
         <displayFormat>EVR-{000000}</displayFormat>
         <label>Campus Event Registration</label>
@@ -1510,6 +1706,37 @@ CASE(RIGHT(TEXT(Date__c),2),
             <picklist>Campus_Tour_Location__c</picklist>
             <values>
                 <fullName>Anderson Student Center %28ASC%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Confirmation_Call_Result__c</picklist>
+            <values>
+                <fullName>Change needed-Call Logged</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disconnected</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Left Message</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Answer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Talked to Parent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Talked to Prospect</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wrong Number</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1809,6 +2036,37 @@ CASE(RIGHT(TEXT(Date__c),2),
             </values>
             <values>
                 <fullName>Terrence Murphy Hall %28TMH%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Confirmation_Call_Result__c</picklist>
+            <values>
+                <fullName>Change needed-Call Logged</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disconnected</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Left Message</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Answer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Talked to Parent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Talked to Prospect</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wrong Number</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

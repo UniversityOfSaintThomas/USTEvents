@@ -458,6 +458,32 @@
         <type>Url</type>
     </fields>
     <fields>
+        <fullName>Applicant_Type__c</fullName>
+        <description>Setting this will override applicant type for this event and the user will not be queried about what applicant type they are. Use this if you know the event is only for a and audience of registrants that fall under the same application type.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Setting this will override applicant type for this event and the user will not be queried about what applicant type they are. Use this if you know the event is only for a and audience of registrants that fall under the same application type.</inlineHelpText>
+        <label>Applicant Type</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>First-Year</fullName>
+                    <default>false</default>
+                    <label>First-Year</label>
+                </value>
+                <value>
+                    <fullName>Transfer</fullName>
+                    <default>false</default>
+                    <label>Transfer</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Ask_Gender__c</fullName>
         <description>Ask about a registrants gender</description>
         <externalId>false</externalId>
@@ -500,15 +526,63 @@
         <type>Checkbox</type>
     </fields>
     <fields>
-        <fullName>Ask_Program_Interest__c</fullName>
-        <defaultValue>false</defaultValue>
-        <description>During registration ask about program interest as defined in available programs.</description>
+        <fullName>Ask_Mailing_Address__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Ask the registrant for their mail address on registration page.</description>
         <externalId>false</externalId>
-        <inlineHelpText>During registration ask about program interest as defined in available programs.</inlineHelpText>
-        <label>Ask Program Interest</label>
+        <inlineHelpText>Ask the registrant for their mail address on registration page.</inlineHelpText>
+        <label>Ask Mailing Address</label>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Ask_Phone__c</fullName>
+        <defaultValue>true</defaultValue>
+        <description>Ask the registrant for their phone number on the registration page.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Ask the registrant for their phone number on the registration page.</inlineHelpText>
+        <label>Ask Phone</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Ask_Registrant_Program_Of_Interest__c</fullName>
+        <description>Determines how you query the event registrant about their program of interest.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Determines how you query the event registrant about their program of interest.</inlineHelpText>
+        <label>Ask Registrant Program Of Interest</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Do not ask</fullName>
+                    <default>false</default>
+                    <label>Do not ask</label>
+                </value>
+                <value>
+                    <fullName>Ask but do not require</fullName>
+                    <default>false</default>
+                    <label>Ask but do not require</label>
+                </value>
+                <value>
+                    <fullName>Ask and require</fullName>
+                    <default>false</default>
+                    <label>Ask and require</label>
+                </value>
+                <value>
+                    <fullName>Ask and require one selection</fullName>
+                    <default>false</default>
+                    <label>Ask and require one selection</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
     </fields>
     <fields>
         <fullName>Audience__c</fullName>
@@ -523,46 +597,16 @@
         <valueSet>
             <restricted>true</restricted>
             <valueSetDefinition>
-                <sorted>false</sorted>
+                <sorted>true</sorted>
                 <value>
-                    <fullName>High School Senior</fullName>
+                    <fullName>Dougherty Family College (2-Year)</fullName>
                     <default>false</default>
-                    <label>High School Senior</label>
-                </value>
-                <value>
-                    <fullName>High School Junior or Younger</fullName>
-                    <default>false</default>
-                    <label>High School Junior or Younger</label>
-                </value>
-                <value>
-                    <fullName>Transfer</fullName>
-                    <default>false</default>
-                    <label>Transfer</label>
+                    <label>Dougherty Family College (2-Year)</label>
                 </value>
                 <value>
                     <fullName>First-Year International</fullName>
                     <default>false</default>
                     <label>First-Year International</label>
-                </value>
-                <value>
-                    <fullName>Transfer International</fullName>
-                    <default>false</default>
-                    <label>Transfer International</label>
-                </value>
-                <value>
-                    <fullName>Graduate Student</fullName>
-                    <default>false</default>
-                    <label>Graduate Student</label>
-                </value>
-                <value>
-                    <fullName>International Graduate Student</fullName>
-                    <default>false</default>
-                    <label>International Graduate Student</label>
-                </value>
-                <value>
-                    <fullName>Prospective Graduate Student</fullName>
-                    <default>false</default>
-                    <label>Prospective Graduate Student</label>
                 </value>
                 <value>
                     <fullName>Graduate Alumni</fullName>
@@ -580,9 +624,44 @@
                     <label>Graduate Staff</label>
                 </value>
                 <value>
-                    <fullName>Dougherty Family College (2-Year)</fullName>
+                    <fullName>Graduate Student</fullName>
                     <default>false</default>
-                    <label>Dougherty Family College (2-Year)</label>
+                    <label>Graduate Student</label>
+                </value>
+                <value>
+                    <fullName>High School Junior or Younger</fullName>
+                    <default>false</default>
+                    <label>High School Junior or Younger</label>
+                </value>
+                <value>
+                    <fullName>High School Senior</fullName>
+                    <default>false</default>
+                    <label>High School Senior</label>
+                </value>
+                <value>
+                    <fullName>International Graduate Student</fullName>
+                    <default>false</default>
+                    <label>International Graduate Student</label>
+                </value>
+                <value>
+                    <fullName>No Audience</fullName>
+                    <default>false</default>
+                    <label>No Audience</label>
+                </value>
+                <value>
+                    <fullName>Prospective Graduate Student</fullName>
+                    <default>false</default>
+                    <label>Prospective Graduate Student</label>
+                </value>
+                <value>
+                    <fullName>Transfer</fullName>
+                    <default>false</default>
+                    <label>Transfer</label>
+                </value>
+                <value>
+                    <fullName>Transfer International</fullName>
+                    <default>false</default>
+                    <label>Transfer International</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -880,6 +959,93 @@ TEXT(YEAR( End_Date__c))
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Event_Sponsor__c</fullName>
+        <description>This will allow filtering on this event based on non-program events.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This will allow filtering on this event based on non-program events.</inlineHelpText>
+        <label>Event Sponsor</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Center for Ethical Organizations</fullName>
+                    <default>false</default>
+                    <label>Center for Ethical Organizations</label>
+                </value>
+                <value>
+                    <fullName>Center for Innovation in the Business of Health Care</fullName>
+                    <default>false</default>
+                    <label>Center for Innovation in the Business of Health Care</label>
+                </value>
+                <value>
+                    <fullName>Center for Nonprofit Management</fullName>
+                    <default>false</default>
+                    <label>Center for Nonprofit Management</label>
+                </value>
+                <value>
+                    <fullName>Entrepreneurship</fullName>
+                    <default>false</default>
+                    <label>Entrepreneurship</label>
+                </value>
+                <value>
+                    <fullName>Executive Education</fullName>
+                    <default>false</default>
+                    <label>Executive Education</label>
+                </value>
+                <value>
+                    <fullName>Family Business Center</fullName>
+                    <default>false</default>
+                    <label>Family Business Center</label>
+                </value>
+                <value>
+                    <fullName>Graduate Admissions</fullName>
+                    <default>false</default>
+                    <label>Graduate Admissions</label>
+                </value>
+                <value>
+                    <fullName>Healthcare</fullName>
+                    <default>false</default>
+                    <label>Healthcare</label>
+                </value>
+                <value>
+                    <fullName>Norris Institute</fullName>
+                    <default>false</default>
+                    <label>Norris Institute</label>
+                </value>
+                <value>
+                    <fullName>Principled Leadership</fullName>
+                    <default>false</default>
+                    <label>Principled Leadership</label>
+                </value>
+                <value>
+                    <fullName>Schulze School of Entrepreneurship</fullName>
+                    <default>false</default>
+                    <label>Schulze School of Entrepreneurship</label>
+                </value>
+                <value>
+                    <fullName>Small Business Development Center</fullName>
+                    <default>false</default>
+                    <label>Small Business Development Center</label>
+                </value>
+                <value>
+                    <fullName>Small Business Institute</fullName>
+                    <default>false</default>
+                    <label>Small Business Institute</label>
+                </value>
+                <value>
+                    <fullName>Veritas Institute</fullName>
+                    <default>false</default>
+                    <label>Veritas Institute</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
         <fullName>Event_Status__c</fullName>
         <description>Status of event (Planning, Active, Inactive, Closed, Cancelled)</description>
         <externalId>false</externalId>
@@ -982,6 +1148,20 @@ TEXT(YEAR( End_Date__c))
         <trackTrending>false</trackTrending>
         <type>Html</type>
         <visibleLines>10</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Feed_Registration_Button_Text__c</fullName>
+        <defaultValue>&quot;Register&quot;</defaultValue>
+        <description>The text of the registration link in the feeds that appear on external Web sites. Will default to &quot;Register&quot; i not defined.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The text of the registration link in the feeds that appear on external Web sites. Will default to &quot;Register&quot; i not defined.</inlineHelpText>
+        <label>Feed Registration Button Text</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Include_Time_frame_List__c</fullName>
@@ -1179,6 +1359,25 @@ TEXT(YEAR( End_Date__c))
         <label>All</label>
         <language>en_US</language>
     </listViews>
+    <listViews>
+        <fullName>All_Events</fullName>
+        <columns>NAME</columns>
+        <columns>OBJECT_ID</columns>
+        <columns>Audience__c</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <columns>Event_Name__c</columns>
+        <columns>Event_Status__c</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>RECORDTYPE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>OBJECT_ID</field>
+            <operation>notEqual</operation>
+        </filters>
+        <label>All Events</label>
+        <language>en_US</language>
+    </listViews>
     <nameField>
         <label>Event Label</label>
         <trackHistory>false</trackHistory>
@@ -1334,9 +1533,39 @@ TEXT(YEAR( End_Date__c))
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Applicant_Type__c</picklist>
+            <values>
+                <fullName>First-Year</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Ask_Gender__c</picklist>
             <values>
                 <fullName>Ask and require</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ask but do not require</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Do not ask</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Ask_Registrant_Program_Of_Interest__c</picklist>
+            <values>
+                <fullName>Ask and require</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ask and require one selection</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1368,6 +1597,10 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>International Graduate Student</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Audience</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1542,6 +1775,65 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>HS Only</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Event_Sponsor__c</picklist>
+            <values>
+                <fullName>Center for Ethical Organizations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Center for Innovation in the Business of Health Care</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Center for Nonprofit Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Entrepreneurship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive Education</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Family Business Center</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Graduate Admissions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Healthcare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Norris Institute</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Principled Leadership</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schulze School of Entrepreneurship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Small Business Development Center</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Small Business Institute</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Veritas Institute</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -1786,9 +2078,39 @@ TEXT(YEAR( End_Date__c))
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Applicant_Type__c</picklist>
+            <values>
+                <fullName>First-Year</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Ask_Gender__c</picklist>
             <values>
                 <fullName>Ask and require</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ask but do not require</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Do not ask</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Ask_Registrant_Program_Of_Interest__c</picklist>
+            <values>
+                <fullName>Ask and require</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ask and require one selection</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1812,6 +2134,10 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>High School Senior</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Audience</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1994,6 +2320,65 @@ TEXT(YEAR( End_Date__c))
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Event_Sponsor__c</picklist>
+            <values>
+                <fullName>Center for Ethical Organizations</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Center for Innovation in the Business of Health Care</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Center for Nonprofit Management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Entrepreneurship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Executive Education</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Family Business Center</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Graduate Admissions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Healthcare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Norris Institute</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Principled Leadership</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schulze School of Entrepreneurship</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Small Business Development Center</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Small Business Institute</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Veritas Institute</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Event_Status__c</picklist>
             <values>
                 <fullName>Active</fullName>
@@ -2107,6 +2492,6 @@ TEXT(YEAR( End_Date__c))
         <protected>false</protected>
         <showsLocation>false</showsLocation>
         <showsStatus>false</showsStatus>
-        <url>https://stthomas.force.com/applicantportal/USTEvent</url>
+        <url>{!URLFOR(UST_Event__c.Community_Base_URL__c + &apos;USTEvent&apos;)}</url>
     </webLinks>
 </CustomObject>

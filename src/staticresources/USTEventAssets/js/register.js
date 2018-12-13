@@ -164,7 +164,6 @@ function populateschSel(data, selector, keyAsText) {
     $.each(data, function (key, value) {
         selector.append($('<option>').text(value).attr('value', key));
     });
-    $(document).foundation('reflow');
 }
 
 //Validation for the page
@@ -178,7 +177,7 @@ function checkForm() {
         if ($(this).hasClass("required") && !$(this).val()) {
             $(this).addClass("validationError");
             $('label[for="' + $(this).attr("id") + '"]').addClass("validationError");
-            console.log('THIS ERRORED:' + $(this).attr('id'));
+            //console.log('THIS ERRORED:' + $(this).attr('id'));
             error_count++;
         }
         if ($(this).hasClass("validEmail")) {
@@ -186,7 +185,7 @@ function checkForm() {
                 $(this).addClass("validationError");
                 $('label[for="' + $(this).attr("id") + '"]').addClass("validationError");
                 error_count++;
-                console.log('THIS EMAIL ERRORED:' + $(this).attr('id'));
+                //console.log('THIS EMAIL ERRORED:' + $(this).attr('id'));
             }
         }
     });
@@ -194,6 +193,7 @@ function checkForm() {
     if ($("[id$=collegeAsk]").length > 0) {
         if (!$("[id$=college]").val() && !$("[id$=CollegeAltInput]").val()) {
             error_count++;
+            $(this).addClass("validationError");
             if ($("[id$=CollegeAltInput]").val()) {
                 $("#collegeSelector").addClass("validationError");
             } else {

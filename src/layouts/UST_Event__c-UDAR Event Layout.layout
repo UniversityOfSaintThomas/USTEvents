@@ -81,11 +81,19 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Ask_Program_Interest__c</field>
+                <field>Alternate_Registration_URL__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Alternate_Registration_URL__c</field>
+                <field>Ask_Mailing_Address__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Ask_Phone__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Ask_Registrant_Program_Of_Interest__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -129,6 +137,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Ask_If_Parent__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Feed_Registration_Button_Text__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

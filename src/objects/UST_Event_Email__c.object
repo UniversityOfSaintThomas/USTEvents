@@ -209,16 +209,6 @@
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
-        <fullName>Email_From__c</fullName>
-        <externalId>false</externalId>
-        <label>Email From</label>
-        <length>255</length>
-        <required>false</required>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Email_Subject__c</fullName>
         <externalId>false</externalId>
         <label>Email Subject</label>
@@ -267,35 +257,16 @@
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Letterhead__c</fullName>
-        <description>Choose the letterhead you would like to wrap your email message.</description>
+        <fullName>Letterhead_Name__c</fullName>
+        <description>The name of the selected/assigned letterhead</description>
         <externalId>false</externalId>
-        <inlineHelpText>Choose the letterhead you would like to wrap your email message.</inlineHelpText>
-        <label>Letterhead</label>
+        <inlineHelpText>The name of the selected/assigned letterhead</inlineHelpText>
+        <label>Letterhead Name</label>
+        <length>255</length>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>Picklist</type>
-        <valueSet>
-            <restricted>true</restricted>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>UG Admissions</fullName>
-                    <default>false</default>
-                    <label>UG Admissions</label>
-                </value>
-                <value>
-                    <fullName>DFC Letterhead</fullName>
-                    <default>false</default>
-                    <label>DFC Letterhead</label>
-                </value>
-                <value>
-                    <fullName>SOE School of Engineering</fullName>
-                    <default>false</default>
-                    <label>SOE School of Engineering</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Org_Email_Id__c</fullName>
@@ -326,7 +297,6 @@
         <columns>NAME</columns>
         <columns>Event__c</columns>
         <columns>Action_Status__c</columns>
-        <columns>Letterhead__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
         <language>en_US</language>

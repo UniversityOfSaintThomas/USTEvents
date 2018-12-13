@@ -676,6 +676,16 @@
         <visibleLines>10</visibleLines>
     </fields>
     <fields>
+        <fullName>Do_Not_Show_Time__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Do not show this appointment&apos;s time on itinerary generation.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Do not show this appointment&apos;s time on itinerary generation.</inlineHelpText>
+        <label>Do Not Show Time</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Registrant_Input__c</fullName>
         <description>Optional: Choose a type of input you wish to record from the registrant upon appointment registration.</description>
         <externalId>false</externalId>

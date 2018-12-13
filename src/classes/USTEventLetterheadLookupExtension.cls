@@ -12,7 +12,7 @@ public class USTEventLetterheadLookupExtension {
     }
 
     public List<SelectOption> getOrgWideEmail() {
-        oweList = new Map<Id, OrgWideEmailAddress>([select Id, Address,DisplayName from OrgWideEmailAddress]);
+        oweList = new Map<Id, OrgWideEmailAddress>([select Id, Address,DisplayName, IsAllowAllProfiles from OrgWideEmailAddress WHERE IsAllowAllProfiles = true]);
         List<SelectOption> owe = new List<SelectOption>();
         owe.add(new SelectOption('', 'Select...'));
         for (OrgWideEmailAddress e : oweList.values()) {
@@ -48,6 +48,7 @@ public class USTEventLetterheadLookupExtension {
         String LHTemplate = '';
         if (!String.isBlank(USTEvt.Letterhead_Id__c)) {
             LHTemplate = brandTemplates.get(USTEvt.Letterhead_Id__c).Value;
+            USTEvt.Letterhead_Name__c = brandTemplates.get(USTEvt.Letterhead_Id__c).Name;
         }
         String headerImg = '';
         String footerImg = '';
@@ -63,7 +64,7 @@ public class USTEventLetterheadLookupExtension {
         while (matcher2.find() == true) {
             if (matchCounter == 0) {
                 headerImg = '<img src="' + URL.getSalesforceBaseUrl().toExternalForm() + matcher2.group(1) + '"/>';
-            } else if (matchCounter == 1){
+            } else if (matchCounter == 1) {
                 footerImg = '<img src="' + URL.getSalesforceBaseUrl().toExternalForm() + matcher2.group(1) + '"/>';
             }
             matchCounter++;
@@ -215,6 +216,7 @@ public class USTEventLetterheadLookupExtension {
 //            generatedLH += '\n height: ' + st.height;
 //            generatedLH += '\n\n';
 //        }
+
 
         USTEvt.Letterhead_HTML__c = generatedLH;
         update USTEvt;

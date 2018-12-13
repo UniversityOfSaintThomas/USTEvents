@@ -26,12 +26,18 @@
                         <span class="eventName">{!evt.Event__r.Event_Name__c}</span>
                         <span class="bc-spacer"><span>»</span></span>
                         <apex:outputPanel layout="none" rendered="{!!ISBLANK(evt.Event_Instance__r.Instance_Title__c)}">
-                            <span class="eventInstance">{!evtInstance.Event_Instance__r.Instance_Title__c}</span>
+                            <span class="eventInstance">{!evt.Event_Instance__r.Instance_Title__c}</span>
                             <span class="bc-spacer"><span>»</span></span>
                         </apex:outputPanel>
                         <span class="eventDate">
                             <apex:outputText value=" {0,date,MMMM d, y}">
                                 <apex:param value="{!evt.Event_Instance__r.Start_Date_Time__c}"/>
+                            </apex:outputText>
+                            <apex:outputText value="{0,time,', 'h':'mm' 'a}">
+                                <apex:param value="{!evt.Event_Instance__r.Start_Date_Time__c}"/>
+                            </apex:outputText>
+                            <apex:outputText value="{0,time,' - 'h':'mm' 'a}">
+                                <apex:param value="{!evt.Event_Instance__r.End_Date_Time__c}"/>
                             </apex:outputText>
                         </span>
                     </div>
@@ -59,7 +65,7 @@
                                 <apex:repeat value="{!appt}" var="ap">
                                     <li>
                                         <apex:outputText value="{!ap.Appointment_Title__c}" escape="false"></apex:outputText>
-                                        <apex:outputText value="{!ap.Appointment_Category__c}" escape="false" rendered="{!IF( ap.Appointment_Title__c = '' || ap.Appointment_Title__c = null, true, false)}"></apex:outputText>
+                                        <apex:outputText value="{!ap.Appointment_Category__c}" escape="false" rendered="{!IF(!ISBLANK(ap.Appointment_Category__c), true, false)}"></apex:outputText>
                                         <apex:outputText value="<br/><em>{!ap.Appointment_Type__c}</em>" escape="false"></apex:outputText>
                                     </li>
                                 </apex:repeat>
