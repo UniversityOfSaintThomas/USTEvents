@@ -405,6 +405,35 @@
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>
+    <layoutSections>
+        <customLabel>true</customLabel>
+        <detailHeading>true</detailHeading>
+        <editHeading>true</editHeading>
+        <label>Analytic Tracking</label>
+        <layoutColumns>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Tracking_Event_Registration__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Tracking_Options_Registration__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Tracking_Submit_Registration__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Tracking_Confirmation_Registration__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Tracking_Cancel_Registration__c</field>
+            </layoutItems>
+        </layoutColumns>
+        <style>OneColumn</style>
+    </layoutSections>
     <relatedLists>
         <customButtons>New_Appointment_Type</customButtons>
         <fields>NAME</fields>
@@ -418,6 +447,7 @@
         <fields>Instance_Title__c</fields>
         <fields>Event_Name__c</fields>
         <fields>NAME</fields>
+        <fields>Active_Status__c</fields>
         <fields>Start_Date_Time__c</fields>
         <fields>End_Date_Time__c</fields>
         <fields>Current_Available_Capacity__c</fields>
@@ -449,6 +479,7 @@
         <fields>Registrant_Last_Name__c</fields>
         <fields>Actual_Number_of_Guests__c</fields>
         <fields>Status__c</fields>
+        <fields>Event_Instance_Date__c</fields>
         <relatedList>UST_Event_Registration__c.Event__c</relatedList>
     </relatedLists>
     <relatedLists>
@@ -456,6 +487,10 @@
         <fields>Action_Status__c</fields>
         <fields>Action_Sub_status__c</fields>
         <fields>Org_Email__c</fields>
+        <fields>Email_From__c</fields>
+        <fields>Email_Subject__c</fields>
+        <fields>Letterhead__c</fields>
+        <fields>UPDATEDBY_USER</fields>
         <relatedList>UST_Event_Email__c.Event__c</relatedList>
     </relatedLists>
     <showEmailCheckbox>false</showEmailCheckbox>
@@ -464,7 +499,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h11000000M5yq</masterLabel>
+        <masterLabel>00h0a00000BFKzN</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

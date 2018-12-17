@@ -21,7 +21,7 @@ public with sharing class USTEventCancelReviewController {
                     Event__r.Event_Footer__c, Event__r.Event_Cancel_Review_Title__c, Event_Name__c, Event_Instance_Title__c,
                     Event__r.Event_Cancel_Review_Description__c, Event__r.Event_Cancelled_Notification_Text__c,
                     Event__r.Template__c, Event__r.Event_Home_Link_Title__c, Event__r.Event_Home_Link_URL__c, Event_Instance__r.Instance_Title__c,
-                    Event_Instance__r.Start_Date_Time__c, Event_Instance__r.End_Date_Time__c
+                    Event_Instance__r.Start_Date_Time__c, Event_Instance__r.End_Date_Time__c, Event__r.Tracking_Cancel_Registration__c
             FROM UST_Event_Registration__c WHERE id = :regId];
 
             if (evtList.size() > 0) {

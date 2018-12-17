@@ -91,7 +91,8 @@ public with sharing class USTEventRegisterController {
                             Add_Info_Question_Pick_List_4__c, Add_Info_Question_Text_4__c, Add_Info_Question_Type_4__c,
                             Add_Info_Question_Pick_List_5__c, Add_Info_Question_Text_5__c, Add_Info_Question_Type_5__c,
                             Academic_Program_List__c, School__c, Ask_Mailing_Address__c, Ask_Phone__c, Event_Sponsor__c,
-                            Applicant_Type__c, Location_Type__c, Location_Title__c, Location_Address__c, Location_Map_Link__c
+                            Applicant_Type__c, Location_Type__c, Location_Title__c, Location_Address__c, Location_Map_Link__c,
+                            Tracking_Event_Registration__c
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1
@@ -150,9 +151,12 @@ public with sharing class USTEventRegisterController {
 
             if (!String.isBlank(locationCrumb)) {
                 locationCrumb = locationCrumb.removeEnd('<br/>');
-                String eventTime = evtInstance.Start_Date_Time__c.format('EEEE MMMM d , YYYY');
-                eventTime +=  '<br/>' + evtInstance.Start_Date_Time__c.format('h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
-                locationCrumb = eventTime + '<br/>' + locationCrumb;
+                String eventTime = '';
+                if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
+                    eventTime = evtInstance.Start_Date_Time__c.format('EEEE MMMM d , YYYY');
+                    eventTime += '<br/>' + evtInstance.Start_Date_Time__c.format('h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a') + '<br/>';
+                }
+                locationCrumb = eventTime + locationCrumb;
                 locationCrumb = '<h3>Event Details</h3> <p>' + locationCrumb + '</p>';
             }
 

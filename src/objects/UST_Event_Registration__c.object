@@ -447,6 +447,22 @@ CASE(RIGHT(TEXT(Date__c),2),
         <type>Date</type>
     </fields>
     <fields>
+        <fullName>End_Time_Text__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+     VALUE(LPAD(MID(TEXT(Event_Instance__r.End_Date_Time__c - 0.25), 12, 5),2)) = 12 ,
+     MID(TEXT(Event_Instance__r.End_Date_Time__c - 0.25), 12, 5)+&apos; PM&apos;,
+     IF(VALUE(LPAD(MID(TEXT(Event_Instance__r.End_Date_Time__c - 0.25), 12, 5),2)) &lt; 12, 
+     IF(VALUE(LPAD(MID(TEXT(Event_Instance__r.End_Date_Time__c - 0.25), 12, 5),2)) = 00, TEXT(12)+ MID(TEXT(Event_Instance__r.End_Date_Time__c - 0.25), 14, 3), IF(VALUE(LPAD(MID(TEXT(Event_Instance__r.End_Date_Time__c  - 0.25), 12, 5),2)) &lt; 10, MID(TEXT(Event_Instance__r.End_Date_Time__c  - 0.25), 13, 4), MID(TEXT(Event_Instance__r.End_Date_Time__c - 0.25), 12, 5)))+&apos; AM&apos;, TEXT(VALUE(MID(TEXT(Event_Instance__r.End_Date_Time__c - 0.25), 12, 2))-12)+MID(TEXT(Event_Instance__r.End_Date_Time__c  - 0.25), 14, 3)+&apos; PM&apos;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>End Time Text</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Event_Instance_Date__c</fullName>
         <externalId>false</externalId>
         <formula>DATEVALUE(Event_Instance__r.Start_Date_Time__c)</formula>
@@ -608,6 +624,48 @@ Event__r.Community_Base_URL__c
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Location_Address__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( !ISBLANK(Event_Instance__r.Location_Address_Override__c), 
+     Event_Instance__r.Location_Address_Override__c, 
+     Event__r.Location_Address__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Location Address</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Location_Map_Link__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( !ISBLANK(Event_Instance__r.Location_Map_Link_Override__c), 
+     Event_Instance__r.Location_Map_Link_Override__c, 
+     Event__r.Location_Map_Link__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Location Map Link</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Location_Title__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF( !ISBLANK(Event_Instance__r.Location_Title_Override__c), 
+     Event_Instance__r.Location_Title_Override__c, 
+     Event__r.Location_Title__c)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Location Title</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>New_Contact_Created__c</fullName>
@@ -1214,6 +1272,22 @@ Registrant_Last_Name__c</formula>
         </valueSet>
     </fields>
     <fields>
+        <fullName>Start_Time_Text__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(
+     VALUE(LPAD(MID(TEXT(Event_Instance__r.Start_Date_Time__c - 0.25), 12, 5),2)) = 12 ,
+     MID(TEXT(Event_Instance__r.Start_Date_Time__c - 0.25), 12, 5)+&apos; PM&apos;,
+     IF(VALUE(LPAD(MID(TEXT(Event_Instance__r.Start_Date_Time__c - 0.25), 12, 5),2)) &lt; 12, 
+     IF(VALUE(LPAD(MID(TEXT(Event_Instance__r.Start_Date_Time__c - 0.25), 12, 5),2)) = 00, TEXT(12)+ MID(TEXT(Event_Instance__r.Start_Date_Time__c - 0.25), 14, 3), IF(VALUE(LPAD(MID(TEXT(Event_Instance__r.Start_Date_Time__c - 0.25), 12, 5),2)) &lt; 10, MID(TEXT(Event_Instance__r.Start_Date_Time__c - 0.25), 13, 4), MID(TEXT(Event_Instance__r.Start_Date_Time__c - 0.25), 12, 5)))+&apos; AM&apos;, TEXT(VALUE(MID(TEXT(Event_Instance__r.Start_Date_Time__c - 0.25), 12, 2))-12)+MID(TEXT(Event_Instance__r.Start_Date_Time__c - 0.25), 14, 3)+&apos; PM&apos;))</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Start Time Text</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Status__c</fullName>
         <description>Status of Visit/Event</description>
         <externalId>false</externalId>
@@ -1591,6 +1665,121 @@ Event__r.Community_Base_URL__c
         </sharedTo>
     </listViews>
     <listViews>
+        <fullName>Info_Sessions_Next_7_Days</fullName>
+        <columns>Registrant_First_Name__c</columns>
+        <columns>Registrant_Last_Name__c</columns>
+        <columns>NAME</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Event_Instance_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <columns>Event_Instance__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Event_Instance_Date__c</field>
+            <operation>equals</operation>
+            <value>TODAY,NEXT_N_DAYS:7</value>
+        </filters>
+        <filters>
+            <field>Event__c</field>
+            <operation>equals</operation>
+            <value>Daily Visit</value>
+        </filters>
+        <label>Daily Visits - Next 7 Days</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>UG_Enrollment</group>
+            <group>Visit_Students</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Info_Sessions_Next_7_Days1</fullName>
+        <columns>Registrant_First_Name__c</columns>
+        <columns>Registrant_Last_Name__c</columns>
+        <columns>NAME</columns>
+        <columns>Event_Instance_Title__c</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Event_Instance_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <columns>Event_Instance__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Event_Instance_Date__c</field>
+            <operation>equals</operation>
+            <value>TODAY,NEXT_N_DAYS:7</value>
+        </filters>
+        <filters>
+            <field>Event__c</field>
+            <operation>equals</operation>
+            <value>Information Sessions</value>
+        </filters>
+        <label>Info Sessions - Next 7 Days</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>UG_Enrollment</group>
+            <group>Visit_Students</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Saturday_Visits_Next_7_Days</fullName>
+        <columns>Registrant_First_Name__c</columns>
+        <columns>Registrant_Last_Name__c</columns>
+        <columns>NAME</columns>
+        <columns>Event_Instance__c</columns>
+        <columns>Event_Instance_Title__c</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Event_Instance_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Event_Instance_Date__c</field>
+            <operation>equals</operation>
+            <value>TODAY,NEXT_N_DAYS:7</value>
+        </filters>
+        <filters>
+            <field>Event__c</field>
+            <operation>equals</operation>
+            <value>Transfer Visits</value>
+        </filters>
+        <label>Transfer Visits - Next 7 Days</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>UG_Enrollment</group>
+            <group>Visit_Students</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Saturday_Visits_Next_7_Days1</fullName>
+        <columns>Registrant_First_Name__c</columns>
+        <columns>Registrant_Last_Name__c</columns>
+        <columns>NAME</columns>
+        <columns>Event_Instance_Title__c</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Event_Instance_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <columns>Registrant_Email__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Event_Instance_Date__c</field>
+            <operation>equals</operation>
+            <value>TODAY,NEXT_N_DAYS:7</value>
+        </filters>
+        <filters>
+            <field>Event__c</field>
+            <operation>equals</operation>
+            <value>Saturday Visits</value>
+        </filters>
+        <label>Saturday Visits - Next 7 Days</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>UG_Enrollment</group>
+            <group>Visit_Students</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>Test_List</fullName>
         <columns>NAME</columns>
         <columns>Registrant_First_Name__c</columns>
@@ -1629,6 +1818,37 @@ Event__r.Community_Base_URL__c
             <value>THIS_MONTH</value>
         </filters>
         <label>This Month&apos;s Visits</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Upcoming_Registrations_Cancelled</fullName>
+        <columns>NAME</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Contact_Name__c</columns>
+        <columns>Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <columns>Date_All_Appointments_Confirmed_del__c</columns>
+        <columns>Event_Instance__c</columns>
+        <columns>Financial_Aid_Counselor__c</columns>
+        <columns>New_Contact_Created__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Cancelled</value>
+        </filters>
+        <filters>
+            <field>Date__c</field>
+            <operation>greaterThan</operation>
+            <value>YESTERDAY</value>
+        </filters>
+        <filters>
+            <field>Event_Instance_Name__c</field>
+            <operation>equals</operation>
+            <value>Personalized Visit</value>
+        </filters>
+        <label>Upcoming Registrations Cancelled</label>
         <language>en_US</language>
     </listViews>
     <listViews>

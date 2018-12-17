@@ -548,6 +548,17 @@
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Ask_Program_Interest__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>During registration ask about program interest as defined in available programs.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>During registration ask about program interest as defined in available programs.</inlineHelpText>
+        <label>Ask Program Interest</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Ask_Registrant_Program_Of_Interest__c</fullName>
         <description>Determines how you query the event registrant about their program of interest.</description>
         <externalId>false</externalId>
@@ -1125,6 +1136,24 @@ TEXT(YEAR( End_Date__c))
                     <label>Info Session</label>
                 </value>
                 <value>
+                    <fullName>Live Chat</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Live Chat</label>
+                </value>
+                <value>
+                    <fullName>Lunch</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Lunch</label>
+                </value>
+                <value>
+                    <fullName>Open House</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Open House</label>
+                </value>
+                <value>
                     <fullName>Overnight</fullName>
                     <default>false</default>
                     <label>Overnight</label>
@@ -1133,6 +1162,12 @@ TEXT(YEAR( End_Date__c))
                     <fullName>Visit</fullName>
                     <default>false</default>
                     <label>Visit</label>
+                </value>
+                <value>
+                    <fullName>Webinar</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Webinar</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -1257,6 +1292,12 @@ TEXT(YEAR( End_Date__c))
                     <default>false</default>
                     <label>Off Campus</label>
                 </value>
+                <value>
+                    <fullName>Online</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Online</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>
@@ -1350,6 +1391,66 @@ TEXT(YEAR( End_Date__c))
             </valueSetDefinition>
         </valueSet>
     </fields>
+    <fields>
+        <fullName>Tracking_Cancel_Registration__c</fullName>
+        <description>This field is for adding an analytic tracking script to the Event Cancel Registration page (Advanced users only)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is for adding an analytic tracking script to the Event Cancel Registration page (Advanced users only)</inlineHelpText>
+        <label>Tracking Cancel Registration</label>
+        <length>5000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Tracking_Confirmation_Registration__c</fullName>
+        <description>This field is for adding an analytic tracking script to the Event Submit Registration page (Advanced users only)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is for adding an analytic tracking script to the Event Submit Registration page (Advanced users only)</inlineHelpText>
+        <label>Tracking Confirmation Registration</label>
+        <length>5000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Tracking_Event_Registration__c</fullName>
+        <description>This field is for adding an analytic tracking script to the Event Registration page (Advanced users only)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is for adding an analytic tracking script to the Event Registration page (Advanced users only)</inlineHelpText>
+        <label>Tracking Event Registration</label>
+        <length>5000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Tracking_Options_Registration__c</fullName>
+        <description>This field is for adding an analytic tracking script to the Event Options Registration page (Advanced users only)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is for adding an analytic tracking script to the Event Options Registration page (Advanced users only)</inlineHelpText>
+        <label>Tracking Options Registration</label>
+        <length>500</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Tracking_Submit_Registration__c</fullName>
+        <description>This field is for adding an analytic tracking script to the Event Submit Registration page (Advanced users only)</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This field is for adding an analytic tracking script to the Event Submit Registration page (Advanced users only)</inlineHelpText>
+        <label>Tracking Submit Registration</label>
+        <length>5000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
     <label>UST Event</label>
     <listViews>
         <fullName>All</fullName>
@@ -1376,6 +1477,23 @@ TEXT(YEAR( End_Date__c))
             <operation>notEqual</operation>
         </filters>
         <label>All Events</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>OCB_Events</fullName>
+        <columns>NAME</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <columns>Event_Status__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>CREATED_DATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>School__c</field>
+            <operation>equals</operation>
+            <value>Opus College of Business</value>
+        </filters>
+        <label>OCB Events</label>
         <language>en_US</language>
     </listViews>
     <nameField>
