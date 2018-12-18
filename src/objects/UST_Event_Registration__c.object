@@ -1400,6 +1400,11 @@ Registrant_Last_Name__c</formula>
                     <default>false</default>
                     <label>Checked-in</label>
                 </value>
+                <value>
+                    <fullName>In Progress</fullName>
+                    <default>false</default>
+                    <label>In Progress</label>
+                </value>
             </valueSetDefinition>
             <valueSettings>
                 <controllingFieldValue>Requested</controllingFieldValue>
@@ -1426,6 +1431,10 @@ Registrant_Last_Name__c</formula>
                 <controllingFieldValue>Received</controllingFieldValue>
                 <controllingFieldValue>Confirmed</controllingFieldValue>
                 <valueName>Unavailable</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Received</controllingFieldValue>
+                <valueName>In Progress</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Confirmed</controllingFieldValue>
@@ -1761,6 +1770,7 @@ Event__r.Community_Base_URL__c
         <columns>Status__c</columns>
         <columns>Substatus__c</columns>
         <columns>Registrant_Email__c</columns>
+        <columns>Event_Instance__c</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>Event_Instance_Date__c</field>

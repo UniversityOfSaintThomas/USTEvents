@@ -596,6 +596,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UST_Event_Registration__c.End_Time_Text__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UST_Event_Registration__c.Event_Instance_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -648,6 +653,21 @@
         <editable>true</editable>
         <field>UST_Event_Registration__c.Instance__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Registration__c.Location_Address__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Registration__c.Location_Map_Link__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Registration__c.Location_Title__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -855,6 +875,11 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Registration__c.Start_Time_Text__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>UST_Event_Registration__c.Status__c</field>
         <readable>true</readable>
@@ -1003,6 +1028,11 @@
         <editable>true</editable>
         <field>UST_Event__c.Ask_Phone__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event__c.Ask_Program_Interest__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>

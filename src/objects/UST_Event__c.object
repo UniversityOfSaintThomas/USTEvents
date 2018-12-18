@@ -71,6 +71,21 @@
                     <default>false</default>
                     <label>All</label>
                 </value>
+                <value>
+                    <fullName>Strategic Risk and Responsibility (BU_GR_CER|BUSR)</fullName>
+                    <default>false</default>
+                    <label>Strategic Risk and Responsibility (BU_GR_CER|BUSR)</label>
+                </value>
+                <value>
+                    <fullName>Transformational Change and Organization Development (BU_GR_CER|BUOD)</fullName>
+                    <default>false</default>
+                    <label>Transformational Change and Organization Development (BU_GR_CER|BUOD)</label>
+                </value>
+                <value>
+                    <fullName>Health Care Communication (BU_HCC_MS|HCMS)</fullName>
+                    <default>false</default>
+                    <label>Health Care Communication (BU_HCC_MS|HCMS)</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
         <visibleLines>5</visibleLines>
@@ -606,9 +621,8 @@
         <trackTrending>false</trackTrending>
         <type>MultiselectPicklist</type>
         <valueSet>
-            <restricted>true</restricted>
             <valueSetDefinition>
-                <sorted>true</sorted>
+                <sorted>false</sorted>
                 <value>
                     <fullName>Dougherty Family College (2-Year)</fullName>
                     <default>false</default>
@@ -1138,19 +1152,16 @@ TEXT(YEAR( End_Date__c))
                 <value>
                     <fullName>Live Chat</fullName>
                     <default>false</default>
-                    <isActive>false</isActive>
                     <label>Live Chat</label>
                 </value>
                 <value>
                     <fullName>Lunch</fullName>
                     <default>false</default>
-                    <isActive>false</isActive>
                     <label>Lunch</label>
                 </value>
                 <value>
                     <fullName>Open House</fullName>
                     <default>false</default>
-                    <isActive>false</isActive>
                     <label>Open House</label>
                 </value>
                 <value>
@@ -1166,7 +1177,6 @@ TEXT(YEAR( End_Date__c))
                 <value>
                     <fullName>Webinar</fullName>
                     <default>false</default>
-                    <isActive>false</isActive>
                     <label>Webinar</label>
                 </value>
             </valueSetDefinition>
@@ -1268,11 +1278,6 @@ TEXT(YEAR( End_Date__c))
                     <label>Minneapolis</label>
                 </value>
                 <value>
-                    <fullName>Rome</fullName>
-                    <default>false</default>
-                    <label>Rome</label>
-                </value>
-                <value>
                     <fullName>St. Paul</fullName>
                     <default>false</default>
                     <label>St. Paul</label>
@@ -1295,8 +1300,12 @@ TEXT(YEAR( End_Date__c))
                 <value>
                     <fullName>Online</fullName>
                     <default>false</default>
-                    <isActive>false</isActive>
                     <label>Online</label>
+                </value>
+                <value>
+                    <fullName>Rome</fullName>
+                    <default>false</default>
+                    <label>Rome</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -2001,11 +2010,27 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>Live Chat</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lunch</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Open House</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Overnight</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Visit</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Webinar</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2017,6 +2042,10 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>Off Campus</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Online</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2539,6 +2568,10 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>Info Session</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Open House</fullName>
                 <default>false</default>
             </values>
             <values>
