@@ -23,7 +23,7 @@
 
 
         <script type="text/javascript">
-            $(document).ready(() = > {
+            $(document).ready(() => {
                 const dropdownArrow = '<svg viewBox="0 0 16 9.1" class="select-down-arrow"><polygon points="16,1.1 14.9,0 8,6.9 1.1,0 0,1.1 8,9.1 9.1,8 9.1,8"></polygon></svg>';
 
             /* Add the dropdown arrow to all elements that require it */
@@ -577,7 +577,10 @@
                                 <a class="header__breadcrumbs__link" href="https://business.stthomas.edu/index.html">Opus College of Business</a>
                             </li>
                             <li class="header__breadcrumbs__item">
-                                <a class="header__breadcrumbs__link" href="index.html">Executive Education</a>
+                                <a class="header__breadcrumbs__link" href="https://business.stthomas.edu/opus-advantage/">OPUS Advantage</a>
+                            </li>
+                            <li class="header__breadcrumbs__item">
+                                <a class="header__breadcrumbs__link" href="https://business.stthomas.edu/opus-advantage/events/">Events</a>
                             </li>
                         </ul>
                     </div>
