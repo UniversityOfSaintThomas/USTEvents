@@ -96,6 +96,14 @@
                 <behavior>Edit</behavior>
                 <field>Ask_Registrant_Program_Of_Interest__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Program_Filter_2__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Program_Filter_3__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -216,6 +224,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Tracking_Cancel_Registration__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Academic_Program_List_Selected__c</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>

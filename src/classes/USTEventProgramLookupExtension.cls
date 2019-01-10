@@ -12,10 +12,17 @@ public class USTEventProgramLookupExtension {
 
         //get currently selected programs and fill in selected list
         SelectedPrograms = new List<SelectOption>();
-        if (!String.isBlank(USTevt.Academic_Program_List__c)) {
-            List<String> currentSelected = USTevt.Academic_Program_List__c.split(';');
-            for (String selItem : currentSelected) {
-                SelectedPrograms.add(new SelectOption(selItem, selItem));
+
+        List<String> currentSelected = new List<String>();
+        if (!String.isBlank(USTevt.Academic_Program_List_Selected__c)) {
+            currentSelected = USTevt.Academic_Program_List_Selected__c.split(';');
+            for (String acPrg : currentSelected) {
+                SelectedPrograms.add(new SelectOption(acPrg, acPrg));
+            }
+        } else if (!String.isBlank(USTevt.Academic_Program_List__c)) {
+            currentSelected = USTevt.Academic_Program_List__c.split(';');
+            for (Integer xx = currentSelected.size() - 1; xx > -1; xx--) {
+                SelectedPrograms.add(new SelectOption(currentSelected[xx], currentSelected[xx]));
             }
         } else {
             USTevt.Academic_Program_List__c = '';
@@ -62,9 +69,9 @@ public class USTEventProgramLookupExtension {
     }
 
     public void save() {
-        USTEvt.Academic_Program_List__c = '';
+        USTEvt.Academic_Program_List__c = null;
         USTEvt.Program_Filter__c = '';
-        upsert USTEvt;
+        update USTEvt;
         // build a ; seperated string of selected Programs to insert into Academic_Program_List__c
         String selectString = '';
         String progCodeString = '';
@@ -79,8 +86,10 @@ public class USTEventProgramLookupExtension {
                 progCodeString += matcher.group(1) + ';';
             }
             USTEvt.Academic_Program_List__c = selectString;
+            USTEvt.Academic_Program_List_Selected__c = selectString;
             USTEvt.Program_Filter__c = progCodeString;
-            upsert USTEvt;
+
+            update USTEvt;
         }
     }
 }

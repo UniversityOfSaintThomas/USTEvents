@@ -54,6 +54,18 @@
     <enableSharing>true</enableSharing>
     <enableStreamingApi>true</enableStreamingApi>
     <fields>
+        <fullName>Academic_Program_List_Selected__c</fullName>
+        <description>List of academic programs selected.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>List of academic programs selected.</inlineHelpText>
+        <label>Academic Program List Selected</label>
+        <length>6000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
+    </fields>
+    <fields>
         <fullName>Academic_Program_List__c</fullName>
         <description>List of selected academic programs.</description>
         <externalId>false</externalId>
@@ -71,24 +83,21 @@
                     <default>false</default>
                     <label>All</label>
                 </value>
-                <value>
-                    <fullName>Strategic Risk and Responsibility (BU_GR_CER|BUSR)</fullName>
-                    <default>false</default>
-                    <label>Strategic Risk and Responsibility (BU_GR_CER|BUSR)</label>
-                </value>
-                <value>
-                    <fullName>Transformational Change and Organization Development (BU_GR_CER|BUOD)</fullName>
-                    <default>false</default>
-                    <label>Transformational Change and Organization Development (BU_GR_CER|BUOD)</label>
-                </value>
-                <value>
-                    <fullName>Health Care Communication (BU_HCC_MS|HCMS)</fullName>
-                    <default>false</default>
-                    <label>Health Care Communication (BU_HCC_MS|HCMS)</label>
-                </value>
             </valueSetDefinition>
         </valueSet>
         <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
+        <fullName>Academic_Program_Selected__c</fullName>
+        <description>Programs available for selection in academic programs.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Programs available for selection in academic programs.</inlineHelpText>
+        <label>Academic Program Selected</label>
+        <length>8000</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>LongTextArea</type>
+        <visibleLines>3</visibleLines>
     </fields>
     <fields>
         <fullName>Academic_Program__c</fullName>
@@ -779,7 +788,7 @@
 
             /* Start cases to apply hard coded base url of community */
             ,&apos;cs65&apos;, &apos;https://dev-stthomas.cs65.force.com/applicantportal/&apos;
-            ,&apos;cs18&apos;, &apos;https://staging-stthomas.cs18.force.com/applicantportal/&apos;
+            ,&apos;cs42&apos;, &apos;https://staging-stthomas.cs42.force.com/applicantportal/&apos;
             ,&apos;na54&apos;,  &apos;https://stthomas.force.com/applicantportal/&apos;
             , LEFT($Api.Partner_Server_URL_260, FIND( &apos;/service&apos;, $Api.Partner_Server_URL_260) - 1) + &apos;/&apos;
 
@@ -1334,6 +1343,32 @@ TEXT(YEAR( End_Date__c))
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Program_Filter_2__c</fullName>
+        <description>Text version of program pick-list for filtering. No for user display or editing.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Text version of program pick-list for filtering. No for user display or editing.</inlineHelpText>
+        <label>Program Filter 2</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Program_Filter_3__c</fullName>
+        <description>Text version of program pick-list for filtering. No for user display or editing.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Text version of program pick-list for filtering. No for user display or editing.</inlineHelpText>
+        <label>Program Filter 3</label>
+        <length>255</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Program_Filter__c</fullName>
@@ -2271,6 +2306,10 @@ TEXT(YEAR( End_Date__c))
         </picklistValues>
         <picklistValues>
             <picklist>Audience__c</picklist>
+            <values>
+                <fullName>Dougherty Family College %282-Year%29</fullName>
+                <default>false</default>
+            </values>
             <values>
                 <fullName>First-Year International</fullName>
                 <default>false</default>

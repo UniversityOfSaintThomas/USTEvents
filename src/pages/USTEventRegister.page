@@ -323,7 +323,7 @@
                                       true, false)}">
                         <div class="column">
                             <apex:outputLabel for="progInterest2">Program of interest</apex:outputLabel>
-                            <apex:selectList size="1" multiSelect="false" value="{!selectedPrograms}" id="progInterest2" html-data-placeholder="Choose programs..." required="true" styleClass="required requiredText">
+                            <apex:selectList size="1" multiSelect="false" value="{!selectedProgramsOne}" id="progInterest2" html-data-placeholder="Choose programs..." required="true" styleClass="required requiredText">
                                 <apex:selectOptions value="{!programsAvailable}"></apex:selectOptions>
                             </apex:selectList>
                         </div>

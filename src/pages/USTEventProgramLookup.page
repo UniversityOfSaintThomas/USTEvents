@@ -28,6 +28,7 @@
     <apex:form id="programSelector">
         <apex:inputHidden value="{!UST_Event__c.School__c}" id="schoolIdField"></apex:inputHidden>
         <apex:inputHidden value="{!UST_Event__c.Academic_Program_List__c}" id="acadProgList"></apex:inputHidden>
+        <apex:inputHidden value="{!UST_Event__c.Academic_Program_List_Selected__c}" id="acadProgList2"></apex:inputHidden>
         <c:MultiselectPicklist leftLabel="Available Programs"
                                leftOption="{!Programs}"
                                rightLabel="Selected Programs"

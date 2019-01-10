@@ -25,6 +25,7 @@ public with sharing class USTEventRegisterController {
     public List<SelectOption> addPick4 { get; set; }
     public List<SelectOption> addPick5 { get; set; }
     public List<String> selectedPrograms { get; set; }
+    public String selectedProgramsOne { get; set; }
     public boolean showAddress {get;set;}
     public boolean showPhone {get;set;}
     public String applicantType {get;set;}
@@ -33,6 +34,7 @@ public with sharing class USTEventRegisterController {
 
     public USTEventRegisterController() {
         selectedPrograms = new List<String>();
+        selectedProgramsOne = '';
         //array for looping through additional information questions
         questionNum = new List<String>{
                 '1', '2', '3', '4', '5'
@@ -275,6 +277,9 @@ public with sharing class USTEventRegisterController {
     public List<SelectOption> getProgramsAvailable() {
         String prgString = eventPage.Academic_Program_List__c;
         String prgSelectedAlready = newEvtReg.Registrant_Program_Interest__c;
+        if (eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require one selection') {
+            selectedProgramsOne = prgSelectedAlready;
+        }
 
         //If program list is empty then get the full list
         If (String.isBlank(prgString)) {
@@ -323,7 +328,7 @@ public with sharing class USTEventRegisterController {
                             prg.replaceAll('\\(\\w+\\|\\w+\\)|\\(\\w+\\)', '').trim()
                     )
             );
-            if (!String.isBlank(prgSelectedAlready)) {
+            if (!String.isBlank(prgSelectedAlready) && eventPage.Ask_Registrant_Program_Of_Interest__c != 'Ask and require one selection') {
                 if (prgSelectedAlready.indexOf(prg) > -1) {
                     selectedPrograms.add(prg);
                 }
@@ -373,9 +378,14 @@ public with sharing class USTEventRegisterController {
         List<String> majorCodes = new List<String>();
         Boolean progSelectionMade = true;
 
-        if (selectedPrograms.isEmpty() && !String.isBlank(eventPage.Academic_Program_List__c)) {
+
+        if (selectedPrograms.isEmpty() && String.isBlank(selectedProgramsOne) && !String.isBlank(eventPage.Academic_Program_List__c)) {
             selectedPrograms = eventPage.Academic_Program_List__c.split(';');
             progSelectionMade = false;
+        }
+
+        if(!String.isBlank(selectedProgramsOne)) {
+            selectedPrograms.add(selectedProgramsOne);
         }
 
         if (!selectedPrograms.isEmpty()) {
@@ -406,7 +416,7 @@ public with sharing class USTEventRegisterController {
             //get major ids and save them
         }
 
-        if ((eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask but do not require' || eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require') && progSelectionMade) {
+        if ((eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask but do not require' || eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require' || eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require one selection') && progSelectionMade) {
             newEvtReg.Registrant_Program_Interest__c = recordSelPrg;
         } else {
             newEvtReg.Registrant_Program_Interest__c = '';

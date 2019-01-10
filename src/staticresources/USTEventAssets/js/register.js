@@ -21,6 +21,10 @@ $(document).ready(function () {
         audience = "High School";
     }
 
+    $("input, textarea").each(function(){
+        $(this).focus();
+    })
+
     $("#cantFindHS").on("change", function () {
         if ($(this).is(":checked")) {
             $("#schoolSelector").val('').trigger('chosen:updated');
