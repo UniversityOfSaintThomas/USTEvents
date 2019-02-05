@@ -1514,6 +1514,7 @@ Event__r.Community_Base_URL__c
     <listViews>
         <fullName>All</fullName>
         <columns>Event__c</columns>
+        <columns>Registrant_Email__c</columns>
         <columns>RECORDTYPE</columns>
         <columns>NAME</columns>
         <columns>Date__c</columns>
@@ -1522,6 +1523,11 @@ Event__r.Community_Base_URL__c
         <columns>Session__c</columns>
         <columns>LAST_UPDATE</columns>
         <filterScope>Everything</filterScope>
+        <filters>
+            <field>Event__c</field>
+            <operation>equals</operation>
+            <value>Star Trek and Green Lanterns: Across the Galaxy</value>
+        </filters>
         <label>All</label>
         <language>en_US</language>
     </listViews>

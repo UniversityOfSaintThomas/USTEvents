@@ -108,6 +108,31 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Appointment_Type_Status__c</fullName>
+        <description>If an appointment is inactive it will cease to an option on all event instances. Defaults to active.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>If an appointment is inactive it will cease to an option on all event instances. Defaults to active.</inlineHelpText>
+        <label>Appointment Type Status</label>
+        <required>true</required>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Active</fullName>
+                    <default>true</default>
+                    <label>Active</label>
+                </value>
+                <value>
+                    <fullName>Inactive</fullName>
+                    <default>false</default>
+                    <label>Inactive</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Appointment_Type__c</fullName>
         <externalId>false</externalId>
         <label>Appointment Type</label>
@@ -665,6 +690,78 @@
         <visibleLines>3</visibleLines>
     </fields>
     <fields>
+        <fullName>Date_Available_End__c</fullName>
+        <description>The date when this appointment type will not longer be an option. Leaving blank means this appointment will be indefinitely available.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date when this appointment type will not longer be an option. Leaving blank means this appointment will be indefinitely available.</inlineHelpText>
+        <label>Date Available End</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Date_Available_Start__c</fullName>
+        <description>The date this appointment type will begin to be available (if blank it will always be available).</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The date this appointment type will begin to be available (if blank it will always be available).</inlineHelpText>
+        <label>Date Available Start</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
+        <fullName>Day_of_Week_Availability__c</fullName>
+        <description>This option will only be available on the defined days of the week. It will be available all days if no items are selected.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>This option will only be available on the defined days of the week. It will be available all days if no items are selected.</inlineHelpText>
+        <label>Day of Week Availability</label>
+        <required>false</required>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Sunday</fullName>
+                    <default>false</default>
+                    <label>Sunday</label>
+                </value>
+                <value>
+                    <fullName>Monday</fullName>
+                    <default>false</default>
+                    <label>Monday</label>
+                </value>
+                <value>
+                    <fullName>Tuesday</fullName>
+                    <default>false</default>
+                    <label>Tuesday</label>
+                </value>
+                <value>
+                    <fullName>Wednesday</fullName>
+                    <default>false</default>
+                    <label>Wednesday</label>
+                </value>
+                <value>
+                    <fullName>Thursday</fullName>
+                    <default>false</default>
+                    <label>Thursday</label>
+                </value>
+                <value>
+                    <fullName>Friday</fullName>
+                    <default>false</default>
+                    <label>Friday</label>
+                </value>
+                <value>
+                    <fullName>Saturday</fullName>
+                    <default>false</default>
+                    <label>Saturday</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>7</visibleLines>
+    </fields>
+    <fields>
         <fullName>Description__c</fullName>
         <description>Rich text description of event that can include links and formatting.</description>
         <externalId>false</externalId>
@@ -719,6 +816,16 @@
                 </value>
             </valueSetDefinition>
         </valueSet>
+    </fields>
+    <fields>
+        <fullName>Required_Appointment__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>When checked the client is required to choose this appointment and any choices related to it.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When checked the client is required to choose this appointment and any choices related to it.</inlineHelpText>
+        <label>Required Appointment</label>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Restrict_To_Instance_Title__c</fullName>
