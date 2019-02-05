@@ -76,7 +76,7 @@ public with sharing class USTEventRegisterController {
             //define Event ID from instanceInfo data
             evtInfo.evtId = evtInstance.Event__r.Id;
             instanceName = evtInstance.Name;
-            if (evtInstance.Current_Available_Capacity__c == 0 || evtInstance.Active_Status__c != 'Active') {
+            if (evtInstance.Current_Available_Capacity__c <= 0 || evtInstance.Active_Status__c != 'Active') {
                 eventIsClosed = true;
             }
         }

@@ -69,8 +69,9 @@ public with sharing class USTEventPrintItinerariesExtension {
         String fileName = 'eventItineraries_';
         if (!String.isBlank(eventRegs[0].Event_Name__c)) {
             fileName = eventRegs[0].Event_Name__c;
-            fileName = fileName.replaceAll(' ', '_');
-            fileName = fileName.replaceAll('&', '-');
+            Pattern nonAlphanumeric = Pattern.compile('[^a-zA-Z0-9]');
+            Matcher matcher = nonAlphanumeric.matcher(fileName);
+            fileName = matcher.replaceAll('_');
             fileName = fileName + '_';
         }
         if (!String.isBlank(String.valueOf(eventRegs[0].Event_Instance_Date__c))) {

@@ -54,14 +54,14 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
 
     private void doOnStatusChange(List<UST_Event_Registration__c> regs, Map<Id, Object> oldRegs) {
 
-        Map<Id, Id> affectedIds = new Map<Id, Id>();
+        Map<Id, Id> affectedEventIds = new Map<Id, Id>();
         Map<Id, Id> affectedContactIds = new Map<Id, Id>();
         List<UST_Event_Registration__c> affectedRegs = new List<UST_Event_Registration__c>();
         List<Contact> footOnCampus = new List<Contact>();
 
         for (UST_Event_Registration__c r : regs) {
 
-            //Get old UST_Event_Registration__c by current ID
+            //Get old UST_Event_Registration__c by current ID of new reg. Default to new if old reg doesn't exist for comparision below.
             UST_Event_Registration__c oldReg = new UST_Event_Registration__c(Status__c = 'new');
             if (oldRegs != null) {
                 if (r.Id != null) {
@@ -71,7 +71,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
 
             //Get all new trigger UST_Event_Registration__c that have a status change by comparing old map
             if (r.Status__c != oldReg.Status__c || r.Substatus__c != oldReg.Substatus__c) {
-                affectedIds.put(r.Event__c, r.Event__c);
+                affectedEventIds.put(r.Event__c, r.Event__c);
                 affectedRegs.add(r);
 
                 If (r.Status__c == 'Confirmed' && r.Substatus__c == 'Attended') {
@@ -86,7 +86,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                 WHERE Id IN :affectedContactIds.values()
         ];
 
-        for (UST_Event_Registration__c cu: contactUpdates) {
+        for (UST_Event_Registration__c cu : contactUpdates) {
             Contact footContact = new Contact();
             footContact.id = cu.Contact__r.Id;
             if (cu.Contact__r.Initial_Foot_on_Campus__c == null) {
@@ -108,7 +108,9 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                 SELECT Action_Status__c, Action_Sub_status__c, Event__r.id, Letterhead_HTML__c, Email_Subject__c,
                         Email_Content__c, Letterhead_Id__c, Org_Email_Id__c, BCC_Email__c
                 FROM UST_Event_Email__c
-                WHERE Event__r.Id IN :affectedIds.values()
+                WHERE Event__r.Id IN :affectedEventIds.values()
+                AND Action_status__c != Null
+                AND Action_Status__c != '--Inactive--'
         ];
 
         List<Task> activityUpdates = new List<Task>();
@@ -118,18 +120,22 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
             //Loop through gather email templates to get template and use registration fields to fill in hooks
             for (UST_Event_Email__c em : matchEmail) {
                 Boolean statusMatch = false;
-                if (em.Event__r.Id == areg.Event__c && em.Action_Status__c == areg.Status__c) {
-                    if (!String.isBlank(em.Action_Sub_status__c)) {
-                        if (!String.isBlank(em.Action_Status__c)) {
-                            if ((em.Action_Status__c == areg.Status__c) && (em.Action_Sub_status__c == areg.Substatus__c)) {
-                                statusMatch = true;
-                            }
-                        } else if (em.Action_Sub_status__c == areg.Substatus__c) {
+
+                if (em.Event__r.Id.equals(areg.Event__c)) {
+
+                    statusMatch = false;
+
+                    if (!String.isBlank(em.Action_Sub_status__c) && !String.isBlank(areg.Substatus__c)) {
+                        if(em.Action_Sub_status__c.equals(areg.Substatus__c) && em.Action_Status__c.equalsIgnoreCase(areg.Status__c)) {
                             statusMatch = true;
+                            System.Debug('Match made on Sub status');
                         }
-                    } else if (!String.isBlank(em.Action_Status__c) && (em.Action_Status__c == areg.Status__c)) {
+                    } else if (em.Action_Status__c.equals(areg.Status__c) && String.isBlank(em.Action_Sub_status__c) && String.isBlank(areg.Substatus__c)) {
+                        System.Debug('Match made on status');
                         statusMatch = true;
                     }
+
+                    System.Debug(statusMatch + ': em.Action_Sub_status__c = ' + em.Action_Sub_status__c + ', areg.Substatus__c = ' + areg.Substatus__c + ', areg.Status__c = ' + areg.Status__c + ', em.Action_Status__c = ' + em.Action_Status__c);
 
                     if (statusMatch) {
                         //Get email template
@@ -139,7 +145,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                             originalTemplate = em.Letterhead_HTML__c;
                         }
 
-
+                        emailContent = emailContent.replace('$', '\\$');
                         //Regex to find all Apex delineators {! }
                         Pattern TAG_REGEX = Pattern.compile('\\{!(.+?)\\}');
                         Matcher matcher = TAG_REGEX.matcher(emailContent);
@@ -160,8 +166,8 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                                 String found = matcher2.group(1).replace('UST_Event_Registration__c.', '');
                                 try {
                                     found = String.valueOf(areg.get(found));
-                                } catch( Exception e) {
-                                    found ='';
+                                } catch (Exception e) {
+                                    found = '';
                                 }
 
                                 //replaceAll doesn't like nulls
@@ -173,7 +179,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                                 if (matcher2.group(1) == 'UG_Parking_Pass_Link__c' || matcher2.group(1) == 'Add_To_Calendar_Link__c' || matcher2.group(1) == 'Event_Registration_Cancel_Link__c') {
                                     found = found.replace('_HL_ENCODED_', '<a href="');
                                     found = found.replace('_HL__blank_HL_', '</a>');
-                                    found = found.replace('_HL_',' target="_blank">');
+                                    found = found.replace('_HL_', ' target="_blank">');
                                     found = found.replace(' target=', '');
                                 }
 
@@ -181,14 +187,13 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                             }
                         }
 
-                        //replace text in letterhead template
-                        Pattern CONTENT_HOOK = Pattern.compile('\\[\\[DONT_DELETE_CONTENT_HERE\\]\\]');
-                        Matcher matcher3 = CONTENT_HOOK.matcher(originalTemplate);
-                        while (matcher3.find()) {
-                            originalTemplate = matcher3.replaceAll(emailContent);
-                        }
+                        //put email content (after hooks have been replaced with values) into the email template
+                        originalTemplate = originalTemplate.replaceAll('\\[\\[DONT_DELETE_CONTENT_HERE\\]\\]', emailContent);
+
                         //send the message
                         sendEmail2(areg.Registrant_Email__c, originalTemplate, emailContent, em.Email_Subject__c, em.Org_Email_Id__c, em.BCC_Email__c);
+
+                        //Create an activity task
                         Task nt = new Task();
                         nt.WhatId = areg.id;
                         nt.Type = 'Email';
@@ -198,6 +203,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
                         nt.Priority = 'Low';
                         activityUpdates.add(nt);
                     }
+
                 }
             }
         }
@@ -215,6 +221,7 @@ public with sharing class USTEventRegistrationTriggerHandler implements ITrigger
         mail.setSubject(Subject);
         if (!String.isBlank(BCCString)) {
             BCCString = BCCString.replaceAll('\\s+', '');
+            BCCString = BCCString.replaceAll(';', ',');
             List<String> bccList = BCCString.split(',');
             if (bccList.size() > 0) {
                 mail.setBccAddresses(bccList);
