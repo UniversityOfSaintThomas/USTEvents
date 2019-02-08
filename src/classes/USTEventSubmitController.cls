@@ -12,6 +12,7 @@ public with sharing class USTEventSubmitController {
     public List<UST_Event_Appointments__c> chosenAppts { get; set; }
     public String chosenFormatted { get; set; }
     public String templateSelected { get; set; }
+    public String eventStartDateTimeCrumb {get;set;}
 
     public USTEventSubmitController() {
         test = '';
@@ -26,7 +27,12 @@ public with sharing class USTEventSubmitController {
                     FROM UST_Event__c
                     WHERE Id = :evtinfo.evtId][0];
             templateSelected = eventPage.Template__c;
+
             evtInstance = [SELECT Instance_Title__c, Start_Date_Time__c, End_Date_Time__c FROM UST_Event_Instance__c WHERE Id = :evtinfo.instanceID LIMIT 1];
+
+            if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
+                eventStartDateTimeCrumb = evtInstance.Start_Date_Time__c.format('MMMM d, YYYY, h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
+            }
         }
 
 

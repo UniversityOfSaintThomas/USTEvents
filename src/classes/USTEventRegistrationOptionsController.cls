@@ -15,6 +15,8 @@ public with sharing class USTEventRegistrationOptionsController {
     public UST_Event__C eventPage { get; set; }
     public String templateSelected { get; set; }
     public Boolean noOptionalAppointments { get; set; }
+    public Boolean requiredAppt {get;set;}
+    public String eventStartDateTimeCrumb {get;set;}
 
     public class incomingAppt {
         String apptId;
@@ -49,15 +51,26 @@ public with sharing class USTEventRegistrationOptionsController {
             if (!String.isBlank(evtinfo.evtRegId)) {
                 evtInstance = [SELECT Instance_Title__c, Start_Date_Time__c, End_Date_Time__c FROM UST_Event_Instance__c WHERE Id = :evtinfo.instanceID LIMIT 1];
 
-                if (evtInstance != null) {
+                if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
+                    eventStartDateTimeCrumb = evtInstance.Start_Date_Time__c.format('MMMM d, YYYY, h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
+                }
 
+                if (evtInstance != null) {
+                    //Datetime rightNow = USTShared.adjustForCenteralTime(Datetime.now());
+                    String dayOfWeek = evtInstance.Start_Date_Time__c.format('EEEE');
+                    // = dayOfWeek;
                     //Build available appointments
                     appts = new Map<ID, UST_Event_Appointment_Type__c>( [
                             SELECT Id, Name, Title__c, Description__c, Appointment_Type__c, Appointment_Category__c, Appointment_Limits__c, Chosen_State__c,
-                                    Registrant_Input__c, Custom_Picklist__c, Sort_Order__c, Auto_Confirm_Appointment__c, Auto_add_building__c, Auto_Add_Time__c, Do_Not_Show_Time__c
+                                    Registrant_Input__c, Custom_Picklist__c, Sort_Order__c, Auto_Confirm_Appointment__c, Auto_add_building__c, Auto_Add_Time__c, Do_Not_Show_Time__c,
+                                    Date_Available_Start__c, Date_Available_End__c, Day_of_Week_Availability__c, Required_Appointment__c, Appointment_Type_Status__c
                             FROM UST_Event_Appointment_Type__c
                             WHERE UST_Event__c = :evtinfo.evtId
                             AND (Restrict_To_Instance_Title__r.Instance_Title__c = :evtInstance.Instance_Title__c OR Restrict_To_Instance_Title__r.Instance_Title__c = null)
+                            AND (Date_Available_Start__c <= :evtInstance.Start_Date_Time__c.date() OR Date_Available_Start__c = NULL)
+                            AND (Date_Available_End__c >= :evtInstance.End_Date_Time__c.date() OR Date_Available_End__c = NULL)
+                            AND (Day_of_Week_Availability__c INCLUDES (:dayOfWeek) OR Day_of_Week_Availability__c = NULL)
+                            AND (Appointment_Type_Status__c = 'Active' OR Appointment_Type_Status__c = NULL)
                             ORDER BY Sort_Order__c ASC NULLS LAST
                     ]);
 
@@ -120,6 +133,7 @@ public with sharing class USTEventRegistrationOptionsController {
                 }
             }
 
+            requiredAppt = false;
             for (UST_Event_Appointment_Type__c apt : appts.values()) {
                 Integer apptLimit = 1;
                 if (!String.isBlank(apt.Appointment_Limits__c)) {
@@ -142,8 +156,17 @@ public with sharing class USTEventRegistrationOptionsController {
                 } else {
                     apptFormatted += ' data-limit="1" ';
                 }
-                apptFormatted += ' class="appointment">';
-                apptFormatted += '<p class="appointmentTitle"><a href="javascript:;" ><span>' + apt.Title__c + '</span><i class="fa fa-chevron-down" aria-hidden="true"></i></a></p>';
+                apptFormatted += ' class="appointment';
+                if (apt.Required_Appointment__c) {
+                    apptFormatted += ' appointmentRequired';
+                }
+                apptFormatted += '">';
+                apptFormatted += '<p class="appointmentTitle"><a href="javascript:;" class="optionToggler"><span>' + apt.Title__c;
+                if (apt.Required_Appointment__c) {
+                    requiredAppt = true;
+                    apptFormatted += ' *';
+                }
+                apptFormatted += '</span><i class="fa fa-chevron-down" aria-hidden="true"></i></a></p>';
                 apptFormatted += '<div class="apptmentDetail">';
                 if (!String.isBlank(apt.Description__c)) {
                     apptFormatted += '<p class="appointmentDesc">' + apt.Description__c + '</p>';

@@ -30,6 +30,7 @@ public with sharing class USTEventRegisterController {
     public boolean showPhone {get;set;}
     public String applicantType {get;set;}
     public String locationCrumb {get;set;}
+    public String eventStartDateTimeCrumb {get;set;}
 
 
     public USTEventRegisterController() {
@@ -76,7 +77,7 @@ public with sharing class USTEventRegisterController {
             //define Event ID from instanceInfo data
             evtInfo.evtId = evtInstance.Event__r.Id;
             instanceName = evtInstance.Name;
-            if (evtInstance.Current_Available_Capacity__c <= 0 || evtInstance.Active_Status__c != 'Active' || evtInstance.Start_Date_Time__c < Datetime.now() ) {
+            if (evtInstance.Current_Available_Capacity__c <= 0 || evtInstance.Active_Status__c != 'Active' || evtInstance.End_Date_Time__c <= Datetime.now() ) {
                 eventIsClosed = true;
             }
         }
@@ -151,11 +152,15 @@ public with sharing class USTEventRegisterController {
                 locationCrumb += ' <a href="' + locationMapLink + '" target="_blank">Map</a><br/>';
             }
 
+            if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
+                eventStartDateTimeCrumb = evtInstance.Start_Date_Time__c.format('MMMM d, YYYY, h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
+            }
+
             if (!String.isBlank(locationCrumb)) {
                 locationCrumb = locationCrumb.removeEnd('<br/>');
                 String eventTime = '';
                 if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
-                    eventTime = evtInstance.Start_Date_Time__c.format('EEEE MMMM d , YYYY');
+                    eventTime = evtInstance.Start_Date_Time__c.format('EEEE MMMM dd, YYYY');
                     eventTime += '<br/>' + evtInstance.Start_Date_Time__c.format('h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a') + '<br/>';
                 }
                 locationCrumb = eventTime + locationCrumb;
@@ -425,6 +430,7 @@ public with sharing class USTEventRegisterController {
         //Test to find if contact already exists - HARD TEST last name and email match
         String lastName = newEvtReg.Registrant_Last_Name__c;
         String email = newEvtReg.Registrant_Email__c;
+
         List<Contact> hardContactTest = [SELECT Id FROM Contact WHERE LastName = :lastName AND Email = :email];
 
         if (hardContactTest.size() > 0) {
@@ -488,6 +494,10 @@ public with sharing class USTEventRegisterController {
             newEvtContact.HomePhone = newEvtReg.Registrant_Phone__c;
             newEvtContact.High_School_Expected_Graduation_Year__c = newEvtReg.Registrant_High_School_Grad_Year__c;
             newEvtContact.LeadSource = 'Event';
+
+            if (!String.isBlank(newEvtReg.Registrant_Applicant_Type__c)) {
+                newEvtContact.Inquiry_Applicant_Type__c = newEvtReg.Registrant_Applicant_Type__c;
+            }
 
             if (!String.isBlank(newEvtReg.Registrant_High_School_Code__c) && String.isBlank(newEvtReg.Registrant_College_Code__c)) {
                 newEvtContact.EnrollmentrxRx__High_School_Code__c = newEvtReg.Registrant_High_School_Code__c;

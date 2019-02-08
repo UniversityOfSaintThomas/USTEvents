@@ -142,5 +142,28 @@ function populateApptJSON() {
     });
     $('[id$=outgoingApptJSon]').val(JSON.stringify(jsonOut));
     //console.log(JSON.stringify(jsonOut));
-    return true;
+    return checkForRequiredAppointments();
+}
+
+function checkForRequiredAppointments() {
+    allApptGood = true;
+    $.each($('#chooser .appointmentRequired'), function() {
+        if($(this).is(':visible')) {
+            allApptGood = false;
+            fadein();
+            if($(this).find("i.fa").hasClass('fa-chevron-down')) {
+                $(this).find("a.optionToggler").click();
+            }
+            $(this).css({borderColor:'red'});
+            $(".requiredSelectionLabel").css({'color':'black', 'opacity' : .5});
+            $(".requiredSelectionLabel").animate({
+                opacity: 1,
+                color: 'red',
+                fontWeight : 'bold'
+            }, 1000, function() {
+                // Animation complete.
+            });
+        }
+    });
+    return allApptGood;
 }

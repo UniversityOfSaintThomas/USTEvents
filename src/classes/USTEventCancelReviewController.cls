@@ -9,6 +9,7 @@ public with sharing class USTEventCancelReviewController {
     public String templateSelected { get; set; }
     public Boolean eventOver {get;set;}
     public Boolean eventNotFound {get;set;}
+    public String eventStartDateTimeCrumb {get;set;}
 
     public USTEventCancelReviewController() {
         templateSelected =  USTShared.defaultTemplate;
@@ -24,8 +25,12 @@ public with sharing class USTEventCancelReviewController {
                     Event_Instance__r.Start_Date_Time__c, Event_Instance__r.End_Date_Time__c, Event__r.Tracking_Cancel_Registration__c
             FROM UST_Event_Registration__c WHERE id = :regId];
 
+
             if (evtList.size() > 0) {
                 evt = evtList[0];
+                if(evt.Event_Instance__r.Start_Date_Time__c != null && evt.Event_Instance__r.End_Date_Time__c != null ) {
+                    eventStartDateTimeCrumb = evt.Event_Instance__r.Start_Date_Time__c.format('MMMM d, YYYY, h:mm a') + ' - ' + evt.Event_Instance__r.End_Date_Time__c.format('h:mm a');
+                }
                 templateSelected = evt.Event__r.Template__c;
                 appt = [SELECT Id, Appointment_Title__c, Appointment_Category__c, Appointment_Type__c FROM UST_Event_Appointments__c WHERE Event_Registration__c = :regId];
                 if (evt.Event_Instance__r.End_Date_Time__c < UStShared.adjustForCenteralTime(Datetime.now())) {

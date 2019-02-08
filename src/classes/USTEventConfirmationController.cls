@@ -9,6 +9,7 @@ public with sharing class USTEventConfirmationController {
     public UST_Event_Instance__c evtInstance { get; set; }
     public String templateSelected { get; set; }
     public String rName { get; set; }
+    public String eventStartDateTimeCrumb {get;set;}
 
 
     public USTEventConfirmationController() {
@@ -24,7 +25,13 @@ public with sharing class USTEventConfirmationController {
                     WHERE Id = :evtinfo.evtId
             ][0];
             templateSelected = eventPage.Template__c;
+
             evtInstance = [SELECT Instance_Title__c, Start_Date_Time__c, End_Date_Time__c FROM UST_Event_Instance__c WHERE Id = :evtinfo.instanceID LIMIT 1];
+
+            if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
+                eventStartDateTimeCrumb = evtInstance.Start_Date_Time__c.format('MMMM d, YYYY, h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
+            }
+
         }
 
     }

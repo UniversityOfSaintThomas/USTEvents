@@ -6,7 +6,6 @@ var ChosenProcess = {};
 var ChosenProcessActive = {};
 var USTSettings = JSON.parse(readCookie('USTEvent'));
 var audience;
-alert('here!');
 
 $(document).ready(function () {
     // get audience
@@ -24,7 +23,9 @@ $(document).ready(function () {
 
     $("input, textarea").each(function(){
         $(this).focus();
-    })
+    });
+
+    window.scrollTo(0, 0);
 
     $("#cantFindHS").on("change", function () {
         if ($(this).is(":checked")) {

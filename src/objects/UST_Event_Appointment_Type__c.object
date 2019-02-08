@@ -697,7 +697,7 @@
         <label>Date Available End</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
-        <type>DateTime</type>
+        <type>Date</type>
     </fields>
     <fields>
         <fullName>Date_Available_Start__c</fullName>
