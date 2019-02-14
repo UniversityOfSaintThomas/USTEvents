@@ -182,7 +182,8 @@ global with sharing class USTEventFeed {
         for (UST_Event_Instance__c es : EventInstance) {
             regDateOpenDate = Datetime.now().addDays(-1);
             if (es.Event__r.Close_Event_Days_Before__c != null) {
-                regDateOpenDate = Datetime.now().addDays((Integer.valueOf(es.Event__r.Close_Event_Days_Before__c + 1 * -1)));
+                regDateOpenDate = USTShared.adjustForCenteralTime(Datetime.now());
+                regDateOpenDate = regDateOpenDate.addDays((Integer.valueOf(es.Event__r.Close_Event_Days_Before__c) + 1));
             }
             eventItem evt = new eventItem();
             evt.ID = es.Id;

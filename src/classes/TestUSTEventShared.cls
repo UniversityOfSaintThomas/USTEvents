@@ -37,7 +37,7 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testRegWithFullEmailMatch() {
-        createEventWithRegistration('email');
+        createEventWithRegistration('email', 'Test Event');
         Test.startTest();
         USTEventShared USTShared = new USTEventShared();
         USTEventRegisterController registerCtrl = new USTEventRegisterController();
@@ -50,7 +50,7 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testRegWithZipMatch() {
-        createEventWithRegistration('lastzip');
+        createEventWithRegistration('lastzip','Test Event');
         Test.startTest();
         USTEventShared USTShared = new USTEventShared();
         USTEventRegisterController registerCtrl = new USTEventRegisterController();
@@ -64,7 +64,7 @@ public with sharing class TestUSTEventShared {
 
     @isTest static void testFullRegister() {
         creatTestPrograms();
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         Test.startTest();
         String eventForCookie = '{"blah":"blah"}';
         USTEventShared USTShared = new USTEventShared();
@@ -79,7 +79,7 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testRegWithPortalLogin() {
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         Test.startTest();
         USTEventShared USTShared = new USTEventShared();
         USTEventRegisterController registerCtrl = new USTEventRegisterController();
@@ -121,7 +121,7 @@ public with sharing class TestUSTEventShared {
         Test.startTest();
         USTEventRegistrationOptionsController optionsCtrl = new USTEventRegistrationOptionsController();
         USTEventShared USTShared = new USTEventShared();
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         String eventForCookie = '{"audience":"Transfer","instanceID":"' + testInstance.Id + '","evtRegId":"' + testRegistration.Id + '","evtId":"' + testEvent.Id + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
         optionsCtrl = new USTEventRegistrationOptionsController();
@@ -151,7 +151,7 @@ public with sharing class TestUSTEventShared {
 
 
     @isTest static void testRegCancel() {
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         Test.startTest();
         PageReference pageRef = Page.USTEventCancelReview;
         Test.setCurrentPage(pageRef);
@@ -162,7 +162,7 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testRegConfirmationPage() {
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         Test.startTest();
         USTEventShared USTShared = new USTEventShared();
         //{"audience":"High School Senior","instanceID":"a320m000000A5fOAAS","evtRegId":"a350m0000008q63AAA","evtId":"a330m0000001SOrAAM"}
@@ -175,7 +175,7 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testParkingPass() {
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         Test.startTest();
         USTEventParkingPassController parkingCtrl = new USTEventParkingPassController();
         ApexPages.currentPage().getParameters().put('regId', testRegistration.Id);
@@ -187,7 +187,7 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testEventFeed() {
-        createTestEvent();
+        createTestEvent('Test Event');
         Test.startTest();
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();
@@ -233,7 +233,7 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testUSTEventShared() {
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         Test.startTest();
         USTEventShared USTShared = new USTEventShared();
         String eventForCookie = '{"audience":"Transfer","instanceID":"' + testInstance.Id + '","evtRegId":"' + testRegistration.Id + '","evtId":"' + testEvent.Id + '"}';
@@ -244,7 +244,7 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testLetterheadLookup() {
-        createTestEvent();
+        createTestEvent('Test Event');
         Test.startTest();
         ApexPages.StandardController sc = new ApexPages.StandardController(testEvtEmail);
         USTEventLetterheadLookupExtension emailController = new USTEventLetterheadLookupExtension(sc);
@@ -274,27 +274,67 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testUSTApptConfirmTigger() {
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         //UST_Event_Appointments__c addingAppointment = new UST_Event_Appointments__c(Event_Registration__c = testRegistration, Appointment_Type__c);
         Test.startTest();
         List<UST_Event_Appointments__c> dataApptAdd = new List<UST_Event_Appointments__c>();
         dataApptAdd.add(
                 new UST_Event_Appointments__c(
-                        Id = addToRegAppt[0].Id, Appointment_Status__c = 'Confirmed', Faculty_Staff_Member__c = 'Big Top', Appointment_Time__c = Time.newInstance(14, 30, 0, 0)
+                        Id = addToRegAppt[0].Id,
+                        Appointment_Status__c = 'Confirmed',
+                        Faculty_Staff_Member__c = 'Big Top',
+                        Event_Host__c = testHosts[0].Id,
+                        Appointment_Time__c = Time.newInstance(14, 30, 0, 0)
                 )
         );
         dataApptAdd.add(
                 new UST_Event_Appointments__c(
-                        Id = addToRegAppt[1].Id, Appointment_Status__c = 'Confirmed', Faculty_Staff_Member__c = 'Big Top', Appointment_Time__c = Time.newInstance(16, 30, 0, 0)
+                        Id = addToRegAppt[1].Id,
+                        Appointment_Status__c = 'Confirmed',
+                        Faculty_Staff_Member__c = 'Big Top',
+                        Appointment_Time__c = Time.newInstance(16, 30, 0, 0)
                 )
         );
         Database.update(dataApptAdd);
         Test.stopTest();
     }
 
+    @isTest static void testUSTApptConfirmTiggerOvernight() {
+        createEventWithRegistration('','Overnight Event');
+        //UST_Event_Appointments__c addingAppointment = new UST_Event_Appointments__c(Event_Registration__c = testRegistration, Appointment_Type__c);
+        Test.startTest();
+        List<UST_Event_Appointments__c> dataApptAdd = new List<UST_Event_Appointments__c>();
+        dataApptAdd.add(
+                new UST_Event_Appointments__c(
+                        Id = addToRegAppt[0].Id,
+                        Appointment_Status__c = 'Confirmed',
+                        Faculty_Staff_Member__c = 'Big Top',
+                        Event_Host__c = testHosts[0].Id,
+                        Appointment_Time__c = Time.newInstance(14, 30, 0, 0)
+                )
+        );
+        dataApptAdd.add(
+                new UST_Event_Appointments__c(
+                        Id = addToRegAppt[1].Id,
+                        Appointment_Status__c = 'Confirmed',
+                        Room__c = 'TEST ROOM',
+                        Faculty_Staff_Member__c = 'Big Top',
+                        Appointment_Time__c = Time.newInstance(16, 30, 0, 0)
+                )
+        );
+        Database.update(dataApptAdd);
+        //For overnight itinerary generation exceptions
+
+        testEvent.Event_Name__c = 'Overnight';
+
+        Database.update(dataApptAdd);
+
+        Test.stopTest();
+    }
+
     //Test the add to calendar page
     @isTest static void testUSTAddToCalendar() {
-        createTestEvent();
+        createTestEvent('Test Event');
         Test.startTest();
         ApexPages.currentPage().getParameters().put('instanceID', testInstance.Id);
         USTEventAddToCalendarController add2Cal = new USTEventAddToCalendarController();
@@ -303,7 +343,7 @@ public with sharing class TestUSTEventShared {
 
     //Test the add to calendar page
     @isTest static void testUSTHostAssignment() {
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         Test.startTest();
         // ApexPages.currentPage().getParameters().put('instanceID', testInstance.Id);
         ApexPages.StandardController sc = new ApexPages.StandardController(addToRegAppt[0]);
@@ -335,7 +375,7 @@ public with sharing class TestUSTEventShared {
 
     //Test the add to calendar page
     @isTest static void testUSTProgramFinder() {
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         creatTestPrograms();
         Test.startTest();
         // ApexPages.currentPage().getParameters().put('instanceID', testInstance.Id);
@@ -349,7 +389,7 @@ public with sharing class TestUSTEventShared {
 
     //Test itinerary printout
     @isTest static void testItineraryPrint() {
-        createEventWithRegistration('');
+        createEventWithRegistration('','Test Event');
         creatTestPrograms();
         Test.startTest();
         ApexPages.StandardController sc = new ApexPages.StandardController(testInstance);
@@ -372,16 +412,16 @@ public with sharing class TestUSTEventShared {
 
     //Create event data
 
-    private static void createTestEvent() {
+    private static void createTestEvent(String testEventName) {
         audience = 'High School Senior';
         template = 'CastorTemplate2017';
         String hscoll = 'Auto Select on Audience';
         String askGen = 'Ask and require';
         //Create event
         testEvent = new UST_Event__c(
-                Name = 'Test Event',
+                Name = testEventName,
                 Event_Status__c = 'Active',
-                Event_Name__c = 'Test Event',
+                Event_Name__c = testEventName,
                 Start_Date__c = Date.today().addDays(1),
                 End_Date__c = Date.today().addDays(1),
                 Template__c = template,
@@ -468,7 +508,7 @@ public with sharing class TestUSTEventShared {
         //Create event instance
         testInstance = new UST_Event_Instance__c(
                 Event__c = testEvent.Id,
-                Instance_Title__c = 'Test Sesssion',
+                Instance_Title__c = testEventName + ' Sesssion',
                 Start_Date_Time__c = Datetime.now().addDays(1),
                 End_Date_Time__c = Datetime.now().addDays(1).addHours(5),
                 Active_Status__c = 'Active',
@@ -488,7 +528,8 @@ public with sharing class TestUSTEventShared {
                 Gender__c = 'M',
                 Department__c = 'Host Dept 1',
                 Course_Name__c = 'Host 1 Course',
-                Max_Available__c = 10
+                Max_Available__c = 10,
+                Location__c = 'TEST LOCATION 1'
         ));
 
         testHosts.add(new UST_Event_Host__c(
@@ -501,15 +542,16 @@ public with sharing class TestUSTEventShared {
                 Department__c = 'Host Dept 2',
                 Course_Name__c = 'Host 2 Course',
                 Max_Available__c = 10,
-                Assigned__c = 10
+                Assigned__c = 10,
+                Location__c = 'TEST LOCATION 2'
         ));
         insert testHosts;
 
     }
 
-    private static void createEventWithRegistration(String contactType) {
+    private static void createEventWithRegistration(String contactType, String eventTestName) {
         if (testEvent == null) {
-            createTestEvent();
+            createTestEvent(eventTestName);
         }
         if (testUser == null) {
             creatTestUser();
@@ -568,7 +610,8 @@ public with sharing class TestUSTEventShared {
             UST_Event_Appointments__c addThisAppt = new UST_Event_Appointments__c (
                     Event_Appointment_Type__c = nat.Id,
                     Event_Registration__c = testRegistration.Id,
-                    Client_Created_Appointment__c = true
+                    Client_Created_Appointment__c = true,
+                    Room__c = 'TEST ROOM'
             );
             if (math.mod(aptNum, 2) == 0) {
                 addThisAppt.Appointment_Status__c = 'Registered';

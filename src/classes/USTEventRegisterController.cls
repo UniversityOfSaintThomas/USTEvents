@@ -26,11 +26,11 @@ public with sharing class USTEventRegisterController {
     public List<SelectOption> addPick5 { get; set; }
     public List<String> selectedPrograms { get; set; }
     public String selectedProgramsOne { get; set; }
-    public boolean showAddress {get;set;}
-    public boolean showPhone {get;set;}
-    public String applicantType {get;set;}
-    public String locationCrumb {get;set;}
-    public String eventStartDateTimeCrumb {get;set;}
+    public boolean showAddress { get; set; }
+    public boolean showPhone { get; set; }
+    public String applicantType { get; set; }
+    public String locationCrumb { get; set; }
+    public String eventStartDateTimeCrumb { get; set; }
 
 
     public USTEventRegisterController() {
@@ -56,9 +56,9 @@ public with sharing class USTEventRegisterController {
 
         //Set applicant type if audience is passed
         if (!String.isBlank(evtInfo.audience)) {
-            if(evtInfo.audience == 'Transfer' || evtInfo.audience == 'Transfer International') {
+            if (evtInfo.audience == 'Transfer' || evtInfo.audience == 'Transfer International') {
                 applicantType = 'Transfer';
-            } else if (evtInfo.audience == 'High School Senior' || evtInfo.audience == 'High School Junior or Younger'  || evtInfo.audience == 'First-Year International'  || evtInfo.audience == 'Dougherty Family College (2-Year)') {
+            } else if (evtInfo.audience == 'High School Senior' || evtInfo.audience == 'High School Junior or Younger' || evtInfo.audience == 'First-Year International' || evtInfo.audience == 'Dougherty Family College (2-Year)') {
                 applicantType = 'First-Year';
             }
         }
@@ -68,7 +68,7 @@ public with sharing class USTEventRegisterController {
             evtInstance = [
                     SELECT Id, Name, Event__r.Name, Event__r.Event_Name__c, Event__r.Id, Instance_Title__c, Active_Status__c, Capacity__c,
                             Event__r.Event_description__c, Event__r.Audience__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c,
-                            Location_Type_Override__c, Location_Address_Override__c, Location_Map_Link_Override__c, Location_Title_Override__c
+                            Location_Type_Override__c, Location_Address_Override__c, Event__r.Close_Event_Days_Before__c, Location_Map_Link_Override__c, Location_Title_Override__c
                     FROM UST_Event_Instance__c
                     WHERE Id = :evtInfo.instanceID
                     LIMIT 1
@@ -77,9 +77,21 @@ public with sharing class USTEventRegisterController {
             //define Event ID from instanceInfo data
             evtInfo.evtId = evtInstance.Event__r.Id;
             instanceName = evtInstance.Name;
-            if (evtInstance.Current_Available_Capacity__c <= 0 || evtInstance.Active_Status__c != 'Active' || evtInstance.End_Date_Time__c <= Datetime.now() ) {
+            Datetime currentDT = USTShared.adjustForCenteralTime(Datetime.Now());
+
+            if (evtInstance.Event__r.Close_Event_Days_Before__c != null) {
+                currentDT = currentDT.addDays(Integer.Valueof(evtInstance.Event__r.Close_Event_Days_Before__c) + 1);
+            }
+
+            if (evtInstance.Current_Available_Capacity__c <= 0 || evtInstance.Active_Status__c != 'Active' || evtInstance.End_Date_Time__c <= currentDT) {
                 eventIsClosed = true;
             }
+
+            if (String.isNotBlank(ApexPages.currentPage().getParameters().get('adminopen'))) {
+                Boolean adminOpen = Boolean.valueOf(ApexPages.currentPage().getParameters().get('adminopen'));
+                eventIsClosed = adminOpen;
+            }
+
         }
 
         //Get Event Info off of instance master detail id
@@ -116,7 +128,7 @@ public with sharing class USTEventRegisterController {
                             eventPage.Include_Time_frame_List__c ||
                             eventPage.Allow_Other_Attendees__c ||
                             (eventPage.Ask_Gender__c != 'Do not ask' && eventPage.Ask_Gender__c != null) ||
-                            (eventPage.Ask_Registrant_Program_Of_Interest__c  != 'Do not ask' && eventPage.Ask_Registrant_Program_Of_Interest__c  != null)
+                            (eventPage.Ask_Registrant_Program_Of_Interest__c != 'Do not ask' && eventPage.Ask_Registrant_Program_Of_Interest__c != null)
                     ) {
                 additionalQuestions = true;
             }
@@ -152,21 +164,20 @@ public with sharing class USTEventRegisterController {
                 locationCrumb += ' <a href="' + locationMapLink + '" target="_blank">Map</a><br/>';
             }
 
-            if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
+            if (evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null) {
                 eventStartDateTimeCrumb = evtInstance.Start_Date_Time__c.format('MMMM d, YYYY, h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
             }
 
             if (!String.isBlank(locationCrumb)) {
                 locationCrumb = locationCrumb.removeEnd('<br/>');
                 String eventTime = '';
-                if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
+                if (evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null) {
                     eventTime = evtInstance.Start_Date_Time__c.format('EEEE MMMM dd, YYYY');
                     eventTime += '<br/>' + evtInstance.Start_Date_Time__c.format('h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a') + '<br/>';
                 }
                 locationCrumb = eventTime + locationCrumb;
                 locationCrumb = '<h3>Event Details</h3> <p>' + locationCrumb + '</p>';
             }
-
 
 
             //Grab the template if defined
@@ -389,7 +400,7 @@ public with sharing class USTEventRegisterController {
             progSelectionMade = false;
         }
 
-        if(!String.isBlank(selectedProgramsOne)) {
+        if (!String.isBlank(selectedProgramsOne)) {
             selectedPrograms.add(selectedProgramsOne);
         }
 

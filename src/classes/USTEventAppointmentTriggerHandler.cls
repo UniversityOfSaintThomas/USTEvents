@@ -148,42 +148,71 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
                     //Appointment Description
                     generatedItinerary += '<td style="text-align:left;padding-left:10px;">';
                     generatedItinerary += AllAppts[i].Appointment_Title__c + ' - ';
-                    if (!String.isBlank(AllAPpts[i].Description__c)) {
+                    if (!String.isBlank(AllAPpts[i].Description__c) && !isOvernight) {
                         generatedItinerary += AllAPpts[i].Description__c + ' - ';
                     }
                     generatedItinerary = generatedItinerary.removeEnd(' - ');
                     generatedItinerary += '</td>';
 
                     //Appointment Host
-                    if (appointmentsHaveHost) {
-                        generatedItinerary += '<td style="text-align:left;">';
+                    if (isOvernight) {
+                        if (appointmentsHaveHost || appointmentsHaveLocation) {
+                            generatedItinerary += '<td style="text-align:left;">';
+                            if (appointmentsHaveHost) {
+                                if (!String.isBlank(AllAppts[i].Event_Host__r.Course_Name__c)) {
+                                    generatedItinerary += AllAppts[i].Event_Host__r.Course_Name__c + '<br/>';
+                                }
+                                if (!String.isBlank(AllAppts[i].Host_Name__c)) {
+                                    generatedItinerary += AllAppts[i].Host_Name__c + '<br/>';
+                                }
+                                if (!String.isBlank(AllAppts[i].Host_Location__c)) {
+                                    generatedItinerary += AllAppts[i].Host_Location__c + '<br/>';
+                                }
+                                generatedItinerary = generatedItinerary.removeEnd('<br/>');
+                            }
 
-                        if (!String.isBlank(AllAppts[i].Event_Host__r.Course_Name__c)) {
-                            generatedItinerary += AllAppts[i].Event_Host__r.Course_Name__c + '<br/>';
+                            //Appointment Location
+                            if (appointmentsHaveLocation && !appointmentsHaveHost) {
+                                if (!String.isBlank(AllAppts[i].Building__c)) {
+                                    generatedItinerary += AllAppts[i].Building__c + '<br/>';
+                                }
+                                if (!String.isBlank(AllAppts[i].Room__c)) {
+                                    generatedItinerary += AllAppts[i].Room__c + '<br/>';
+                                }
+                                generatedItinerary = generatedItinerary.removeEnd('<br/>');
+                            }
+                            generatedItinerary += '</td>';
                         }
-                        if (!String.isBlank(AllAppts[i].Host_Name__c)) {
-                            generatedItinerary += AllAppts[i].Host_Name__c + '<br/>';
+                    } else {
+                        if (appointmentsHaveHost) {
+                            generatedItinerary += '<td style="text-align:left;">';
+
+                            if (!String.isBlank(AllAppts[i].Event_Host__r.Course_Name__c)) {
+                                generatedItinerary += AllAppts[i].Event_Host__r.Course_Name__c + '<br/>';
+                            }
+                            if (!String.isBlank(AllAppts[i].Host_Name__c)) {
+                                generatedItinerary += AllAppts[i].Host_Name__c + '<br/>';
+                            }
+                            if (!String.isBlank(AllAppts[i].Host_Location__c)) {
+                                generatedItinerary += AllAppts[i].Host_Location__c + '<br/>';
+                            }
+                            generatedItinerary = generatedItinerary.removeEnd('<br/>');
+                            generatedItinerary = generatedItinerary += '</td>';
                         }
-                        if (!String.isBlank(AllAppts[i].Host_Location__c)) {
-                            generatedItinerary += AllAppts[i].Host_Location__c + '<br/>';
+
+                        //Appointment Location
+                        if (appointmentsHaveLocation) {
+                            generatedItinerary += '<td style="text-align:left;">';
+                            if (!String.isBlank(AllAppts[i].Building__c)) {
+                                generatedItinerary += AllAppts[i].Building__c + '<br/>';
+                            }
+                            if (!String.isBlank(AllAppts[i].Room__c)) {
+                                generatedItinerary += AllAppts[i].Room__c + '<br/>';
+                            }
+                            generatedItinerary = generatedItinerary.removeEnd('<br/>');
+                            generatedItinerary += '</td>';
                         }
-                        generatedItinerary = generatedItinerary.removeEnd('<br/>');
-                        generatedItinerary = generatedItinerary += '</td>';
                     }
-
-                    //Appointment Location
-                    if (appointmentsHaveLocation) {
-                        generatedItinerary += '<td style="text-align:left;">';
-                        if (!String.isBlank(AllAppts[i].Building__c)) {
-                            generatedItinerary += AllAppts[i].Building__c + '<br/>';
-                        }
-                        if (!String.isBlank(AllAppts[i].Room__c)) {
-                            generatedItinerary += AllAppts[i].Room__c + '<br/>';
-                        }
-                        generatedItinerary = generatedItinerary.removeEnd('<br/>');
-                        generatedItinerary += '</td>';
-                    }
-
                     generatedItinerary += '</tr>';
                 }
 
@@ -204,11 +233,17 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
 
                     //Appointment Description
                     generatedAppts += '<td style="text-align:left;padding-left:10px;">';
-                    generatedAppts += AllAppts[i].Appointment_Title__c + ' - ';
-                    if (!String.isBlank(AllAPpts[i].Description__c)) {
-                        generatedAppts += AllAPpts[i].Description__c + ' - ';
+
+                    if (isOvernight) {
+                        generatedAppts += AllAppts[i].Appointment_Title__c;
+                    } else {
+                        generatedAppts += AllAppts[i].Appointment_Title__c + ' - ';
+                        if (!String.isBlank(AllAPpts[i].Description__c)) {
+                            generatedAppts += AllAPpts[i].Description__c + ' - ';
+                        }
+                        generatedAppts = generatedAppts.removeEnd(' - ');
                     }
-                    generatedAppts = generatedAppts.removeEnd(' - ');
+
                     generatedAppts += '</td>';
 
                     generatedAppts += '</tr>';
@@ -219,8 +254,14 @@ public with sharing class USTEventAppointmentTriggerHandler implements ITrigger 
 
             }
 
+
             if (!String.isBlank(generatedItinerary)) {
-                generatedItinerary = '<table><tr>' + tableHead + tableHead2 + '</tr>' + generatedItinerary + '</table>';
+                if (isOvernight) {
+                    generatedItinerary = '<table>' + generatedItinerary + '</table>';
+                } else {
+                    generatedItinerary = '<table><tr>' + tableHead + tableHead2 + '</tr>' + generatedItinerary + '</table>';
+                }
+
             }
 
             if (!String.isBlank(generatedAppts)) {
