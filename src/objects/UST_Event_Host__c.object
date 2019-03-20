@@ -46,6 +46,7 @@
     <description>Hosts that can be applied to appointments on an event registration record.</description>
     <enableActivities>true</enableActivities>
     <enableBulkApi>true</enableBulkApi>
+    <enableEnhancedLookup>true</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
     <enableReports>true</enableReports>
@@ -326,6 +327,169 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
         <columns>Max_Available__c</columns>
         <filterScope>Everything</filterScope>
         <label>All</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_Hosts</fullName>
+        <columns>NAME</columns>
+        <columns>Last_Name__c</columns>
+        <columns>First_Name__c</columns>
+        <columns>Max_Available__c</columns>
+        <columns>Gender__c</columns>
+        <columns>Undergrad_Major__c</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Time__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>Location__c</columns>
+        <columns>Department__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <label>All Hosts</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_Hosts_Classes</fullName>
+        <columns>NAME</columns>
+        <columns>Last_Name__c</columns>
+        <columns>First_Name__c</columns>
+        <columns>Max_Available__c</columns>
+        <columns>Gender__c</columns>
+        <columns>Undergrad_Major__c</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Time__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>Location__c</columns>
+        <columns>Department__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>UST_Event_Host__c.Class</value>
+        </filters>
+        <label>All Hosts - Classes</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_Hosts_Coaches</fullName>
+        <columns>NAME</columns>
+        <columns>Last_Name__c</columns>
+        <columns>First_Name__c</columns>
+        <columns>Max_Available__c</columns>
+        <columns>Gender__c</columns>
+        <columns>Undergrad_Major__c</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Time__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>Location__c</columns>
+        <columns>Department__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>UST_Event_Host__c.Coach</value>
+        </filters>
+        <label>All Hosts - Coaches</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_Hosts_Counselor</fullName>
+        <columns>NAME</columns>
+        <columns>Last_Name__c</columns>
+        <columns>First_Name__c</columns>
+        <columns>Max_Available__c</columns>
+        <columns>Gender__c</columns>
+        <columns>Undergrad_Major__c</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Time__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>Location__c</columns>
+        <columns>Department__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>UST_Event_Host__c.Counselor</value>
+        </filters>
+        <label>All Hosts - Counselor</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_Hosts_Faculty</fullName>
+        <columns>NAME</columns>
+        <columns>Last_Name__c</columns>
+        <columns>First_Name__c</columns>
+        <columns>Max_Available__c</columns>
+        <columns>Gender__c</columns>
+        <columns>Undergrad_Major__c</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Time__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>Location__c</columns>
+        <columns>Department__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>UST_Event_Host__c.Faculty</value>
+        </filters>
+        <label>All Hosts - Faculty</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_Hosts_Housing</fullName>
+        <columns>NAME</columns>
+        <columns>Last_Name__c</columns>
+        <columns>First_Name__c</columns>
+        <columns>Max_Available__c</columns>
+        <columns>Gender__c</columns>
+        <columns>Undergrad_Major__c</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Time__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>Location__c</columns>
+        <columns>Department__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>UST_Event_Host__c.Housing</value>
+        </filters>
+        <label>All Hosts - Housing</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>All_Hosts_Today</fullName>
+        <columns>NAME</columns>
+        <columns>Last_Name__c</columns>
+        <columns>First_Name__c</columns>
+        <columns>Max_Available__c</columns>
+        <columns>Gender__c</columns>
+        <columns>Undergrad_Major__c</columns>
+        <columns>RECORDTYPE</columns>
+        <columns>Time__c</columns>
+        <columns>CREATEDBY_USER</columns>
+        <columns>Location__c</columns>
+        <columns>Department__c</columns>
+        <columns>UPDATEDBY_USER</columns>
+        <columns>LAST_UPDATE</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>CREATED_DATE</field>
+            <operation>equals</operation>
+            <value>TODAY</value>
+        </filters>
+        <label>All Hosts Today</label>
         <language>en_US</language>
     </listViews>
     <nameField>
@@ -2832,9 +2996,52 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
         </picklistValues>
     </recordTypes>
     <searchLayouts>
-        <lookupDialogsAdditionalFields>Gender__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>Contact__c</lookupDialogsAdditionalFields>
-        <lookupDialogsAdditionalFields>Undergrad_Major__c</lookupDialogsAdditionalFields>
+        <customTabListAdditionalFields>Last_Name__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>First_Name__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>RECORDTYPE</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Max_Available__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Assigned__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Remaining__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Location__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>Event_Instance__c</customTabListAdditionalFields>
+        <customTabListAdditionalFields>CREATED_DATE</customTabListAdditionalFields>
+        <lookupDialogsAdditionalFields>Last_Name__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>First_Name__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>RECORDTYPE</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Max_Available__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Assigned__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Remaining__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Location__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>Event_Instance__c</lookupDialogsAdditionalFields>
+        <lookupDialogsAdditionalFields>CREATED_DATE</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Last_Name__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>First_Name__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>RECORDTYPE</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Max_Available__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Assigned__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Remaining__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Location__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Event_Instance__c</lookupPhoneDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>CREATED_DATE</lookupPhoneDialogsAdditionalFields>
+        <searchFilterFields>NAME</searchFilterFields>
+        <searchFilterFields>Last_Name__c</searchFilterFields>
+        <searchFilterFields>First_Name__c</searchFilterFields>
+        <searchFilterFields>RECORDTYPE</searchFilterFields>
+        <searchFilterFields>Max_Available__c</searchFilterFields>
+        <searchFilterFields>Assigned__c</searchFilterFields>
+        <searchFilterFields>Remaining__c</searchFilterFields>
+        <searchFilterFields>Location__c</searchFilterFields>
+        <searchFilterFields>Event_Instance__c</searchFilterFields>
+        <searchFilterFields>CREATED_DATE</searchFilterFields>
+        <searchResultsAdditionalFields>Last_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>First_Name__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>RECORDTYPE</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Max_Available__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Assigned__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Remaining__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Location__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Event_Instance__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>CREATED_DATE</searchResultsAdditionalFields>
     </searchLayouts>
     <sharingModel>ControlledByParent</sharingModel>
     <visibility>Public</visibility>

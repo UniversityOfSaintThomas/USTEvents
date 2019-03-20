@@ -67,6 +67,23 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Admin_Open_Registration__c</fullName>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(
+Event__r.Community_Base_URL__c
+&amp; &quot;USTEventRegister?instanceID=&quot;
+&amp; Id
+&amp; &quot;&amp;adminopen=1&quot;
+,&quot;Admin Open Registration&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Admin Open Registration Link</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Alternate_Registration_URL_Override__c</fullName>
         <description>If you wish to override the master event configuration for an alternate registration link you may do so here.</description>
         <externalId>false</externalId>
@@ -456,6 +473,23 @@ Event__r.Community_Base_URL__c
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>
+    <webLinks>
+        <fullName>Apsona_Itineraries</fullName>
+        <availability>online</availability>
+        <displayType>button</displayType>
+        <linkType>javascript</linkType>
+        <masterLabel>Apsona Itineraries</masterLabel>
+        <openType>onClickJavaScript</openType>
+        <protected>false</protected>
+        <url>/** Merge button code for action &quot;Document merge: MergeItinerary 2019-02-18_15:34&quot; to use in detail page for UST_Event_Instance__c **/
+{!REQUIRESCRIPT(&quot;https://service.apsona.com/sfdc/apsona_inline.min.js&quot;)}
+apsona.runAction (&quot;buttonMerge&quot;, {
+&quot;element&quot;: this,
+&quot;actionId&quot;: &quot;a01560000019e5LAAQ&quot;,
+&quot;recordId&quot;: &quot;{!UST_Event_Instance__c.Id}&quot;,
+&quot;linkFieldId&quot;: &quot;Id&quot;
+});</url>
+    </webLinks>
     <webLinks>
         <fullName>Conga_Composer_Event_Print_Outs</fullName>
         <availability>online</availability>

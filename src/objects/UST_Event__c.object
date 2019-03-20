@@ -83,6 +83,101 @@
                     <default>false</default>
                     <label>All</label>
                 </value>
+                <value>
+                    <fullName>Part-time Flex MBA (BU_PT_MBA|PTMB)</fullName>
+                    <default>false</default>
+                    <label>Part-time Flex MBA (BU_PT_MBA|PTMB)</label>
+                </value>
+                <value>
+                    <fullName>Online MBA (BU_OL_MBA|PTMB)</fullName>
+                    <default>false</default>
+                    <label>Online MBA (BU_OL_MBA|PTMB)</label>
+                </value>
+                <value>
+                    <fullName>Full-time Flex MBA (BU_FT_MBA|FTMB)</fullName>
+                    <default>false</default>
+                    <label>Full-time Flex MBA (BU_FT_MBA|FTMB)</label>
+                </value>
+                <value>
+                    <fullName>Health Care MBA (BU_HC_MBA|HCMB)</fullName>
+                    <default>false</default>
+                    <label>Health Care MBA (BU_HC_MBA|HCMB)</label>
+                </value>
+                <value>
+                    <fullName>Executive MBA (BU_EX_MBA|EXMB)</fullName>
+                    <default>false</default>
+                    <label>Executive MBA (BU_EX_MBA|EXMB)</label>
+                </value>
+                <value>
+                    <fullName>Transformational Change and Organization Development (BU_GR_CER|BUOD)</fullName>
+                    <default>false</default>
+                    <label>Transformational Change and Organization Development (BU_GR_CER|BUOD)</label>
+                </value>
+                <value>
+                    <fullName>Health Care Communication (BU_HCC_MS|HCMS)</fullName>
+                    <default>false</default>
+                    <label>Health Care Communication (BU_HCC_MS|HCMS)</label>
+                </value>
+                <value>
+                    <fullName>Health Care Innovation (BU_HCI_MS|HCIN)</fullName>
+                    <default>false</default>
+                    <label>Health Care Innovation (BU_HCI_MS|HCIN)</label>
+                </value>
+                <value>
+                    <fullName>Accountancy (BU_AC_MS|ACMS)</fullName>
+                    <default>false</default>
+                    <label>Accountancy (BU_AC_MS|ACMS)</label>
+                </value>
+                <value>
+                    <fullName>Business Analytics (BU_BA_MS|BUAT)</fullName>
+                    <default>false</default>
+                    <label>Business Analytics (BU_BA_MS|BUAT)</label>
+                </value>
+                <value>
+                    <fullName>Business Analytics (BU_GR_CER|BUAT)</fullName>
+                    <default>false</default>
+                    <label>Business Analytics (BU_GR_CER|BUAT)</label>
+                </value>
+                <value>
+                    <fullName>Strategic Risk and Responsibility (BU_GR_CER|BUSR)</fullName>
+                    <default>false</default>
+                    <label>Strategic Risk and Responsibility (BU_GR_CER|BUSR)</label>
+                </value>
+                <value>
+                    <fullName>Business Analytics (Online) (BU_GR_CER|BOAT)</fullName>
+                    <default>false</default>
+                    <label>Business Analytics (Online) (BU_GR_CER|BOAT)</label>
+                </value>
+                <value>
+                    <fullName>Global Business (BU_GR_CER|BUGL)</fullName>
+                    <default>false</default>
+                    <label>Global Business (BU_GR_CER|BUGL)</label>
+                </value>
+                <value>
+                    <fullName>Marketing Communication (BU_GR_CER|BUMC)</fullName>
+                    <default>false</default>
+                    <label>Marketing Communication (BU_GR_CER|BUMC)</label>
+                </value>
+                <value>
+                    <fullName>Digital Experience (BU_GR_CER|BUDE)</fullName>
+                    <default>false</default>
+                    <label>Digital Experience (BU_GR_CER|BUDE)</label>
+                </value>
+                <value>
+                    <fullName>Strategic Growth (BU_GR_CER|BUGS)</fullName>
+                    <default>false</default>
+                    <label>Strategic Growth (BU_GR_CER|BUGS)</label>
+                </value>
+                <value>
+                    <fullName>Corporate Communication (BU_GR_CER|BUCC)</fullName>
+                    <default>false</default>
+                    <label>Corporate Communication (BU_GR_CER|BUCC)</label>
+                </value>
+                <value>
+                    <fullName>Executive Coaching (BU_EC_CER|BUEC)</fullName>
+                    <default>false</default>
+                    <label>Executive Coaching (BU_EC_CER|BUEC)</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
         <visibleLines>5</visibleLines>
@@ -508,6 +603,17 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Ask_Date_Of_Birth__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>Ask for registrants date of birth upon registration. This will be included in matching to the contact record.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Ask for registrants date of birth upon registration. This will be included in matching to the contact record.</inlineHelpText>
+        <label>Ask Date Of Birth</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Ask_Gender__c</fullName>
         <description>Ask about a registrants gender</description>
         <externalId>false</externalId>
@@ -697,6 +803,11 @@
                     <default>false</default>
                     <label>Transfer International</label>
                 </value>
+                <value>
+                    <fullName>Regional Event</fullName>
+                    <default>false</default>
+                    <label>Regional Event</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
         <visibleLines>4</visibleLines>
@@ -777,22 +888,7 @@
         <fullName>Community_Base_URL__c</fullName>
         <description>The base URL of the Salesforce community. This is not the start of the event app, just the start of the orgs community.</description>
         <externalId>false</externalId>
-        <formula>/* GET SUB-DOMAIN OF CURRENT SALESFORCE ORG - cs65  is dev, cs18 is staging, else production na54 which we will default to*/
-            CASE(
-
-            /* Parse out the sub-domain of current org */
-            RIGHT(
-            LEFT($Api.Partner_Server_URL_260, FIND( &apos;.&apos;, $Api.Partner_Server_URL_260) - 1),
-            FIND(&apos;//&apos;, LEFT($Api.Partner_Server_URL_260, FIND( &apos;.&apos;, $Api.Partner_Server_URL_260) - 1)) - 3)
-            /* End parse of sub-domain of current org */
-
-            /* Start cases to apply hard coded base url of community */
-            ,&apos;cs65&apos;, &apos;https://dev-stthomas.cs65.force.com/applicantportal/&apos;
-            ,&apos;cs42&apos;, &apos;https://staging-stthomas.cs42.force.com/applicantportal/&apos;
-            ,&apos;na54&apos;,  &apos;https://stthomas.force.com/applicantportal/&apos;
-            , LEFT($Api.Partner_Server_URL_260, FIND( &apos;/service&apos;, $Api.Partner_Server_URL_260) - 1) + &apos;/&apos;
-
-)</formula>
+        <formula>$Setup.UST_Event_Settings__c.Community_Base_URL__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <inlineHelpText>The base URL of the Salesforce community. This is not the start of the event app, just the start of the orgs community.</inlineHelpText>
         <label>Community Base URL</label>
@@ -2324,6 +2420,10 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>No Audience</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Regional Event</fullName>
                 <default>false</default>
             </values>
             <values>
