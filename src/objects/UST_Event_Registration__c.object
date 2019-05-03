@@ -49,6 +49,7 @@
     <enableEnhancedLookup>true</enableEnhancedLookup>
     <enableFeeds>false</enableFeeds>
     <enableHistory>true</enableHistory>
+    <enableLicensing>false</enableLicensing>
     <enableReports>true</enableReports>
     <enableSearch>true</enableSearch>
     <enableSharing>true</enableSharing>
@@ -653,6 +654,18 @@ Event__r.Community_Base_URL__c
         </valueSet>
     </fields>
     <fields>
+        <fullName>Last_Name_as_Student__c</fullName>
+        <description>Field used by UDAR to identify/match students</description>
+        <externalId>false</externalId>
+        <label>Last Name as Student</label>
+        <length>80</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Location_Address__c</fullName>
         <externalId>false</externalId>
         <formula>IF( !ISBLANK(Event_Instance__r.Location_Address_Override__c), 
@@ -695,6 +708,18 @@ Event__r.Community_Base_URL__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Matching_Log__c</fullName>
+        <description>Log of matches and soft matches.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Log of matches and soft matches.</inlineHelpText>
+        <label>Matching Log</label>
+        <length>32768</length>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Html</type>
+        <visibleLines>25</visibleLines>
+    </fields>
+    <fields>
         <fullName>New_Contact_Created__c</fullName>
         <defaultValue>false</defaultValue>
         <description>This is checked when while registering for an event on the Web a client&apos;s contact was not found and the event app created one for them.</description>
@@ -726,6 +751,18 @@ Event__r.Community_Base_URL__c
 Registrant_Last_Name__c</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Preferred First Name Formatted</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Preferred_St_Thomas_Class_Year__c</fullName>
+        <description>Created for UDAR Events to match on Preferred St. Thomas Class Year.</description>
+        <externalId>false</externalId>
+        <label>Preferred St. Thomas Class Year</label>
+        <length>4</length>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
@@ -1274,6 +1311,61 @@ Registrant_Last_Name__c</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Relationship_to_St_Thomas__c</fullName>
+        <externalId>false</externalId>
+        <label>Relationship to St. Thomas</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Alumni</fullName>
+                    <default>false</default>
+                    <label>Alumni</label>
+                </value>
+                <value>
+                    <fullName>Current Student</fullName>
+                    <default>false</default>
+                    <label>Current Student</label>
+                </value>
+                <value>
+                    <fullName>Parent</fullName>
+                    <default>false</default>
+                    <label>Parent</label>
+                </value>
+                <value>
+                    <fullName>Prospective Student</fullName>
+                    <default>false</default>
+                    <label>Prospective Student</label>
+                </value>
+                <value>
+                    <fullName>Friend</fullName>
+                    <default>false</default>
+                    <label>Friend</label>
+                </value>
+                <value>
+                    <fullName>Faculty/Staff</fullName>
+                    <default>false</default>
+                    <label>Faculty/Staff</label>
+                </value>
+                <value>
+                    <fullName>Family</fullName>
+                    <default>false</default>
+                    <label>Family</label>
+                </value>
+                <value>
+                    <fullName>Other</fullName>
+                    <default>false</default>
+                    <label>Other</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
+    <fields>
         <fullName>Reminder_Call_Complete__c</fullName>
         <defaultValue>false</defaultValue>
         <description>Has the attendee been called to remind them of the event?</description>
@@ -1404,6 +1496,12 @@ Registrant_Last_Name__c</formula>
                     <fullName>Status</fullName>
                     <default>false</default>
                     <label>Status</label>
+                </value>
+                <value>
+                    <fullName>Not Planning to Attend</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>Not Planning to Attend</label>
                 </value>
             </valueSetDefinition>
         </valueSet>

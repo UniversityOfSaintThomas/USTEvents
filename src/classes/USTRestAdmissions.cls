@@ -17,6 +17,8 @@ global with sharing class USTRestAdmissions {
         String interest { get; set; }
         String programCode { get; set; }
         String programMajorCode { get; set; }
+        String major {get;set;}
+        String minor {get;set;}
     }
 
     @HttpGet
@@ -31,87 +33,113 @@ global with sharing class USTRestAdmissions {
         }
 
         String feedType = RestContext.request.params.get('type');
-        if (!String.isBlank(feedType)) {
-            if (feedType.toLowerCase() == 'highschool') {
+        if (String.isNotBlank(feedType)) {
+            if (feedType.equalsIgnoreCase('highschool')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=highschool
                 serializedJSON = JSON.serialize(getSchools('High School'));
 
-            } else if (feedType.toLowerCase() == 'college') {
+            } else if (feedType.equalsIgnoreCase( 'college')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=college
                 serializedJSON = JSON.serialize(getSchools('College'));
 
-            } else if (feedType.toLowerCase() == 'states') {
+            } else if (feedType.equalsIgnoreCase('states')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=states
                 serializedJSON = JSON.serialize(getObjDefMap(Contact.MailingState__c.getDescribe()));
 
-            } else if (feedType.toLowerCase() == 'cities') {
+            } else if (feedType.equalsIgnoreCase('cities')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=cities
                 serializedJSON = JSON.serialize(getCityList());
 
-            } else if (feedType.toLowerCase() == 'countries') {
+            } else if (feedType.equalsIgnoreCase('countries')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/ustadmissionsrest.json?type=countries
                 serializedJSON = JSON.serialize(getObjDefMap(Contact.MailingCountry__c.getDescribe()));
 
-            } else if (feedType.toLowerCase() == 'gradschools') {
+            } else if (feedType.equalsIgnoreCase('gradschools')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=gradschools
                 serializedJSON = JSON.serialize(getUSTSchools());
 
-            } else if (feedType.toLowerCase() == 'gradprograms') {
+            } else if (feedType.equalsIgnoreCase('gradprograms')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=gradprograms
                 serializedJSON = JSON.serialize(getGradPrograms());
 
-            } else if (feedType.toLowerCase() == 'ugmajors') {
+            } else if (feedType.equalsIgnoreCase('ugmajors')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=ugmajors
                 serializedJSON = JSON.serialize(getUGMajors());
 
-            } else if (feedType.toLowerCase() == 'ugactivities') {
+            } else if (feedType.equalsIgnoreCase('ugactivities')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=ugmajors
                 serializedJSON = JSON.serialize(getActivities('Clubs and Organizations'));
 
-            } else if (feedType.toLowerCase() == 'ugclubsports') {
+            } else if (feedType.equalsIgnoreCase('ugclubsports')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=ugclubsports
                 serializedJSON = JSON.serialize(getActivities('Intramurals/Club Sports'));
 
-            } else if (feedType.toLowerCase() == 'ugvarsitysports') {
+            } else if (feedType.equalsIgnoreCase('ugvarsitysports')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=ugvarsitysports
                 serializedJSON = JSON.serialize(getActivities('Varsity Sports'));
 
-            } else if (feedType.toLowerCase() == 'ugmusic') {
+            } else if (feedType.equalsIgnoreCase('ugmusic')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=ugmusic
                 serializedJSON = JSON.serialize(getActivities('Music'));
 
-            } else if (feedType.toLowerCase() == 'areaofinterest') {
+            } else if (feedType.equalsIgnoreCase('areaofinterest')) {
                 serializedJSON = JSON.serialize(getObjDefMap(Major__c.Areas_of_Interest_for_program_finder__c.getDescribe()));
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=areaofinterest
 
-            } else if (feedType.toLowerCase() == 'degree') {
+            } else if (feedType.equalsIgnoreCase('degree')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=degree
                 serializedJSON = JSON.serialize(getObjDefMap(EnrollmentrxRx__Program_Offered__c.Degree_Level__c.getDescribe()));
 
-            } else if (feedType.toLowerCase() == 'learningstyle') {
+            } else if (feedType.equalsIgnoreCase('learningstyle')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=degree
                 serializedJSON = JSON.serialize(getObjDefMap(Major__c.Learning_Style_for_program_finder__c.getDescribe()));
-            } else if (feedType.toLowerCase() == 'programfinder') {
-                serializedJSON = JSON.serialize(programFinder());
+            } else if (feedType.equalsIgnoreCase('programfinder')) {
+                serializedJSON = JSON.serialize(programFinder('all'));
+            } else if (feedType.equalsIgnoreCase('ugprogramfinder')) {
+                serializedJSON = JSON.serialize(programFinder('ug'));
+            } else if (feedType.equalsIgnoreCase('gradprogramfinder')) {
+                serializedJSON = JSON.serialize(programFinder('grad'));
+            } else if (feedType.equalsIgnoreCase('ugschools')) {
+                serializedJSON = JSON.serialize(getObjDefMap(Major__c.College_School__c.getDescribe()));
             }
         }
-        if (!String.isBlank(callback)) {
+        if (String.isNotBlank(callback)) {
             serializedJSON = callback + '(' + serializedJSON + ')';
         }
         res.responseBody = Blob.valueOf(serializedJSON);
     }
 
-    private static List<programData> programFinder() {
+    private static List<programData> programFinder( String pftype) {
+
+        /*
+        Major_Display_Name__c
+        Display_on_Program_Finder_UG__c (checkbox = TRUE)
+        College_School__c (multiselect picklist)
+        Keyword_for_Program_Finder__c (text)
+        Major_Web_URL__c
+        Areas_of_Interest_for_program_finder__c (multiselect picklist))
+        Learning_Style_for_program_finder__c (single picklist)
+        Pre_Professional_Program__c (checkbox)
+        STVMAJR_VALID_MAJOR_IND__c (Y)
+        STVMAJR_VALID_MINOR_IND__c (Y)
+        */
+
         List<programData> programList = new List<programData>();
         List<Major__c> majorList = new List<Major__c>();
         String majorQuery = '';
 
         // Build the query as a string for flexibility
         majorQuery += ' SELECT Id,Display_on_Program_Finder__c, Display_on_RFI__c, Major_Display_Name__c, Prog_Major_Conc_Code__c, Program_Code__c, Status__c, ';
-        majorQuery += ' Program_Offered__r.Degree_Level__c, Keyword_for_Program_Finder__c,Major_Web_URL__c, Program_Offered__r.Program_Code__c, ';
-        majorQuery += ' Areas_of_Interest_for_program_finder__c,Learning_Style_for_program_finder__c, Program_Offered__r.School__r.Name, Program_Offered__r.School__c ';
+        majorQuery += ' Program_Offered__r.Degree_Level__c, Keyword_for_Program_Finder__c,Major_Web_URL__c, Program_Offered__r.Program_Code__c, College_School__c, STVMAJR_VALID_MAJOR_IND__c, STVMAJR_VALID_MINOR_IND__c, ';
+        majorQuery += ' Areas_of_Interest_for_program_finder__c,Learning_Style_for_program_finder__c, Program_Offered__r.School__r.Name, Program_Offered__r.School__c, Pre_Professional_Program__c ';
         majorQuery += ' FROM Major__c ';
-        majorQuery += ' WHERE Display_on_Program_Finder__c = true AND';
+        if (pftype.equalsIgnoreCase('grad')) {
+            majorQuery += ' WHERE Display_on_Program_Finder__c = true AND';
+        } else if (pftype.equalsIgnoreCase('ug')) {
+            majorQuery += ' WHERE Display_on_Program_Finder_UG__c = true AND';
+        } else {
+            majorQuery += ' WHERE Display_on_Program_Finder_UG__c = true AND Display_on_Program_Finder__c = true AND';
+        }
 
         // Possible URL variables
         // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=programfinder
@@ -125,35 +153,71 @@ global with sharing class USTRestAdmissions {
         // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=programfinder&interest=&degree=&style=&schoolId=&filter=
 
 
-        if (!String.isBlank(RestContext.request.params.get('interest'))) {
+        if (String.isNotBlank(RestContext.request.params.get('interest'))) {
             String majorInterest = String.valueOf(RestContext.request.params.get('interest'));
             majorQuery += ' Areas_of_Interest_for_program_finder__c  IN (\'' + majorInterest + '\') AND' ;
         }
 
-        If (!String.isBlank(RestContext.request.params.get('degree'))) {
+        If (String.isNotBlank(RestContext.request.params.get('degree'))) {
             String majorDegree = String.valueOf(RestContext.request.params.get('degree'));
             majorQuery += ' Program_Offered__r.Degree_Level__c = \'' + majorDegree + '\'  AND' ;
         }
 
-        if (!String.isBlank(RestContext.request.params.get('style'))) {
+        if (String.isNotBlank(RestContext.request.params.get('style'))) {
             String majorStyle = String.valueOf(RestContext.request.params.get('style'));
             majorQuery += ' Learning_Style_for_program_finder__c IN (\'' + majorStyle + '\') AND' ;
         }
 
-        if (!String.isBlank(RestContext.request.params.get('school'))) {
+        if (String.isNotBlank(RestContext.request.params.get('school'))) {
             String majorSchool = String.valueOf(RestContext.request.params.get('school'));
-            majorQuery += ' Program_Offered__r.School__r.Name = \'' + majorSchool + '\' AND' ;
+            if(pftype.equalsIgnoreCase('grad')) {
+                majorQuery += ' Program_Offered__r.School__r.Name = \'' + majorSchool + '\' AND' ;
+            } else if (pftype.equalsIgnoreCase('ug')) {
+                majorQuery += ' College_School__c IN (\'' + majorSchool + '\') AND' ;
+            }
+
         }
 
-        if (!String.isBlank(RestContext.request.params.get('schoolId'))) {
+        if (String.isNotBlank(RestContext.request.params.get('schoolId'))) {
             String majorSchoolId = String.valueOf(RestContext.request.params.get('schoolId'));
             majorQuery += ' Program_Offered__r.School__c = \'' + majorSchoolId + '\' AND' ;
+        }
+
+        if (String.isNotBlank(RestContext.request.params.get('program'))) {
+            String programName = String.valueOf(RestContext.request.params.get('program'));
+            majorQuery += ' Program_Offered__r.Name = \'' + programName + '\' AND' ;
+        }
+
+        if (String.isNotBlank(RestContext.request.params.get('minors'))) {
+            Boolean minors = false;
+            try {
+                minors = Boolean.valueOf(RestContext.request.params.get('minors'));
+            } catch (Exception e) {
+            }
+            if (minors) {
+                majorQuery += ' (STVMAJR_VALID_MINOR_IND__c = \'Y\' OR STVMAJR_VALID_MINOR_IND__c = \'Yes\') AND' ;
+            } else if (!minors) {
+                majorQuery += ' (STVMAJR_VALID_MINOR_IND__c = \'N\' OR STVMAJR_VALID_MINOR_IND__c = \'No\') AND' ;
+            }
+        }
+
+        if (String.isNotBlank(RestContext.request.params.get('majors'))) {
+            Boolean majors = false;
+            try {
+                majors = Boolean.valueOf(RestContext.request.params.get('majors'));
+            } catch (Exception e) {
+            }
+            if (majors) {
+                majorQuery += ' (STVMAJR_VALID_MAJOR_IND__c = \'Y\' OR  STVMAJR_VALID_MAJOR_IND__c = \'Yes\') AND' ;
+            } else if (!majors) {
+                majorQuery += ' (STVMAJR_VALID_MAJOR_IND__c = \'N\' OR STVMAJR_VALID_MAJOR_IND__c = \'No\') AND' ;
+            }
         }
 
         majorQuery = majorQuery.removeEnd('AND');
 
         //split apart the filter on commas and test against the fields in the query
-        if (!String.isBlank(RestContext.request.params.get('filter'))) {
+        if (String.isNotBlank(RestContext.request.params.get('filter'))) {
             String majorFilter = String.valueOf(RestContext.request.params.get('filter'));
             majorQuery += ' AND  (';
             List<String> filterList = majorFilter.split(',');
@@ -163,6 +227,7 @@ global with sharing class USTRestAdmissions {
                 majorQuery += ' Program_Offered__r.Degree_Level__c LIKE \'%' + f + '%\' OR ';
                 majorQuery += ' Areas_of_Interest_for_program_finder__c IN (\'' + f + '\') OR ';
                 majorQuery += ' Major_Display_Name__c LIKE \'%' + f + '%\' OR ';
+                majorQuery += ' College_School__c IN (\'' +f + '\') OR ' ;
             }
             majorQuery = majorQuery.removeEnd('OR ');
             majorQuery += ' ) ';
@@ -180,16 +245,23 @@ global with sharing class USTRestAdmissions {
         for (Major__c m : majorList) {
             programData pd = new programData();
             pd.title = m.Major_Display_Name__c;
-            pd.link = (!String.isBlank(m.Major_Web_URL__c) ? m.Major_Web_URL__c : '');
-            pd.degreeLevel = (!String.isBlank(m.Program_Offered__r.Degree_Level__c) ? m.Program_Offered__r.Degree_Level__c : '');
-            pd.learningStyle = (!String.isBlank(m.Learning_Style_for_program_finder__c) ? m.Learning_Style_for_program_finder__c : '');
-            pd.school = (!String.isBlank(m.Program_Offered__r.School__r.Name) ? m.Program_Offered__r.School__r.Name : '');
-            pd.interest = (!String.isBlank(m.Areas_of_Interest_for_program_finder__c) ? m.Areas_of_Interest_for_program_finder__c : '');
-            pd.majorId = (!String.isBlank(m.Id) ? m.Id : '');
-            pd.schoolId = (!String.isBlank(String.valueOf(m.Program_Offered__r.School__c)) ? String.valueOf(m.Program_Offered__r.School__c) : '');
-            pd.programId = (!String.isBlank(String.valueOf(m.Program_Offered__c)) ? String.valueOf(m.Program_Offered__c) : '');
-            pd.programCode = (!String.isBlank(m.Program_Code__c) ? m.Program_Code__c : '');
-            pd.programMajorCode = (!String.isBlank(m.Prog_Major_Conc_Code__c) ? m.Prog_Major_Conc_Code__c : '');
+            pd.link = (String.isNotBlank(m.Major_Web_URL__c) ? m.Major_Web_URL__c : '');
+            pd.degreeLevel = (String.isNotBlank(m.Program_Offered__r.Degree_Level__c) ? m.Program_Offered__r.Degree_Level__c : '');
+            pd.learningStyle = (String.isNotBlank(m.Learning_Style_for_program_finder__c) ? m.Learning_Style_for_program_finder__c : '');
+            if (pftype.equalsIgnoreCase('ug')) {
+                pd.school = (String.isNotBlank(m.College_School__c) ? m.College_School__c : '');
+            } else {
+                pd.school = (String.isNotBlank(m.Program_Offered__r.School__r.Name) ? m.Program_Offered__r.School__r.Name : '');
+            }
+
+            pd.interest = (String.isNotBlank(m.Areas_of_Interest_for_program_finder__c) ? m.Areas_of_Interest_for_program_finder__c : '');
+            pd.majorId = (String.isNotBlank(m.Id) ? m.Id : '');
+            pd.schoolId = (String.isNotBlank(String.valueOf(m.Program_Offered__r.School__c)) ? String.valueOf(m.Program_Offered__r.School__c) : '');
+            pd.programId = (String.isNotBlank(String.valueOf(m.Program_Offered__c)) ? String.valueOf(m.Program_Offered__c) : '');
+            pd.programCode = (String.isNotBlank(m.Program_Code__c) ? m.Program_Code__c : '');
+            pd.programMajorCode = (String.isNotBlank(m.Prog_Major_Conc_Code__c) ? m.Prog_Major_Conc_Code__c : '');
+            pd.major = (String.isNotBlank(m.STVMAJR_VALID_MAJOR_IND__c) && ( m.STVMAJR_VALID_MAJOR_IND__c.equalsIgnoreCase('y') || m.STVMAJR_VALID_MAJOR_IND__c.equalsIgnoreCase('yes')) ? 'true' : 'false');
+            pd.minor = (String.isNotBlank(m.STVMAJR_VALID_MINOR_IND__c) && ( m.STVMAJR_VALID_MINOR_IND__c.equalsIgnoreCase('y') || m.STVMAJR_VALID_MINOR_IND__c.equalsIgnoreCase('yes')) ? 'true' : 'false');
             programList.add(pd);
         }
         return programList;
@@ -232,7 +304,7 @@ global with sharing class USTRestAdmissions {
         Map<String, String> keyValOut = new Map<String, String>();
         String schoolId = '';
         List<Major__c> schoolProgs = new List<Major__c>();
-        if (!String.isBlank(RestContext.request.params.get('schoolid'))) {
+        if (String.isNotBlank(RestContext.request.params.get('schoolid'))) {
             schoolId = RestContext.request.params.get('schoolid');
             schoolProgs = [
                     SELECT Id,Name, Major_Display_Name__c, Major_Name__c, Major_Code__c, Prog_Major_Conc_Code__c, Program_Offered__r.Program_Code__c
@@ -277,10 +349,10 @@ global with sharing class USTRestAdmissions {
     global static Map<String, String> getCityList() {
         String state = '';
         Map<String, String> keyValOut = new Map<String, String>();
-        if (!String.isBlank(RestContext.request.params.get('state'))) {
+        if (String.isNotBlank(RestContext.request.params.get('state'))) {
             state = RestContext.request.params.get('state').toUpperCase();
         }
-        if (!String.isBlank(state)) {
+        if (String.isNotBlank(state)) {
             List<City__c> cityList = [SELECT Name FROM City__c WHERE State_Code__c = :state ORDER BY Name DESC];
             For (City__c city : cityList) {
                 keyValOut.put(city.Name, city.Name);
@@ -295,16 +367,16 @@ global with sharing class USTRestAdmissions {
         //List<String> filter = new List<String>();
 
         String state = '';
-        if (!String.isBlank(RestContext.request.params.get('state'))) {
+        if (String.isNotBlank(RestContext.request.params.get('state'))) {
             state = RestContext.request.params.get('state');
         }
         String city = '';
-        if (!String.isBlank(RestContext.request.params.get('city'))) {
+        if (String.isNotBlank(RestContext.request.params.get('city'))) {
             city = '%' + RestContext.request.params.get('city') + '%';
         }
 
         String filter = '';
-        if (!String.isBlank(RestContext.request.params.get('filter'))) {
+        if (String.isNotBlank(RestContext.request.params.get('filter'))) {
             List<String> filterHolder = new List<String>();
             for (String fragment : RestContext.request.params.get('filter').split(' ')) {
                 filterHolder.add('*' + fragment + '*');
@@ -312,30 +384,32 @@ global with sharing class USTRestAdmissions {
             filter = String.Join(filterHolder, ' ');
         }
 
-        if (!String.isBlank(state) && String.isBlank(city)) {
+        if (String.isNotBlank(state) && String.isBlank(city)) {
             schoolList = [
                     SELECT Name, EnrollmentrxRx__CEEB_Code__c, EnrollmentrxRx__High_School_State__c, EnrollmentrxRx__High_School_City__c
                     FROM EnrollmentrxRx__High_School__c
                     WHERE EnrollmentrxRx__High_School_State__c = :state
                     AND RecordType.Name = :recTypeName
+                    AND Inactive_Flag__c = FALSE
                     ORDER BY Name
             ];
         }
-        if (!String.isBlank(state) && !String.isBlank(city)) {
+        if (String.isNotBlank(state) && String.isNotBlank(city)) {
             schoolList = [
                     SELECT Name, EnrollmentrxRx__CEEB_Code__c, EnrollmentrxRx__High_School_State__c, EnrollmentrxRx__High_School_City__c
                     FROM EnrollmentrxRx__High_School__c
                     WHERE EnrollmentrxRx__High_School_State__c = :state
                     AND EnrollmentrxRx__High_School_City__c LIKE :city
                     AND RecordType.Name = :recTypeName
+                    AND Inactive_Flag__c = FALSE
                     ORDER BY Name
             ];
         }
-        if (!String.isBlank(filter)) {
+        if (String.isNotBlank(filter)) {
             schoolList = [
                     FIND :filter
                     IN ALL FIELDS
-                            RETURNING EnrollmentrxRx__High_School__c(Name, EnrollmentrxRx__CEEB_Code__c, EnrollmentrxRx__High_School_State__c, EnrollmentrxRx__High_School_City__c WHERE RecordType.Name = :recTypeName)
+                            RETURNING EnrollmentrxRx__High_School__c(Name, EnrollmentrxRx__CEEB_Code__c, EnrollmentrxRx__High_School_State__c, EnrollmentrxRx__High_School_City__c, Inactive_Flag__c WHERE RecordType.Name = :recTypeName AND Inactive_Flag__c = FALSE)
             ][0];
 
             System.Debug('-=-=0-0-0--- SCHOOL LIST SIZE: ' + schoolList.size() + ' FILTER: ' + filter);

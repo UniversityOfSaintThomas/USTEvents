@@ -26,18 +26,16 @@
         <div class="Section1">
             <apex:repeat value="{!eventRegs}" var="reg">
                 <apex:outputPanel layout="block" rendered="{!!ISBLANK(reg.Generated_Itinerary__c)}" style="page-break-after: always" styleClass="itWrap">
-                    <h2>{!reg.Registrant_First_Name__c} {!reg.Registrant_Last_Name__c}</h2>
-                    <h3>Friday</h3>
+                    <h2>{!reg.Preferred_First_Name_Formatted__c}</h2>
                     <apex:outputText escape="false" value="{!reg.Generated_Itinerary__c}"></apex:outputText>
-                    <apex:outputPanel layout="none" rendered="{!If(CONTAINS(reg.Generated_Itinerary__c, 'Stay Overnight'), true, false)}">
-                        <h3>Saturday</h3>
-                        <table>
-                            <tr>
-                                <td style="width:.75in;">9:00-<br/> 9:30 a.m.</td>
-                                <td>Check-out and depart campus at Koch Commons</td>
-                            </tr>
-                        </table>
-                    </apex:outputPanel>
+                    <!--<apex:outputPanel layout="none" rendered="{!If(CONTAINS(reg.Generated_Itinerary__c, 'Stay Overnight'), true, false)}">-->
+                        <!--<table>-->
+                            <!--<tr>-->
+                                <!--<td style="width:.75in;">Saturday 9:00-<br/> 9:30 AM</td>-->
+                                <!--<td>Check-out and depart campus at Koch Commons</td>-->
+                            <!--</tr>-->
+                        <!--</table>-->
+                    <!--</apex:outputPanel>-->
                     <br clear="all" style="mso-special-character:line-break;page-break-before:always;"/>
                 </apex:outputPanel>
             </apex:repeat>

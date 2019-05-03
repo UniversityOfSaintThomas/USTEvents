@@ -3,5 +3,5 @@
  */
 
 trigger USTEventAppointmentTrigger on UST_Event_Appointments__c (before insert, before update, before delete, after insert, after update, after delete, after undelete) {
-    TriggerFactory.createHandler(USTEventAppointmentTriggerHandler.class);
+    TriggerHandlerDispatcher.dispatch(USTEventAppointmentTriggerHandler.Factory.class);
 }

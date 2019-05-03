@@ -27,8 +27,8 @@
                 <div class="row">
                     <div class="columns eventCrumb">
                         <span class="eventName">{!evtInstance.Event__r.Event_Name__c}</span>
-                        <span class="bc-spacer"><span>»</span></span>
                         <apex:outputPanel layout="none" rendered="{!!ISBLANK(evtInstance.Instance_Title__c)}">
+                            <span class="bc-spacer"><span>»</span></span>
                             <span class="eventInstance">{!evtInstance.Instance_Title__c}</span>
                         </apex:outputPanel>
                         <apex:outputPanel layout="inline" styleClass="eventDate" rendered="{!IF(!ISBLANK(evtInstance.Start_Date_Time__c) && !ISBLANK(evtInstance.Start_Date_Time__c),true,false)}">
@@ -115,25 +115,74 @@
                             <apex:outputLabel value="Last Name" for="lastName" styleClass="required"/>
                             <apex:inputText value="{!newEvtReg.Registrant_Last_Name__c}" id="lastName" required="true" styleClass="{!IF(!contactSet,'required requiredText', '')}" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
                         </div>
-                        <div class="columns small-12 medium-6 large-6">
+                        <apex:outputPanel layout="block" styleClass="columns small-12 medium-6" rendered="{!IF(evtInfo.recordTypeName = 'Undergraduate' || evtInfo.recordTypeName = 'Graduate', true, false)}">
                             <apex:outputLabel value="Email" for="email" styleClass="required"/>
                             <apex:inputText value="{!newEvtReg.Registrant_Email__c}" id="email" required="true" styleClass="{!IF(!contactSet,'required requiredText validEmail', '')}" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
-                        </div>
+                        </apex:outputPanel>
+
+                        <!-- Undergrad bare minimums beyond first, last, email-->
                         <apex:outputPanel layout="block" styleClass="columns small-12 medium-6" rendered="{!IF(evtInfo.recordTypeName = 'Undergraduate' && ISBLANK(applicantType), true, false)}">
-                            <apex:outputLabel for="applicantType">Application Type</apex:outputLabel>
+                            <apex:outputLabel for="applicantType" styleClass="required">Application Type</apex:outputLabel>
                             <apex:selectList multiSelect="false" value="{!ApplicantType}" id="applicantType" size="1" styleClass="required requiredText" required="true">
                                 <apex:selectOptions value="{!ApplicantTypeDD}"/>
                             </apex:selectList>
                         </apex:outputPanel>
-                        <apex:outputPanel layout="block" styleClass="columns small-12 medium-6 large-6" rendered="{!IF(evtInfo.recordTypeName = 'Undergraduate', true, false)}">
-                            <apex:outputLabel value="Preferred First Name" for="preferredFirstName"/>
-                            <apex:inputText value="{!newEvtReg.Registrant_Preferred_First_Name__c}" id="preferredFirstName" styleClass="{!IF(!contactSet,'required requiredText', '')}" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        <apex:outputPanel layout="block" styleClass="columns small-12 medium-6 large-6" rendered="{!IF(evtInfo.recordTypeName = 'Undergraduate' || evtInfo.recordTypeName = 'UDAR', true, false)}">
+                            <apex:outputLabel value="Preferred First Name" for="preferredFirstName" styleClass="{!IF(evtInfo.recordTypeName = 'Undergraduate', 'required', '')}"/>
+                            <apex:inputText value="{!newEvtReg.Registrant_Preferred_First_Name__c}" id="preferredFirstName" styleClass="{!IF(!contactSet && evtInfo.recordTypeName = 'Undergraduate','required requiredText', '')}" disabled="{!contactSet}" maxLength="80"></apex:inputText>
                         </apex:outputPanel>
+
+                        <!-- UDAR bare minimums beyond first, last, email--->
+                        <apex:outputPanel layout="block" styleClass="columns small-12 medium-6 large-6" rendered="{!IF(evtInfo.recordTypeName = 'UDAR', true, false)}">
+                            <apex:outputLabel value="Last Names as Student" for="lastNameAsStudent"/>
+                            <apex:inputText value="{!newEvtReg.Last_Name_as_Student__c}" id="lastNameAsStudent" disabled="{!contactSet}" maxLength="80"></apex:inputText>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="block" styleClass="columns small-12 medium-6" rendered="{!IF(evtInfo.recordTypeName = 'UDAR', true, false)}">
+                            <apex:outputLabel value="Email" for="emailUDAR" styleClass="required"/>
+                            <apex:inputText value="{!newEvtReg.Registrant_Email__c}" id="emailUDAR" required="true" styleClass="{!IF(!contactSet,'required requiredText validEmail', '')}" disabled="{!contactSet}" maxLength="80" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="block" styleClass="columns small-12 medium-6 large-6" rendered="{!IF(evtInfo.recordTypeName = 'UDAR', true, false)}">
+                            <apex:outputLabel value="Preferred St. Thomas Class Year" for="preferredClassYear" styleClass="required"/>
+                            <apex:inputText value="{!newEvtReg.Preferred_St_Thomas_Class_Year__c}" id="preferredClassYear" styleClass="{!IF(!contactSet,'required requiredText', '')} validYear" disabled="{!contactSet}" maxLength="80" required="true"></apex:inputText>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="block" styleClass="columns small-12 medium-6 large-6" rendered="{!eventPage.Ask_Date_Of_Birth__c}">
+                            <apex:outputLabel value="Date of birth" for="dateofbirth" styleClass="required"/>
+                            <apex:inputText value="{!birthDateString}" id="dateofbirth" styleClass="{!IF(!contactSet,'required requiredText', '')} mmddyyyy" disabled="{!contactSet}" maxLength="10" required="true" html-placeholder="MM/DD/YYYY"></apex:inputText>
+                        </apex:outputPanel>
+
+                        <!-- Phone number registration (optional) -->
+                        <apex:outputPanel layout="block" styleClass="column small-12 large-6 medium-6" rendered="{!eventPage.Ask_Phone__c}">
+                            <apex:outputLabel value="{!If(evtInfo.recordTypeName == 'UDAR', 'Phone', 'Home Phone')}" for="phone"/>
+                            <apex:inputText value="{!newEvtReg.Registrant_Phone__c}" id="phone" disabled="{!contactSet}"></apex:inputText>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="block" styleClass="column small-12 large-6 medium-6" rendered="{!evtInfo.recordTypeName != 'UDAR' && eventPage.Ask_Phone__c}">
+                            <apex:outputLabel value="Mobile Phone" for="mobile"/>
+                            <apex:inputText value="{!newEvtReg.Registrant_Mobile_Phone__c}" id="mobile" disabled="{!contactSet}"></apex:inputText>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="block" styleClass="column small-12 large-6 medium-6" rendered="{!eventPage.Ask_Phone__c}">
+                            <apex:inputCheckbox value="{!newEvtReg.Registrant_Receive_Texts__c}" id="AcceptTextMessage" disabled="{!contactSet}"/>
+                            <apex:outputLabel value="I am willing to receive text messages about this event" for="AcceptTextMessage"  style="padding-top:1.5em;"/>
+                        </apex:outputPanel>
+
+                        <apex:outputPanel layout="block" styleClass="columns small-12 medium-12" rendered="{!IF(evtInfo.recordTypeName = 'UDAR', true, false)}">
+                            <apex:outputLabel for="relationshipToUST" styleClass="required">Relationship to St. Thomas (select all that apply):</apex:outputLabel>
+                            <apex:inputHidden value="{!newEvtReg.Relationship_to_St_Thomas__c}" id="relationshipToUST" required="true"/>
+                            <ol class="selectableOL" id="rel2UST" data-hiddendataid="relationshipToUST" required="true">
+                                <apex:repeat value="{!relationshipDD}" var="account">
+                                    <apex:outputText escape="false" value="<li>{!account.value}</li>"/>
+                                </apex:repeat>
+                            </ol>
+                        </apex:outputPanel>
+
                     </div>
 
-
                     <!-- Mailing Address registration (optional)-->
-                    <apex:outputPanel layout="none" rendered="{!showAddress}">
+                    <apex:outputPanel layout="none" rendered="{!eventPage.Ask_Mailing_Address__c}">
                         <div class="row">
                             <div class="columns">
                                 <h4>Address</h4>
@@ -169,37 +218,11 @@
                         </div>
                     </apex:outputPanel>
 
-                    <!-- Phone number registration (optional) -->
-                    <apex:outputPanel layout="none" rendered="{!showPhone}">
-                        <div class="row">
-                            <div class="columns">
-                                <h4>Phone</h4>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="column small-12 large-6 medium-6">
-                                <apex:outputLabel value="Home Phone" for="phone"/>
-                                <apex:inputText value="{!newEvtReg.Registrant_Phone__c}" id="phone" disabled="{!contactSet}"></apex:inputText>
-                            </div>
-                            <div class="column small-12 large-6 medium-6">
-                                <apex:outputLabel value="Mobile Phone" for="mobile"/>
-                                <apex:inputText value="{!newEvtReg.Registrant_Mobile_Phone__c}" id="mobile" disabled="{!contactSet}"></apex:inputText>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="columns">
-                                <apex:inputCheckbox value="{!newEvtReg.Registrant_Receive_Texts__c}" id="AcceptTextMessage" disabled="{!contactSet}"/>
-                                <apex:outputLabel value="I am willing to receive text messages about this event" for="AcceptTextMessage"/>
-                            </div>
-                        </div>
-                    </apex:outputPanel>
+
                     <!-- Ask High School or College (optional) -->
                     <apex:outputPanel layout="none"
-                                      rendered="{!If((eventPage.College_High_School_Ask__c == 'HS Only'
-                                          || eventPage.College_High_School_Ask__c == 'Both College and HS'
-                                          || eventPage.College_High_School_Ask__c == 'Auto Select on Audience')
-                                          && NOT CONTAINS(evtInfo.audience, 'Transfer')
-                                          && NOT CONTAINS(evtInfo.audience, 'Graduate')
+                                      rendered="{!If((eventPage.College_High_School_Ask__c == 'HS Only' || eventPage.College_High_School_Ask__c == 'Both College and HS')
+                                          || (eventPage.College_High_School_Ask__c == 'Auto Select on Audience' && NOT CONTAINS(evtInfo.audience, 'Transfer') && NOT CONTAINS(evtInfo.audience, 'Graduate'))
                                           && !contactSet
                                           , true, false)}">
                         <div class="row">
@@ -232,10 +255,8 @@
 
                     <apex:outputPanel layout="none"
                                       rendered="{!If(
-                                          (eventPage.College_High_School_Ask__c = 'College Only')
-                                                  || (eventPage.College_High_School_Ask__c = 'Both College and HS')
-                                                  || (eventPage.College_High_School_Ask__c = 'Auto Select on Audience' && evtInfo.audience = 'Transfer')
-                                                  || (eventPage.College_High_School_Ask__c = 'Auto Select on Audience' && CONTAINS(evtInfo.audience, 'Graduate'))
+                                          (eventPage.College_High_School_Ask__c = 'College Only' || eventPage.College_High_School_Ask__c = 'Both College and HS')
+                                                  || (eventPage.College_High_School_Ask__c = 'Auto Select on Audience' && (evtInfo.audience = 'Transfer' || evtInfo.audience ='Graduate'))
                                           , true, false)}">
                         <div class="row">
                             <div class="column small-12 large-12 medium-12">
@@ -290,7 +311,7 @@
                             </apex:outputPanel>
 
                             <!-- Gender Question -->
-                            <apex:outputPanel styleClass="columns small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Ask_Gender__c != 'Do not ask', true, false)}">
+                            <apex:outputPanel styleClass="columns small-12 medium-6 large-6" layout="block" rendered="{!IF(eventPage.Ask_Gender__c != 'Do not ask' && !isBlank(eventPage.Ask_Gender__c), true, false)}">
                                 <apex:outputLabel value="Sex" for="sex"
                                                   styleClass="{!IF((eventPage.Ask_Gender__c == 'Ask and require' || eventPage.Ask_Gender__c == 'Ask and require one selection'), 'required', '')}"
                                 />
@@ -358,7 +379,7 @@
                     <div class="row">
                         <div class="columns">
                             <p>
-                                <apex:commandLink html-formnovalidate="formnovalidate" action="{!saveContactRegistration}" onClick="fadeout(); return checkForm();" Value="Next" id="submitReg1" styleClass="button confirmContinue"/>
+                                <apex:commandLink html-formnovalidate="formnovalidate" action="{!saveContactRegistration}" onClick="fadeout(); return checkForm();" Value="{!IF(evtHasAppointments, 'Next', 'Register')}" id="submitReg1" styleClass="button confirmContinue"/>
                             </p>
                         </div>
                     </div>

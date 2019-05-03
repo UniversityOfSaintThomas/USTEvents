@@ -8,6 +8,7 @@ var USTSettings = JSON.parse(readCookie('USTEvent'));
 var audience;
 
 $(document).ready(function () {
+    dateValidations();
     // get audience
     audience = getUrlParameter('audience');
     if (!audience) {
@@ -21,7 +22,7 @@ $(document).ready(function () {
         audience = "High School";
     }
 
-    $("input, textarea").each(function(){
+    $("input, textarea").each(function () {
         $(this).focus();
     });
 
@@ -453,3 +454,29 @@ function isNumberKey(evt) {
 
     return true;
 } // isNumberKey
+
+function dateValidations() {
+    $(".mmddyyyy").unbind("change").unbind("keyup");
+    //Date validations
+    $('.mmddyyyy').on('keyup', function () {
+        //only let digits and slashes
+        $("#Dateerror" + $(this).attr("id").toString().replace(/:/g, "")).remove();
+        var dd = $(this).val();
+        if (/[^(\d|\/)]+/g.test(dd)) {
+            $(this).val(dd.replace(/[^(\d|\/)]+/g, ""));
+            return;
+        }
+        // add zeros to dates with single digits for day month
+        $(this).val($(this).val().replace(/^(\d)\/$/, "0$1/"));
+        $(this).val($(this).val().replace(/^(\d\d)\/(\d)\/$/, "$1/0$2/"));
+    });
+    $('.mmddyyyy').on('change', function () {
+        var dd = $(this).val().trim();
+        $(this).val(dd.substring(0, 10));
+        regExDate = /^(0[1-9]|1[0-2])\/(0[1-9]|1\d|2\d|3[01])\/(19|20)\d\d$/;
+        if (!regExDate.test($(this).val())) {
+            $(this).after('<div id="Dateerror' + $(this).attr("id").toString().replace(/:/g, "") + '" class="redComment">' + $(this).val() + ' is not a valid date (formated MM/DD/YYYY and in range).</div>');
+            $(this).val('');
+        }
+    });
+}

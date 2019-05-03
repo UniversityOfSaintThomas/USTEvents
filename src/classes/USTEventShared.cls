@@ -12,7 +12,11 @@ public with sharing class USTEventShared {
         public String instanceID { get; set; }
         public String evtRegId { get; set; }
         public String evtId { get; set; }
-        public String recordTypeName {get;set;}
+        public String recordTypeName { get; set; }
+    }
+
+    public USTEventShared() {
+
     }
 
     public USTEventInfo getUSTEventInfo() {
@@ -31,7 +35,9 @@ public with sharing class USTEventShared {
             } catch (Exception e) {
                 //Cookie was un-serializable so delete it
                 Cookie deleteCookie = new Cookie('USTEvent', '', null, 0, false); // Note the 0 to delete the cookie
-                ApexPages.currentPage().setCookies(new Cookie[]{deleteCookie});
+                ApexPages.currentPage().setCookies(new Cookie[]{
+                        deleteCookie
+                });
             }
         }
         if (!String.isBlank(URLinstanceID)) {
@@ -50,11 +56,17 @@ public with sharing class USTEventShared {
                     try {
                         UST_Event_Instance__c instanceInfo = [SELECT Event__c, Event__r.RecordType.Name FROM UST_Event_Instance__c WHERE ID = :evtInfo.instanceID][0];
                         evtInfo.evtId = instanceInfo.Event__c;
-
+                        if (String.isBlank(instanceInfo.event__r.RecordType.Name)) {
+                            evtInfo.recordTypeName = 'Undergraduate';
+                        } else {
+                            evtInfo.recordTypeName = instanceInfo.event__r.RecordType.Name;
+                        }
                     } catch (Exception e) {
 
                     }
-                    createEncryptedCookie('{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"COMING","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
+                    String eventCookie = '{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"COMING","evtId":"' + evtInfo.evtId + '","recordTypeName","' + evtInfo.recordTypeName + '"}';
+                    System.Debug('COOKIE 1: ' + eventCookie);
+                    createEncryptedCookie(eventCookie, 'USTEvent');
                 }
             }
         }
@@ -68,6 +80,8 @@ public with sharing class USTEventShared {
             } else {
                 evtInfo.recordTypeName = recTypeInfo[0].event__r.RecordType.Name;
             }
+        } else {
+            evtInfo.recordTypeName = 'Undergraduate';
         }
 
         //check if regid is there  and whether status it is set to registered. IF so reset cookie if it is.
@@ -75,7 +89,9 @@ public with sharing class USTEventShared {
             UST_Event_Registration__c evtReg = [SELECT Status__c FROM UST_Event_Registration__c WHERE ID = :evtInfo.evtRegId][0];
             if (evtReg.Status__c != 'Started') {
                 //Registration is complete and a new form should be generated.
-                createEncryptedCookie('{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
+                String eventCookie2 = '{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"","evtId":"' + evtInfo.evtId + '","recordTypeName","' + evtInfo.recordTypeName + '"}';
+                System.Debug('COOKIE 1: ' + eventCookie2);
+                createEncryptedCookie(eventCookie2, 'USTEvent');
             }
         }
 
@@ -89,21 +105,37 @@ public with sharing class USTEventShared {
         PageReference myVFPage = null;
         evt = getUSTEventInfo();
         SYSTEM.debug('!!!!!!!!!!!!!!!  EVENT ID : ' + evt.evtId + ' , INSTANCE ID : ' + evt.instanceID + ' , EVENT REG ID : ' + evt.evtRegId);
-        if (String.isBlank(evt.evtRegId) || String.isBlank(evt.instanceID)) {
-            if (!String.isBlank(evt.evtId)) {
-                UST_Event__c eventPage = [SELECT Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evt.evtId][0];
-                myVFPage = new PageReference(eventPage.Event_Home_Link_URL__c);
-                myVFPage.setRedirect(true);
-            } else {
-                myVFPage = new PageReference('/applicantportal/USTEvent');
-                myVFPage.setRedirect(true);
-            }
+
+        // UST_Event_Settings__c orgDefault = UST_Event_Settings__c.getOrgDefaults();
+        // UST_Event_Settings__c myProfileSetting = UST_Event_Settings__c.getInstance(UserInfo.getProfileId());
+        UST_Event_Settings__c myUserSetting = UST_Event_Settings__c.getInstance(UserInfo.getUserId());
+        String communityBaseURL = myUserSetting.Community_Base_URL__c;
+
+        //System.Debug('COMMUNITY URL: ' + communityBaseURL);
+
+        //String ustEventSettings = UST_Event_Settings__c.getValues('Community_Base_URL__c');
+        if ((String.isBlank(evt.evtRegId) && !ApexPages.currentPage().getUrl().containsIgnoreCase('USTEventRegister')) || String.isBlank(evt.instanceID)) {
             //Reset the cookie to prevent loop on registration page
             Cookie deleteCookie = new Cookie('USTEvent', '', null, 0, false); // Note the 0 to delete the cookie
-            ApexPages.currentPage().setCookies(new Cookie[]{deleteCookie});
-            return myVFPage;
+            ApexPages.currentPage().setCookies(new Cookie[]{
+                    deleteCookie
+            });
+
+            if (!String.isBlank(evt.evtId)) {
+                UST_Event__c eventPage = [SELECT Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evt.evtId][0];
+                if (!String.isBlank(eventPage.Event_Home_Link_URL__c)) {
+                    myVFPage = new PageReference(eventPage.Event_Home_Link_URL__c);
+                } else if (String.isNotBlank(evt.instanceID) && !ApexPages.currentPage().getUrl().containsIgnoreCase('USTEventRegister')) {
+                    myVFPage = new PageReference(communityBaseURL + 'USTEventRegister?instanceID=' + evt.instanceID);
+                } else {
+                    myVFPage = new PageReference(communityBaseURL + 'USTEvent');
+                }
+            } else {
+                myVFPage = new PageReference(communityBaseURL + 'USTEvent');
+            }
+            myVFPage.setRedirect(true);
         }
-        return null;
+        return myVFPage;
     }
 
     public String createEncryptedCookie(String CookieValue, String CookieName) {
@@ -202,14 +234,15 @@ public with sharing class USTEventShared {
         return ((bits & (128 >> Math.mod(index, 8))) != 0);
     }
 
-    private static Map<String, Integer> hexMap = new Map<String, Integer>{
-            '0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9, 'A' => 10, 'B' => 11, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15, 'a' => 10, 'b' => 11, 'c' => 12, 'd' => 13, 'e' => 14, 'f' => 15
-    };
-
     private static Integer hexToInt(String hex) {
+
+        Map<String, Integer> hMap = new Map<String, Integer>{
+                '0' => 0, '1' => 1, '2' => 2, '3' => 3, '4' => 4, '5' => 5, '6' => 6, '7' => 7, '8' => 8, '9' => 9, 'A' => 10, 'B' => 11, 'C' => 12, 'D' => 13, 'E' => 14, 'F' => 15, 'a' => 10, 'b' => 11, 'c' => 12, 'd' => 13, 'e' => 14, 'f' => 15
+        };
+
         Integer retVal = 0;
         for (Integer i = 0; i < hex.length(); i += 2) {
-            retVal += (hexMap.get(hex.substring(i, i + 1)) * 16) + (hexMap.get(hex.substring(i + 1, i + 2)));
+            retVal += (hMap.get(hex.substring(i, i + 1)) * 16) + (hMap.get(hex.substring(i + 1, i + 2)));
         }
         return retVal;
     }

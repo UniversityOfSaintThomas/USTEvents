@@ -68,7 +68,8 @@ public with sharing class USTEventConfirmationController {
             }
             evtReg.Status__c = 'Requested';
             upsert evtReg;
-
+            //Remove the registration ID from the cookie so back button will redirect to the correct page.
+            USTShared.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
             //create touchpoint
             Touch_Point__c tp = new Touch_Point__c();
             tp.Contact__c = evtReg.Contact__c;

@@ -9,12 +9,17 @@ global with sharing class AdmissionsCounselorLookup {
         //Name,Email, College__c,Major__c, Hometown__c,About_Me__c,What_I_Love_About_St_Thomas__c,Words_of_Advice__c
         String name { get; set; }
         String email { get; set; }
+        String title { get; set; }
+        String phone { get; set; }
         String college { get; set; }
         String major { get; set; }
         String hometown { get; set; }
         String about { get; set; }
         String USTLove { get; set; }
         String advice { get; set; }
+        string smallPhoto { get; set; }
+        string largePhoto { get; set; }
+        string address { get; set; }
     }
 
     @HttpGet
@@ -31,14 +36,26 @@ global with sharing class AdmissionsCounselorLookup {
         }
 
         if (!String.isBlank(feedType)) {
-            if (feedType.toLowerCase() == 'states') {
-                serializedJSON = JSON.serialize(getObjDefMap(Contact.MailingState__c.getDescribe()));
-            } else if (feedType.toLowerCase() == 'cities') {
-                serializedJSON = JSON.serialize(getCityList());
-            } else if (feedType.toLowerCase() == 'counselor') {
+            if (feedType.toLowerCase() == 'counselor') {
                 serializedJSON = JSON.serialize(counselorInformation());
-            } else if (feedType.toLowerCase() == 'countries') {
-                serializedJSON = JSON.serialize(getObjDefMap(Contact.MailingCountry__c.getDescribe()));
+            } else if (feedType.toLowerCase() == 'bio') {
+                String counselorName = RestContext.request.params.get('name');
+                if (String.isNotBlank(counselorName)) {
+                    counselorName.replace('%20', ' ');
+                    counselorName.replace('+', ' ');
+                    serializedJSON = JSON.serialize(counselorByName(counselorName));
+                }
+            } else if (feedType.toLowerCase() == 'intl') {
+                Id intlRole = Util.getSObjIdBySettingsCompositeKey('Counselor_Role__c', 'UG_Adm4Y_Couns_Fallback_for_Intls');
+
+                if (String.isNotBlank(intlRole)) {
+                    Counselor_Role__c intlId = [SELECT Id, Staff_Member_Holding_Role__r.Id FROM Counselor_Role__c WHERE id = :intlRole][0];
+                    if (intlId != null) {
+                        List<Id> intlIds = new List<Id>();
+                        intlIds.add(intlId.Staff_Member_Holding_Role__r.Id);
+                        serializedJSON = JSON.serialize(grabCounslorList(intlIds));
+                    }
+                }
             }
         }
 
@@ -53,28 +70,32 @@ global with sharing class AdmissionsCounselorLookup {
         String city = '';
         String nation = '';
         String query = '';
-        String userLink = '';
         String school = '';
+        String territory = '';
         List<CounselorInfo> ci = new List<CounselorInfo>();
         List<Geographic_Area__c> ga = new List<Geographic_Area__c>();
         List<EnrollmentrxRx__High_School__c> hs = new list<EnrollmentrxRx__High_School__c>();
+        List<UG_Counseling_Territory__c> UGTerritories = new List<UG_Counseling_Territory__c>();
         List<Id> cUserIds = new List<Id>();
         //Get URL variables
-        if (!String.isBlank(RestContext.request.params.get('nation'))) {
+        if (String.isNotBlank(RestContext.request.params.get('nation'))) {
             nation = RestContext.request.params.get('nation').toUpperCase();
         }
-        if (!String.isBlank(RestContext.request.params.get('state'))) {
+        if (String.isNotBlank(RestContext.request.params.get('state'))) {
             state = RestContext.request.params.get('state').toUpperCase();
         }
-        if (!String.isBlank(RestContext.request.params.get('city'))) {
+        if (String.isNotBlank(RestContext.request.params.get('city'))) {
             city = RestContext.request.params.get('city').toLowerCase();
         }
-        if (!String.isBlank(RestContext.request.params.get('school'))) {
+        if (String.isNotBlank(RestContext.request.params.get('school'))) {
             school = RestContext.request.params.get('school').toLowerCase();
+        }
+        if (String.isNotBlank(RestContext.request.params.get('territory'))) {
+            territory = RestContext.request.params.get('territory').toLowerCase();
         }
 
         //Build query string for SOQL LIKE statement
-        if (!String.isBlank(school)) {
+        if (String.isNotBlank(school)) {
             hs = [
                     SELECT UG_Adm_Couns_Working_Sch_for_FYs__r.Staff_Member_Holding_Role__r.id
                     FROM EnrollmentrxRx__High_School__c
@@ -86,13 +107,25 @@ global with sharing class AdmissionsCounselorLookup {
                 }
                 ci = grabCounslorList(cUserIds);
             }
+        } else if (String.isNotBlank(territory)) {
+            UGTerritories = [
+                    SELECT Id, UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__r.Id
+                    FROM UG_Counseling_Territory__c
+                    WHERE Banner_Territory_Code__c = :territory
+            ];
+            if (UGTerritories.size() > 0) {
+                for (UG_Counseling_Territory__c ugt : UGTerritories) {
+                    cUserIds.add(ugt.UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__r.Id);
+                }
+                ci = grabCounslorList(cUserIds);
+            }
         } else {
             // DomesticS
-            if (!String.isBlank(nation)) {
+            if (String.isNotBlank(nation)) {
                 query = 'NATION-' + nation.toLowerCase() + '%';
-            } else if (!String.isBlank(city) && !String.isBlank(state)) {
-                query = 'CITY-' + ((city + state).toLowerCase().replace('%20','').replace(' ', '')) + '%';
-            } else if (!String.isBlank(state)){
+            } else if (String.isNotBlank(city) && String.isNotBlank(state)) {
+                query = 'CITY-' + ((city + state).toLowerCase().replace('%20', '').replace(' ', '')) + '%';
+            } else if (String.isNotBlank(state)) {
                 if (state.equalsIgnoreCase('mn') || state.equalsIgnoreCase('wi')) {
                     query = 'CITY-%' + state + '%';
                 } else {
@@ -103,7 +136,7 @@ global with sharing class AdmissionsCounselorLookup {
                 query = '%%';
             }
 
-            if (!String.IsBlank(query)) {
+            if (String.IsNotBlank(query)) {
                 //Get all geo areas that match query like statement (using passed in URL variables)
                 ga = [
                         SELECT UG_Counseling_Geographic_Territory__r.UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__c
@@ -126,18 +159,44 @@ global with sharing class AdmissionsCounselorLookup {
         return ci;
     }
 
+    private static List<CounselorInfo> counselorByName(String counselorName) {
+        List<User> cUser = new List<User>();
+        List<Id> cUserIds = new List<Id>();
+        System.Debug('>>>>>COUNSELOR NAME: ' + counselorName);
+        cUser = [
+                SELECT Id
+                FROM User
+                WHERE NAME LIKE :counselorName
+        ];
+
+        if (cUser.size() > 0) {
+            for (User u : cUser) {
+                cUserIds.add(u.Id);
+            }
+            return grabCounslorList(cUserIds);
+        }
+        return new List<CounselorInfo>();
+    }
+
     private static List<CounselorInfo> grabCounslorList(List<Id> cUserIds) {
         List<CounselorInfo> ci = new List<CounselorInfo>();
         List<User> cUser = new List<User>();
         //Get list off all users that match gathered list from geo areas
-        if (cUserIds.size() > 0 ) {
+        if (cUserIds.size() > 0) {
             cUser = [
-                    SELECT Name, Email, College__c, Major__c, Hometown__c, About_Me__c, What_I_Love_About_St_Thomas__c, Words_of_Advice__c
+                    SELECT Name, Email, College__c, Major__c, Hometown__c, About_Me__c, What_I_Love_About_St_Thomas__c, Words_of_Advice__c,
+                            SmallPhotoUrl, FullPhotoUrl, title, phone, street, state, city, postalCode, Extension
                     FROM User
                     WHERE Id in :cUserIds
             ];
 
             //Add queried users to custom object defined in this class
+            String myDomain = '';
+            List<Domain> DomainList = [SELECT Domain FROM Domain];
+            if (DomainList.size() > 0) {
+                myDomain = DomainList[0].Domain;
+            }
+
             for (User u : cUser) {
                 CounselorInfo addCoun = new CounselorInfo();
                 addCoun.name = u.Name;
@@ -148,34 +207,19 @@ global with sharing class AdmissionsCounselorLookup {
                 addCoun.about = (String.isNotBlank(u.About_Me__c) ? u.About_Me__c : '');
                 addCoun.USTLove = (String.isNotBlank(u.What_I_Love_About_St_Thomas__c) ? u.What_I_Love_About_St_Thomas__c : '');
                 addCoun.advice = (String.isNotBlank(u.Words_of_Advice__c) ? u.Words_of_Advice__c : '');
+                addCoun.title = (String.isNotBlank(u.title) ? u.title : '');
+                if (String.isNotBlank(u.Extension)) {
+                    addCoun.phone = u.phone + ' ext ' + u.Extension;
+                } else {
+                    addCoun.phone = (String.isNotBlank(u.phone) ? u.phone : '');
+                }
+                addCoun.address = (String.isNotBlank(u.street) ? (u.street.replace('\n', '<br>') + ' <br>' + u.city + ', ' + u.state + ' ' + u.postalCode) : '');
+                addCoun.smallPhoto = 'https://' + myDomain + (String.isNotBlank(u.SmallPhotoUrl) ? u.SmallPhotoUrl : '');
+                addCoun.largePhoto = 'https://' + myDomain + (String.isNotBlank(u.FullPhotoUrl) ? u.FullPhotoUrl : '');
                 ci.add(addCoun);
             }
         }
         return ci;
-    }
-
-    private static Map<String, String> getCityList() {
-        String state = '';
-        Map<String, String> keyValOut = new Map<String, String>();
-        if (!String.isBlank(RestContext.request.params.get('state'))) {
-            state = RestContext.request.params.get('state').toUpperCase();
-        }
-        if (!String.isBlank(state)) {
-            List<City__c> cityList = [SELECT Name FROM City__c WHERE State_Code__c = :state ORDER BY Name DESC];
-            For (City__c city : cityList) {
-                keyValOut.put(city.Name, city.Name);
-            }
-        }
-        return keyValOut;
-    }
-
-    private static Map<String, String> getObjDefMap(Schema.DescribeFieldResult fieldResult) {
-        Map<String, String> keyValOut = new Map<String, String>();
-        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
-        for (Integer ii = ple.size() - 1; ii >= 0; ii--) {
-            keyValOut.put(ple[ii].getLabel(), ple[ii].getValue());
-        }
-        return keyValOut;
     }
 
 }

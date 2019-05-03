@@ -12,6 +12,7 @@ public with sharing class USTEventRegisterController {
     public String EvtUserType { get; set; }
     public List<SelectOption> guestAmt { get; set; }
     public UST_Event_Registration__c newEvtReg { get; set; }
+    public UST_Event_Registration__c oldEvtReg { get; set; }
     private USTEventShared USTShared = new USTEventShared();
     public USTEventShared.USTEventInfo evtInfo { get; set; }
     public String templateSelected { get; set; }
@@ -31,6 +32,8 @@ public with sharing class USTEventRegisterController {
     public String applicantType { get; set; }
     public String locationCrumb { get; set; }
     public String eventStartDateTimeCrumb { get; set; }
+    public Boolean evtHasAppointments { get; set; }
+    public String birthDateString { get; set; }
 
 
     public USTEventRegisterController() {
@@ -64,7 +67,7 @@ public with sharing class USTEventRegisterController {
         }
 
         //Get Instance information
-        if (!String.isBlank(evtInfo.instanceID)) {
+        if (String.isNotBlank(evtInfo.instanceID)) {
             evtInstance = [
                     SELECT Id, Name, Event__r.Name, Event__r.Event_Name__c, Event__r.Id, Instance_Title__c, Active_Status__c, Capacity__c,
                             Event__r.Event_description__c, Event__r.Audience__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c,
@@ -107,13 +110,11 @@ public with sharing class USTEventRegisterController {
                             Add_Info_Question_Pick_List_5__c, Add_Info_Question_Text_5__c, Add_Info_Question_Type_5__c,
                             Academic_Program_List__c, School__c, Ask_Mailing_Address__c, Ask_Phone__c, Event_Sponsor__c,
                             Applicant_Type__c, Location_Type__c, Location_Title__c, Location_Address__c, Location_Map_Link__c,
-                            Tracking_Event_Registration__c
+                            Tracking_Event_Registration__c, Ask_Date_Of_Birth__c
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1
             ][0];
-            showAddress = eventPage.Ask_Mailing_Address__c;
-            showPhone = eventPage.Ask_Phone__c;
 
             if (!String.isBlank(eventPage.Applicant_Type__c)) {
                 applicantType = eventPage.Applicant_Type__c;
@@ -179,6 +180,17 @@ public with sharing class USTEventRegisterController {
                 locationCrumb = '<h3>Event Details</h3> <p>' + locationCrumb + '</p>';
             }
 
+            //Check if the Event has appointments and therefore we have to redirect to the appointment page.
+            evtHasAppointments = false;
+            List<UST_Event_Appointment_Type__c> apptTypes = [
+                    SELECT Id
+                    From UST_Event_Appointment_Type__c
+                    WHERE UST_Event__c = :evtInfo.evtId
+                    AND (Restrict_To_Instance_Title__r.Instance_Title__c = :evtInstance.Instance_Title__c OR Restrict_To_Instance_Title__r.Instance_Title__c = null)
+            ];
+            if (apptTypes.size() > 0) {
+                evtHasAppointments = true;
+            }
 
             //Grab the template if defined
             if (!String.isBlank(eventPage.Template__c)) {
@@ -213,7 +225,7 @@ public with sharing class USTEventRegisterController {
                 userContact = [
                         Select Id, Name, FirstName, LastName, Email, EnrollmentrxRx__Gender__c, MailingStreetLine1__c, MailingStreetLine2__c, MailingState__c,
                                 MailingZip__c, MailingCity__c, Home_Phone__c, MobilePhone, Receive_Texts__c, EnrollmentrxRx__High_School__c, EnrollmentrxRx__High_School_Code__c,
-                                EnrollmentrxRx__High_School__r.Name, EnrollmentrxRx__High_School__r.EnrollmentrxRx__CEEB_Code__c, Preferred_First_Name__c
+                                EnrollmentrxRx__High_School__r.Name, EnrollmentrxRx__High_School__r.EnrollmentrxRx__CEEB_Code__c, Preferred_First_Name__c, Birthdate
                         FROM Contact
                         Where Id In (
                                 Select ContactId
@@ -237,22 +249,37 @@ public with sharing class USTEventRegisterController {
                 newEvtReg.Registrant_High_School__c = userContact.EnrollmentrxRx__High_School__r.Name;
                 newEvtReg.Registrant_High_School_Code__c = userContact.EnrollmentrxRx__High_School__r.EnrollmentrxRx__CEEB_Code__c;
                 newEvtReg.Registrant_Preferred_First_Name__c = userContact.Preferred_First_Name__c;
+                newEvtReg.Registrant_Date_of_Birth__c = userContact.Birthdate;
+                if (userContact.Birthdate != null) {
+                    birthDateString = userContact.Birthdate.format();
+                }
 
+                if (String.isBlank(userContact.Id)) {
+                    contactId = userContact.Id;
+                }
                 if (userContact.Receive_Texts__c == 'Yes') {
                     newEvtReg.Registrant_Receive_Texts__c = true;
                 }
                 contactSet = true;
             } else {
                 newEvtReg = [
-                        SELECT Contact__c, Registrant_First_Name__c, Registrant_Last_Name__c, Registrant_Email__c, Number_of_Guests__c,
+                        SELECT Contact__c, Contact__r.Id, Registrant_First_Name__c, Registrant_Last_Name__c, Registrant_Email__c, Number_of_Guests__c,
                                 Registrant_Gender__c, Registrant_Street_1__c, Registrant_Street_2__c, Registrant_State__c, Registrant_City__c, Preferred_Visit_Time__c,
                                 Registrant_Zip__c, Registrant_Phone__c, Registrant_Mobile_Phone__c, Registrant_College__c, Registrant_College_Code__c, Registrant_College_Year__c,
                                 Registrant_High_School__c, Registrant_High_School_Code__c, Registrant_Receive_Texts__c, Registrant_High_School_Grad_Year__c, Registrant_High_School_Not_Found__c,
                                 Registrant_College_Not_Found__c, Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c, Registrant_Parent_Phone__c, Registrant_Parent_Status__c,
-                                Add_Info_Answer_1__c, Add_Info_Answer_2__c, Add_Info_Answer_3__c, Add_Info_Answer_4__c, Add_Info_Answer_5__c, Registrant_Program_Interest__c, Registrant_Preferred_First_Name__c
+                                Add_Info_Answer_1__c, Add_Info_Answer_2__c, Add_Info_Answer_3__c, Add_Info_Answer_4__c, Add_Info_Answer_5__c, Registrant_Program_Interest__c, Registrant_Preferred_First_Name__c,
+                                Registrant_date_of_Birth__c
                         FROM UST_Event_Registration__c
                         WHERE id = :evtInfo.evtRegId
                 ][0];
+
+                if (newEvtReg.Registrant_date_of_Birth__c != null) {
+                    birthDateString = newEvtReg.Registrant_date_of_Birth__c.format();
+                }
+
+                //for comparison after the form is filled out we keep original queried event the see if key information is changed and matching should be redone.
+                oldEvtReg = newEvtReg;
             }
 
             if (EvtUserType != 'Guest') {
@@ -271,55 +298,63 @@ public with sharing class USTEventRegisterController {
     }
 
     public List<SelectOption> getSexDD() {
-        return GetDropdownOptions(Contact.EnrollmentrxRx__Gender__c.getDescribe());
+        return PickThePicklist('Contact', 'EnrollmentrxRx__Gender__c', true);
     }
 
     public List<SelectOption> getStateDD() {
-        return GetDropdownOptions(Contact.MailingState__c.getDescribe());
+        return PickThePicklist('Contact', 'MailingState__c', true);
     }
 
     public List<SelectOption> getTimeFrame() {
-        return GetDropdownOptions(UST_Event_Registration__c.Preferred_Visit_Time__c.getDescribe());
+        return PickThePicklist('UST_Event_Registration__c', 'Preferred_Visit_Time__c', true);
     }
 
     public List<SelectOption> getParentStatus() {
-        return GetDropdownOptions(UST_Event_Registration__c.Registrant_Parent_Status__c.getDescribe());
+        return PickThePicklist('UST_Event_Registration__c', 'Registrant_Parent_Status__c', true);
     }
 
     public List<SelectOption> getApplicantTypeDD() {
-        return GetDropdownOptions(UST_Event_Registration__c.Registrant_Applicant_Type__c.getDescribe());
+        return PickThePicklist('UST_Event_Registration__c', 'Registrant_Applicant_Type__c', true);
+    }
+
+    public List<SelectOption> getRelationshipDD() {
+        return PickThePicklist('UST_Event_Registration__c', 'Relationship_to_St_Thomas__c', false);
     }
 
     public List<SelectOption> getProgramsAvailable() {
-        String prgString = eventPage.Academic_Program_List__c;
+        String prgString = '';
         String prgSelectedAlready = newEvtReg.Registrant_Program_Interest__c;
-        if (eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require one selection') {
-            selectedProgramsOne = prgSelectedAlready;
-        }
+        List<Major__c> schoolProgs = new List<Major__c>();
 
-        //If program list is empty then get the full list
-        If (String.isBlank(prgString)) {
-            List<Major__c> schoolProgs = new List<Major__c>();
-            if (!String.isBlank(eventPage.School__c)) {
-                Id schoolId = eventPage.School__c;
-                schoolProgs = [
-                        SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
-                        FROM Major__c
-                        WHERE Status__c = 'Active'
-                        AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
-                        AND Program_Offered__r.Program_Code__c != NULL
-                        AND Program_Offered__r.School__c = :schoolId
-                        ORDER BY Major_Name__c
-                ];
-            } else {
-                schoolProgs = [
-                        SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
-                        FROM Major__c
-                        WHERE Status__c = 'Active'
-                        AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
-                        AND Program_Offered__r.Program_Code__c != NULL
-                        ORDER BY Major_Name__c
-                ];
+        if (eventPage != null) {
+            prgString = eventPage.Academic_Program_List__c;
+            if (eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require one selection') {
+                selectedProgramsOne = prgSelectedAlready;
+            }
+            //If program list is empty then get the full list
+            If (String.isBlank(prgString)) {
+
+                if (!String.isBlank(eventPage.School__c)) {
+                    Id schoolId = eventPage.School__c;
+                    schoolProgs = [
+                            SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
+                            FROM Major__c
+                            WHERE Status__c = 'Active'
+                            AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                            AND Program_Offered__r.Program_Code__c != NULL
+                            AND Program_Offered__r.School__c = :schoolId
+                            ORDER BY Major_Name__c
+                    ];
+                } else {
+                    schoolProgs = [
+                            SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
+                            FROM Major__c
+                            WHERE Status__c = 'Active'
+                            AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                            AND Program_Offered__r.Program_Code__c != NULL
+                            ORDER BY Major_Name__c
+                    ];
+                }
             }
             //turn list into a ; separated string to consume below
             prgString = '';
@@ -354,17 +389,6 @@ public with sharing class USTEventRegisterController {
 
     }
 
-
-    public List<SelectOption> GetDropdownOptions(Schema.DescribeFieldResult fieldResult) {
-        List<SelectOption> options = new List<SelectOption>();
-        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
-        options.add(new SelectOption('', 'Select...'));
-        for (Schema.PicklistEntry f : ple) {
-            options.add(new SelectOption(f.getValue(), f.getLabel()));
-        }
-        return options;
-    }
-
     public List<SelectOption> createPicklists(String returnSepStringList) {
         List<SelectOption> cpl = new List<SelectOption>();
         if (!String.isBlank(returnSepStringList)) {
@@ -380,11 +404,17 @@ public with sharing class USTEventRegisterController {
         return cpl;
     }
 
+    public List<SelectOption> PickThePicklist(string YourObjectName, string YourFieldName, Boolean includeSelect) {
+        List<SelectOption> picklists = new List<SelectOption>();
+        List<Schema.PicklistEntry> PicklistValues = Schema.getGlobalDescribe().get(YourObjectName).getDescribe().fields.getMap().get(YourFieldName).getDescribe().getPicklistValues();
+
+        for (Schema.PicklistEntry PicklistValue : PicklistValues) {
+            picklists.add(new SelectOption(PicklistValue.getValue(), PicklistValue.getLabel()));
+        }
+        return picklists;
+    }
+
     public PageReference saveContactRegistration() {
-        Integer contactCount = 0;
-        String foundID = '';
-        String softEmailMatches = '';
-        String softFirstLastZipMatches = '';
         boolean newContactCreated = false;
         PageReference optionPage;
 
@@ -438,120 +468,68 @@ public with sharing class USTEventRegisterController {
             newEvtReg.Registrant_Program_Interest__c = '';
         }
 
-        //Test to find if contact already exists - HARD TEST last name and email match
-        String lastName = newEvtReg.Registrant_Last_Name__c;
-        String email = newEvtReg.Registrant_Email__c;
-
-        List<Contact> hardContactTest = [SELECT Id FROM Contact WHERE LastName = :lastName AND Email = :email];
-
-        if (hardContactTest.size() > 0) {
-            test += 'Hard match contact found! ' + hardContactTest[0].Id + '<br>';
-            contactId = hardContactTest[0].Id;
-            contactCount++;
-        } else {
-            //Check if first name last name zip match
-            List<Contact> zipContactTest = [
-                    SELECT Id
-                    FROM Contact
-                    WHERE FirstName = :newEvtReg.Registrant_First_Name__c
-                    AND LastName = :newEvtReg.Registrant_Last_Name__c
-                    AND MailingZip__c = :newEvtReg.Registrant_Zip__c
-            ];
-            if (zipContactTest.size() > 0) {
-                //Soft Match found with zip
-                for (Contact c : zipContactTest) {
-                    softFirstLastZipMatches += c.Id + ' ';
-                }
-                contactCount++;
-            }
-            List<Contact> emailContactTest = [
-                    SELECT Id
-                    FROM Contact
-                    WHERE Email = :newEvtReg.Registrant_Email__c
-            ];
-            if (emailContactTest.size() > 0) {
-                //Soft Match found with email
-                for (Contact c : emailContactTest) {
-                    softEmailMatches += c.Id + ' ';
-                }
-                contactCount++;
-            }
-
-            Contact newEvtContact = new Contact();
-            newEvtContact.FirstName = newEvtReg.Registrant_First_Name__c;
-            newEvtContact.LastName = newEvtReg.Registrant_Last_Name__c;
-            if (emailContactTest.size() > 0) {
-                //Check dup number until you find a free one
-                String dupMatch = '';
-                for (Integer x = 1; x <= 10; x++) {
-                    dupMatch = 'Event_Dup_' + String.valueOf(x) + '_';
-                    String dupMatchTest = dupMatch + newEvtReg.Registrant_Email__c;
-                    List<Contact> dupMatches = [SELECT Id FROM Contact WHERE Email = :dupMatchTest];
-                    if (dupMatches.size() <= 0) {
-                        break;
-                    }
-                }
-                newEvtContact.Email = dupMatch + newEvtReg.Registrant_Email__c;
-            } else {
-                newEvtContact.Email = newEvtReg.Registrant_Email__c;
-            }
-            newEvtContact.EnrollmentrxRx__Gender__c = newEvtReg.Registrant_Gender__c;
-            newEvtContact.MailingStreetLine1__c = newEvtReg.Registrant_Street_1__c;
-            newEvtContact.MailingStreetLine2__c = newEvtReg.Registrant_Street_2__c;
-            newEvtContact.MailingCity__c = newEvtReg.Registrant_City__c;
-            newEvtContact.MailingZip__c = newEvtReg.Registrant_Zip__c;
-            newEvtContact.MailingState__c = newEvtReg.Registrant_State__c;
-            newEvtContact.MobilePhone = newEvtReg.Registrant_Mobile_Phone__c;
-            newEvtContact.HomePhone = newEvtReg.Registrant_Phone__c;
-            newEvtContact.High_School_Expected_Graduation_Year__c = newEvtReg.Registrant_High_School_Grad_Year__c;
-            newEvtContact.LeadSource = 'Event';
-
-            if (!String.isBlank(newEvtReg.Registrant_Applicant_Type__c)) {
-                newEvtContact.Inquiry_Applicant_Type__c = newEvtReg.Registrant_Applicant_Type__c;
-            }
-
-            if (!String.isBlank(newEvtReg.Registrant_High_School_Code__c) && String.isBlank(newEvtReg.Registrant_College_Code__c)) {
-                newEvtContact.EnrollmentrxRx__High_School_Code__c = newEvtReg.Registrant_High_School_Code__c;
-            } else if (!String.isBlank(newEvtReg.Registrant_College_Code__c)) {
-                newEvtContact.EnrollmentrxRx__High_School_Code__c = newEvtReg.Registrant_College_Code__c;
-            }
-
-            if (newEvtReg.Registrant_Receive_Texts__c = true) {
-                newEvtContact.Receive_Texts__c = 'Yes';
-            }
-            try {
-                upsert newEvtContact;
-            } catch (Exception ex) {
-                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
-                ApexPages.addMessage(myMsg);
-            }
-            contactId = newEvtContact.Id;
-            newContactCreated = true;
-            //Create new contact
+        if (String.isNotBlank(birthDateString)) {
+            newEvtReg.Registrant_Date_of_Birth__c = Date.parse(birthDateString);
         }
-        newEvtReg.Status__c = 'Started';
-        newEvtReg.Date__c = Date.valueof(evtInstance.Start_Date_Time__c);
+
+        if (!String.isBlank(applicantType)) {
+            newEvtReg.Registrant_Applicant_Type__c = applicantType;
+        }
+
+        //Begin matching based on event record type to get contact ID or create a new contact ID
+        USTEventContactMatching matcher = new USTEventContactMatching();
+        Map<String, String> matched = new Map<String, String>();
+
+        //Check if last name, email, phone number or DOB changed
+        Boolean dataHasChanged = false;
+        if (oldEvtReg != null) {
+            if (oldEvtReg.Registrant_Date_of_Birth__c != newEvtReg.Registrant_Date_of_Birth__c
+                    || oldEvtReg.Registrant_Last_Name__c != newEvtReg.Registrant_Last_Name__c
+                    || oldEvtReg.Registrant_Email__c != newEvtReg.Registrant_Email__c
+                    || oldEvtReg.Registrant_First_Name__c != newEvtReg.Registrant_First_Name__c
+                    ) {
+                dataHasChanged = true;
+            }
+        }
+
+        if (String.isNotBlank(evtInfo.evtRegId) && String.isNotBlank(newEvtReg.Contact__r.Id) && !dataHasChanged) {
+            matched.put('contactId', newEvtReg.Contact__r.Id);
+            contactId = newEvtReg.Contact__r.Id;
+        } else {
+            //pass record type and event reg to matcher helper class
+            matched = matcher.USTEventContactMatching(evtInfo.recordTypeName, newEvtReg);
+            //Populate matching results into data
+            contactId = (Id) matched.get('contactId');
+            newContactCreated = Boolean.valueOf(matched.get('newContactCreated'));
+            newEvtReg.Contact_Soft_Match_Email__c = String.valueOf(matched.get('softEmailMatches'));
+            newEvtReg.Contact_Soft_Match_First_Last_Zip__c = String.valueOf(matched.get('softFirstLastZipMatches'));
+            newEvtReg.Matching_Log__c = String.valueOf(matched.get('matchLog'));
+        }
+
         //Create registration if event Registration does not exist
-        if (!String.isBlank(contactId)) {
+        if (String.isNotBlank(contactId)) {
             if (String.isBlank(evtInfo.evtRegId) || evtInfo.evtRegId == 'COMING') {
+                newEvtReg.Status__c = 'Started';
+                newEvtReg.Date__c = Date.valueof(evtInstance.Start_Date_Time__c);
                 newEvtReg.Event__c = evtInfo.evtId;
                 newEvtReg.Event_Instance__c = evtInfo.instanceID;
                 newEvtReg.Contact__c = contactId;
                 if (newContactCreated) {
                     newEvtReg.New_Contact_Created__c = true;
-                    newEvtReg.Contact_Soft_Match_Email__c = softEmailMatches;
-                    newEvtReg.Contact_Soft_Match_First_Last_Zip__c = softFirstLastZipMatches;
-                }
-                if (!String.isBlank(applicantType)) {
-                    newEvtReg.Registrant_Applicant_Type__c = applicantType;
                 }
                 try {
                     insert newEvtReg;
+                    newEvtReg.Matching_Log__c = newEvtReg.Matching_Log__c.replaceAll('\\[\\[REGID\\]\\]', newEvtReg.Id);
+                    upsert newEvtReg;
                 } catch (Exception ex) {
                     ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
                     ApexPages.addMessage(myMsg);
                 }
                 evtInfo.evtRegId = newEvtReg.Id;
+
+                //make matching log functional for reparenting
+
+
             } else {
                 //update registration if Registration exists
                 try {
@@ -564,18 +542,11 @@ public with sharing class USTEventRegisterController {
             }
         }
 
-        if (!String.isBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
-            List<UST_Event_Appointment_Type__c> apptTypes = [
-                    SELECT Id
-                    From UST_Event_Appointment_Type__c
-                    WHERE UST_Event__c = :evtInfo.evtId
-                    AND (Restrict_To_Instance_Title__r.Instance_Title__c = :evtInstance.Instance_Title__c OR Restrict_To_Instance_Title__r.Instance_Title__c = null)
-            ];
-            if (apptTypes.size() == 0) {
-                //If no options skip that step
-                optionPage = Page.USTEventSubmit;
-            } else {
+        if (String.isNotBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
+            if (evtHasAppointments) {
                 optionPage = Page.USTEventRegistrationOptions;
+            } else {
+                optionPage = Page.USTEventConfirmation;
             }
             // create cookie to pass on to next page
             //Posting along everything we need to build the next page

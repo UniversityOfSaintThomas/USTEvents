@@ -2,6 +2,7 @@
 <Layout xmlns="http://soap.sforce.com/2006/04/metadata">
     <customButtons>Registration_Printouts</customButtons>
     <customButtons>Overnight_Itineraries</customButtons>
+    <customButtons>Apsona_Itineraries</customButtons>
     <excludeButtons>Submit</excludeButtons>
     <layoutSections>
         <customLabel>false</customLabel>
@@ -44,6 +45,10 @@
             <layoutItems>
                 <behavior>Readonly</behavior>
                 <field>Registration_Link__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>Admin_Open_Registration__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>

@@ -1,11 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
         <members>MultiselectController</members>
         <members>TestUSTEventShared</members>
         <members>TestUSTRestAdmissions</members>
         <members>USTEventAddToCalendarController</members>
-        <members>USTEventAppointmentTriggerHandler</members>
         <members>USTEventCancelReviewController</members>
         <members>USTEventConfirmationController</members>
         <members>USTEventFeed</members>
@@ -16,11 +15,20 @@
         <members>USTEventProgramLookupExtension</members>
         <members>USTEventRegisterController</members>
         <members>USTEventRegistrationOptionsController</members>
-        <members>USTEventRegistrationTriggerHandler</members>
         <members>USTEventShared</members>
         <members>USTEventSubmitController</members>
         <members>USTRestAdmissions</members>
         <members>Util</members>
+        <members>AdmissionsCounselorLookup</members>
+        <members>TestAdmissionsCounselorLookup</members>
+        <members>USTEventFeedController.cls-meta.xml</members>
+        <members>USTEventHostAssignementExtension.cls-meta.xml</members>
+        <members>USTEventEmailLinkController</members>
+        <members>USTEventContactMatching</members>
+        <members>TestUSTEventSharedDataFactory</members>
+        <members>TDTM_USTEVENT</members>
+        <members>USTEventRegistrationTrigger_TDTM</members>
+        <members>USTEventAppointmentItinerary_TDTM</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -47,11 +55,17 @@
         <members>USTEventRegister</members>
         <members>USTEventRegistrationOptions</members>
         <members>USTEventSubmit</members>
+        <members>USTGeneratedItineraries</members>
+        <members>USTEventEmailLink</members>
+        <members>USTEventReparent</members>
+        <members>CapricornTemplate2019</members>
         <name>ApexPage</name>
     </types>
     <types>
         <members>USTEventAppointmentTrigger</members>
         <members>USTEventRegistrationTrigger</members>
+        <members>TDTM_USTEventRegistration</members>
+        <members>TDTM_USTEventAppointment</members>
         <name>ApexTrigger</name>
     </types>
     <types>
@@ -300,6 +314,7 @@
         <members>UST_Event_Instance__c</members>
         <members>UST_Event_Registration__c</members>
         <members>UST_Event__c</members>
+        <members>UST_Event_Settings__c</members>
         <name>CustomObject</name>
     </types>
     <types>
@@ -371,7 +386,17 @@
         <members>UGEventsRegistrationOptionScripts</members>
         <members>UGParkingPass</members>
         <members>USTEventAssets</members>
+        <members>OPUSScripts2018</members>
         <name>StaticResource</name>
+    </types>
+    <types>
+        <members>UST_Event_Manager</members>
+        <name>PermissionSet</name>
+    </types>
+    <types>
+        <members>UG_Enrollment</members>
+        <members>Visit_Students</members>
+        <name>Group</name>
     </types>
     <version>44.0</version>
 </Package>

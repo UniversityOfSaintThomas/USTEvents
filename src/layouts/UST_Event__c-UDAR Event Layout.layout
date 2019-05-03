@@ -104,6 +104,10 @@
                 <behavior>Edit</behavior>
                 <field>Program_Filter_3__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Ask_Date_Of_Birth__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
