@@ -48,7 +48,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Admin_Open_Registration__c</field>
+                <field>Admin_Open_Registration_Link__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -172,6 +172,9 @@
     <relatedLists>
         <fields>NAME</fields>
         <fields>Contact__c</fields>
+        <fields>Registrant_Last_Name__c</fields>
+        <fields>Registrant_First_Name__c</fields>
+        <fields>Registrant_Parent_First_Name__c</fields>
         <fields>Admissions_Counselor__c</fields>
         <fields>Status__c</fields>
         <fields>Substatus__c</fields>

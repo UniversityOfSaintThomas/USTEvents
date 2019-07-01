@@ -348,6 +348,8 @@
         <members>UST_Event__c-Graduate Event Layout</members>
         <members>UST_Event__c-UDAR Event Layout</members>
         <members>UST_Event__c-UG Event Layout</members>
+        <members>UST_Event_Instance__c-community</members>
+        <members>UST_Event_Registration__c-Community Layout</members>
         <name>Layout</name>
     </types>
     <types>

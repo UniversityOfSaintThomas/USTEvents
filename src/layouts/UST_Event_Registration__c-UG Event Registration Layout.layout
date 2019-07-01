@@ -87,6 +87,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>RecordTypeId</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Status__c</field>
             </layoutItems>
             <layoutItems>
@@ -260,6 +264,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Registrant_Program_Interest__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>MPCW_Visit_ID__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
