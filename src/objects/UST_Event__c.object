@@ -911,6 +911,11 @@
                     <label>Regional Event</label>
                 </value>
                 <value>
+                    <fullName>High School Group</fullName>
+                    <default>false</default>
+                    <label>High School Group</label>
+                </value>
+                <value>
                     <fullName>Opus College of Business Undergraduate</fullName>
                     <default>false</default>
                     <label>Opus College of Business Undergraduate</label>
@@ -1235,7 +1240,7 @@ TEXT(YEAR( End_Date__c))
                 <value>
                     <fullName>Center for Ethical Organizations</fullName>
                     <default>false</default>
-                    <label>Center for Ethical Organizations</label>
+                    <label>Center for Ethics in Practice</label>
                 </value>
                 <value>
                     <fullName>Center for Innovation in the Business of Health Care</fullName>
@@ -1658,11 +1663,6 @@ TEXT(YEAR( End_Date__c))
                     <fullName>OPUSTemplate2018</fullName>
                     <default>false</default>
                     <label>OPUSTemplate2018</label>
-                </value>
-                <value>
-                    <fullName>CapricornTemplate2019</fullName>
-                    <default>false</default>
-                    <label>CapricornTemplate2019</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -2335,10 +2335,6 @@ TEXT(YEAR( End_Date__c))
         <picklistValues>
             <picklist>Template__c</picklist>
             <values>
-                <fullName>CapricornTemplate2019</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>CastorTemplate2017</fullName>
                 <default>false</default>
             </values>
@@ -2548,6 +2544,10 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>First-Year International</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>High School Group</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2895,10 +2895,6 @@ TEXT(YEAR( End_Date__c))
         </picklistValues>
         <picklistValues>
             <picklist>Template__c</picklist>
-            <values>
-                <fullName>CapricornTemplate2019</fullName>
-                <default>false</default>
-            </values>
             <values>
                 <fullName>CastorTemplate2017</fullName>
                 <default>false</default>

@@ -21,8 +21,6 @@
         <members>Util</members>
         <members>AdmissionsCounselorLookup</members>
         <members>TestAdmissionsCounselorLookup</members>
-        <members>USTEventFeedController.cls-meta.xml</members>
-        <members>USTEventHostAssignementExtension.cls-meta.xml</members>
         <members>USTEventEmailLinkController</members>
         <members>USTEventContactMatching</members>
         <members>TestUSTEventSharedDataFactory</members>
@@ -62,8 +60,6 @@
         <name>ApexPage</name>
     </types>
     <types>
-        <members>USTEventAppointmentTrigger</members>
-        <members>USTEventRegistrationTrigger</members>
         <members>TDTM_USTEventRegistration</members>
         <members>TDTM_USTEventAppointment</members>
         <name>ApexTrigger</name>
@@ -398,5 +394,5 @@
         <members>Visit_Students</members>
         <name>Group</name>
     </types>
-    <version>44.0</version>
+    <version>46.0</version>
 </Package>

@@ -1427,9 +1427,9 @@ Registrant_Last_Name__c</formula>
     </fields>
     <fields>
         <fullName>Registration_Origin__c</fullName>
-        <description>This field displays how the registration was entered. The default value is Online, but can be manually adjusted to show if someone calls the office to be entered or was enters onsite.</description>
+        <description>This field displays how the registration was entered.  The default value is Online, but can be manually adjusted to show if someone calls the office to be entered or was entered onsite.</description>
         <externalId>false</externalId>
-        <inlineHelpText>This field displays how the registration was entered. The default value is Online, but can be manually adjusted to show if someone calls the office to be entered or was enters onsite.</inlineHelpText>
+        <inlineHelpText>This field displays how the registration was entered.  The default value is Online, but can be manually adjusted to show if someone calls the office to be entered or was entered onsite.</inlineHelpText>
         <label>Registration Origin</label>
         <required>false</required>
         <trackHistory>false</trackHistory>

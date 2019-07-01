@@ -250,6 +250,10 @@
                 <valueName>Admissions Counselor</valueName>
             </valueSettings>
             <valueSettings>
+                <controllingFieldValue>Admissions Visit</controllingFieldValue>
+                <valueName>Information Session</valueName>
+            </valueSettings>
+            <valueSettings>
                 <controllingFieldValue>Athletic Visit</controllingFieldValue>
                 <valueName>Men&apos;s Baseball</valueName>
             </valueSettings>

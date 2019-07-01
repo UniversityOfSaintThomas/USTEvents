@@ -325,39 +325,35 @@ public with sharing class USTEventRegisterController {
     }
 
     public List<SelectOption> getProgramsAvailable() {
-        String prgString = '';
+        String prgString = eventPage.Academic_Program_List__c;
         String prgSelectedAlready = newEvtReg.Registrant_Program_Interest__c;
-        List<Major__c> schoolProgs = new List<Major__c>();
+        if (eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require one selection') {
+            selectedProgramsOne = prgSelectedAlready;
+        }
 
-        if (eventPage != null) {
-            prgString = eventPage.Academic_Program_List__c;
-            if (eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require one selection') {
-                selectedProgramsOne = prgSelectedAlready;
-            }
-            //If program list is empty then get the full list
-            If (String.isBlank(prgString)) {
-
-                if (!String.isBlank(eventPage.School__c)) {
-                    Id schoolId = eventPage.School__c;
-                    schoolProgs = [
-                            SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
-                            FROM Major__c
-                            WHERE Status__c = 'Active'
-                            AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
-                            AND Program_Offered__r.Program_Code__c != NULL
-                            AND Program_Offered__r.School__c = :schoolId
-                            ORDER BY Major_Name__c
-                    ];
-                } else {
-                    schoolProgs = [
-                            SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
-                            FROM Major__c
-                            WHERE Status__c = 'Active'
-                            AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
-                            AND Program_Offered__r.Program_Code__c != NULL
-                            ORDER BY Major_Name__c
-                    ];
-                }
+        //If program list is empty then get the full list
+        If (String.isBlank(prgString)) {
+            List<Major__c> schoolProgs = new List<Major__c>();
+            if (!String.isBlank(eventPage.School__c)) {
+                Id schoolId = eventPage.School__c;
+                schoolProgs = [
+                        SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
+                        FROM Major__c
+                        WHERE Status__c = 'Active'
+                        AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                        AND Program_Offered__r.Program_Code__c != NULL
+                        AND Program_Offered__r.School__c = :schoolId
+                        ORDER BY Major_Name__c
+                ];
+            } else {
+                schoolProgs = [
+                        SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
+                        FROM Major__c
+                        WHERE Status__c = 'Active'
+                        AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                        AND Program_Offered__r.Program_Code__c != NULL
+                        ORDER BY Major_Name__c
+                ];
             }
             //turn list into a ; separated string to consume below
             prgString = '';

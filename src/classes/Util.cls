@@ -15,6 +15,9 @@ public class Util {
     @TestVisible private static Boolean doNotKeepTryingToCreateCounsRolesMapThisTest = FALSE;
     private static Map<String, Id> ugCounsGeoTerrIDsByExtId = new Map<String, Id>();
     private static Map<String, Geographic_Area__c> geoAreasMap = new Map<String, Geographic_Area__c>();
+    private static Map<String, Geographic_Area__c> specificGeoAreasMap = new Map<String, Geographic_Area__c>();
+    private static final Integer MAXQUERIESFORSPECIFICGEOAREASMAP = 3;
+    private static Integer queriesInvokedForSpecificGeoAreasMap = 0;
     private static Map<String, Id> alphaUGTerrsToFACounsIdsMap = new Map<String, Id>();
     private static Pattern twoUpperAlphaPattern =  Pattern.compile('^[A-Z][A-Z]$');
     private static List<nameCase_Exception__c> nceList;

@@ -11,16 +11,13 @@
         </apex:define>
         <apex:define name="pageTitle"><a href="{!eventPage.Event_home_Link_URL__c}">{!eventPage.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
-
             <script>
                 dataLayer = [{
                     'school': '{!eventPage.School__r.Name}',
                     'recordType': '{!eventPage.RecordType.Name}',
                     'eventlabel':'{!eventPage.Event_Name__c}'
-
                 }];
             </script>
-
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>
             <link href="{!URLFOR($Resource.USTEventAssets, '/chosen/chosen-ust.css')}" rel="stylesheet" type="text/css"/>
             <script src="{!URLFOR($Resource.USTEventAssets, '/js/register.js')}" type="text/javascript"/>
