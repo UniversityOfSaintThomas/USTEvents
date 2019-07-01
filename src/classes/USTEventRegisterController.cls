@@ -34,6 +34,7 @@ public with sharing class USTEventRegisterController {
     public String eventStartDateTimeCrumb { get; set; }
     public Boolean evtHasAppointments { get; set; }
     public String birthDateString { get; set; }
+    public String dataLayerLocationType {get;set;}
 
 
     public USTEventRegisterController() {
@@ -53,6 +54,7 @@ public with sharing class USTEventRegisterController {
         showAddress = false;
         showPhone = false;
         locationCrumb = '';
+
         EvtUserType = UserInfo.getUserType();
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
@@ -108,9 +110,9 @@ public with sharing class USTEventRegisterController {
                             Add_Info_Question_Pick_List_3__c, Add_Info_Question_Text_3__c, Add_Info_Question_Type_3__c,
                             Add_Info_Question_Pick_List_4__c, Add_Info_Question_Text_4__c, Add_Info_Question_Type_4__c,
                             Add_Info_Question_Pick_List_5__c, Add_Info_Question_Text_5__c, Add_Info_Question_Type_5__c,
-                            Academic_Program_List__c, School__c, Ask_Mailing_Address__c, Ask_Phone__c, Event_Sponsor__c,
+                            Academic_Program_List__c, School__c, School__r.Name, Ask_Mailing_Address__c, Ask_Phone__c, Event_Sponsor__c,
                             Applicant_Type__c, Location_Type__c, Location_Title__c, Location_Address__c, Location_Map_Link__c,
-                            Tracking_Event_Registration__c, Ask_Date_Of_Birth__c
+                            Tracking_Event_Registration__c, Ask_Date_Of_Birth__c, Event_Type__c, RecordType.Name
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1
@@ -154,6 +156,7 @@ public with sharing class USTEventRegisterController {
             } else if (!String.isBlank(eventPage.Location_Title__c)) {
                 locationAddress = eventPage.Location_Title__c;
             }
+            dataLayerLocationType = locationAddress;
 
             if (!String.isBlank(locationTitle)) {
                 locationCrumb = locationTitle + '<br/>';

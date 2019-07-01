@@ -2,8 +2,6 @@
  * Created by dahl3702 on 4/29/2019.
  */
 
-// Trigger Handler Class on CampaignMember, to reset any Contact's HasOptedOutOfEmail field
-
 global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
 
     // the Trigger Handler’s Run method we must provide

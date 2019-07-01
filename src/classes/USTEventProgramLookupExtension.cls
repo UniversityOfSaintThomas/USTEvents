@@ -14,12 +14,12 @@ public class USTEventProgramLookupExtension {
         SelectedPrograms = new List<SelectOption>();
 
         List<String> currentSelected = new List<String>();
-        if (String.isNotBlank(USTevt.Academic_Program_List_Selected__c)) {
+        if (!String.isBlank(USTevt.Academic_Program_List_Selected__c)) {
             currentSelected = USTevt.Academic_Program_List_Selected__c.split(';');
             for (String acPrg : currentSelected) {
                 SelectedPrograms.add(new SelectOption(acPrg, acPrg));
             }
-        } else if (String.isNotBlank(USTevt.Academic_Program_List__c)) {
+        } else if (!String.isBlank(USTevt.Academic_Program_List__c)) {
             currentSelected = USTevt.Academic_Program_List__c.split(';');
             for (Integer xx = currentSelected.size() - 1; xx > -1; xx--) {
                 SelectedPrograms.add(new SelectOption(currentSelected[xx], currentSelected[xx]));
@@ -34,7 +34,7 @@ public class USTEventProgramLookupExtension {
         // Get a list of programs
         List<SelectOption> programs = new List<SelectOption>();
         List<Major__c> schoolProgs = new List<Major__c>();
-        if (String.isNotBlank(USTEvt.School__c)) {
+        if (!String.isBlank(USTEvt.School__c)) {
             Id schoolId = USTEvt.School__c;
             schoolProgs = [
                     SELECT Id,Name, Major_Display_Name__c, Major_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c

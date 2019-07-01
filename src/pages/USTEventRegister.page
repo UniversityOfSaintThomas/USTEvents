@@ -11,6 +11,16 @@
         </apex:define>
         <apex:define name="pageTitle"><a href="{!eventPage.Event_home_Link_URL__c}">{!eventPage.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
+
+            <script>
+                dataLayer = [{
+                    'school': '{!eventPage.School__r.Name}',
+                    'recordType': '{!eventPage.RecordType.Name}',
+                    'eventlabel':'{!eventPage.Event_Name__c}'
+
+                }];
+            </script>
+
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>
             <link href="{!URLFOR($Resource.USTEventAssets, '/chosen/chosen-ust.css')}" rel="stylesheet" type="text/css"/>
             <script src="{!URLFOR($Resource.USTEventAssets, '/js/register.js')}" type="text/javascript"/>
@@ -166,7 +176,7 @@
 
                         <apex:outputPanel layout="block" styleClass="column small-12 large-6 medium-6" rendered="{!eventPage.Ask_Phone__c}">
                             <apex:inputCheckbox value="{!newEvtReg.Registrant_Receive_Texts__c}" id="AcceptTextMessage" disabled="{!contactSet}"/>
-                            <apex:outputLabel value="I am willing to receive text messages about this event" for="AcceptTextMessage"  style="padding-top:1.5em;"/>
+                            <apex:outputLabel value="I am willing to receive text messages about this event" for="AcceptTextMessage" style="padding-top:1.5em;"/>
                         </apex:outputPanel>
 
                         <apex:outputPanel layout="block" styleClass="columns small-12 medium-12" rendered="{!IF(evtInfo.recordTypeName = 'UDAR', true, false)}">

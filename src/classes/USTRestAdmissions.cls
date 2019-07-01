@@ -17,8 +17,12 @@ global with sharing class USTRestAdmissions {
         String interest { get; set; }
         String programCode { get; set; }
         String programMajorCode { get; set; }
-        String major {get;set;}
-        String minor {get;set;}
+        String major { get; set; }
+        String minor { get; set; }
+        String keywords { get; set; }
+        String majorConcentration { get; set; }
+        String concentration { get; set; }
+        String preprofessional { get; set; }
     }
 
     @HttpGet
@@ -38,7 +42,7 @@ global with sharing class USTRestAdmissions {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=highschool
                 serializedJSON = JSON.serialize(getSchools('High School'));
 
-            } else if (feedType.equalsIgnoreCase( 'college')) {
+            } else if (feedType.equalsIgnoreCase('college')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=college
                 serializedJSON = JSON.serialize(getSchools('College'));
 
@@ -109,7 +113,7 @@ global with sharing class USTRestAdmissions {
         res.responseBody = Blob.valueOf(serializedJSON);
     }
 
-    private static List<programData> programFinder( String pftype) {
+    private static List<programData> programFinder(String pftype) {
 
         /*
         Major_Display_Name__c
@@ -128,17 +132,32 @@ global with sharing class USTRestAdmissions {
         List<Major__c> majorList = new List<Major__c>();
         String majorQuery = '';
 
+        Boolean rfi_flag = false;
+
+        if (String.isNotBlank(RestContext.request.params.get('rfi'))) {
+            rfi_flag = Boolean.valueOf(RestContext.request.params.get('rfi'));
+        }
+
         // Build the query as a string for flexibility
         majorQuery += ' SELECT Id,Display_on_Program_Finder__c, Display_on_RFI__c, Major_Display_Name__c, Prog_Major_Conc_Code__c, Program_Code__c, Status__c, ';
         majorQuery += ' Program_Offered__r.Degree_Level__c, Keyword_for_Program_Finder__c,Major_Web_URL__c, Program_Offered__r.Program_Code__c, College_School__c, STVMAJR_VALID_MAJOR_IND__c, STVMAJR_VALID_MINOR_IND__c, ';
-        majorQuery += ' Areas_of_Interest_for_program_finder__c,Learning_Style_for_program_finder__c, Program_Offered__r.School__r.Name, Program_Offered__r.School__c, Pre_Professional_Program__c ';
+        majorQuery += ' Areas_of_Interest_for_program_finder__c,Learning_Style_for_program_finder__c, Program_Offered__r.School__r.Name, Program_Offered__r.School__c, Pre_Professional_Program__c, STVMAJR_VALID_CONCENTRATN_IND__c, ';
+        majorQuery += ' Display_on_RFI_UG__c, Major_Concentration__c, Degree_Level__c ';
         majorQuery += ' FROM Major__c ';
-        if (pftype.equalsIgnoreCase('grad')) {
-            majorQuery += ' WHERE Display_on_Program_Finder__c = true AND';
-        } else if (pftype.equalsIgnoreCase('ug')) {
-            majorQuery += ' WHERE Display_on_Program_Finder_UG__c = true AND';
+        if (!rfi_flag) {
+            if (pftype.equalsIgnoreCase('grad')) {
+                majorQuery += ' WHERE Display_on_Program_Finder__c = true AND';
+            } else if (pftype.equalsIgnoreCase('ug')) {
+                majorQuery += ' WHERE Display_on_Program_Finder_UG__c = true AND';
+            } else {
+                majorQuery += ' WHERE Display_on_Program_Finder_UG__c = true AND Display_on_Program_Finder__c = true AND';
+            }
         } else {
-            majorQuery += ' WHERE Display_on_Program_Finder_UG__c = true AND Display_on_Program_Finder__c = true AND';
+            if (pftype.equalsIgnoreCase('grad')) {
+                majorQuery += ' WHERE Display_on_RFI__c = true AND' ;
+            } else {
+                majorQuery += ' WHERE Display_on_RFI_UG__c = true AND' ;
+            }
         }
 
         // Possible URL variables
@@ -155,7 +174,7 @@ global with sharing class USTRestAdmissions {
 
         if (String.isNotBlank(RestContext.request.params.get('interest'))) {
             String majorInterest = String.valueOf(RestContext.request.params.get('interest'));
-            majorQuery += ' Areas_of_Interest_for_program_finder__c  IN (\'' + majorInterest + '\') AND' ;
+            majorQuery += ' Areas_of_Interest_for_program_finder__c  INCLUDES (\'' + majorInterest + '\') AND' ;
         }
 
         If (String.isNotBlank(RestContext.request.params.get('degree'))) {
@@ -165,15 +184,15 @@ global with sharing class USTRestAdmissions {
 
         if (String.isNotBlank(RestContext.request.params.get('style'))) {
             String majorStyle = String.valueOf(RestContext.request.params.get('style'));
-            majorQuery += ' Learning_Style_for_program_finder__c IN (\'' + majorStyle + '\') AND' ;
+            majorQuery += ' Learning_Style_for_program_finder__c INCLUDES (\'' + majorStyle + '\') AND' ;
         }
 
         if (String.isNotBlank(RestContext.request.params.get('school'))) {
             String majorSchool = String.valueOf(RestContext.request.params.get('school'));
-            if(pftype.equalsIgnoreCase('grad')) {
+            if (pftype.equalsIgnoreCase('grad')) {
                 majorQuery += ' Program_Offered__r.School__r.Name = \'' + majorSchool + '\' AND' ;
             } else if (pftype.equalsIgnoreCase('ug')) {
-                majorQuery += ' College_School__c IN (\'' + majorSchool + '\') AND' ;
+                majorQuery += ' College_School__c INCLUDES (\'' + majorSchool + '\') AND' ;
             }
 
         }
@@ -201,6 +220,32 @@ global with sharing class USTRestAdmissions {
             }
         }
 
+        if (String.isNotBlank(RestContext.request.params.get('concentrations'))) {
+            Boolean concentrations = false;
+            try {
+                concentrations = Boolean.valueOf(RestContext.request.params.get('concentrations'));
+            } catch (Exception e) {
+            }
+            if (concentrations) {
+                majorQuery += ' (STVMAJR_VALID_CONCENTRATN_IND__c = \'Y\' OR STVMAJR_VALID_CONCENTRATN_IND__c = \'Yes\') AND' ;
+            } else if (!concentrations) {
+                majorQuery += ' (STVMAJR_VALID_CONCENTRATN_IND__c = \'N\' OR STVMAJR_VALID_CONCENTRATN_IND__c = \'No\') AND' ;
+            }
+        }
+
+        if (String.isNotBlank(RestContext.request.params.get('preprofessionals'))) {
+            Boolean preprofessionals = false;
+            try {
+                preprofessionals = Boolean.valueOf(RestContext.request.params.get('preprofessionals'));
+            } catch (Exception e) {
+            }
+            if (preprofessionals) {
+                majorQuery += ' Pre_Professional_Program__c = true AND' ;
+            } else {
+                majorQuery += ' Pre_Professional_Program__c = false AND' ;
+            }
+        }
+
         if (String.isNotBlank(RestContext.request.params.get('majors'))) {
             Boolean majors = false;
             try {
@@ -222,12 +267,16 @@ global with sharing class USTRestAdmissions {
             majorQuery += ' AND  (';
             List<String> filterList = majorFilter.split(',');
             for (String f : filterList) {
-                majorQuery += ' Program_Offered__r.School__r.Name LIKE \'%' + f + '%\' OR ';
+                f = f.replace('+', ' ');
+                f = f.replace('%20', ' ');
+                System.debug('FILTER IN = ' + f);
+//                majorQuery += ' Program_Offered__r.School__r.Name LIKE \'%' + f + '%\' OR ';
                 majorQuery += ' Learning_Style_for_program_finder__c LIKE \'%' + f + '%\' OR ';
-                majorQuery += ' Program_Offered__r.Degree_Level__c LIKE \'%' + f + '%\' OR ';
-                majorQuery += ' Areas_of_Interest_for_program_finder__c IN (\'' + f + '\') OR ';
+//                majorQuery += ' Program_Offered__r.Degree_Level__c LIKE \'%' + f + '%\' OR ';
+                majorQuery += ' Areas_of_Interest_for_program_finder__c INCLUDES (\'' + f + '\') OR ';
                 majorQuery += ' Major_Display_Name__c LIKE \'%' + f + '%\' OR ';
-                majorQuery += ' College_School__c IN (\'' +f + '\') OR ' ;
+                majorQuery += ' Keyword_for_Program_Finder__c LIKE \'%' + f + '%\' OR ';
+//                majorQuery += ' College_School__c IN (\'' + f + '\') OR ' ;
             }
             majorQuery = majorQuery.removeEnd('OR ');
             majorQuery += ' ) ';
@@ -241,12 +290,18 @@ global with sharing class USTRestAdmissions {
 
         majorList = database.query(majorQuery);
 
+        System.Debug('MajorList After: ' + MajorList.size());
+
         //load up the custom object class to send back to be parsed into JSON
         for (Major__c m : majorList) {
             programData pd = new programData();
             pd.title = m.Major_Display_Name__c;
             pd.link = (String.isNotBlank(m.Major_Web_URL__c) ? m.Major_Web_URL__c : '');
-            pd.degreeLevel = (String.isNotBlank(m.Program_Offered__r.Degree_Level__c) ? m.Program_Offered__r.Degree_Level__c : '');
+            if (pftype.equalsIgnoreCase('grad')) {
+                pd.degreeLevel = (String.isNotBlank(m.Program_Offered__r.Degree_Level__c) ? m.Program_Offered__r.Degree_Level__c : '');
+            } else {
+                pd.degreeLevel = (String.isNotBlank(m.Degree_Level__c) ? m.Degree_Level__c : '');
+            }
             pd.learningStyle = (String.isNotBlank(m.Learning_Style_for_program_finder__c) ? m.Learning_Style_for_program_finder__c : '');
             if (pftype.equalsIgnoreCase('ug')) {
                 pd.school = (String.isNotBlank(m.College_School__c) ? m.College_School__c : '');
@@ -260,8 +315,14 @@ global with sharing class USTRestAdmissions {
             pd.programId = (String.isNotBlank(String.valueOf(m.Program_Offered__c)) ? String.valueOf(m.Program_Offered__c) : '');
             pd.programCode = (String.isNotBlank(m.Program_Code__c) ? m.Program_Code__c : '');
             pd.programMajorCode = (String.isNotBlank(m.Prog_Major_Conc_Code__c) ? m.Prog_Major_Conc_Code__c : '');
-            pd.major = (String.isNotBlank(m.STVMAJR_VALID_MAJOR_IND__c) && ( m.STVMAJR_VALID_MAJOR_IND__c.equalsIgnoreCase('y') || m.STVMAJR_VALID_MAJOR_IND__c.equalsIgnoreCase('yes')) ? 'true' : 'false');
-            pd.minor = (String.isNotBlank(m.STVMAJR_VALID_MINOR_IND__c) && ( m.STVMAJR_VALID_MINOR_IND__c.equalsIgnoreCase('y') || m.STVMAJR_VALID_MINOR_IND__c.equalsIgnoreCase('yes')) ? 'true' : 'false');
+            pd.major = (String.isNotBlank(m.STVMAJR_VALID_MAJOR_IND__c) && (m.STVMAJR_VALID_MAJOR_IND__c.equalsIgnoreCase('y') || m.STVMAJR_VALID_MAJOR_IND__c.equalsIgnoreCase('yes')) ? 'true' : 'false');
+            pd.minor = (String.isNotBlank(m.STVMAJR_VALID_MINOR_IND__c) && (m.STVMAJR_VALID_MINOR_IND__c.equalsIgnoreCase('y') || m.STVMAJR_VALID_MINOR_IND__c.equalsIgnoreCase('yes')) ? 'true' : 'false');
+            pd.keywords = (String.isNotBlank(m.Keyword_for_Program_Finder__c) ? m.Keyword_for_Program_Finder__c : '');
+            pd.concentration = (String.isNotBlank(m.STVMAJR_VALID_CONCENTRATN_IND__c) && (m.STVMAJR_VALID_CONCENTRATN_IND__c.equalsIgnoreCase('y') || m.STVMAJR_VALID_CONCENTRATN_IND__c.equalsIgnoreCase('yes')) ? 'true' : 'false');
+            pd.concentration = (String.isNotBlank(m.STVMAJR_VALID_CONCENTRATN_IND__c) && (m.STVMAJR_VALID_CONCENTRATN_IND__c.equalsIgnoreCase('y') || m.STVMAJR_VALID_CONCENTRATN_IND__c.equalsIgnoreCase('yes')) ? 'true' : 'false');
+            pd.preprofessional = (m.Pre_Professional_Program__c == true ? 'true' : 'false');
+            pd.majorConcentration = (m.Major_Concentration__c == true ? 'true' : 'false');
+            // Pre_Professional_Program__c
             programList.add(pd);
         }
         return programList;
@@ -285,17 +346,16 @@ global with sharing class USTRestAdmissions {
     global static Map<String, String> getUGMajors() {
         Map<String, String> keyValOut = new Map<String, String>();
         List<Major__c> UGMajors = [
-                SELECT Major_Code__c, Major_Display_Name__c, Program_Offered__c, Id
+                SELECT Major_Code__c, Major_Display_Name__c, Program_Offered__c, Id, Degree_Level__c
                 FROM Major__c
-                WHERE Status__c = 'Active'
-                AND Major_Code__c != NULL
+                WHERE Major_Code__c != NULL
                 AND Major_Display_Name__c != NULL
                 AND Major_Display_Name__c != 'Liberal Arts (DFC)'
                 AND Program_Offered__c IN (SELECT Id FROM EnrollmentrxRx__Program_Offered__c WHERE Name = 'Undeclared BA')
                 ORDER BY Major_Display_Name__c DESC
         ];
         For (Major__c maj : UGMajors) {
-            keyValOut.put(String.valueOf(maj.Major_Code__c), maj.Major_Display_Name__c);
+            keyValOut.put(String.valueOf(maj.Major_Code__c), maj.Degree_Level__c);
         }
         return keyValOut;
     }
@@ -309,8 +369,7 @@ global with sharing class USTRestAdmissions {
             schoolProgs = [
                     SELECT Id,Name, Major_Display_Name__c, Major_Name__c, Major_Code__c, Prog_Major_Conc_Code__c, Program_Offered__r.Program_Code__c
                     FROM Major__c
-                    WHERE Status__c = 'Active'
-                    AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                    WHERE Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
                     AND Program_Offered__r.Program_Code__c != NULL
                     AND Program_Offered__r.School__c = :schoolId
                     ORDER BY Major_Name__c
@@ -319,8 +378,7 @@ global with sharing class USTRestAdmissions {
             schoolProgs = [
                     SELECT Id,Name, Major_Display_Name__c, Major_Name__c, Major_Code__c, Prog_Major_Conc_Code__c, Program_Offered__r.Program_Code__c
                     FROM Major__c
-                    WHERE Status__c = 'Active'
-                    AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
+                    WHERE Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
                     AND Program_Offered__r.Program_Code__c != NULL
                     ORDER BY Major_Name__c
             ];

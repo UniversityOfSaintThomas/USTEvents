@@ -20,7 +20,7 @@ global with sharing class USTEventFeed {
         public String eventUrl { get; set; }
         public Boolean eventClosed { get; set; }
         public String className { get; set; }
-        public String locationTitle { get; set; }
+        public String locationTitle { get; set; } 
         public String locationType { get; set; }
         public String locationAddress { get; set; }
         public String locationMapLink { get; set; }

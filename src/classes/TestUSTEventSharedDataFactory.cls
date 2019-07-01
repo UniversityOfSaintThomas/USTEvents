@@ -248,7 +248,7 @@ public with sharing class TestUSTEventSharedDataFactory {
             ));
         }
         Insert majorList;
-
+        
         return majorList;
     }
 

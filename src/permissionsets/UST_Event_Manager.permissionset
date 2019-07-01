@@ -5,6 +5,16 @@
         <visible>true</visible>
     </applicationVisibilities>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.Initial_Foot_on_Campus__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Contact.Last_Time_on_Campus__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>UST_Event_Appointment_Type__c.Appointment_Category__c</field>
         <readable>true</readable>
@@ -390,6 +400,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Instance__c.Admin_Open_Registration_Link__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Instance__c.Admin_Open_Registration__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>UST_Event_Instance__c.Alternate_Registration_URL_Override__c</field>
         <readable>true</readable>
@@ -483,6 +503,11 @@
         <editable>false</editable>
         <field>UST_Event_Instance__c.Registration_Link__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Instance__c.Registration_QR_Code__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -676,6 +701,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UST_Event_Registration__c.Last_Name_as_Student__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UST_Event_Registration__c.Location_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -688,6 +718,16 @@
         <editable>false</editable>
         <field>UST_Event_Registration__c.Location_Title__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Registration__c.MPCW_Visit_ID__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Registration__c.Matching_Log__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -703,6 +743,11 @@
         <editable>false</editable>
         <field>UST_Event_Registration__c.Preferred_First_Name_Formatted__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Registration__c.Preferred_St_Thomas_Class_Year__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -891,6 +936,16 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
+        <field>UST_Event_Registration__c.Registration_Origin__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Registration__c.Relationship_to_St_Thomas__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
         <field>UST_Event_Registration__c.Reminder_Call_Complete__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -935,9 +990,19 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event__c.Academic_Program_List_Selected__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>UST_Event__c.Academic_Program_List__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event__c.Academic_Program_Selected__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -1073,6 +1138,16 @@
         <editable>true</editable>
         <field>UST_Event__c.Audience__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event__c.Banner_Event_Code__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event__c.Banner_Event_Function_Code__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -1238,6 +1313,16 @@
         <editable>true</editable>
         <field>UST_Event__c.Portal_Login_Required__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event__c.Program_Filter_2__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event__c.Program_Filter_3__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>

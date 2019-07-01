@@ -10,7 +10,8 @@ public with sharing class USTEventConfirmationController {
     public String templateSelected { get; set; }
     public String rName { get; set; }
     public String eventStartDateTimeCrumb {get;set;}
-
+    public String locationCrumb { get; set; }
+    public String dataLayerLocationType {get;set;}
 
     public USTEventConfirmationController() {
 
@@ -20,13 +21,17 @@ public with sharing class USTEventConfirmationController {
         if (!String.isEmpty(evtInfo.evtId)) {
             eventPage = [
                     SELECT Event_Confirmation_Title__c, Event_Name__c, Template__c, Event_Confirmation_Description__c, Event_Footer__c,
-                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Tracking_Confirmation_Registration__c
+                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Tracking_Confirmation_Registration__c,RecordType.Name, School__r.Name
                     FROM UST_Event__c
                     WHERE Id = :evtinfo.evtId
             ][0];
             templateSelected = eventPage.Template__c;
 
-            evtInstance = [SELECT Instance_Title__c, Start_Date_Time__c, End_Date_Time__c FROM UST_Event_Instance__c WHERE Id = :evtinfo.instanceID LIMIT 1];
+            evtInstance = [
+                    SELECT Instance_Title__c, Start_Date_Time__c, Event__r.Event_Name__c, End_Date_Time__c
+                    FROM UST_Event_Instance__c
+                    WHERE Id = :evtinfo.instanceID
+                    LIMIT 1];
 
             if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
                 eventStartDateTimeCrumb = evtInstance.Start_Date_Time__c.format('MMMM d, YYYY, h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
@@ -39,6 +44,7 @@ public with sharing class USTEventConfirmationController {
     public PageReference checkEventDetails() {
         //PageReference resultPageRef =  USTShared.checkForEvent();
         evtInfo = USTShared.getUSTEventInfo();
+        locationCrumb = '';
         String eventTitle = '';
         if (!String.isBlank(evtInfo.evtRegId)) {
             UST_Event_Registration__c evtReg = [

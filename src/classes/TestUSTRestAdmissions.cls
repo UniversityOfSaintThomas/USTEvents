@@ -55,6 +55,9 @@ public with sharing class TestUSTRestAdmissions {
         getMaps('learningstyle','','','','');
         getMaps('programfinder','','','','');
         getMaps('programfinder','','','College','');
+        getMaps('ugprogramfinder','','','','');
+        getMaps('gradprogramfinder','','','','');
+        getMaps('ugschools','','','','');
         Test.stopTest();
     }
 
