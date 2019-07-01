@@ -27,6 +27,7 @@
         <members>TDTM_USTEVENT</members>
         <members>USTEventRegistrationTrigger_TDTM</members>
         <members>USTEventAppointmentItinerary_TDTM</members>
+        <members>USTEventRegistration_TDTM</members>
         <name>ApexClass</name>
     </types>
     <types>

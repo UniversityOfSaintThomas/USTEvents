@@ -130,12 +130,35 @@ public class Util {
     
     public static Map<String, Geographic_Area__c> getGeoAreasMap() {
         if ( geoAreasMap.isEmpty() ) {  
-            // Lazy-populate geoAreasMap with full map
+            // Lazy-populate geoAreasMap with full map that is basically a copy of database table
             for ( Geographic_Area__c g : [SELECT Id, ID_Code__c, UG_Counseling_Geographic_Territory__c, UG_Counseling_Geographic_Territory__r.Banner_Territory_Code__c, UG_Counseling_Geographic_Territory__r.UG_Adm_Couns_Working_This_Territory__c, UG_Counseling_Geographic_Territory__r.UG_FinAid_Couns_Working_This_Territory__c, UG_Counseling_Geographic_Territory__r.UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__c, UG_Counseling_Geographic_Territory__r.UG_FinAid_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__c from Geographic_Area__c] ) { geoAreasMap.put(g.ID_Code__c, g); }
         }
         return geoAreasMap;
     }
     
+    public static Map<String, Geographic_Area__c> getSpecificGeoAreasMap(Set<String> geoAreaKeysDesired) {
+        // Note that this method can return an empty map if none of the "desired" geo-area keys passed as parameters actually exist in the org's data.
+        if ( !geoAreasMap.isEmpty() ) {
+            return getGeoAreasMap();
+        }
+        if ( geoAreaKeysDesired <> NULL && !geoAreaKeysDesired.isEmpty() && (specificGeoAreasMap.isEmpty() || !specificGeoAreasMap.keySet().containsAll(geoAreaKeysDesired)) ) {
+            if ( queriesInvokedForSpecificGeoAreasMap >= MAXQUERIESFORSPECIFICGEOAREASMAP ) {
+                // Short-circuit returning "specificGeoAreasMap" and return whatever the "full table" map is instead if we've done "specific" too many times.
+                return getGeoAreasMap();
+            }
+            else {
+                // Lazy-populate geoAreasMap with map of only parameter-matching ID_Code__c values
+                queriesInvokedForSpecificGeoAreasMap++; // Increment counter of queries attempted.
+                for ( Geographic_Area__c g : [SELECT Id, ID_Code__c, UG_Counseling_Geographic_Territory__c, UG_Counseling_Geographic_Territory__r.Banner_Territory_Code__c, UG_Counseling_Geographic_Territory__r.UG_Adm_Couns_Working_This_Territory__c, UG_Counseling_Geographic_Territory__r.UG_FinAid_Couns_Working_This_Territory__c, UG_Counseling_Geographic_Territory__r.UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__c, UG_Counseling_Geographic_Territory__r.UG_FinAid_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__c from Geographic_Area__c where ID_Code__c in :geoAreaKeysDesired] ) {
+                    specificGeoAreasMap.put(g.ID_Code__c, g);
+                }
+            }
+        }
+        return specificGeoAreasMap;
+    }
+
+    public static Boolean getSpecificGeoAreasHasFlippedToWholeTable() { return (queriesInvokedForSpecificGeoAreasMap >= MAXQUERIESFORSPECIFICGEOAREASMAP); }
+
     public static Id getFinAidCounsRoleIdByAlphaUGTerrRule(String lastName, Boolean isDomesticFirstYear, Boolean isDomesticTransfer) {
         if ( alphaUGTerrsToFACounsIdsMap.isEmpty() ) {
             // Lazy-populate alphaUGTerrsToFACounsIdsMap with full map

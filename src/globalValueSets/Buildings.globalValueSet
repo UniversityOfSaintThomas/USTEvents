@@ -261,6 +261,12 @@
         <label>Terrence Murphy Hall (TMH)</label>
     </customValue>
     <customValue>
+        <fullName>Koch Commons</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Koch Commons</label>
+    </customValue>
+    <customValue>
         <fullName>O’Shaughnessy Stadium</fullName>
         <default>false</default>
         <isActive>false</isActive>
@@ -277,12 +283,6 @@
         <default>false</default>
         <isActive>false</isActive>
         <label>Admissions Office</label>
-    </customValue>
-    <customValue>
-        <fullName>Koch Commons</fullName>
-        <default>false</default>
-        <isActive>false</isActive>
-        <label>Koch Commons</label>
     </customValue>
     <masterLabel>Buildings</masterLabel>
     <sorted>false</sorted>

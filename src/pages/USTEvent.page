@@ -7,8 +7,6 @@
         <apex:define name="metaPageTitle">University of St. Thomas Events</apex:define>
         <apex:define name="pageTitle"><a href="/applicantportal/USTEvent">Events</a></apex:define>
         <apex:define name="afterJquery">
-          
-       
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>
             <link href="{!URLFOR($Resource.USTEventAssets, '/fullcalendar/fullcalendar-ust.css')}" rel="stylesheet" type="text/css"/>
             <script src="{!URLFOR($Resource.USTEventAssets, '/js/eventList.js')}"/>

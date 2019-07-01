@@ -390,6 +390,16 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Instance__c.Admin_Open_Registration_Link__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Instance__c.Admin_Open_Registration__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>UST_Event_Instance__c.Alternate_Registration_URL_Override__c</field>
         <readable>true</readable>
