@@ -1756,6 +1756,21 @@ TEXT(YEAR( End_Date__c))
         <language>en_US</language>
     </listViews>
     <listViews>
+        <fullName>All_Undergraduate_Events</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>notContain</operation>
+            <value>OCB</value>
+        </filters>
+        <label>All Undergraduate Events</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>UG_Enrollment</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>OCB_Events</fullName>
         <columns>NAME</columns>
         <columns>Start_Date__c</columns>
