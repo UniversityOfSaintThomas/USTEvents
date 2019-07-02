@@ -536,15 +536,16 @@
         <label>Campus Tour</label>
     </customValue>
     <customValue>
-        <fullName>Information Session</fullName>
-        <default>false</default>
-        <label>Information Session</label>
-    </customValue>
-    <customValue>
         <fullName>Data Analytics</fullName>
         <default>false</default>
         <isActive>false</isActive>
         <label>Data Analytics</label>
+    </customValue>
+    <customValue>
+        <fullName>Information Session</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Information Session</label>
     </customValue>
     <masterLabel>Appointment Type</masterLabel>
     <sorted>false</sorted>

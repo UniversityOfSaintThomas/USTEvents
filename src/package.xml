@@ -21,7 +21,6 @@
         <members>Util</members>
         <members>AdmissionsCounselorLookup</members>
         <members>TestAdmissionsCounselorLookup</members>
-        <members>USTEventEmailLinkController</members>
         <members>USTEventContactMatching</members>
         <members>TestUSTEventSharedDataFactory</members>
         <members>TDTM_USTEVENT</members>
@@ -31,12 +30,7 @@
         <name>ApexClass</name>
     </types>
     <types>
-        <members>LoadingImageComponent</members>
         <members>MultiselectPicklist</members>
-        <members>SiteFooter</members>
-        <members>SiteHeader</members>
-        <members>SiteLogin</members>
-        <members>SitePoweredBy</members>
         <name>ApexComponent</name>
     </types>
     <types>
@@ -55,7 +49,6 @@
         <members>USTEventRegistrationOptions</members>
         <members>USTEventSubmit</members>
         <members>USTGeneratedItineraries</members>
-        <members>USTEventEmailLink</members>
         <members>USTEventReparent</members>
         <members>CapricornTemplate2019</members>
         <name>ApexPage</name>
@@ -389,7 +382,6 @@
         <name>StaticResource</name>
     </types>
     <types>
-        <members>UST_Event_Manager</members>
         <name>PermissionSet</name>
     </types>
     <types>

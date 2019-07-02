@@ -2078,6 +2078,35 @@ Event__r.Community_Base_URL__c
         </sharedTo>
     </listViews>
     <listViews>
+        <fullName>Saturday_Visits_Next_7_Days</fullName>
+        <columns>Registrant_First_Name__c</columns>
+        <columns>Registrant_Last_Name__c</columns>
+        <columns>NAME</columns>
+        <columns>Event_Instance__c</columns>
+        <columns>Event_Instance_Title__c</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Event_Instance_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Event_Instance_Date__c</field>
+            <operation>equals</operation>
+            <value>TODAY,NEXT_N_DAYS:7</value>
+        </filters>
+        <filters>
+            <field>Event__c</field>
+            <operation>equals</operation>
+            <value>Transfer Visits</value>
+        </filters>
+        <label>Transfer Visits - Next 7 Days</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>UG_Enrollment</group>
+            <group>Visit_Students</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
         <fullName>Saturday_Visits_Next_7_Days1</fullName>
         <columns>Registrant_First_Name__c</columns>
         <columns>Registrant_Last_Name__c</columns>
@@ -2406,6 +2435,41 @@ Event__r.Community_Base_URL__c
             </values>
             <values>
                 <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Relationship_to_St_Thomas__c</picklist>
+            <values>
+                <fullName>Alumni</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Current Student</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Faculty%2FStaff</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Family</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Friend</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Parent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prospective Student</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2891,6 +2955,41 @@ Event__r.Community_Base_URL__c
             </values>
             <values>
                 <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Relationship_to_St_Thomas__c</picklist>
+            <values>
+                <fullName>Alumni</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Current Student</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Faculty%2FStaff</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Family</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Friend</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Parent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prospective Student</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

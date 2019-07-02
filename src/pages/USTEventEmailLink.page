@@ -1,8 +1,0 @@
-<!--
- - Created by dahl3702 on 3/21/2019.
- -->
-
-<apex:page id="USTEventEmailLink" controller="USTEventEmailLinkController">
-    <apex:outputText escape="false" value="{!URLVar}"></apex:outputText>
-    <apex:outputText escape="false" value="{!output}"></apex:outputText>
-</apex:page>

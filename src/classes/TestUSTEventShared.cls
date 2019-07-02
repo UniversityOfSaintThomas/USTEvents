@@ -407,6 +407,18 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testUSTEventTriggers() {
+
+        // first retrieve default EDA trigger handlers
+        List<hed.TDTM_Global_API.TdtmToken> tokens = hed.TDTM_Global_API.getTdtmConfig();
+
+        // Create our trigger handler using the constructor
+        tokens.add(new hed.TDTM_Global_API.TdtmToken('USTEventAppointmentItinerary_TDTM', 'UST_Event_Appointments__c', 'AfterInsert;AfterUpdate;AfterDelete;AfterUndelete', 2.00));
+        tokens.add(new hed.TDTM_Global_API.TdtmToken('USTEventRegistration_TDTM', 'UST_Event_Registration__c', 'AfterInsert;AfterUpdate', 2.00));
+        
+        // Pass trigger handler config to set method for this test run
+        hed.TDTM_Global_API.setTdtmConfig(tokens);
+
+
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', '', true, true);
         UST_Event_Email__c testEvtEmail = TestUSTEventSharedDataFactory.createTestTransactionEmail(evtInst, 'Started','');
         UST_Event_Email__c testEvtEmail2 = TestUSTEventSharedDataFactory.createTestTransactionEmail(evtInst, 'Requested','');
@@ -468,6 +480,17 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testUSTApptConfirmTriggerOvernight() {
+
+        // first retrieve default EDA trigger handlers
+        List<hed.TDTM_Global_API.TdtmToken> tokens = hed.TDTM_Global_API.getTdtmConfig();
+
+        // Create our trigger handler using the constructor
+        tokens.add(new hed.TDTM_Global_API.TdtmToken('USTEventAppointmentItinerary_TDTM', 'UST_Event_Appointments__c', 'AfterInsert;AfterUpdate;AfterDelete;AfterUndelete', 2.00));
+        tokens.add(new hed.TDTM_Global_API.TdtmToken('USTEventRegistration_TDTM', 'UST_Event_Registration__c', 'AfterInsert;AfterUpdate', 2.00));
+
+        // Pass trigger handler config to set method for this test run
+        hed.TDTM_Global_API.setTdtmConfig(tokens);
+
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Overnight Event', '', true, true);
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012');
 

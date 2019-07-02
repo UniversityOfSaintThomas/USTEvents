@@ -1664,6 +1664,12 @@ TEXT(YEAR( End_Date__c))
                     <default>false</default>
                     <label>OPUSTemplate2018</label>
                 </value>
+                <value>
+                    <fullName>CapricornTemplate2019</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>CapricornTemplate2019</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
     </fields>

@@ -89,7 +89,7 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Ask_Date_Of_Birth__c</field>
+                <field>Include_Time_frame_List__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
@@ -97,10 +97,6 @@
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Include_Time_frame_List__c</field>
-            </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Allow_Other_Attendees__c</field>
@@ -456,8 +452,6 @@
         <fields>End_Date_Time__c</fields>
         <fields>Current_Available_Capacity__c</fields>
         <relatedList>UST_Event_Instance__c.Event__c</relatedList>
-        <sortField>Start_Date_Time__c</sortField>
-        <sortOrder>Desc</sortOrder>
     </relatedLists>
     <relatedLists>
         <fields>TASK.SUBJECT</fields>

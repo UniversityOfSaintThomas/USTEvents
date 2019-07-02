@@ -509,6 +509,24 @@ Event__r.Community_Base_URL__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Registration_QR_Code__c</fullName>
+        <externalId>false</externalId>
+        <formula>/*
+
+IMAGE(&apos;https://chart.googleapis.com/chart?chs=250x250&amp;cht=qr&amp;chl=&apos; +  Event__r.Community_Base_URL__c + &apos;USTEventRegister?instanceID=&apos; +  Id ,&apos;Scan QR code to open record in mobile.&apos;)
+
+*/
+
+IMAGE(&apos;https://chart.googleapis.com/chart?chs=400x400&amp;cht=qr&amp;chl=&apos; +  Event__r.Community_Base_URL__c + &apos;USTEventRegister?instanceID=&apos; +  Id ,&apos;Scan QR code to open record in mobile.&apos;,250,250)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Registration QR Code</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Start_Date_Time__c</fullName>
         <externalId>false</externalId>
         <label>Start Date/Time</label>
