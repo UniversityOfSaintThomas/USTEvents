@@ -355,7 +355,7 @@ global with sharing class USTRestAdmissions {
                 ORDER BY Major_Display_Name__c DESC
         ];
         For (Major__c maj : UGMajors) {
-            keyValOut.put(String.valueOf(maj.Major_Code__c), maj.Degree_Level__c);
+            keyValOut.put(String.valueOf(maj.Major_Code__c), maj.Major_Display_Name__c);
         }
         return keyValOut;
     }
