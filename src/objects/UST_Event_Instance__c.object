@@ -157,6 +157,7 @@
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
         <fullName>Active_Status__c</fullName>
+        <defaultValue>&quot;Active&quot;</defaultValue>
         <externalId>false</externalId>
         <label>Active Status</label>
         <required>false</required>
@@ -244,9 +245,9 @@ Event__r.Community_Base_URL__c
     </fields>
     <fields>
         <fullName>Confirmed_Attendees__c</fullName>
-        <description>Number of attendees confirmed with sub status attended (the actually came to the event).</description>
+        <description>The number of the field “Actual Number of Guests” in the event registration object, which is a field that the user manually put in the attended guests&apos; number after the event.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Number of attendees confirmed with sub status attended (the actually came to the event).</inlineHelpText>
+        <inlineHelpText>The number of the field “Actual Number of Guests” in the event registration object, which is a field that the user manually put in the attended guests&apos; number after the event.</inlineHelpText>
         <label>Confirmed Attendees</label>
         <summarizedField>UST_Event_Registration__c.Actual_Number_of_Guests__c</summarizedField>
         <summaryForeignKey>UST_Event_Registration__c.Event_Instance__c</summaryForeignKey>
@@ -447,6 +448,16 @@ Event__r.Community_Base_URL__c
         </valueSet>
     </fields>
     <fields>
+        <fullName>Open_Registration__c</fullName>
+        <description>Registration is open to users</description>
+        <externalId>false</externalId>
+        <formula>IF( ISPICKVAL(Active_Status__c, &quot;Active&quot;) &amp;&amp; Registration_Close_Date__c &gt; Today() &amp;&amp; Current_Available_Capacity__c &gt; 0, TRUE, Null)</formula>
+        <label>Open Registration</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Primary_Attendees__c</fullName>
         <description>Number of registrants minus guests they are bringing</description>
         <externalId>false</externalId>
@@ -493,6 +504,19 @@ Event__r.Community_Base_URL__c
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Registration_Close_Date__c</fullName>
+        <description>Close Day of the Event</description>
+        <externalId>false</externalId>
+        <formula>IF(NOT(ISBLANK(Event__r.Close_Event_Days_Before__c)), DATEVALUE(Start_Date_Time__c - ABS(Event__r.Close_Event_Days_Before__c)),
+IF(ISBLANK(Event__r.Close_Event_Days_Before__c), DATEVALUE(Start_Date_Time__c),
+NULL))</formula>
+        <label>Registration Close Date</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Date</type>
+    </fields>
+    <fields>
         <fullName>Registration_Link__c</fullName>
         <externalId>false</externalId>
         <formula>HYPERLINK(
@@ -534,6 +558,25 @@ IMAGE(&apos;https://chart.googleapis.com/chart?chs=400x400&amp;cht=qr&amp;chl=&a
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>DateTime</type>
+    </fields>
+    <fields>
+        <fullName>Undergrad_FY_Admin_Registration_Link__c</fullName>
+        <description>Registration Link that asks for High School information</description>
+        <externalId>false</externalId>
+        <formula>HYPERLINK(
+Event__r.Community_Base_URL__c
+&amp; &quot;USTEventRegister?instanceID=&quot;
+&amp; Id
+&amp; &quot;&amp;adminopen=1&quot;
+&amp; &quot;&amp;audience=High%20School%20Senior&quot;
+,&quot;Admin Open Registration - Ask HS&quot;)</formula>
+        <inlineHelpText>Registration Link that asks for High School information</inlineHelpText>
+        <label>Undergrad FY Admin Registration Link</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <label>UST Event Instance</label>
     <listViews>

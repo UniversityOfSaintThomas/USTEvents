@@ -15,6 +15,8 @@ public with sharing class USTEventShared {
         public String recordTypeName { get; set; }
     }
 
+
+    //TODO: THIS IS SOMETHING TO DO
     public USTEventShared() {
 
     }

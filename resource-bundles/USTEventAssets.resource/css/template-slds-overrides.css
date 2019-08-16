@@ -1,0 +1,36 @@
+.slds-scope, .slds-scope p, .slds-scope ol,
+.slds-scope ul, .slds-scope dl, .slds-scope fieldset,
+.slds-scope h1, .slds-scope h2, .slds-scope h3, .slds-scope h4,
+.slds-scope h5, .slds-scope h6 {
+    font-family: unset!important;
+    font-size:unset!important;
+    font-weight: unset!important;
+    line-height: unset!important;
+    color: unset!important;
+    text-decoration: unset!important;
+    background-color: unset!important;
+    display:unset!important;
+    text-decoration: unset!important;
+}
+
+.slds-scope .button, .slds-scope button, a {
+    color: unset!important;
+    background-color:unset!important;
+}
+
+.slds-scope button, .slds-scope input, .slds-scope optgroup, .slds-scope select, .slds-scope textarea {
+    margin: unset!important;
+    margin-top: unset!important;
+    margin-bottom: unset!important;
+    margin-left: unset!important;
+    margin-right: unset!important;
+}
+
+.slds-scope h1, .slds-scope h2, .slds-scope h3, .slds-scope h4,
+.slds-scope h5, .slds-scope h6 {
+
+}
+    /* Strange lack of margin below select like other inputs */
+.slds-scope select {
+    margin-bottom:16px;
+}

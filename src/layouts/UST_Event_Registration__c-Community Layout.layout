@@ -15,6 +15,10 @@
                 <behavior>Required</behavior>
                 <field>Event_Instance__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Readonly</behavior>
+                <field>dfc_interview_link__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>

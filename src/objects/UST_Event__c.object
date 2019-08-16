@@ -1687,9 +1687,9 @@ TEXT(YEAR( End_Date__c))
     </fields>
     <fields>
         <fullName>Tracking_Confirmation_Registration__c</fullName>
-        <description>This field is for adding an analytic tracking script to the Event Submit Registration page (Advanced users only)</description>
+        <description>This field is for adding an analytic tracking script to the Event Confirmation Registration page (Advanced users only)</description>
         <externalId>false</externalId>
-        <inlineHelpText>This field is for adding an analytic tracking script to the Event Submit Registration page (Advanced users only)</inlineHelpText>
+        <inlineHelpText>This field is for adding an analytic tracking script to the Event Confirmation Registration page (Advanced users only)</inlineHelpText>
         <label>Tracking Confirmation Registration</label>
         <length>5000</length>
         <trackHistory>false</trackHistory>
@@ -2926,7 +2926,12 @@ TEXT(YEAR( End_Date__c))
             </values>
         </picklistValues>
     </recordTypes>
-    <searchLayouts/>
+    <searchLayouts>
+        <lookupDialogsAdditionalFields>Event_Status__c</lookupDialogsAdditionalFields>
+        <lookupPhoneDialogsAdditionalFields>Event_Status__c</lookupPhoneDialogsAdditionalFields>
+        <searchResultsAdditionalFields>Event_Status__c</searchResultsAdditionalFields>
+        <searchResultsAdditionalFields>Event_Type__c</searchResultsAdditionalFields>
+    </searchLayouts>
     <sharingModel>ReadWrite</sharingModel>
     <startsWith>Vowel</startsWith>
     <visibility>Public</visibility>

@@ -740,7 +740,7 @@
         <description>Auto assign this building to a requested appointment.</description>
         <externalId>false</externalId>
         <inlineHelpText>Auto assign this building to a requested appointment.</inlineHelpText>
-        <label>Auto add building</label>
+        <label>Auto Add Building</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>

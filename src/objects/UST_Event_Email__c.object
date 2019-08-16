@@ -156,9 +156,9 @@
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
         <fullName>Action_Status__c</fullName>
-        <description>The status setting of and event registration that you wish to have this email sent.</description>
+        <description>The status setting of an event registration that you wish to have this email sent.</description>
         <externalId>false</externalId>
-        <inlineHelpText>The status setting of and event registration that you wish to have this email sent.</inlineHelpText>
+        <inlineHelpText>The status setting of an event registration that you wish to have this email sent.</inlineHelpText>
         <label>Action Status</label>
         <required>false</required>
         <trackTrending>false</trackTrending>

@@ -327,9 +327,9 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
     </fields>
     <fields>
         <fullName>Last_Name__c</fullName>
-        <description>First name of the host</description>
+        <description>Last name of the host</description>
         <externalId>false</externalId>
-        <inlineHelpText>First name of the host</inlineHelpText>
+        <inlineHelpText>Last name of the host</inlineHelpText>
         <label>Last Name</label>
         <length>80</length>
         <required>false</required>
