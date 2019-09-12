@@ -357,67 +357,57 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Accounting</valueName>
+                <valueName>Business Administration - Accounting</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Communication</valueName>
+                <valueName>Business Administration - Business Communication</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Entrepreneurship</valueName>
+                <valueName>Business Administration - Entrepreneurship</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Family Business</valueName>
+                <valueName>Business Administration - Financial Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Financial Management</valueName>
+                <valueName>Business Administration - General Business Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- General Business Management</valueName>
+                <valueName>Business Administration - Human Resource Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Human Resource Management</valueName>
+                <valueName>Business Administration - International Business</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- International Business</valueName>
+                <valueName>Business Administration - Leadership &amp; Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Leadership and Management</valueName>
+                <valueName>Business Administration - Marketing Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Legal Studies in Business</valueName>
+                <valueName>Business Administration - Operations and Supply Change Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Marketing Management</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Operations Management</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Busienss Administration- Real Estate Studies</valueName>
+                <valueName>Business Administration - Real Estate Studies</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -462,47 +452,32 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Education- Elementary</valueName>
+                <valueName>Education - Elementary Education</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Education- Secondary</valueName>
+                <valueName>Education - Secondary Education</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Aerospace</valueName>
+                <valueName>Engineering - Civil</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Biomedical</valueName>
+                <valueName>Engineering - Computer</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Chemical</valueName>
+                <valueName>Engineering - Electrical</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Civil</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Computer</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Electrical</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Mechanical</valueName>
+                <valueName>Engineering - Mechanical</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -512,12 +487,7 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>English- Education</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>English- Creative Writing</valueName>
+                <valueName>English - Creative Writing</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -547,12 +517,12 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Geography</valueName>
+                <valueName>Geographic Information Systems</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Geography- Geographic Information Systems (GIS)</valueName>
+                <valueName>Geography</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -567,7 +537,7 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Health Promotion Sciences</valueName>
+                <valueName>Health Promotion</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -592,11 +562,6 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Literary Studies</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Mathematics</valueName>
             </valueSettings>
             <valueSettings>
@@ -607,42 +572,7 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music Business</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Liturgical Music</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Performance</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Band</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Choir</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Orchestra</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Guitar</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Piano</valueName>
+                <valueName>Music - Business</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -672,12 +602,7 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Public Health Studies</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Social Sciences</valueName>
+                <valueName>Public Health</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -740,7 +665,7 @@
         <description>Auto assign this building to a requested appointment.</description>
         <externalId>false</externalId>
         <inlineHelpText>Auto assign this building to a requested appointment.</inlineHelpText>
-        <label>Auto Add Building</label>
+        <label>Auto add building</label>
         <required>false</required>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>

@@ -283,7 +283,7 @@
                 <value>
                     <fullName>Cancelled</fullName>
                     <default>false</default>
-                    <label>Canceled</label>
+                    <label>Cancelled</label>
                 </value>
                 <value>
                     <fullName>Declined</fullName>
@@ -672,67 +672,62 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Accounting</valueName>
+                <valueName>Business Administration - Accounting</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Communication</valueName>
+                <valueName>Business Administration - Business Communication</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Entrepreneurship</valueName>
+                <valueName>Business Administration - Entrepreneurship</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Family Business</valueName>
+                <valueName>Business Administration - Financial Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Financial Management</valueName>
+                <valueName>Business Administration - General Business Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- General Business Management</valueName>
+                <valueName>Business Administration - Human Resource Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Human Resource Management</valueName>
+                <valueName>Business Administration - International Business</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- International Business</valueName>
+                <valueName>Business Administration - Law and Compliance</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Leadership and Management</valueName>
+                <valueName>Business Administration - Leadership &amp; Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Legal Studies in Business</valueName>
+                <valueName>Business Administration - Marketing Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Marketing Management</valueName>
+                <valueName>Business Administration - Operations and Supply Change Management</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Business Administration- Operations Management</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Busienss Administration- Real Estate Studies</valueName>
+                <valueName>Business Administration - Real Estate Studies</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -772,52 +767,42 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Data Analytics</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Economics</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Education- Elementary</valueName>
+                <valueName>Education - Elementary Education</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Education- Secondary</valueName>
+                <valueName>Education - Secondary Education</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Aerospace</valueName>
+                <valueName>Engineering - Civil</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Biomedical</valueName>
+                <valueName>Engineering - Computer</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Chemical</valueName>
+                <valueName>Engineering - Electrical</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Civil</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Computer</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Electrical</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Engineering- Mechanical</valueName>
+                <valueName>Engineering - Mechanical</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -827,12 +812,12 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>English- Education</valueName>
+                <valueName>English - Creative Writing</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>English- Creative Writing</valueName>
+                <valueName>English - Professional Writing</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -862,12 +847,12 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Geography</valueName>
+                <valueName>Geographic Information Systems</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Geography- Geographic Information Systems (GIS)</valueName>
+                <valueName>Geography</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -882,7 +867,7 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Health Promotion Sciences</valueName>
+                <valueName>Health Promotion</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -907,11 +892,6 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Literary Studies</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Mathematics</valueName>
             </valueSettings>
             <valueSettings>
@@ -922,42 +902,22 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music Business</valueName>
+                <valueName>Music - Business</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Liturgical Music</valueName>
+                <valueName>Music Education - Instrumental (K-12)</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Performance</valueName>
+                <valueName>Music Education - Vocal (K-12)</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Band</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Choir</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Orchestra</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Guitar</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Music- Piano</valueName>
+                <valueName>Music - Performance</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -982,17 +942,62 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Chiropractic</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Dentistry</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Law</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Medicine</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Occupational Therapy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Optometry</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Pharmacy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Physical Therapy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Physician Assistant</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Veterinary Medicine</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Psychology</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Public Health Studies</valueName>
-            </valueSettings>
-            <valueSettings>
-                <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
-                <valueName>Social Sciences</valueName>
+                <valueName>Public Health</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -1489,29 +1494,6 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
             <group>UG_Enrollment</group>
         </sharedTo>
     </listViews>
-    <listViews>
-        <fullName>Test_Assignment</fullName>
-        <columns>NAME</columns>
-        <columns>Contact__c</columns>
-        <columns>Event_Appointment_Type__c</columns>
-        <columns>Appointment_Type__c</columns>
-        <columns>Appointment_Time__c</columns>
-        <columns>Event_Host__c</columns>
-        <columns>RECORDTYPE</columns>
-        <columns>Appointment_Status__c</columns>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>RECORDTYPE</field>
-            <operation>equals</operation>
-        </filters>
-        <filters>
-            <field>Event_Registration_Date__c</field>
-            <operation>equals</operation>
-            <value>11/30/2018</value>
-        </filters>
-        <label>Test Assignment</label>
-        <language>en_US</language>
-    </listViews>
     <nameField>
         <displayFormat>APPT-{000000}</displayFormat>
         <label>Event Appointments Name</label>
@@ -1760,55 +1742,51 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
                 <default>false</default>
             </values>
             <values>
-                <fullName>Busienss Administration- Real Estate Studies</fullName>
+                <fullName>Business Administration - Accounting</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- Accounting</fullName>
+                <fullName>Business Administration - Business Communication</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- Communication</fullName>
+                <fullName>Business Administration - Entrepreneurship</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- Entrepreneurship</fullName>
+                <fullName>Business Administration - Financial Management</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- Family Business</fullName>
+                <fullName>Business Administration - General Business Management</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- Financial Management</fullName>
+                <fullName>Business Administration - Human Resource Management</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- General Business Management</fullName>
+                <fullName>Business Administration - International Business</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- Human Resource Management</fullName>
+                <fullName>Business Administration - Law and Compliance</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- International Business</fullName>
+                <fullName>Business Administration - Leadership %26 Management</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- Leadership and Management</fullName>
+                <fullName>Business Administration - Marketing Management</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- Legal Studies in Business</fullName>
+                <fullName>Business Administration - Operations and Supply Change Management</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration- Marketing Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Operations Management</fullName>
+                <fullName>Business Administration - Real Estate Studies</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1856,6 +1834,10 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
                 <default>false</default>
             </values>
             <values>
+                <fullName>Data Analytics</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Disability Resources</fullName>
                 <default>false</default>
             </values>
@@ -1864,39 +1846,27 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
                 <default>false</default>
             </values>
             <values>
-                <fullName>Education- Elementary</fullName>
+                <fullName>Education - Elementary Education</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Education- Secondary</fullName>
+                <fullName>Education - Secondary Education</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Engineering- Aerospace</fullName>
+                <fullName>Engineering - Civil</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Engineering- Biomedical</fullName>
+                <fullName>Engineering - Computer</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Engineering- Chemical</fullName>
+                <fullName>Engineering - Electrical</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Engineering- Civil</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering- Computer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering- Electrical</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering- Mechanical</fullName>
+                <fullName>Engineering - Mechanical</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1904,11 +1874,11 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
                 <default>false</default>
             </values>
             <values>
-                <fullName>English- Creative Writing</fullName>
+                <fullName>English - Creative Writing</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>English- Education</fullName>
+                <fullName>English - Professional Writing</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1936,11 +1906,11 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
                 <default>false</default>
             </values>
             <values>
-                <fullName>Geography</fullName>
+                <fullName>Geographic Information Systems</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Geography- Geographic Information Systems %28GIS%29</fullName>
+                <fullName>Geography</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1952,7 +1922,7 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
                 <default>false</default>
             </values>
             <values>
-                <fullName>Health Promotion Sciences</fullName>
+                <fullName>Health Promotion</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1969,10 +1939,6 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
             </values>
             <values>
                 <fullName>Latin</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Literary Studies</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2024,35 +1990,19 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
                 <default>false</default>
             </values>
             <values>
-                <fullName>Music Business</fullName>
+                <fullName>Music - Business</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Music- Band</fullName>
+                <fullName>Music - Performance</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Music- Choir</fullName>
+                <fullName>Music Education - Instrumental %28K-12%29</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Music- Guitar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Liturgical Music</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Orchestra</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Performance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Piano</fullName>
+                <fullName>Music Education - Vocal %28K-12%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2076,19 +2026,55 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
                 <default>false</default>
             </values>
             <values>
+                <fullName>Pre-Chiropractic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Dentistry</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Law</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Medicine</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Occupational Therapy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Optometry</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Pharmacy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Physical Therapy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Physician Assistant</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pre-Veterinary Medicine</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Psychology</fullName>
                 <default>false</default>
             </values>
             <values>
-                <fullName>Public Health Studies</fullName>
+                <fullName>Public Health</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Residence Hall Tour</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Social Sciences</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2252,869 +2238,6 @@ IF(!ISBLANK(Event_Host__r.Preferred_Title__c) , &apos; - &apos; + Event_Host__r.
             </values>
             <values>
                 <fullName>O%E2%80%99Shaughnessy Stadium %28STA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Office of Admissions</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Office of Financial Aid</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Opus Hall %28MOH%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Owens Science Hall %28OWS%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>School of Law %28MSL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Schulze Hall %28SCH%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sitzmann Hall %2855S%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>South Athletic Fields %28SAF%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>St%2E John Vianney Seminary %28SJV%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>St%2E Mary%E2%80%99s Chapel %28SMC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>St%2E Paul School of Divinity %28SOD%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Summit Classroom Building %28SCB%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Terrence Murphy Hall %28TMH%29</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Chosen_State__c</picklist>
-            <values>
-                <fullName>Added</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Added and Required</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-    </recordTypes>
-    <recordTypes>
-        <fullName>Overnight</fullName>
-        <active>true</active>
-        <label>Overnight</label>
-        <picklistValues>
-            <picklist>Appointment_Category__c</picklist>
-            <values>
-                <fullName>Additional Options</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Admissions Visit</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Athletic Visit</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Attend A Class</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Campus Tour</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Faculty Visit</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Aid Visit</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transportation</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Appointment_Status__c</picklist>
-            <values>
-                <fullName>Cancelled</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Confirmed</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Declined</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Pending Final Request</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Pending First Request</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Pending Second Request</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Registered</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Unavailable</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Appointment_Time_Options__c</picklist>
-            <values>
-                <fullName>1%3A00 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1%3A15 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1%3A30 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>1%3A45 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10%3A00 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10%3A15 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10%3A30 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>10%3A45 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>11%3A00 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>11%3A15 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>11%3A30 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>11%3A45 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>12%3A00 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>12%3A15 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>12%3A30 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>12%3A45 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2%3A00 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2%3A15 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2%3A30 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2%3A45 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3%3A00 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3%3A15 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3%3A30 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>3%3A45 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>4%3A00 PM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8%3A00 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8%3A15 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8%3A30 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>8%3A45 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9%3A00 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9%3A15 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9%3A30 AM</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>9%3A45 AM</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Appointment_Type__c</picklist>
-            <values>
-                <fullName>Actuarial Science</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Admissions Counselor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Air Force ROTC</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Art History</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Biochemistry</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Biology</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Biology of Global Health</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Busienss Administration- Real Estate Studies</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Accounting</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Communication</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Entrepreneurship</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Family Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Financial Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- General Business Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Human Resource Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- International Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Leadership and Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Legal Studies in Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Marketing Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration- Operations Management</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Campus Ministry</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Campus Tour</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Career Development</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Catholic Studies</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Chemistry</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Classical Civilization</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Classical Langauges</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Communication and Journalism</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Complimentary Lunch on Campus</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Computer Science</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Criminal Justice</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Disability Resources</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Economics</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Education- Elementary</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Education- Secondary</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering- Aerospace</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering- Biomedical</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering- Chemical</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering- Civil</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering- Computer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering- Electrical</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Engineering- Mechanical</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>English</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>English- Creative Writing</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>English- Education</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Environmental Science</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Environmental Studies</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Exercise Science</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Family Studies</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Financial Aid Counselor</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>French</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Geography</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Geography- Geographic Information Systems %28GIS%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Geology</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>German</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Health Promotion Sciences</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>History</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>International Studies</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Justice %26 Peace Studies</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Latin</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Literary Studies</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Mathematics</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Men%27s Baseball</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Men%27s Basketball</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Men%27s Cross Country</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Men%27s Football</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Men%27s Golf</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Men%27s Hockey</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Men%27s Soccer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Men%27s Swimming and Diving</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Men%27s Tennis</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Men%27s Track and Field</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music Business</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Band</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Choir</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Guitar</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Liturgical Music</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Orchestra</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Performance</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Music- Piano</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Neuroscience</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Other</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Philosophy</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Physics</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Political Science</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Psychology</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Public Health Studies</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Residence Hall Tour</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Social Sciences</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Social Work</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Sociology</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Spanish</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Statistics</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Student Diversity and Inclusion Services</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Theology</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Basketball</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Cross Country</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Golf</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Hockey</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Soccer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Softball</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Studies</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Swimming and Diving</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Tennis</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Track and Field</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Women%27s Volleyball</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
-        <picklistValues>
-            <picklist>Building__c</picklist>
-            <values>
-                <fullName>2085%2F87 Grand Avenue %28SJV Grand%29 %2885G%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2109 Grand Avenue %2809G%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>2151 Grand Avenue %2851G%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Anderson Athletic %26 Recreation Complex %28ARC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Anderson Student Center %28ASC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Aquinas Hall %28AQU%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Archbishop Ireland Memorial Library %28IRL%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Art History %2844C%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Binz Refectory %28BIN%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Brady Educational Center %28BEC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Brady Hall %28BRA%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>CDC Student Residence %28CDC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Chapel of St%2E Thomas Aquinas %28CHA%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Child Development Center %28CDC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Cretin Hall %28CRE%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Dowling Hall %28DOW%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Facilities %26 Design Center %28FDC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Flynn Hall %28FRH%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Grace Hall %28GRA%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Ireland Hall %28IRE%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>John P%2E Monahan Plaza</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>John Paul II Hall %28JP2%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>John R Roach Center for Liberal Arts %28JRC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Koch Commons %28KOC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Loras Hall %28LOR%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>McCarthy Gym%2C %28MCG%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>McNeely Hall %28MCH%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Minneapolis Campus Buildings</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Morrison Hall %28MOR%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Murray Hall %28MHC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Murray-Herrick Campus Center %28MHC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>North Athletic Fields %28NAF%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>O%27Shaghnessy Science Hall %28OSS%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>O%27Shaghnessy-Frey Library Center %28LIB%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>O%27Shaughnessy Educational Center %28OEC%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>O%E2%80%99Shaughnessy Educational Center</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>O%E2%80%99Shaughnessy Stadium %28STA</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>O%E2%80%99Shaughnessy Stadium %28STA%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>O%E2%80%99Shaughnessy-Frey Library Center</fullName>
                 <default>false</default>
             </values>
             <values>
