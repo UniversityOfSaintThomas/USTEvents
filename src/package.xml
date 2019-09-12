@@ -327,6 +327,11 @@
         <name>GlobalValueSet</name>
     </types>
     <types>
+        <members>UG_Enrollment</members>
+        <members>Visit_Students</members>
+        <name>Group</name>
+    </types>
+    <types>
         <members>UST_Event_Appointment_Type__c-UG Event Appointment Type Layout</members>
         <members>UST_Event_Appointments__c-UG Visit Appointment Layout</members>
         <members>UST_Event_Email__c-UG Event Email Layout</members>
@@ -357,6 +362,10 @@
         <name>ListView</name>
     </types>
     <types>
+        <members>UST_Event_Manager</members>
+        <name>PermissionSet</name>
+    </types>
+    <types>
         <members>UST_Event_Appointments__c.Daily_Visit</members>
         <members>UST_Event_Host__c.Class</members>
         <members>UST_Event_Host__c.Coach</members>
@@ -380,14 +389,6 @@
         <members>USTEventAssets</members>
         <members>OPUSScripts2018</members>
         <name>StaticResource</name>
-    </types>
-    <types>
-        <name>PermissionSet</name>
-    </types>
-    <types>
-        <members>UG_Enrollment</members>
-        <members>Visit_Students</members>
-        <name>Group</name>
     </types>
     <version>46.0</version>
 </Package>

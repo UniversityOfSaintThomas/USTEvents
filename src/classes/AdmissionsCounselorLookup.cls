@@ -27,12 +27,14 @@ global with sharing class AdmissionsCounselorLookup {
         String feedType = RestContext.request.params.get('type');
 
         RestResponse res = RestContext.response;
-        res.addHeader('Content-Type', 'application/json');
         String callback = RestContext.request.params.get('callback');
         String serializedJSON = '';
 
         if (String.isBlank(callback)) {
+            res.addHeader('Content-Type', 'application/json');
             callback = '';
+        } else {
+            res.addHeader('Content-Type', 'application/javascript');
         }
 
         if (!String.isBlank(feedType)) {
@@ -181,6 +183,7 @@ global with sharing class AdmissionsCounselorLookup {
     private static List<CounselorInfo> grabCounslorList(List<Id> cUserIds) {
         List<CounselorInfo> ci = new List<CounselorInfo>();
         List<User> cUser = new List<User>();
+        String cascadeUserImage = '';
         //Get list off all users that match gathered list from geo areas
         if (cUserIds.size() > 0) {
             cUser = [
@@ -199,6 +202,8 @@ global with sharing class AdmissionsCounselorLookup {
 
             for (User u : cUser) {
                 CounselorInfo addCoun = new CounselorInfo();
+                cascadeUserImage = u.Name.replace(' ', '_');
+                cascadeUserImage = cascadeUserImage + '.jpg';
                 addCoun.name = u.Name;
                 addCoun.email = u.Email;
                 addCoun.college = (String.isNotBlank(u.College__c) ? u.College__c : '');
@@ -215,7 +220,8 @@ global with sharing class AdmissionsCounselorLookup {
                 }
                 addCoun.address = (String.isNotBlank(u.street) ? (u.street.replace('\n', '<br>') + ' <br>' + u.city + ', ' + u.state + ' ' + u.postalCode) : '');
                 addCoun.smallPhoto = 'https://' + myDomain + (String.isNotBlank(u.SmallPhotoUrl) ? u.SmallPhotoUrl : '');
-                addCoun.largePhoto = 'https://' + myDomain + (String.isNotBlank(u.FullPhotoUrl) ? u.FullPhotoUrl : '');
+                //addCoun.largePhoto = 'https://' + myDomain + (String.isNotBlank(u.FullPhotoUrl) ? u.FullPhotoUrl : '');
+                addCoun.largePhoto = 'https://www.stthomas.edu/_media-library/_locate-counselor/' + cascadeUserImage;
                 ci.add(addCoun);
             }
         }
