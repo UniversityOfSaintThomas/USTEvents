@@ -1771,6 +1771,22 @@ TEXT(YEAR( End_Date__c))
         <language>en_US</language>
     </listViews>
     <listViews>
+        <fullName>All_DFC_Interviews</fullName>
+        <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
+        <columns>Audience__c</columns>
+        <columns>Start_Date__c</columns>
+        <columns>End_Date__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>NAME</field>
+            <operation>contains</operation>
+            <value>DFC Interview</value>
+        </filters>
+        <label>All - DFC Interviews</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
         <fullName>All_Events</fullName>
         <columns>NAME</columns>
         <columns>OBJECT_ID</columns>
