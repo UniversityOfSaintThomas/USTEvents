@@ -27,6 +27,8 @@ global with sharing class USTEventFeed {
         public String locationBuilding { get; set; }
         public String feedButtonText { get; set; }
         public String sponsors {get;set;}
+        public Integer capacityTotal {get;set;}
+        public Integer capacityRemaining {get;set;}
     }
 
     @HttpGet
@@ -75,7 +77,7 @@ global with sharing class USTEventFeed {
         eventQuery += ' Event__r.Location_Title__c, Event__r.Location_Type__c, Event__r.Location_Address__c, Event__r.Location_Map_Link__c, Event__r.Building__c, Event__r.Event_description__c, Event__r.Community_Base_URL__c, ';
         eventQuery += ' Building_Override__c, Alternate_Registration_URL_Override__c, Location_Address_Override__c, Location_Map_Link_Override__c, Location_Title_Override__c, Location_Type_Override__c,  ';
         eventQuery += ' Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c, Event__r.School__r.Name, Event__r.Event_Sponsor__c, ';
-        eventQuery += ' Event__r.Feed_Registration_Button_Text__c, Feed_Registration_Button_Text_Override__c ';
+        eventQuery += ' Event__r.Feed_Registration_Button_Text__c, Feed_Registration_Button_Text_Override__c, Capacity__c, Current_Available_Capacity__c ';
         eventQuery += ' FROM UST_Event_Instance__c ';
         eventQuery += ' WHERE ';
         eventQuery += ' Event__R.Event_Status__c = \'Active\' ';
@@ -243,6 +245,18 @@ global with sharing class USTEventFeed {
                 evt.longDesc = es.Event__r.Event_description__c;
             } else {
                 evt.longDesc = '';
+            }
+
+            if (Integer.valueOf(es.Capacity__c) != null) {
+                evt.capacityTotal = Integer.valueOf(es.Capacity__c);
+            } else {
+                evt.capacityTotal = 0;
+            }
+
+            if (Integer.valueOf(es.Current_Available_Capacity__c) != null) {
+                evt.capacityRemaining = Integer.valueOf(es.Current_Available_Capacity__c);
+            } else {
+                evt.capacityRemaining = 0;
             }
 
             if (es.Start_Date_Time__c != null) {
