@@ -1450,6 +1450,34 @@ TEXT(YEAR( End_Date__c))
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Hand_Raise_Action__c</fullName>
+        <defaultValue>&quot;Touchpoint&quot;</defaultValue>
+        <description>Creates a system based receipt of client interest outside of the event application.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Creates a system based receipt of client interest outside of the event application.</inlineHelpText>
+        <label>Hand Raise Action</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>None</fullName>
+                    <default>false</default>
+                    <label>None</label>
+                </value>
+                <value>
+                    <fullName>Touchpoint</fullName>
+                    <default>false</default>
+                    <label>Touchpoint</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Include_Time_frame_List__c</fullName>
         <defaultValue>false</defaultValue>
         <description>Ask the client for a general time-frame for event (drop down)</description>
@@ -2323,6 +2351,17 @@ TEXT(YEAR( End_Date__c))
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Hand_Raise_Action__c</picklist>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Touchpoint</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Location_Type__c</picklist>
             <values>
                 <fullName>Minneapolis</fullName>
@@ -2884,6 +2923,17 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>Visit</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Hand_Raise_Action__c</picklist>
+            <values>
+                <fullName>None</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Touchpoint</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
