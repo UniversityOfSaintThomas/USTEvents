@@ -24,7 +24,7 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
             for (UST_Event_Registration__c r : (List<UST_Event_Registration__c>) newlist) {
 
                 //Get old UST_Event_Registration__c by current ID
-                UST_Event_Registration__c oldReg = new UST_Event_Registration__c(Status__c = 'new', Substatus__c='new');
+                UST_Event_Registration__c oldReg = new UST_Event_Registration__c(Status__c = 'new', Substatus__c = 'new');
                 if (oldListMap.size() > 0) {
                     if (r.Id != null) {
                         oldReg = oldListMap.get(r.Id);
@@ -96,9 +96,10 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
             ];
 
             List<Task> activityUpdates = new List<Task>();
-
+            String[] BCCsToGo = new List<String>();
             //loop through affected event registrations - have status change from old
             for (UST_Event_Registration__c areg : affectedRegs) {
+                BCCsToGo = new List<String>();
                 //Loop through gather email templates to get template and use registration fields to fill in hooks
                 for (UST_Event_Email__c em : matchEmail) {
                     Boolean statusMatch = false;
@@ -106,18 +107,22 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
                     if (em.Event__r.Id.equals(areg.Event__c)) {
 
                         statusMatch = false;
-
+                        //Check if there is a status and a substatus else just pay attention to status
                         if (!String.isBlank(em.Action_Sub_status__c) && !String.isBlank(areg.Substatus__c)) {
                             if (em.Action_Sub_status__c.equals(areg.Substatus__c) && em.Action_Status__c.equalsIgnoreCase(areg.Status__c)) {
+                                // Match made on Sub status
                                 statusMatch = true;
-                                System.Debug('Match made on Sub status');
                             }
                         } else if (em.Action_Status__c.equals(areg.Status__c) && String.isBlank(em.Action_Sub_status__c) && String.isBlank(areg.Substatus__c)) {
-                            System.Debug('Match made on status');
+                            // Match made on status
                             statusMatch = true;
                         }
 
-                        System.Debug(statusMatch + ': em.Action_Sub_status__c = ' + em.Action_Sub_status__c + ', areg.Substatus__c = ' + areg.Substatus__c + ', areg.Status__c = ' + areg.Status__c + ', em.Action_Status__c = ' + em.Action_Status__c);
+                        //Build the BCC list. No duplicate emails. Split strings.
+                        BCCsToGo = addToEmailList(em.BCC_Email__c, BCCsToGo);
+                        BCCsToGo = addToEmailList(areg.Registrant_Other_Email__c, BCCsToGo);
+                        BCCsToGo = addToEmailList(areg.Registrant_Parent_Email__c, BCCsToGo);
+                        BCCsToGo = addToEmailList(areg.BCC_Transactional_Emails__c, BCCsToGo);
 
                         if (statusMatch) {
                             //Get email template
@@ -173,7 +178,7 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
                             originalTemplate = originalTemplate.replaceAll('\\[\\[DONT_DELETE_CONTENT_HERE\\]\\]', emailContent);
 
                             //send the message
-                            sendEmail2(areg.Registrant_Email__c, originalTemplate, emailContent, em.Email_Subject__c, em.Org_Email_Id__c, em.BCC_Email__c);
+                            sendEmail2(areg.Registrant_Email__c, originalTemplate, emailContent, em.Email_Subject__c, em.Org_Email_Id__c, BCCsToGo);
 
                             //Create an activity task
                             Task nt = new Task();
@@ -197,20 +202,13 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
         return dmlWrapper;
     }
 
-    public void sendEmail2(String EmailTo, String HTMLBody, String PlainBody, String Subject, Id OrgEmailId, String BCCString) {
+    public void sendEmail2(String EmailTo, String HTMLBody, String PlainBody, String Subject, Id OrgEmailId, List<String> BCCList) {
+
         Messaging.SingleEmailMessage mail = new Messaging.SingleEmailMessage();
-        mail.setToAddresses(new String[]{
-                EmailTo
-        });
+        mail.setToAddresses(splitEmails(EmailTo));
+        //mail.setCcAddresses(BCCList);
+        mail.setBccAddresses(BCCList);
         mail.setSubject(Subject);
-        if (!String.isBlank(BCCString)) {
-            BCCString = BCCString.replaceAll('\\s+', '');
-            BCCString = BCCString.replaceAll(';', ',');
-            List<String> bccList = BCCString.split(',');
-            if (bccList.size() > 0) {
-                mail.setBccAddresses(bccList);
-            }
-        }
         mail.setPlainTextBody(plainBody);
         if (String.isBlank(HTMLBody)) {
             mail.setHtmlBody(plainBody);
@@ -218,8 +216,63 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
             mail.setHtmlBody(HTMLBody);
         }
         mail.setOrgWideEmailAddressId(OrgEmailId);
-        Messaging.SendEmailResult [] r = Messaging.sendEmail(new Messaging.SingleEmailMessage[]{
-                mail
-        });
+        System.debug(JSON.serializePretty(mail));
+
+        try {
+            Messaging.SendEmailResult [] r = Messaging.sendEmail(new Messaging.SingleEmailMessage[]{
+                    mail
+            });
+            System.debug(JSON.serializePretty(r));
+        } catch (Exception e) {
+            System.debug(e.getMessage());
+        }
+
+
     }
+
+    /*
+    This method makes sure no duplicate emails make it into our lists causing BCC failures.
+    emailList is the list you want to maintain and emailIn is the new emails you want to add.
+     */
+    public List<String> addToEmailList(String emailsInString, List<String> emailList) {
+        if (String.isNotBlank(emailsInString)) {
+            List<String> emailsIn = splitEmails(emailsInString);
+            for (String email : emailsIn) {
+                if (!emailList.contains(email)) {
+                    emailList.add(email);
+                }
+            }
+        }
+        return emailList;
+    }
+
+    public List<String> splitEmails(String emailDelineatedString) {
+        List<String> checkedEmails = new List<String>();
+        if (String.isNotBlank(emailDelineatedString)) {
+            emailDelineatedString = emailDelineatedString.replaceAll('\\s+', ',');
+            emailDelineatedString = emailDelineatedString.replaceAll(';', ',');
+            List<String> emailList = emailDelineatedString.split(',');
+            for (String em : emailList) {
+                if (validateEmail(em)) {
+                    checkedEmails.add(em);
+                }
+            }
+        }
+        return checkedEmails;
+    }
+
+    public Boolean validateEmail(String email) {
+        Boolean res = false;
+        if (String.isNotBlank(email)) {
+            // source: http://www.regular-expressions.info/email.html
+            String emailRegex = '^[a-zA-Z0-9._|\\\\%#~`=?&/$^*!}{+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,4}$';
+            Pattern MyPattern = Pattern.compile(emailRegex);
+            Matcher MyMatcher = MyPattern.matcher(email);
+            if (MyMatcher.matches()) {
+                res = true;
+            }
+        }
+        return res;
+    }
+
 }

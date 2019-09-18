@@ -9,9 +9,9 @@ public with sharing class USTEventConfirmationController {
     public UST_Event_Instance__c evtInstance { get; set; }
     public String templateSelected { get; set; }
     public String rName { get; set; }
-    public String eventStartDateTimeCrumb {get;set;}
+    public String eventStartDateTimeCrumb { get; set; }
     public String locationCrumb { get; set; }
-    public String dataLayerLocationType {get;set;}
+    public String dataLayerLocationType { get; set; }
 
     public USTEventConfirmationController() {
 
@@ -32,9 +32,10 @@ public with sharing class USTEventConfirmationController {
                     SELECT Instance_Title__c, Start_Date_Time__c, Event__r.Event_Name__c, End_Date_Time__c
                     FROM UST_Event_Instance__c
                     WHERE Id = :evtinfo.instanceID
-                    LIMIT 1];
+                    LIMIT 1
+            ];
 
-            if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
+            if (evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null) {
                 eventStartDateTimeCrumb = evtInstance.Start_Date_Time__c.format('MMMM d, YYYY, h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
             }
 
@@ -82,7 +83,6 @@ public with sharing class USTEventConfirmationController {
             if (eventPage.Hand_Raise_Action__c == 'Touchpoint' || String.isBlank(eventPage.Hand_Raise_Action__c)) {
                 createTouchpoint(evtReg, eventTitle);
             }
-
         }
 
         return null;

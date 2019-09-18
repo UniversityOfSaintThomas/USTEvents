@@ -108,6 +108,10 @@
                 <behavior>Edit</behavior>
                 <field>Ask_Date_Of_Birth__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Hand_Raise_Action__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

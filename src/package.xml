@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Package xmlns="http://soap.sforce.com/2006/04/metadata">
     <types>
+        <members>AdmissionsCounselorLookup</members>
         <members>MultiselectController</members>
+        <members>TDTM_USTEVENT</members>
+        <members>TestAdmissionsCounselorLookup</members>
         <members>TestUSTEventShared</members>
+        <members>TestUSTEventSharedDataFactory</members>
         <members>TestUSTRestAdmissions</members>
         <members>USTEventAddToCalendarController</members>
+        <members>USTEventAppointmentItinerary_TDTM</members>
+        <members>USTEventAppointmentSports_TDTM</members>
         <members>USTEventCancelReviewController</members>
         <members>USTEventConfirmationController</members>
+        <members>USTEventContactMatching</members>
         <members>USTEventFeed</members>
         <members>USTEventHostAssignmentExtension</members>
         <members>USTEventLetterheadLookupExtension</members>
@@ -15,18 +22,12 @@
         <members>USTEventProgramLookupExtension</members>
         <members>USTEventRegisterController</members>
         <members>USTEventRegistrationOptionsController</members>
+        <members>USTEventRegistrationTrigger_TDTM</members>
+        <members>USTEventRegistration_TDTM</members>
         <members>USTEventShared</members>
         <members>USTEventSubmitController</members>
         <members>USTRestAdmissions</members>
         <members>Util</members>
-        <members>AdmissionsCounselorLookup</members>
-        <members>TestAdmissionsCounselorLookup</members>
-        <members>USTEventContactMatching</members>
-        <members>TestUSTEventSharedDataFactory</members>
-        <members>TDTM_USTEVENT</members>
-        <members>USTEventRegistrationTrigger_TDTM</members>
-        <members>USTEventAppointmentItinerary_TDTM</members>
-        <members>USTEventRegistration_TDTM</members>
         <name>ApexClass</name>
     </types>
     <types>
@@ -366,13 +367,11 @@
         <name>PermissionSet</name>
     </types>
     <types>
-        <members>UST_Event_Appointments__c.Daily_Visit</members>
         <members>UST_Event_Host__c.Class</members>
         <members>UST_Event_Host__c.Coach</members>
         <members>UST_Event_Host__c.Counselor</members>
         <members>UST_Event_Host__c.Faculty</members>
         <members>UST_Event_Host__c.Housing</members>
-        <members>UST_Event_Registration__c.AM_PM_Sessions</members>
         <members>UST_Event__c.Graduate</members>
         <members>UST_Event__c.Undergraduate</members>
         <name>RecordType</name>

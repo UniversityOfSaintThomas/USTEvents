@@ -392,6 +392,11 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Business Administration - Law and Compliance</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Business Administration - Leadership &amp; Management</valueName>
             </valueSettings>
             <valueSettings>
@@ -447,6 +452,11 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Data Analytics</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Economics</valueName>
             </valueSettings>
             <valueSettings>
@@ -488,6 +498,11 @@
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>English - Creative Writing</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>English - Professional Writing</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -577,6 +592,21 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music Education - Instrumental (K-12)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music Education - Vocal (K-12)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Music - Performance</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Neuroscience</valueName>
             </valueSettings>
             <valueSettings>
@@ -593,6 +623,56 @@
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Political Science</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Chiropractic</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Dentistry</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Law</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Medicine</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Occupational Therapy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Optometry</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Pharmacy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Physical Therapy</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Physician Assistant</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Pre-Veterinary Medicine</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>

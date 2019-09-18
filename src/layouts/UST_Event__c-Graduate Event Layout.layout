@@ -35,6 +35,10 @@
                 <behavior>Edit</behavior>
                 <field>Alternate_Registration_URL__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Hand_Raise_Action__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
