@@ -1035,6 +1035,39 @@
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Contact_Creation__c</fullName>
+        <defaultValue>&quot;Full matching contact creation with duplicate management&quot;</defaultValue>
+        <description>Choice of whether to create contact records and how to deal with duplicates.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Choice of whether to create contact records and how to deal with duplicates.</inlineHelpText>
+        <label>Contact Creation</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Full matching contact creation with duplicate management</fullName>
+                    <default>false</default>
+                    <label>Full matching contact creation with duplicate management</label>
+                </value>
+                <value>
+                    <fullName>Hard matching contact creation and with no duplicate management</fullName>
+                    <default>false</default>
+                    <label>Hard matching contact creation and with no duplicate management</label>
+                </value>
+                <value>
+                    <fullName>No matching or contact creation</fullName>
+                    <default>false</default>
+                    <label>No matching or contact creation</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>End_Date__c</fullName>
         <description>Date event ends</description>
         <externalId>false</externalId>
@@ -2222,6 +2255,21 @@ TEXT(YEAR( End_Date__c))
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Contact_Creation__c</picklist>
+            <values>
+                <fullName>Full matching contact creation with duplicate management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hard matching contact creation and with no duplicate management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No matching or contact creation</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Event_Sponsor__c</picklist>
             <values>
                 <fullName>Center for Ethical Organizations</fullName>
@@ -2806,6 +2854,21 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>HS Only</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Contact_Creation__c</picklist>
+            <values>
+                <fullName>Full matching contact creation with duplicate management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hard matching contact creation and with no duplicate management</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No matching or contact creation</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

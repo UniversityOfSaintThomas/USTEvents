@@ -9,22 +9,26 @@ public with sharing class USTEventContactMatching {
 
     }
 
-    public Map<String, String> USTEventContactMatching(String matchingType, UST_Event_Registration__c evt) {
-
+    public Map<String, String> USTEventContactMatching(String matchingType, UST_Event_Registration__c evt, String matchingScope) {
+        Map<String, String> matchingResult = new Map<String, String>();
         //Direct to correct matching method
-        if (matchingType.equalsIgnoreCase('Undergraduate')) {
-            return UG_Matching(evt);
-        } else if (matchingType.equalsIgnoreCase('UDAR')) {
-            return UG_Matching(evt);
-        } else if (matchingType.equalsIgnoreCase('Graduate')) {
-            //Using Undergrad matching for now
-            return UG_Matching(evt);
-        } else {
-            return UG_Matching(evt);
+        if (!matchingScope.startsWith('No matching')) {
+            if (matchingType.equalsIgnoreCase('Undergraduate')) {
+                matchingResult = UG_Matching(evt, matchingScope);
+            } else if (matchingType.equalsIgnoreCase('UDAR')) {
+                matchingResult = UG_Matching(evt, matchingScope);
+            } else if (matchingType.equalsIgnoreCase('Graduate')) {
+                //Using Undergrad matching for now
+                matchingResult = UG_Matching(evt, matchingScope);
+            } else {
+                matchingResult = UG_Matching(evt, matchingScope);
+            }
         }
+        return matchingResult;
     }
 
-    private Map<String, String> UG_Matching(UST_Event_Registration__c evt) {
+    private Map<String, String> UG_Matching(UST_Event_Registration__c evt, String matchingScope) {
+
         String contactId = '';
         String softEmailMatches = '';
         String softFirstLastZipMatches = '';
@@ -42,18 +46,25 @@ public with sharing class USTEventContactMatching {
         matchLogHead += '<th class="" scope="col"><div class="slds-truncate" title="Action">Action</div></th>';
         matchLogHead += '</tr></thead>';
 
-
-        if (String.isNotBlank(evt.Contact__r.Id)) {
-            contactId = evt.Contact__r.Id;
-        }
-
         String lastName = evt.Registrant_Last_Name__c;
         String email = evt.Registrant_Email__c;
 
-        /* Match on first 3 letters of first name / preferred first name, last name, and birthdate */
+        System.Debug('Made it to matching!');
+        /* Already have an Id, why work, return */
+        if (String.isNotBlank(evt.Contact__r.Id)) {
+            contactId = evt.Contact__r.Id;
+            return new Map<String, String>{
+                    'contactId' => contactId,
+                    'softEmailMatches' => '',
+                    'softFirstLastZipMatches' => '',
+                    'newContactCreated' => String.valueOf(newContactCreated),
+                    'matchLog' => ''
+            };
+        }
 
+        /* HARD MATCH - First 3 letters of first name / preferred first name, last name, and birthdate */
         if (String.isBlank(contactId) && evt.Registrant_Date_of_Birth__c != null && String.isNotBlank(evt.Registrant_Last_Name__c)) {
-
+            System.Debug('HARD MATCH - First 3 letters of first name / preferred first name, last name, and birthdate');
             /* Get the first three characters of name and preferred name */
             String firstThree = '';
             String prefFirstThree = '';
@@ -94,8 +105,9 @@ public with sharing class USTEventContactMatching {
             }
         }
 
-        //Test to find if contact already exists - HARD TEST last name and email match
+        //HARD MATCH - Last name and email
         if (String.isBlank(contactId)) {
+            System.Debug('HARD MATCH - Last name and email');
             List<Contact> hardContactTest2 = [SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE LastName = :lastName AND Email = :email];
             if (hardContactTest2.size() > 0) {
                 contactId = hardContactTest2[0].Id;
@@ -108,7 +120,8 @@ public with sharing class USTEventContactMatching {
         }
 
         //Check for already made DUPLICATE emails and attach to matching
-        if (String.isBlank(contactId)) {
+        if (String.isBlank(contactId) && matchingScope.startsWith('Full matching')) {
+            System.Debug('SOFT MATCH - CHECK FOR dup emails');
             String[] possibleEmails = new List<String>();
             possibleEmails.add(evt.Registrant_Email__c);
             for (Integer x = 1; x <= 10; x++) {
@@ -126,7 +139,8 @@ public with sharing class USTEventContactMatching {
             }
         }
 
-        if (String.isBlank(contactId)) {
+        if (String.isBlank(contactId) && (matchingScope.startsWith('Full matching') || String.isBlank(matchingScope))) {
+            System.Debug('SOFT MATCH ');
             //Check if first name last name zip match
             List<Contact> zipContactTest = [
                     SELECT Id, LastName, FirstName, Email, MailingPostalCode
@@ -174,14 +188,17 @@ public with sharing class USTEventContactMatching {
             //Create new contact
         }
 
-        System.Debug(matchLog);
-        return new Map<String, String>{
-                'contactId' => contactId,
-                'softEmailMatches' => softEmailMatches.abbreviate(255),
-                'softFirstLastZipMatches' => softFirstLastZipMatches.abbreviate(255),
-                'newContactCreated' => String.valueOf(newContactCreated),
-                'matchLog' => matchLog
-        };
+        if (String.isNotBlank(contactId)) {
+            System.Debug('Returning CONTACT ID');
+            return new Map<String, String>{
+                    'contactId' => contactId,
+                    'softEmailMatches' => softEmailMatches.abbreviate(255),
+                    'softFirstLastZipMatches' => softFirstLastZipMatches.abbreviate(255),
+                    'newContactCreated' => String.valueOf(newContactCreated),
+                    'matchLog' => matchLog
+            };
+        }
+        return new Map<String,String>();
     }
 
     private Contact createNewContact(UST_Event_Registration__c evt) {

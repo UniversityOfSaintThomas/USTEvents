@@ -34,7 +34,7 @@ public with sharing class USTEventRegisterController {
     public String eventStartDateTimeCrumb { get; set; }
     public Boolean evtHasAppointments { get; set; }
     public String birthDateString { get; set; }
-    public String dataLayerLocationType {get;set;}
+    public String dataLayerLocationType { get; set; }
 
 
     public USTEventRegisterController() {
@@ -112,7 +112,7 @@ public with sharing class USTEventRegisterController {
                             Add_Info_Question_Pick_List_5__c, Add_Info_Question_Text_5__c, Add_Info_Question_Type_5__c,
                             Academic_Program_List__c, School__c, School__r.Name, Ask_Mailing_Address__c, Ask_Phone__c, Event_Sponsor__c,
                             Applicant_Type__c, Location_Type__c, Location_Title__c, Location_Address__c, Location_Map_Link__c,
-                            Tracking_Event_Registration__c, Ask_Date_Of_Birth__c, Event_Type__c, RecordType.Name
+                            Tracking_Event_Registration__c, Ask_Date_Of_Birth__c, Event_Type__c, RecordType.Name, Contact_Creation__c
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1
@@ -496,49 +496,59 @@ public with sharing class USTEventRegisterController {
             contactId = newEvtReg.Contact__r.Id;
         } else {
             //pass record type and event reg to matcher helper class
-            matched = matcher.USTEventContactMatching(evtInfo.recordTypeName, newEvtReg);
-            //Populate matching results into data
-            contactId = (Id) matched.get('contactId');
-            newContactCreated = Boolean.valueOf(matched.get('newContactCreated'));
-            newEvtReg.Contact_Soft_Match_Email__c = String.valueOf(matched.get('softEmailMatches'));
-            newEvtReg.Contact_Soft_Match_First_Last_Zip__c = String.valueOf(matched.get('softFirstLastZipMatches'));
-            newEvtReg.Matching_Log__c = String.valueOf(matched.get('matchLog'));
+            String matchingScope = '';
+            if (String.isNotBlank(eventPage.Contact_Creation__c)) {
+                matchingScope = eventPage.Contact_Creation__c;
+            } else {
+                matchingScope = 'Full matching contact creation with duplicate management';
+            }
+            if (!matchingScope.startsWith('No matching')) {
+                System.debug('PASSING TO MATCHING METHOD');
+                matched = matcher.USTEventContactMatching(evtInfo.recordTypeName, newEvtReg, matchingScope);
+                //Populate matching results into data - matched may be blank depending on the Contact_Creation__c setting
+                if (matched.size() > 0) {
+                    contactId = (Id) matched.get('contactId');
+                    newContactCreated = Boolean.valueOf(matched.get('newContactCreated'));
+                    newEvtReg.Contact_Soft_Match_Email__c = String.valueOf(matched.get('softEmailMatches'));
+                    newEvtReg.Contact_Soft_Match_First_Last_Zip__c = String.valueOf(matched.get('softFirstLastZipMatches'));
+                    newEvtReg.Matching_Log__c = String.valueOf(matched.get('matchLog'));
+                }
+            }
         }
 
         //Create registration if event Registration does not exist
-        if (String.isNotBlank(contactId)) {
-            if (String.isBlank(evtInfo.evtRegId) || evtInfo.evtRegId == 'COMING') {
-                newEvtReg.Status__c = 'Started';
-                newEvtReg.Date__c = Date.valueof(evtInstance.Start_Date_Time__c);
-                newEvtReg.Event__c = evtInfo.evtId;
-                newEvtReg.Event_Instance__c = evtInfo.instanceID;
-                newEvtReg.Contact__c = contactId;
-                if (newContactCreated) {
-                    newEvtReg.New_Contact_Created__c = true;
-                }
-                try {
-                    insert newEvtReg;
-                    newEvtReg.Matching_Log__c = newEvtReg.Matching_Log__c.replaceAll('\\[\\[REGID\\]\\]', newEvtReg.Id);
-                    upsert newEvtReg;
-                } catch (Exception ex) {
-                    ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
-                    ApexPages.addMessage(myMsg);
-                }
-                evtInfo.evtRegId = newEvtReg.Id;
 
-                //make matching log functional for reparenting
-
-
-            } else {
-                //update registration if Registration exists
-                try {
-                    upsert newEvtReg;
-                } catch (Exception ex) {
-                    ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
-                    ApexPages.addMessage(myMsg);
-                }
-
+        if (String.isBlank(evtInfo.evtRegId) || evtInfo.evtRegId == 'COMING') {
+            newEvtReg.Status__c = 'Started';
+            newEvtReg.Date__c = Date.valueof(evtInstance.Start_Date_Time__c);
+            newEvtReg.Event__c = evtInfo.evtId;
+            newEvtReg.Event_Instance__c = evtInfo.instanceID;
+            newEvtReg.Contact__c = contactId;
+            if (newContactCreated) {
+                newEvtReg.New_Contact_Created__c = true;
             }
+            try {
+                insert newEvtReg;
+                newEvtReg.Matching_Log__c = newEvtReg.Matching_Log__c.replaceAll('\\[\\[REGID\\]\\]', newEvtReg.Id);
+                upsert newEvtReg;
+            } catch (Exception ex) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                ApexPages.addMessage(myMsg);
+            }
+            evtInfo.evtRegId = newEvtReg.Id;
+
+            //make matching log functional for reparenting
+
+
+        } else {
+            //update registration if Registration exists
+            try {
+                upsert newEvtReg;
+            } catch (Exception ex) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                ApexPages.addMessage(myMsg);
+            }
+
         }
 
         if (String.isNotBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
