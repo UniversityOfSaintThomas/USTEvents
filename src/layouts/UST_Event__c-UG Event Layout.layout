@@ -36,6 +36,10 @@
                 <behavior>Edit</behavior>
                 <field>Alternate_Registration_URL__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Contact_Creation__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

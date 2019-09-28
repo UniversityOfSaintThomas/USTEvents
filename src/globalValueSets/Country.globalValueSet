@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
     <customValue>
-        <fullName>USA</fullName>
-        <default>false</default>
+        <fullName>United States</fullName>
+        <default>true</default>
         <label>United States</label>
     </customValue>
     <customValue>
@@ -16,6 +16,11 @@
         <label>Afghanistan</label>
     </customValue>
     <customValue>
+        <fullName>Aland Islands</fullName>
+        <default>false</default>
+        <label>Aland Islands</label>
+    </customValue>
+    <customValue>
         <fullName>Albania</fullName>
         <default>false</default>
         <label>Albania</label>
@@ -24,11 +29,6 @@
         <fullName>Algeria</fullName>
         <default>false</default>
         <label>Algeria</label>
-    </customValue>
-    <customValue>
-        <fullName>American Samoa</fullName>
-        <default>false</default>
-        <label>American Samoa</label>
     </customValue>
     <customValue>
         <fullName>Andorra</fullName>
@@ -141,6 +141,11 @@
         <label>Bolivia</label>
     </customValue>
     <customValue>
+        <fullName>Bonaire, Sint Eustatius and Saba</fullName>
+        <default>false</default>
+        <label>Bonaire, Sint Eustatius and Saba</label>
+    </customValue>
+    <customValue>
         <fullName>Bosnia and Herzegovina</fullName>
         <default>false</default>
         <label>Bosnia and Herzegovina</label>
@@ -179,11 +184,6 @@
         <fullName>Burkina Faso</fullName>
         <default>false</default>
         <label>Burkina Faso</label>
-    </customValue>
-    <customValue>
-        <fullName>Burma</fullName>
-        <default>false</default>
-        <label>Burma</label>
     </customValue>
     <customValue>
         <fullName>Burundi</fullName>
@@ -251,9 +251,14 @@
         <label>Comoros</label>
     </customValue>
     <customValue>
-        <fullName>Congo, Republic of</fullName>
+        <fullName>Congo</fullName>
         <default>false</default>
-        <label>Congo, Republic of</label>
+        <label>Congo</label>
+    </customValue>
+    <customValue>
+        <fullName>Congo (Brazzaville)</fullName>
+        <default>false</default>
+        <label>Congo (Brazzaville)</label>
     </customValue>
     <customValue>
         <fullName>Cook Islands</fullName>
@@ -271,9 +276,9 @@
         <label>Cote D&apos;Ivoire</label>
     </customValue>
     <customValue>
-        <fullName>Croatia/Hrvatska</fullName>
+        <fullName>Croatia</fullName>
         <default>false</default>
-        <label>Croatia/Hrvatska</label>
+        <label>Croatia</label>
     </customValue>
     <customValue>
         <fullName>Cuba</fullName>
@@ -289,11 +294,6 @@
         <fullName>Czech Republic</fullName>
         <default>false</default>
         <label>Czech Republic</label>
-    </customValue>
-    <customValue>
-        <fullName>Democratic Rep of the Congo</fullName>
-        <default>false</default>
-        <label>Democratic Rep of the Congo</label>
     </customValue>
     <customValue>
         <fullName>Denmark</fullName>
@@ -314,11 +314,6 @@
         <fullName>Dominican Republic</fullName>
         <default>false</default>
         <label>Dominican Republic</label>
-    </customValue>
-    <customValue>
-        <fullName>East Timor</fullName>
-        <default>false</default>
-        <label>East Timor</label>
     </customValue>
     <customValue>
         <fullName>Ecuador</fullName>
@@ -386,11 +381,6 @@
         <label>French Guiana</label>
     </customValue>
     <customValue>
-        <fullName>French Metropolitan</fullName>
-        <default>false</default>
-        <label>French Metropolitan</label>
-    </customValue>
-    <customValue>
         <fullName>French Polynesia</fullName>
         <default>false</default>
         <label>French Polynesia</label>
@@ -451,11 +441,6 @@
         <label>Guadeloupe</label>
     </customValue>
     <customValue>
-        <fullName>Guam</fullName>
-        <default>false</default>
-        <label>Guam</label>
-    </customValue>
-    <customValue>
         <fullName>Guatemala</fullName>
         <default>false</default>
         <label>Guatemala</label>
@@ -491,14 +476,14 @@
         <label>Heard and Mc Donald Islands</label>
     </customValue>
     <customValue>
+        <fullName>Holy See (Vatican City State)</fullName>
+        <default>false</default>
+        <label>Holy See (Vatican City State)</label>
+    </customValue>
+    <customValue>
         <fullName>Honduras</fullName>
         <default>false</default>
         <label>Honduras</label>
-    </customValue>
-    <customValue>
-        <fullName>Hong Kong</fullName>
-        <default>false</default>
-        <label>Hong Kong</label>
     </customValue>
     <customValue>
         <fullName>Hungary</fullName>
@@ -586,14 +571,14 @@
         <label>Kiribati</label>
     </customValue>
     <customValue>
-        <fullName>Korea, Democratic People&apos;s Rep</fullName>
+        <fullName>Korea, Dem People&apos;s Rep of</fullName>
         <default>false</default>
-        <label>Korea, Democratic People&apos;s Rep</label>
+        <label>Korea, Dem People&apos;s Rep of</label>
     </customValue>
     <customValue>
-        <fullName>Korea, Rep of (South Korea)</fullName>
+        <fullName>Korea, Republic of</fullName>
         <default>false</default>
-        <label>Korea, Rep of (South Korea)</label>
+        <label>Korea, Republic of</label>
     </customValue>
     <customValue>
         <fullName>Kosovo</fullName>
@@ -636,9 +621,9 @@
         <label>Liberia</label>
     </customValue>
     <customValue>
-        <fullName>Libyan Arab Jamahiriya</fullName>
+        <fullName>Libya</fullName>
         <default>false</default>
-        <label>Libyan Arab Jamahiriya</label>
+        <label>Libya</label>
     </customValue>
     <customValue>
         <fullName>Liechtenstein</fullName>
@@ -656,14 +641,14 @@
         <label>Luxembourg</label>
     </customValue>
     <customValue>
-        <fullName>Macau</fullName>
+        <fullName>Macao</fullName>
         <default>false</default>
-        <label>Macau</label>
+        <label>Macao</label>
     </customValue>
     <customValue>
-        <fullName>Macedonia</fullName>
+        <fullName>Macedonia, the former Yugoslav Republic of</fullName>
         <default>false</default>
-        <label>Macedonia</label>
+        <label>Macedonia, the former Yugoslav Republic of</label>
     </customValue>
     <customValue>
         <fullName>Madagascar</fullName>
@@ -696,11 +681,6 @@
         <label>Malta</label>
     </customValue>
     <customValue>
-        <fullName>Marshall Islands</fullName>
-        <default>false</default>
-        <label>Marshall Islands</label>
-    </customValue>
-    <customValue>
         <fullName>Martinique</fullName>
         <default>false</default>
         <label>Martinique</label>
@@ -729,6 +709,11 @@
         <fullName>Moldova, Republic of</fullName>
         <default>false</default>
         <label>Moldova, Republic of</label>
+    </customValue>
+    <customValue>
+        <fullName>Monaco</fullName>
+        <default>false</default>
+        <label>Monaco</label>
     </customValue>
     <customValue>
         <fullName>Mongolia</fullName>
@@ -781,11 +766,6 @@
         <label>Netherlands</label>
     </customValue>
     <customValue>
-        <fullName>Netherlands Antilles</fullName>
-        <default>false</default>
-        <label>Netherlands Antilles</label>
-    </customValue>
-    <customValue>
         <fullName>New Caledonia</fullName>
         <default>false</default>
         <label>New Caledonia</label>
@@ -821,11 +801,6 @@
         <label>Norfolk Island</label>
     </customValue>
     <customValue>
-        <fullName>Northern Mariana Islands</fullName>
-        <default>false</default>
-        <label>Northern Mariana Islands</label>
-    </customValue>
-    <customValue>
         <fullName>Norway</fullName>
         <default>false</default>
         <label>Norway</label>
@@ -846,14 +821,9 @@
         <label>Pakistan</label>
     </customValue>
     <customValue>
-        <fullName>Palau</fullName>
+        <fullName>Palestinian</fullName>
         <default>false</default>
-        <label>Palau</label>
-    </customValue>
-    <customValue>
-        <fullName>Palestinian National Authority</fullName>
-        <default>false</default>
-        <label>Palestinian National Authority</label>
+        <label>Palestinian</label>
     </customValue>
     <customValue>
         <fullName>Panama</fullName>
@@ -871,11 +841,6 @@
         <label>Paraguay</label>
     </customValue>
     <customValue>
-        <fullName>Parcel Islands</fullName>
-        <default>false</default>
-        <label>Parcel Islands</label>
-    </customValue>
-    <customValue>
         <fullName>Peru</fullName>
         <default>false</default>
         <label>Peru</label>
@@ -886,9 +851,9 @@
         <label>Philippines</label>
     </customValue>
     <customValue>
-        <fullName>Pitcairn Island</fullName>
+        <fullName>Pitcairn</fullName>
         <default>false</default>
-        <label>Pitcairn Island</label>
+        <label>Pitcairn</label>
     </customValue>
     <customValue>
         <fullName>Poland</fullName>
@@ -901,19 +866,14 @@
         <label>Portugal</label>
     </customValue>
     <customValue>
-        <fullName>Puerto Rico</fullName>
-        <default>false</default>
-        <label>Puerto Rico</label>
-    </customValue>
-    <customValue>
         <fullName>Qatar</fullName>
         <default>false</default>
         <label>Qatar</label>
     </customValue>
     <customValue>
-        <fullName>Reunion Island</fullName>
+        <fullName>Reunion</fullName>
         <default>false</default>
-        <label>Reunion Island</label>
+        <label>Reunion</label>
     </customValue>
     <customValue>
         <fullName>Romania</fullName>
@@ -921,14 +881,24 @@
         <label>Romania</label>
     </customValue>
     <customValue>
-        <fullName>Russia</fullName>
+        <fullName>Russian Federation</fullName>
         <default>false</default>
-        <label>Russia</label>
+        <label>Russian Federation</label>
     </customValue>
     <customValue>
         <fullName>Rwanda</fullName>
         <default>false</default>
         <label>Rwanda</label>
+    </customValue>
+    <customValue>
+        <fullName>Saint-Barthelemy</fullName>
+        <default>false</default>
+        <label>Saint-Barthelemy</label>
+    </customValue>
+    <customValue>
+        <fullName>Saint Helena, Ascension and Tristan da Cunha</fullName>
+        <default>false</default>
+        <label>Saint Helena, Ascension and Tristan da Cunha</label>
     </customValue>
     <customValue>
         <fullName>Saint Kitts and Nevis</fullName>
@@ -939,6 +909,26 @@
         <fullName>Saint Lucia</fullName>
         <default>false</default>
         <label>Saint Lucia</label>
+    </customValue>
+    <customValue>
+        <fullName>Saint-Martin (French part)</fullName>
+        <default>false</default>
+        <label>Saint-Martin (French part)</label>
+    </customValue>
+    <customValue>
+        <fullName>Saint Pierre and Miquelon</fullName>
+        <default>false</default>
+        <label>Saint Pierre and Miquelon</label>
+    </customValue>
+    <customValue>
+        <fullName>Saint Vincent and Grenadines</fullName>
+        <default>false</default>
+        <label>Saint Vincent and Grenadines</label>
+    </customValue>
+    <customValue>
+        <fullName>Samoa</fullName>
+        <default>false</default>
+        <label>Samoa</label>
     </customValue>
     <customValue>
         <fullName>San Marino</fullName>
@@ -986,9 +976,14 @@
         <label>Singapore</label>
     </customValue>
     <customValue>
-        <fullName>Slovakia (Slovak Republic)</fullName>
+        <fullName>Sint Maarten (Dutch part)</fullName>
         <default>false</default>
-        <label>Slovakia (Slovak Republic)</label>
+        <label>Sint Maarten (Dutch part)</label>
+    </customValue>
+    <customValue>
+        <fullName>Slovakia</fullName>
+        <default>false</default>
+        <label>Slovakia</label>
     </customValue>
     <customValue>
         <fullName>Slovenia</fullName>
@@ -1024,26 +1019,6 @@
         <fullName>Sri Lanka</fullName>
         <default>false</default>
         <label>Sri Lanka</label>
-    </customValue>
-    <customValue>
-        <fullName>St. Helena</fullName>
-        <default>false</default>
-        <label>St. Helena</label>
-    </customValue>
-    <customValue>
-        <fullName>St. Pierre and Miquelon</fullName>
-        <default>false</default>
-        <label>St. Pierre and Miquelon</label>
-    </customValue>
-    <customValue>
-        <fullName>Stateless</fullName>
-        <default>false</default>
-        <label>Stateless</label>
-    </customValue>
-    <customValue>
-        <fullName>St Vincent and the Grenadines</fullName>
-        <default>false</default>
-        <label>St Vincent and the Grenadines</label>
     </customValue>
     <customValue>
         <fullName>Sudan</fullName>
@@ -1101,6 +1076,11 @@
         <label>Thailand</label>
     </customValue>
     <customValue>
+        <fullName>Timor-Leste</fullName>
+        <default>false</default>
+        <label>Timor-Leste</label>
+    </customValue>
+    <customValue>
         <fullName>Togo</fullName>
         <default>false</default>
         <label>Togo</label>
@@ -1146,11 +1126,6 @@
         <label>Tuvalu</label>
     </customValue>
     <customValue>
-        <fullName>U.S. Minor Outlying Islands</fullName>
-        <default>false</default>
-        <label>U.S. Minor Outlying Islands</label>
-    </customValue>
-    <customValue>
         <fullName>Uganda</fullName>
         <default>false</default>
         <label>Uganda</label>
@@ -1186,14 +1161,9 @@
         <label>Vanuatu</label>
     </customValue>
     <customValue>
-        <fullName>Vatican City State (Holy See)</fullName>
+        <fullName>Venezuela (Bolivarian Rep of)</fullName>
         <default>false</default>
-        <label>Vatican City State (Holy See)</label>
-    </customValue>
-    <customValue>
-        <fullName>Venezuela</fullName>
-        <default>false</default>
-        <label>Venezuela</label>
+        <label>Venezuela (Bolivarian Rep of)</label>
     </customValue>
     <customValue>
         <fullName>Viet Nam</fullName>
@@ -1201,19 +1171,14 @@
         <label>Viet Nam</label>
     </customValue>
     <customValue>
-        <fullName>Virgin Islands (British)</fullName>
+        <fullName>Virgin Islands, British</fullName>
         <default>false</default>
-        <label>Virgin Islands (British)</label>
+        <label>Virgin Islands, British</label>
     </customValue>
     <customValue>
         <fullName>Wallis and Futuna Islands</fullName>
         <default>false</default>
         <label>Wallis and Futuna Islands</label>
-    </customValue>
-    <customValue>
-        <fullName>Western Sahara</fullName>
-        <default>false</default>
-        <label>Western Sahara</label>
     </customValue>
     <customValue>
         <fullName>Western Samoa</fullName>
@@ -1226,11 +1191,6 @@
         <label>Yemen</label>
     </customValue>
     <customValue>
-        <fullName>Yugoslavia</fullName>
-        <default>false</default>
-        <label>Yugoslavia</label>
-    </customValue>
-    <customValue>
         <fullName>Zambia</fullName>
         <default>false</default>
         <label>Zambia</label>
@@ -1239,6 +1199,132 @@
         <fullName>Zimbabwe</fullName>
         <default>false</default>
         <label>Zimbabwe</label>
+    </customValue>
+    <customValue>
+        <fullName>American Samoa</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>American Samoa</label>
+    </customValue>
+    <customValue>
+        <fullName>Yugoslavia</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Yugoslavia</label>
+    </customValue>
+    <customValue>
+        <fullName>Democratic Rep of the Congo</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Democratic Rep of the Congo</label>
+    </customValue>
+    <customValue>
+        <fullName>East Timor</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>East Timor</label>
+    </customValue>
+    <customValue>
+        <fullName>French Metropolitan</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>French Metropolitan</label>
+    </customValue>
+    <customValue>
+        <fullName>Guam</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Guam</label>
+    </customValue>
+    <customValue>
+        <fullName>Hong Kong</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Hong Kong</label>
+    </customValue>
+    <customValue>
+        <fullName>Marshall Islands</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Marshall Islands</label>
+    </customValue>
+    <customValue>
+        <fullName>Netherlands Antilles</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Netherlands Antilles</label>
+    </customValue>
+    <customValue>
+        <fullName>Northern Mariana Islands</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Northern Mariana Islands</label>
+    </customValue>
+    <customValue>
+        <fullName>Palau</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Palau</label>
+    </customValue>
+    <customValue>
+        <fullName>Parcel Islands</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Parcel Islands</label>
+    </customValue>
+    <customValue>
+        <fullName>Puerto Rico</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Puerto Rico</label>
+    </customValue>
+    <customValue>
+        <fullName>St. Helena</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>St. Helena</label>
+    </customValue>
+    <customValue>
+        <fullName>St. Pierre and Miquelon</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>St. Pierre and Miquelon</label>
+    </customValue>
+    <customValue>
+        <fullName>Stateless</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Stateless</label>
+    </customValue>
+    <customValue>
+        <fullName>St Vincent and the Grenadines</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>St Vincent and the Grenadines</label>
+    </customValue>
+    <customValue>
+        <fullName>U.S. Minor Outlying Islands</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>U.S. Minor Outlying Islands</label>
+    </customValue>
+    <customValue>
+        <fullName>Vatican City State (Holy See)</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Vatican City State (Holy See)</label>
+    </customValue>
+    <customValue>
+        <fullName>Western Sahara</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Western Sahara</label>
+    </customValue>
+    <customValue>
+        <fullName>Burma</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Burma</label>
     </customValue>
     <description>Global Picklist Values for Country</description>
     <masterLabel>Country</masterLabel>

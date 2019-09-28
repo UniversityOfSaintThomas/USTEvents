@@ -218,6 +218,9 @@ public with sharing class USTEventContactMatching {
         newEvtContact.MobilePhone = evt.Registrant_Mobile_Phone__c;
         newEvtContact.HomePhone = evt.Registrant_Phone__c;
         newEvtContact.High_School_Expected_Graduation_Year__c = evt.Registrant_High_School_Grad_Year__c;
+        newEvtContact.MailingCountry__c = evt.Registrant_Country__c;
+        newEvtContact.MailingState_Province__c = evt.Registrant_State_Province__c;
+        newEvtContact.MailingPostalCode__c = evt.Registrant_Postal_Code__c;
 
         if (evt.Registrant_Date_of_Birth__c != null) {
             newEvtContact.Birthdate = evt.Registrant_Date_of_Birth__c;

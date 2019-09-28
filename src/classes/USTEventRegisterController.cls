@@ -272,7 +272,8 @@ public with sharing class USTEventRegisterController {
                                 Registrant_High_School__c, Registrant_High_School_Code__c, Registrant_Receive_Texts__c, Registrant_High_School_Grad_Year__c, Registrant_High_School_Not_Found__c,
                                 Registrant_College_Not_Found__c, Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c, Registrant_Parent_Phone__c, Registrant_Parent_Status__c,
                                 Add_Info_Answer_1__c, Add_Info_Answer_2__c, Add_Info_Answer_3__c, Add_Info_Answer_4__c, Add_Info_Answer_5__c, Registrant_Program_Interest__c, Registrant_Preferred_First_Name__c,
-                                Registrant_date_of_Birth__c, Registrant_Other_Email__c, Registrant_Other_First_Name__c, Registrant_Other_Last_Name__c, Registrant_Other_Phone__c, Registrant_Other_Relationship__c
+                                Registrant_date_of_Birth__c, Registrant_Other_Email__c, Registrant_Other_First_Name__c, Registrant_Other_Last_Name__c, Registrant_Other_Phone__c, Registrant_Other_Relationship__c,
+                                Registrant_Country__c, Registrant_State_Province__c
                         FROM UST_Event_Registration__c
                         WHERE id = :evtInfo.evtRegId
                 ][0];
@@ -285,9 +286,15 @@ public with sharing class USTEventRegisterController {
                 oldEvtReg = newEvtReg;
             }
 
+
+
             if (EvtUserType != 'Guest') {
                 contactSet = true;
             }
+        }
+
+        if (String.isBlank(newEvtReg.Registrant_Country__c)) {
+            newEvtReg.Registrant_Country__c = 'United States';
         }
 
     }
@@ -306,6 +313,10 @@ public with sharing class USTEventRegisterController {
 
     public List<SelectOption> getStateDD() {
         return PickThePicklist('Contact', 'MailingState__c', true);
+    }
+
+    public List<SelectOption> getCountryDD() {
+        return PickThePicklist('UST_Event_Registration__c', 'Registrant_Country__c', true);
     }
 
     public List<SelectOption> getTimeFrame() {

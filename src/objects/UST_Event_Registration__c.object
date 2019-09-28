@@ -1092,6 +1092,19 @@ Registrant_Last_Name__c</formula>
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Registrant_Country__c</fullName>
+        <externalId>false</externalId>
+        <label>Registrant Country</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetName>Country</valueSetName>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Registrant_Date_of_Birth__c</fullName>
         <description>The date of birth of the registrant used mostly for contact matching.</description>
         <externalId>false</externalId>
@@ -1453,6 +1466,19 @@ Registrant_Last_Name__c</formula>
         <type>Phone</type>
     </fields>
     <fields>
+        <fullName>Registrant_Postal_Code__c</fullName>
+        <description>Registrant Postal Code populated by international event registration.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Registrant Postal Code populated by international event registration.</inlineHelpText>
+        <label>Registrant Postal Code</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Registrant_Preferred_First_Name__c</fullName>
         <description>A registrants preferred name (may be a nick name)</description>
         <externalId>false</externalId>
@@ -1495,6 +1521,17 @@ Registrant_Last_Name__c</formula>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Checkbox</type>
+    </fields>
+    <fields>
+        <fullName>Registrant_State_Province__c</fullName>
+        <externalId>false</externalId>
+        <label>Registrant State/Province</label>
+        <length>100</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Registrant_State__c</fullName>
