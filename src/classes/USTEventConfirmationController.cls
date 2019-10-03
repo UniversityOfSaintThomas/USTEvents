@@ -64,7 +64,9 @@ public with sharing class USTEventConfirmationController {
                             Registrant_Major__r.Program_Offered__c,
                             Registrant_Major_2__r.Program_Offered__c,
                             Registrant_Major_3__r.Program_Offered__c,
-                            Registrant_Major_4__r.Program_Offered__c
+                            Registrant_Major_4__r.Program_Offered__c,
+                            Registrant_Country__c, Registrant_State_Province__c,
+                            Registrant_Postal_Code__c
 
                     FROM UST_Event_Registration__c
                     WHERE id = :evtInfo.evtRegId
@@ -119,6 +121,9 @@ public with sharing class USTEventConfirmationController {
         tp.Program_Offered_2__c = evtReg.Registrant_Major_2__r.Program_Offered__c;
         tp.Program_Offered_3__c = evtReg.Registrant_Major_3__r.Program_Offered__c;
         tp.Program_Offered_4__c = evtReg.Registrant_Major_4__r.Program_Offered__c;
+        tp.Country__c = evtReg.Registrant_Country__c;
+        tp.State_Province__c = evtReg.Registrant_State_Province__c;
+        tp.Postal_Code__c = evtReg.Registrant_Postal_Code__c;
 
         if (evtInfo.recordTypeName == 'Undergraduate' || String.isBlank(evtInfo.recordTypeName)) {
             List<EnrollmentrxRx__Program_Offered__c> UgProgOffered = [SELECT Id, EnrollmentrxRx__Program_Catalog__c, School__c FROM EnrollmentrxRx__Program_Offered__c WHERE Name = 'Undergraduate' AND Status__c = 'Active'];
