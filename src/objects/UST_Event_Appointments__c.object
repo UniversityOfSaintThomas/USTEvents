@@ -1177,7 +1177,7 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
     <fields>
         <fullName>Event_Registration_Date__c</fullName>
         <externalId>false</externalId>
-        <formula>TEXT(MONTH(Event_Registration__r.Date__c))+&quot;/&quot; +TEXT(DAY(Event_Registration__r.Date__c))+&quot;/&quot; +TEXT(YEAR(Event_Registration__r.Date__c))</formula>
+        <formula>TEXT(MONTH(Event_Registration__r.Event_Instance_Date__c))+&quot;/&quot; +TEXT(DAY(Event_Registration__r.Event_Instance_Date__c))+&quot;/&quot; +TEXT(YEAR(Event_Registration__r.Event_Instance_Date__c))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>Event Registration Date</label>
         <required>false</required>
