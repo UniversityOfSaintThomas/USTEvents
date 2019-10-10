@@ -119,7 +119,7 @@
                 <div class="site-navigation-wrap">
                     <ul class="site-navigation row" id="topNavBar">
                         <li><h3>
-                                <a href="javascript:;"> Site Navigation</a>
+                                <a href="javascript:"> Site Navigation</a>
                             </h3>
                             <ul class="castor-first-level-links">
                                 <apex:insert name="sectionNav"/>

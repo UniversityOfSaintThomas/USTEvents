@@ -15,4 +15,5 @@
     <tabs>UST_Event_Instance__c</tabs>
     <tabs>UST_Event_Host__c</tabs>
     <tabs>standard-report</tabs>
+    <tabs>Ambassador__c</tabs>
 </CustomApplication>

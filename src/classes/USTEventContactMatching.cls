@@ -90,7 +90,7 @@ public with sharing class USTEventContactMatching {
             }
             query = query.removeEnd(' OR');
             query += ' ) ';
-            query += ' AND LastName = \'' + evt.Registrant_Last_Name__c + '\' ';
+            query += ' AND LastName = \'' + String.escapeSingleQuotes(evt.Registrant_Last_Name__c) + '\' ';
             query += ' AND Birthdate = ' + String.valueOf(evt.Registrant_Date_of_Birth__c).removeEnd(' 00:00:00');
             System.Debug(query);
             List<Contact> hardContactTest1 = database.query(query);
@@ -202,8 +202,7 @@ public with sharing class USTEventContactMatching {
     }
 
     private Contact createNewContact(UST_Event_Registration__c evt) {
-
-
+        //evt = escapeRegistration(evt);
         Contact newEvtContact = new Contact();
         newEvtContact.LeadSource = 'Event';
         newEvtContact.FirstName = evt.Registrant_First_Name__c;
