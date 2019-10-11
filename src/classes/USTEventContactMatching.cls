@@ -208,7 +208,11 @@ public with sharing class USTEventContactMatching {
         newEvtContact.FirstName = evt.Registrant_First_Name__c;
         newEvtContact.Preferred_First_Name__c = evt.Registrant_Preferred_First_Name__c;
         newEvtContact.LastName = evt.Registrant_Last_Name__c;
-        newEvtContact.EnrollmentrxRx__Gender__c = evt.Registrant_Gender__c;
+        if (String.isNotBlank(evt.Registrant_Gender__c)) {
+            if (evt.Registrant_Gender__c.toLowerCase() == 'male' || evt.Registrant_Gender__c.toLowerCase() == 'female') {
+                newEvtContact.EnrollmentrxRx__Gender__c = evt.Registrant_Gender__c;
+            }
+        }
         newEvtContact.MailingStreetLine1__c = evt.Registrant_Street_1__c;
         newEvtContact.MailingStreetLine2__c = evt.Registrant_Street_2__c;
         newEvtContact.MailingCity__c = evt.Registrant_City__c;

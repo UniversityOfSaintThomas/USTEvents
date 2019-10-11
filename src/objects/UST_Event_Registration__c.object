@@ -733,19 +733,6 @@ Event__r.Community_Base_URL__c
         <unique>false</unique>
     </fields>
     <fields>
-        <fullName>Event_School_Name__c</fullName>
-        <description>School hosting the event for which this registrant registered</description>
-        <externalId>false</externalId>
-        <formula>Event_Instance__r.Event__r.School__r.Name</formula>
-        <inlineHelpText>School hosting the event for which this registrant registered</inlineHelpText>
-        <label>Event School Name</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
-    </fields>
-    <fields>
         <fullName>Event__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <externalId>false</externalId>
@@ -1175,7 +1162,6 @@ Registrant_Last_Name__c</formula>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
-            <restricted>true</restricted>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
@@ -1187,6 +1173,11 @@ Registrant_Last_Name__c</formula>
                     <fullName>Male</fullName>
                     <default>false</default>
                     <label>Male</label>
+                </value>
+                <value>
+                    <fullName>Prefer not to respond</fullName>
+                    <default>false</default>
+                    <label>Prefer not to respond</label>
                 </value>
             </valueSetDefinition>
         </valueSet>
@@ -1300,17 +1291,6 @@ Registrant_Last_Name__c</formula>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>
         <type>Lookup</type>
-    </fields>
-    <fields>
-        <fullName>Registrant_Major_Prog_Major_Conc_Code__c</fullName>
-        <externalId>false</externalId>
-        <formula>Registrant_Major__r.Prog_Major_Conc_Code__c</formula>
-        <label>Registrant Major Prog|Major|Conc Code</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Text</type>
-        <unique>false</unique>
     </fields>
     <fields>
         <fullName>Registrant_Major__c</fullName>

@@ -287,7 +287,6 @@ public with sharing class USTEventRegisterController {
             }
 
 
-
             if (EvtUserType != 'Guest') {
                 contactSet = true;
             }
@@ -308,7 +307,7 @@ public with sharing class USTEventRegisterController {
     }
 
     public List<SelectOption> getSexDD() {
-        return PickThePicklist('Contact', 'EnrollmentrxRx__Gender__c', true);
+        return PickThePicklist('UST_Event_Registration__c', 'Registrant_Gender__c', true);
     }
 
     public List<SelectOption> getStateDD() {
@@ -334,6 +333,7 @@ public with sharing class USTEventRegisterController {
     public List<SelectOption> getRelationshipDD() {
         return PickThePicklist('UST_Event_Registration__c', 'Relationship_to_St_Thomas__c', false);
     }
+
 
     public List<SelectOption> getProgramsAvailable() {
         String prgString = eventPage.Academic_Program_List__c;
@@ -418,9 +418,14 @@ public with sharing class USTEventRegisterController {
         List<SelectOption> picklists = new List<SelectOption>();
         List<Schema.PicklistEntry> PicklistValues = Schema.getGlobalDescribe().get(YourObjectName).getDescribe().fields.getMap().get(YourFieldName).getDescribe().getPicklistValues();
 
+        if (includeSelect) {
+            picklists.add(new SelectOption('', 'Select...'));
+        }
+
         for (Schema.PicklistEntry PicklistValue : PicklistValues) {
             picklists.add(new SelectOption(PicklistValue.getValue(), PicklistValue.getLabel()));
         }
+
         return picklists;
     }
 
