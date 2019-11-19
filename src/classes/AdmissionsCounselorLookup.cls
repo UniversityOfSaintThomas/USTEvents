@@ -74,6 +74,7 @@ global with sharing class AdmissionsCounselorLookup {
         String query = '';
         String school = '';
         String territory = '';
+        String role = '';
         List<CounselorInfo> ci = new List<CounselorInfo>();
         List<Geographic_Area__c> ga = new List<Geographic_Area__c>();
         List<EnrollmentrxRx__High_School__c> hs = new list<EnrollmentrxRx__High_School__c>();
@@ -94,6 +95,9 @@ global with sharing class AdmissionsCounselorLookup {
         }
         if (String.isNotBlank(RestContext.request.params.get('territory'))) {
             territory = RestContext.request.params.get('territory').toLowerCase();
+        }
+        if (String.isNotBlank(RestContext.request.params.get('role'))) {
+            role = RestContext.request.params.get('role').toLowerCase();
         }
 
         //Build query string for SOQL LIKE statement
@@ -118,6 +122,15 @@ global with sharing class AdmissionsCounselorLookup {
             if (UGTerritories.size() > 0) {
                 for (UG_Counseling_Territory__c ugt : UGTerritories) {
                     cUserIds.add(ugt.UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__r.Id);
+                }
+                ci = grabCounslorList(cUserIds);
+            }
+        } else if (String.isNotBlank(role)) {
+            role = role + '%';
+            List<Counselor_Role__c> counselorByRole = [SELECT Id, Name, Staff_Member_Holding_Role__c FROM Counselor_Role__c WHERE Name LIKE :role];
+            if (counselorByRole.size()>0) {
+                for (Counselor_Role__c cbr : counselorByRole) {
+                    cUserIds.add(cbr.Staff_Member_Holding_Role__c);
                 }
                 ci = grabCounslorList(cUserIds);
             }

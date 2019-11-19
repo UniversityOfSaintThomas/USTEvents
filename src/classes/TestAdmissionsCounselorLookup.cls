@@ -10,18 +10,19 @@ public with sharing class TestAdmissionsCounselorLookup {
     @isTest static void testCounselorLookup() {
         createTestData();
         Test.startTest();
-        getLookupFeed('counselor', '', '', '', '', '', '');
-        getLookupFeed('counselor', 'MN', '', '', '', '', '');
-        getLookupFeed('counselor', 'MN', 'Minneapolis', '', '', '', '');
-        getLookupFeed('counselor', '', 'Minneapolis', '', '', '', '');
-        getLookupFeed('counselor', 'MN', 'Minneapolis', '', 'USA', '', '');
-        getLookupFeed('counselor', '', '', 'TESTCODE', '', '', '');
-        getLookupFeed('bio', '', '', '', '', '', 'Test1 Counselor');
-        getLookupFeed('intl', '', '', '', '', '', '');
+        getLookupFeed('counselor', '', '', '', '', '', '','');
+        getLookupFeed('counselor', 'MN', '', '', '', '', '','');
+        getLookupFeed('counselor', 'MN', 'Minneapolis', '', '', '', '','');
+        getLookupFeed('counselor', '', 'Minneapolis', '', '', '', '','');
+        getLookupFeed('counselor', 'MN', 'Minneapolis', '', 'USA', '', '','');
+        getLookupFeed('counselor', '', '', 'TESTCODE', '', '', '','');
+        getLookupFeed('counselor', '', '', '', '', '', '','U24');
+        getLookupFeed('bio', '', '', '', '', '', 'Test1 Counselor','');
+        getLookupFeed('intl', '', '', '', '', '', '','');
         Test.stopTest();
     }
 
-    private static void getLookupFeed(String type, String state, String city, String school, String nation, String callback, String counselorName) {
+    private static void getLookupFeed(String type, String state, String city, String school, String nation, String callback, String counselorName, String role) {
         RestRequest req = new RestRequest();
         RestResponse res = new RestResponse();
         req.requestURI = '/applicantportal/services/apexrest/admissioncounselor';
@@ -32,6 +33,7 @@ public with sharing class TestAdmissionsCounselorLookup {
         req.params.put('nation', nation);
         req.params.put('callback', callback);
         req.params.put('name', counselorName);
+        req.params.put('role', role);
         req.httpMethod = 'GET';
         req.addHeader('Content-Type', 'application/json');
         RestContext.request = req;
