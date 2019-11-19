@@ -2,7 +2,7 @@ $(document).ready(function() {
     var dateP = $('.datepicker ').datepicker().attr("placeholder", "MM/DD/YYYY");
     dateP.datepicker('setDate', new Date());
     horzSelectedRadio();
-    $(".horzRadioTable input:radio").change(function() { horzSelectedRadio();});
+    $(".horzRadioTable input:radio").change(function() { horzSelectedRadio();})
     tcounterDefaults.max = 10000;
     $('.limit10000').textcounter(tcounterDefaults);
     tcounterDefaults.max = 3000;

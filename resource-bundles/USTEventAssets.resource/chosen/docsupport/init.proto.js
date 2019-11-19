@@ -6,7 +6,7 @@ document.observe('dom:loaded', function(evt) {
     '.chosen-select-no-results': { no_results_text: 'Oops, nothing found!' },
     '.chosen-select-rtl'       : { rtl: true },
     '.chosen-select-width'     : { width: '95%' }
-  };
+  }
   
   for (var selector in config) {
     $$(selector).each(function(element) {

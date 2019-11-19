@@ -181,7 +181,7 @@ function loadAudienceDD() {
         data: {'feedType': 'audienceDD'},
         dataType: "json"
     }).done(function (data) {
-        populateschSel(data, $("#audienceDD"));
+        populateschSel(data, $("#audienceDD"))
         $("#audienceDDwrap .waiting-overlay").remove();
 
         //preselect audience based on cookie

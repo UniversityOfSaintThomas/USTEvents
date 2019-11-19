@@ -25,7 +25,7 @@ $(document).ready(function () {
                 "left": ApptOffset.left + 'px',
                 "top": ApptOffset.top + 'px',
             });
-            movingBox.html('<p><i class="fa fa-plus" aria-hidden="true"></i> Adding Appointment...</p>');
+            movingBox.html('<p><i class="fa fa-plus" aria-hidden="true"></i> Adding Appointment...</p>')
             $('body').before(movingBox);
             if ($("#choosen .appointmentChoosen:last-child").length > 0) {
                 lc = $("#choosen .appointmentChoosen:last-child");

@@ -7,6 +7,7 @@ public class Util {
     private static Boolean alreadyRanProfileIDsByNameMap = FALSE;
     private static Map<String, Id> profileIDsByNameMap = new Map<String, Id>();
     private static Map<String, Counselor_Assignment_Setting__mdt> counselorAssignmentSettingsMap = new Map<String, Counselor_Assignment_Setting__mdt>();
+    private static List<Counselor_Role__c> counselorRoles;
     private static Map<String, Id> counsRoleIDsByExtId = new Map<String, Id>();
     private static Boolean alreadyRanCounsRoleIdByExtIdMap = FALSE;
     private static Map<Id, Id> userIDsByCounsRoleId = new Map<Id, Id>();
@@ -103,7 +104,8 @@ public class Util {
         // Returns "NULL" if no Counselor Role identified by string passed through parameter
         if ( counsRoleIDsByExtId.isEmpty() && (!Test.isRunningTest() || !doNotKeepTryingToCreateCounsRolesMapThisTest) ) { 
             // Lazy-populate counsRoles, taking care not to keep passing over this again and again if in a test that never creates any Counselor Roles
-            for (Counselor_Role__c cr : [SELECT Id, Unique_Code__c FROM Counselor_Role__c]) { counsRoleIDsByExtId.put(cr.Unique_Code__c, cr.Id); }
+            populateCounselorRoleMapsIfEmpty();
+            for (Counselor_Role__c cr : counselorRoles) { counsRoleIDsByExtId.put(cr.Unique_Code__c, cr.Id); }
             //if (!alreadyRanCounsRoleIdByExtIdMap) { alreadyRanCounsRoleIdByExtIdMap = TRUE; }
         }
         if ( counsRoleIDsByExtId.containsKey(extIdString) ) { return counsRoleIDsByExtId.get(extIdString); }
@@ -112,13 +114,20 @@ public class Util {
     
     public static Id getUserIdByCounsRoleId(Id counsRoleRecordId) {
         // Returns "NULL" if no User identified by Id passed through parameter
-        if ( userIDsByCounsRoleId.isEmpty()  && (!Test.isRunningTest() || !doNotKeepTryingToCreateCounsRolesMapThisTest) ) { 
+        if ( userIDsByCounsRoleId.isEmpty() && (!Test.isRunningTest() || !doNotKeepTryingToCreateCounsRolesMapThisTest) ) { 
              // Lazy-populate userIDsByCounsRoleId, taking care not to keep passing over this again and again if in a test that never creates any Counselor Roles
-            for (Counselor_Role__c cr : [SELECT Id, Staff_Member_Holding_Role__c FROM Counselor_Role__c WHERE Staff_Member_Holding_Role__c <> NULL]) { userIDsByCounsRoleId.put(cr.Id, cr.Staff_Member_Holding_Role__c); }
+            populateCounselorRoleMapsIfEmpty();
+            for (Counselor_Role__c cr : counselorRoles) { if ( cr.Staff_Member_Holding_Role__c <> NULL ) { userIDsByCounsRoleId.put(cr.Id, cr.Staff_Member_Holding_Role__c); } }
             //if (!alreadyRanUserIdByCounsRoleIdMap) { alreadyRanUserIdByCounsRoleIdMap = TRUE; }
         }
         if ( userIDsByCounsRoleId.containsKey(counsRoleRecordId) ) { return userIDsByCounsRoleId.get(counsRoleRecordId); }
         return NULL;
+    }
+    
+    private static void populateCounselorRoleMapsIfEmpty() {
+        if ( counselorRoles == NULL || counselorRoles.isEmpty() ) {
+            counselorRoles = [SELECT Id, Unique_Code__c, Staff_Member_Holding_Role__c FROM Counselor_Role__c];
+        }
     }
     
     public static Id getUGCounsGeoTerrIdByExtId(String extIdString) {
@@ -210,6 +219,32 @@ public class Util {
         return idToReturn;
     }
         
+    
+    public static List<SObject> computeRecordsWhereAnythingImportantChanged(List<SObject> newRecords, Map<Id, SObject> oldRecordsById, Set<Schema.SObjectField> fieldsToCheck) {
+        List<SObject> newRecordsThatChangedFromOld = new List<SObject>();
+        if ( fieldsToCheck == NULL || fieldsToCheck.isEmpty() ) { return newRecordsThatChangedFromOld; }
+        if ( newRecords == NULL || oldRecordsById == NULL ) { return newRecordsThatChangedFromOld; }
+        for ( SObject record : newRecords ) {
+            if ( record == NULL ) { continue; }
+            SObject oldRecord = oldRecordsById.get(record.Id);
+            if ( oldRecord == NULL ) { continue; }
+            checkForFieldChange(record, oldRecord, fieldsToCheck, newRecordsThatChangedFromOld);
+        }
+        return newRecordsThatChangedFromOld;
+    }
+    
+    private static void checkForFieldChange(SObject newObj, SObject oldObj, Set<Schema.SObjectField> fieldsToCheck, List<SObject> newRecordsThatChangedFromOld) {
+        for ( Schema.SObjectField field : fieldsToCheck ) {
+            try {
+                if ( newObj.get(field) != oldObj.get(field) ) { 
+                    newRecordsThatChangedFromOld.add(newObj);
+                    return; // Any "change" in the fieldset suffices to short-circuit further inspection
+                }
+            }
+            catch (SObjectException e) {} // No-op is fine ... if a field isn't populated in the execution context, we'll consider it "unchanged"
+        }
+    }
+
     public static String findCaseException(String buildName, List<String> spaceNames, String nameField){
         if ( nceList == NULL ) {
             nceList = [Select Id, Name, Exception_Value__c, Replace_With__c,NumChar__c, CaseModify__c, Value_Location__c, Contact_Field_Name__c, RecordTypeId, RecordType.Name

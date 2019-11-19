@@ -15,5 +15,6 @@
     <tabs>UST_Event_Instance__c</tabs>
     <tabs>UST_Event_Host__c</tabs>
     <tabs>standard-report</tabs>
-    <tabs>Ambassador__c</tabs>
+    <tabs>Signature_Program__c</tabs>
+    <tabs>College_Persistence__c</tabs>
 </CustomApplication>

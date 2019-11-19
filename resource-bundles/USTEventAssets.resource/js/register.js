@@ -175,7 +175,7 @@ function populateschSel(data, selector, keyAsText) {
 
 //Validation for the page
 function checkForm() {
-    console.log('Check the form begins.....');
+    console.log('Check the form begins.....')
     populateHiddenSchoolValue();
     var error_count = 0;
     var emailReg = /^([a-zA-Z0-9_.\-.'.+])+@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
@@ -262,7 +262,7 @@ function fillInCityStateOnZip(zipObj) {
         url = url + zip;
     }
 
-    $('[id$=city], [id$=state]').closest(".columns").prepend(overlay);
+    $('[id$=city], [id$=state]').closest(".columns").prepend(overlay)
     $.getJSON(url, function (result) {
         if (result.length > 0) {
             var city = result[0].address.city;
@@ -324,6 +324,7 @@ function validYear() {
             $(this).val("");
             $(this).after("<span class='yearError'>Enter a valid graduation year.</span>");
         }
+        ;
     });
 }
 
