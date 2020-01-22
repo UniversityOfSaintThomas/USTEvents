@@ -93,6 +93,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Ask_Date_Of_Birth__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Include_Time_frame_List__c</field>
             </layoutItems>
             <layoutItems>
@@ -124,6 +128,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Hand_Raise_Action__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Exclude_Search_Engine_Tag__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>

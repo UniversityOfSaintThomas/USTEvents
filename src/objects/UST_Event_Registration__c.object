@@ -795,6 +795,19 @@ Event__r.Community_Base_URL__c
         <visibleLines>25</visibleLines>
     </fields>
     <fields>
+        <fullName>Group_Assignment__c</fullName>
+        <description>Utilized to capture Groups within an instance. Primarily utilized for Orientation when all the registrants are broken into individual group assignments.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Group Assignment has a max of 2 characters and can be letters or numbers.</inlineHelpText>
+        <label>Group Assignment</label>
+        <length>2</length>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Instance_Title__c</fullName>
         <externalId>false</externalId>
         <formula>Event_Instance__r.Instance_Title__c</formula>
@@ -2223,34 +2236,6 @@ Event__r.Community_Base_URL__c
         </sharedTo>
     </listViews>
     <listViews>
-        <fullName>Info_Sessions_Next_7_Days</fullName>
-        <columns>Registrant_First_Name__c</columns>
-        <columns>Registrant_Last_Name__c</columns>
-        <columns>NAME</columns>
-        <columns>Event_Instance_Name__c</columns>
-        <columns>Event_Instance_Date__c</columns>
-        <columns>Status__c</columns>
-        <columns>Substatus__c</columns>
-        <columns>Event_Instance__c</columns>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>Event_Instance_Date__c</field>
-            <operation>equals</operation>
-            <value>TODAY,NEXT_N_DAYS:7</value>
-        </filters>
-        <filters>
-            <field>Event__c</field>
-            <operation>equals</operation>
-            <value>Daily Visit</value>
-        </filters>
-        <label>Daily Visits - Next 7 Days</label>
-        <language>en_US</language>
-        <sharedTo>
-            <group>UG_Enrollment</group>
-            <group>Visit_Students</group>
-        </sharedTo>
-    </listViews>
-    <listViews>
         <fullName>Info_Sessions_Next_7_Days1</fullName>
         <columns>Registrant_First_Name__c</columns>
         <columns>Registrant_Last_Name__c</columns>
@@ -2270,9 +2255,43 @@ Event__r.Community_Base_URL__c
         <filters>
             <field>Event__c</field>
             <operation>equals</operation>
-            <value>Information Sessions</value>
+            <value>Information Sessions,Saturday Information Sessions</value>
         </filters>
         <label>Info Sessions - Next 7 Days</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>UG_Enrollment</group>
+            <group>Visit_Students</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Personalized_Visits_Next_7_Days</fullName>
+        <booleanFilter>1 AND (2 OR 3)</booleanFilter>
+        <columns>Registrant_First_Name__c</columns>
+        <columns>Registrant_Last_Name__c</columns>
+        <columns>NAME</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Event_Instance_Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <columns>Event_Instance__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Event_Instance_Date__c</field>
+            <operation>equals</operation>
+            <value>TODAY,NEXT_N_DAYS:7</value>
+        </filters>
+        <filters>
+            <field>Event__c</field>
+            <operation>equals</operation>
+            <value>Personalized Visits,Transfer Personalized Visits,DFC Personalized Visits</value>
+        </filters>
+        <filters>
+            <field>Event__c</field>
+            <operation>equals</operation>
+            <value>Transfer Saturday Visits</value>
+        </filters>
+        <label>Personalized Visits - Next 7 Days</label>
         <language>en_US</language>
         <sharedTo>
             <group>UG_Enrollment</group>
@@ -2339,6 +2358,24 @@ Event__r.Community_Base_URL__c
         </sharedTo>
     </listViews>
     <listViews>
+        <fullName>Spring_Orientation_2020</fullName>
+        <columns>NAME</columns>
+        <columns>Contact__c</columns>
+        <columns>Event_Name__c</columns>
+        <columns>Event_Instance__c</columns>
+        <columns>Event_Instance_Title__c</columns>
+        <columns>Event_Instance_Date__c</columns>
+        <columns>Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Event__c</field>
+            <operation>equals</operation>
+            <value>Undergraduate Spring Orientation</value>
+        </filters>
+        <label>Spring Orientation 2020</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
         <fullName>Test_List</fullName>
         <columns>NAME</columns>
         <columns>Registrant_First_Name__c</columns>
@@ -2378,35 +2415,6 @@ Event__r.Community_Base_URL__c
         </filters>
         <label>This Month&apos;s Visits</label>
         <language>en_US</language>
-    </listViews>
-    <listViews>
-        <fullName>Transfer_Saturday_Visits_Next_30_Days</fullName>
-        <columns>Registrant_First_Name__c</columns>
-        <columns>Registrant_Last_Name__c</columns>
-        <columns>NAME</columns>
-        <columns>Event_Instance__c</columns>
-        <columns>Event_Instance_Title__c</columns>
-        <columns>Event_Instance_Name__c</columns>
-        <columns>Event_Instance_Date__c</columns>
-        <columns>Status__c</columns>
-        <columns>Substatus__c</columns>
-        <filterScope>Everything</filterScope>
-        <filters>
-            <field>Event_Instance_Date__c</field>
-            <operation>equals</operation>
-            <value>TODAY,NEXT_N_DAYS:30</value>
-        </filters>
-        <filters>
-            <field>Event_Instance_Name__c</field>
-            <operation>equals</operation>
-            <value>Transfer Saturday Visit</value>
-        </filters>
-        <label>Transfer Saturday Visits - Next 30  Days</label>
-        <language>en_US</language>
-        <sharedTo>
-            <group>UG_Enrollment</group>
-            <group>Visit_Students</group>
-        </sharedTo>
     </listViews>
     <listViews>
         <fullName>Upcoming_Registrations_Cancelled</fullName>
@@ -2497,6 +2505,37 @@ Event__r.Community_Base_URL__c
         <label>Upcoming Registrations Not Confirmed</label>
         <language>en_US</language>
     </listViews>
+    <listViews>
+        <fullName>Upcoming_Registrations_Started</fullName>
+        <columns>NAME</columns>
+        <columns>Event_Instance_Name__c</columns>
+        <columns>Contact_Name__c</columns>
+        <columns>Date__c</columns>
+        <columns>Status__c</columns>
+        <columns>Substatus__c</columns>
+        <columns>Date_All_Appointments_Confirmed_del__c</columns>
+        <columns>Event_Instance__c</columns>
+        <columns>Financial_Aid_Counselor__c</columns>
+        <columns>New_Contact_Created__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Status__c</field>
+            <operation>equals</operation>
+            <value>Started</value>
+        </filters>
+        <filters>
+            <field>Date__c</field>
+            <operation>greaterThan</operation>
+            <value>YESTERDAY</value>
+        </filters>
+        <filters>
+            <field>Event_Instance_Name__c</field>
+            <operation>equals</operation>
+            <value>Personalized Visit,Information Session,Transfer Saturday Visit,Saturday Visits</value>
+        </filters>
+        <label>Upcoming Registrations Started</label>
+        <language>en_US</language>
+    </listViews>
     <nameField>
         <displayFormat>EVR-{000000}</displayFormat>
         <label>Campus Event Registration</label>
@@ -2504,6 +2543,2731 @@ Event__r.Community_Base_URL__c
         <type>AutoNumber</type>
     </nameField>
     <pluralLabel>UST Event Registrations</pluralLabel>
+    <recordTypeTrackHistory>false</recordTypeTrackHistory>
+    <recordTypes>
+        <fullName>AM_PM_Sessions</fullName>
+        <active>true</active>
+        <description>AM/PM Session Visit Days</description>
+        <label>AM/PM Sessions</label>
+        <picklistValues>
+            <picklist>BCC_Transactional_Email_Statuses__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Received</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Requested</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rescheduled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Started</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Campus_Tour_Location__c</picklist>
+            <values>
+                <fullName>Anderson Student Center %28ASC%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Confirmation_Call_Result__c</picklist>
+            <values>
+                <fullName>Change needed-Call Logged</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disconnected</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Left Message</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Answer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Talked to Parent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Talked to Prospect</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wrong Number</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Instance__c</picklist>
+            <values>
+                <fullName>AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Preferred_Visit_Time__c</picklist>
+            <values>
+                <fullName>Afternoon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>All Day</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Morning</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Presentation_Location__c</picklist>
+            <values>
+                <fullName>Anderson Student Center %28ASC%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Applicant_Type__c</picklist>
+            <values>
+                <fullName>First-Year</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Country__c</picklist>
+            <values>
+                <fullName>Afghanistan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aland Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Albania</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Algeria</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>American Samoa</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Andorra</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Angola</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Anguilla</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Antarctica</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Antigua and Barbuda</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Argentina</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Armenia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aruba</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Australia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Austria</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Azerbaijan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bahamas</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bahrain</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bangladesh</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Barbados</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Belarus</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Belgium</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Belize</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Benin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bermuda</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bhutan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bolivia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bonaire%2C Sint Eustatius and Saba</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bosnia and Herzegovina</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Botswana</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bouvet Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brazil</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>British Indian Ocean Territory</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brunei Darussalam</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bulgaria</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Burkina Faso</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Burma</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Burundi</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cambodia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cameroon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Canada</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cape Verde</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cayman Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central African Republic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chad</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chile</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>China</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Christmas Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cocos %28Keeling%29 Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Colombia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Comoros</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Congo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Congo %28Brazzaville%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cook Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Costa Rica</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cote D%27Ivoire</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Croatia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cuba</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cyprus</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Czech Republic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Denmark</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Djibouti</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dominica</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dominican Republic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ecuador</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Egypt</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>El Salvador</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Equatorial Guinea</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eritrea</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Estonia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ethiopia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Falkland Islands %28Malvinas%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Faroe Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fiji</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>France</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>French Guiana</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>French Polynesia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>French Southern Territories</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Gabon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Gambia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Georgia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Germany</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ghana</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Gibraltar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Greece</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Greenland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Grenada</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guadeloupe</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guatemala</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guernsey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guinea</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guinea-Bissau</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guyana</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Haiti</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Heard and Mc Donald Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Honduras</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hungary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Iceland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>India</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Indonesia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Iran %28Islamic Republic of%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Iraq</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ireland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Isle of Man</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Israel</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Italy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Jamaica</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Japan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Jersey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Jordan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kazakhstan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kenya</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kiribati</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Korea%2C Dem People%27s Rep of</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Korea%2C Republic of</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kuwait</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kyrgyzstan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lao</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Latvia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lebanon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lesotho</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Liberia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Libya</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Liechtenstein</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lithuania</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Luxembourg</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Macao</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Macedonia%2C the former Yugoslav Republic of</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Madagascar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Malawi</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Malaysia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maldives</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mali</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Malta</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Martinique</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mauritania</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mauritius</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mexico</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Moldova%2C Republic of</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mongolia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Montengro</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Montserrat</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Morocco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mozambique</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Myanmar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Namibia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nauru</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nepal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Netherlands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New Caledonia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New Zealand</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nicaragua</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Niger</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nigeria</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Niue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Norfolk Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Norway</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Oman</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pakistan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Palestinian National Authority</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Panama</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Papua New Guinea</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paraguay</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Parcel</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Peru</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Philippines</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pitcairn</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Poland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portugal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Qatar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reunion</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Romania</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Russian Federation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rwanda</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>S Georgia and S Sandwich Islan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint Helena%2C Ascension and Tristan da Cunha</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint Kitts and Nevis</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint Lucia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint Pierre and Miquelon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint Vincent and Grenadines</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint-Barthelemy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint-Martin %28French part%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Samoa</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>San Marino</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sao Tome and Principe</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saudi Arabia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Senegal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Serbia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seychelles</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sierra Leone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Singapore</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sint Maarten %28Dutch part%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Slovakia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Slovenia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solomon Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Somalia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Africa</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Sudan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Spain</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sri Lanka</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sudan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Suriname</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Svalbard and Jan Mayen Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Swaziland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sweden</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Switzerland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Syrian Arab Republic %28Syria%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Taiwan%2C Republic of China</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tajikistan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tanzania</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Thailand</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Timor-Leste</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Togo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tokelau</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tonga</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trinidad and Tobago</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tunisia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turkey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turkmenistan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turks and Caicos Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tuvalu</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Uganda</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ukraine</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>United Arab Emirates</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>United Kingdom</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>United States</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Uruguay</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Uzbekistan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vanuatu</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Venezuela %28Bolivarian Rep of%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Viet Nam</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virgin Islands%2C British</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wallis and Futuna Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Western Sahara</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yemen</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Zambia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Zimbabwe</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Gender__c</picklist>
+            <values>
+                <fullName>Female</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Male</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Parent_Status__c</picklist>
+            <values>
+                <fullName>A student%27s parent%2Fguardian</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>The student</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Program_Interest__c</picklist>
+            <values>
+                <fullName>All</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registration_Origin__c</picklist>
+            <values>
+                <fullName>In Person</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Online</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Relationship_to_St_Thomas__c</picklist>
+            <values>
+                <fullName>Alumni</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Current Student</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Faculty%2FStaff</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Family</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Friend</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Parent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prospective Student</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Session__c</picklist>
+            <values>
+                <fullName>AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Received</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Requested</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rescheduled</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Substatus__c</picklist>
+            <values>
+                <fullName>All Appointments Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attended</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attended - Incomplete</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attended - walk in</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Declined</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No-Show</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>On Hold</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending Appointments</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Unavailable</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
+    <recordTypes>
+        <fullName>Individual_Campus_Visit</fullName>
+        <active>false</active>
+        <description>Individual Campus Visits - for Seniors and special requests</description>
+        <label>Individual Campus Visit</label>
+        <picklistValues>
+            <picklist>BCC_Transactional_Email_Statuses__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ready</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Received</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Requested</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rescheduled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Started</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Campus_Tour_Location__c</picklist>
+            <values>
+                <fullName>Anderson Athletic %26 Recreation Complex %28ARC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Anderson Student Center %28ASC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aquinas Hall %28AQU%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Archbishop Ireland Memorial Library %28IRL%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Art History %2844C%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Binz Refectory %28BIN%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brady Educational Center %28BEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chapel of St%2E Thomas Aquinas %28CHA%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Child Development Center %28CDC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Facilities %26 Design Center %28FDC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>John P%2E Monahan Plaza</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>John R Roach Center for Liberal Arts %28JRC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Koch Commons %28KOC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Loras Hall %28LOR%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>McCarthy Gym%2C %28MCG%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>McNeely Hall %28MCH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Minneapolis Campus Buildings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Murray-Herrick Campus Center %28MHC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North Athletic Fields %28NAF%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaghnessy Science Hall %28OSS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaghnessy-Frey Library Center %28LIB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaughnessy Educational Center %28OEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Office of Admissions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Office of Financial Aid</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Opus Hall %28MOH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Owens Science Hall %28OWS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>School of Law %28MSL%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schulze Hall %28SCH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sitzmann Hall %2855S%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Athletic Fields %28SAF%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E John Vianney Seminary %28SJV%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E Mary%E2%80%99s Chapel %28SMC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E Paul School of Divinity %28SOD%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Summit Classroom Building %28SCB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Terrence Murphy Hall %28TMH%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Confirmation_Call_Result__c</picklist>
+            <values>
+                <fullName>Change needed-Call Logged</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Disconnected</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Left Message</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No Answer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Talked to Parent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Talked to Prospect</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wrong Number</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Instance__c</picklist>
+            <values>
+                <fullName>AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Preferred_Visit_Time__c</picklist>
+            <values>
+                <fullName>Afternoon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>All Day</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Morning</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Presentation_Location__c</picklist>
+            <values>
+                <fullName>Anderson Athletic %26 Recreation Complex %28ARC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Anderson Student Center %28ASC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aquinas Hall %28AQU%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Archbishop Ireland Memorial Library %28IRL%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Art History %2844C%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Binz Refectory %28BIN%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brady Educational Center %28BEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chapel of St%2E Thomas Aquinas %28CHA%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Child Development Center %28CDC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Facilities %26 Design Center %28FDC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>John P%2E Monahan Plaza</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>John R Roach Center for Liberal Arts %28JRC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Koch Commons %28KOC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Loras Hall %28LOR%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>McCarthy Gym%2C %28MCG%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>McNeely Hall %28MCH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Minneapolis Campus Buildings</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Murray-Herrick Campus Center %28MHC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>North Athletic Fields %28NAF%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaghnessy Science Hall %28OSS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaghnessy-Frey Library Center %28LIB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>O%27Shaughnessy Educational Center %28OEC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Office of Admissions</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Office of Financial Aid</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Opus Hall %28MOH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Owens Science Hall %28OWS%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>School of Law %28MSL%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Schulze Hall %28SCH%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sitzmann Hall %2855S%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Athletic Fields %28SAF%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E John Vianney Seminary %28SJV%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E Mary%E2%80%99s Chapel %28SMC%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>St%2E Paul School of Divinity %28SOD%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Summit Classroom Building %28SCB%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Terrence Murphy Hall %28TMH%29</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Applicant_Type__c</picklist>
+            <values>
+                <fullName>First-Year</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Country__c</picklist>
+            <values>
+                <fullName>Afghanistan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aland Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Albania</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Algeria</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>American Samoa</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Andorra</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Angola</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Anguilla</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Antarctica</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Antigua and Barbuda</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Argentina</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Armenia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Aruba</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Australia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Austria</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Azerbaijan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bahamas</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bahrain</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bangladesh</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Barbados</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Belarus</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Belgium</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Belize</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Benin</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bermuda</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bhutan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bolivia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bonaire%2C Sint Eustatius and Saba</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bosnia and Herzegovina</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Botswana</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bouvet Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brazil</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>British Indian Ocean Territory</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Brunei Darussalam</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Bulgaria</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Burkina Faso</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Burma</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Burundi</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cambodia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cameroon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Canada</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cape Verde</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cayman Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Central African Republic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chad</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Chile</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>China</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Christmas Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cocos %28Keeling%29 Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Colombia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Comoros</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Congo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Congo %28Brazzaville%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cook Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Costa Rica</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cote D%27Ivoire</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Croatia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cuba</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Cyprus</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Czech Republic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Denmark</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Djibouti</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dominica</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Dominican Republic</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ecuador</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Egypt</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>El Salvador</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Equatorial Guinea</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Eritrea</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Estonia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ethiopia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Falkland Islands %28Malvinas%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Faroe Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Fiji</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Finland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>France</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>French Guiana</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>French Polynesia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>French Southern Territories</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Gabon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Gambia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Georgia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Germany</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ghana</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Gibraltar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Greece</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Greenland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Grenada</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guadeloupe</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guatemala</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guernsey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guinea</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guinea-Bissau</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Guyana</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Haiti</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Heard and Mc Donald Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Honduras</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Hungary</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Iceland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>India</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Indonesia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Iran %28Islamic Republic of%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Iraq</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ireland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Isle of Man</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Israel</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Italy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Jamaica</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Japan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Jersey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Jordan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kazakhstan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kenya</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kiribati</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Korea%2C Dem People%27s Rep of</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Korea%2C Republic of</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kuwait</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Kyrgyzstan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lao</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Latvia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lebanon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lesotho</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Liberia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Libya</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Liechtenstein</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Lithuania</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Luxembourg</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Macao</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Macedonia%2C the former Yugoslav Republic of</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Madagascar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Malawi</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Malaysia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Maldives</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mali</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Malta</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Martinique</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mauritania</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mauritius</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mexico</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Moldova%2C Republic of</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mongolia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Montengro</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Montserrat</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Morocco</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Mozambique</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Myanmar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Namibia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nauru</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nepal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Netherlands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New Caledonia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>New Zealand</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nicaragua</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Niger</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Nigeria</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Niue</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Norfolk Island</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Norway</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Oman</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pakistan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Palestinian National Authority</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Panama</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Papua New Guinea</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Paraguay</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Parcel</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Peru</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Philippines</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pitcairn</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Poland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Portugal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Qatar</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Reunion</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Romania</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Russian Federation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rwanda</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>S Georgia and S Sandwich Islan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint Helena%2C Ascension and Tristan da Cunha</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint Kitts and Nevis</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint Lucia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint Pierre and Miquelon</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint Vincent and Grenadines</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint-Barthelemy</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saint-Martin %28French part%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Samoa</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>San Marino</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sao Tome and Principe</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Saudi Arabia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Senegal</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Serbia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seychelles</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sierra Leone</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Singapore</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sint Maarten %28Dutch part%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Slovakia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Slovenia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Solomon Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Somalia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Africa</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>South Sudan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Spain</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sri Lanka</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sudan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Suriname</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Svalbard and Jan Mayen Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Swaziland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sweden</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Switzerland</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Syrian Arab Republic %28Syria%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Taiwan%2C Republic of China</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tajikistan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tanzania</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Thailand</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Timor-Leste</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Togo</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tokelau</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tonga</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Trinidad and Tobago</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tunisia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turkey</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turkmenistan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Turks and Caicos Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Tuvalu</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Uganda</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Ukraine</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>United Arab Emirates</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>United Kingdom</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>United States</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Uruguay</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Uzbekistan</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Vanuatu</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Venezuela %28Bolivarian Rep of%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Viet Nam</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Virgin Islands%2C British</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Wallis and Futuna Islands</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Western Sahara</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Yemen</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Zambia</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Zimbabwe</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Gender__c</picklist>
+            <values>
+                <fullName>Female</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Male</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Parent_Status__c</picklist>
+            <values>
+                <fullName>A student%27s parent%2Fguardian</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>The student</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registrant_Program_Interest__c</picklist>
+            <values>
+                <fullName>All</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registration_Origin__c</picklist>
+            <values>
+                <fullName>In Person</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Online</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>Phone</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Relationship_to_St_Thomas__c</picklist>
+            <values>
+                <fullName>Alumni</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Current Student</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Faculty%2FStaff</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Family</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Friend</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Parent</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prospective Student</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Session__c</picklist>
+            <values>
+                <fullName>AM</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>PM</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Status__c</picklist>
+            <values>
+                <fullName>Cancelled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Received</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Requested</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Rescheduled</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Started</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Substatus__c</picklist>
+            <values>
+                <fullName>All Appointments Confirmed</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attended</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Attended - Incomplete</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>No-Show</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Pending Appointments</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+    </recordTypes>
     <searchLayouts/>
     <sharingModel>ControlledByParent</sharingModel>
     <startsWith>Vowel</startsWith>

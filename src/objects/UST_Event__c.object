@@ -1469,6 +1469,16 @@ TEXT(YEAR( End_Date__c))
         <visibleLines>10</visibleLines>
     </fields>
     <fields>
+        <fullName>Exclude_Search_Engine_Tag__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Help to exclude the events appearing in the google search</inlineHelpText>
+        <label>Exclude Search Engine Tag</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Feed_Registration_Button_Text__c</fullName>
         <defaultValue>&quot;Register&quot;</defaultValue>
         <description>The text of the registration link in the feeds that appear on external Web sites. Will default to &quot;Register&quot; i not defined.</description>
@@ -1827,9 +1837,9 @@ TEXT(YEAR( End_Date__c))
         <columns>NAME</columns>
         <filterScope>Everything</filterScope>
         <filters>
-            <field>NAME</field>
-            <operation>notContain</operation>
-            <value>OCB</value>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>UST_Event__c.Undergraduate</value>
         </filters>
         <label>All Undergraduate Events</label>
         <language>en_US</language>
@@ -1852,6 +1862,23 @@ TEXT(YEAR( End_Date__c))
             <value>Opus College of Business</value>
         </filters>
         <label>OCB Events</label>
+        <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Orientation_Sign_Ups</fullName>
+        <columns>NAME</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Event_Name__c</field>
+            <operation>contains</operation>
+            <value>Orientation</value>
+        </filters>
+        <filters>
+            <field>RECORDTYPE</field>
+            <operation>equals</operation>
+            <value>UST_Event__c.Undergraduate</value>
+        </filters>
+        <label>Orientation Sign Ups</label>
         <language>en_US</language>
     </listViews>
     <nameField>

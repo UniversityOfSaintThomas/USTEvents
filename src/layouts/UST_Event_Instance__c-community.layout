@@ -17,6 +17,10 @@
                 <behavior>Required</behavior>
                 <field>Event__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Exclude_Search_Engine_Tag_Override__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsTopToBottom</style>

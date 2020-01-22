@@ -314,6 +314,7 @@ Event__r.Community_Base_URL__c
         <externalId>false</externalId>
         <label>Event</label>
         <referenceTo>UST_Event__c</referenceTo>
+        <relationshipLabel>UST Event Instances</relationshipLabel>
         <relationshipName>Event_Sessions</relationshipName>
         <relationshipOrder>0</relationshipOrder>
         <reparentableMasterDetail>false</reparentableMasterDetail>
@@ -321,6 +322,16 @@ Event__r.Community_Base_URL__c
         <trackTrending>false</trackTrending>
         <type>MasterDetail</type>
         <writeRequiresMasterRead>false</writeRequiresMasterRead>
+    </fields>
+    <fields>
+        <fullName>Exclude_Search_Engine_Tag_Override__c</fullName>
+        <defaultValue>false</defaultValue>
+        <externalId>false</externalId>
+        <inlineHelpText>Help to exclude the events appearing in the google search</inlineHelpText>
+        <label>Exclude Search Engine Tag Override</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
     </fields>
     <fields>
         <fullName>Feed_Registration_Button_Text_Override__c</fullName>
@@ -504,6 +515,105 @@ Event__r.Community_Base_URL__c
         <type>Lookup</type>
     </fields>
     <fields>
+        <fullName>Recruitment_Year__c</fullName>
+        <description>the recruitment year the event occurred in and not the recruitment year in which the student will start.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>The recruitment year the event occurred in and NOT the recruitment year in which the student will start.</inlineHelpText>
+        <label>Recruitment Year</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>19-20</fullName>
+                    <default>false</default>
+                    <label>19-20</label>
+                </value>
+                <value>
+                    <fullName>20-21</fullName>
+                    <default>false</default>
+                    <label>20-21</label>
+                </value>
+                <value>
+                    <fullName>21-22</fullName>
+                    <default>false</default>
+                    <label>21-22</label>
+                </value>
+                <value>
+                    <fullName>22-23</fullName>
+                    <default>false</default>
+                    <label>22-23</label>
+                </value>
+                <value>
+                    <fullName>23-24</fullName>
+                    <default>false</default>
+                    <label>23-24</label>
+                </value>
+                <value>
+                    <fullName>24-25</fullName>
+                    <default>false</default>
+                    <label>24-25</label>
+                </value>
+                <value>
+                    <fullName>25-26</fullName>
+                    <default>false</default>
+                    <label>25-26</label>
+                </value>
+                <value>
+                    <fullName>18-19</fullName>
+                    <default>false</default>
+                    <label>18-19</label>
+                </value>
+                <value>
+                    <fullName>2019-2020</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>2019-2020</label>
+                </value>
+                <value>
+                    <fullName>2020-2021</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>2020-2021</label>
+                </value>
+                <value>
+                    <fullName>2021-2022</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>2021-2022</label>
+                </value>
+                <value>
+                    <fullName>2022-2023</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>2022-2023</label>
+                </value>
+                <value>
+                    <fullName>2023-2024</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>2023-2024</label>
+                </value>
+                <value>
+                    <fullName>2024-2025</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>2024-2025</label>
+                </value>
+                <value>
+                    <fullName>2025-2026</fullName>
+                    <default>false</default>
+                    <isActive>false</isActive>
+                    <label>2025-2026</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Registration_Close_Date__c</fullName>
         <description>Close Day of the Event</description>
         <externalId>false</externalId>
@@ -623,6 +733,66 @@ Event__r.Community_Base_URL__c
         </filters>
         <label>All Visits Today</label>
         <language>en_US</language>
+    </listViews>
+    <listViews>
+        <fullName>Future_Undergraduate_Events</fullName>
+        <booleanFilter>1 AND (2 OR 3 or 5) AND 4</booleanFilter>
+        <columns>NAME</columns>
+        <columns>Start_Date_Time__c</columns>
+        <columns>Event__c</columns>
+        <columns>Event_Name__c</columns>
+        <columns>Instance_Title__c</columns>
+        <columns>Active_Status__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Start_Date_Time__c</field>
+            <operation>greaterThan</operation>
+            <value>YESTERDAY</value>
+        </filters>
+        <filters>
+            <field>Event_Name__c</field>
+            <operation>contains</operation>
+            <value>Personalized Visit</value>
+        </filters>
+        <filters>
+            <field>Event_Name__c</field>
+            <operation>contains</operation>
+            <value>Information Session</value>
+        </filters>
+        <filters>
+            <field>Event_Name__c</field>
+            <operation>notContain</operation>
+            <value>MSW,LAW,Virtual</value>
+        </filters>
+        <filters>
+            <field>Event_Name__c</field>
+            <operation>contains</operation>
+            <value>Saturday</value>
+        </filters>
+        <label>Future Undergraduate Events</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>UG_Admissions</group>
+            <group>UG_Enrollment</group>
+            <group>Visit_Students</group>
+        </sharedTo>
+    </listViews>
+    <listViews>
+        <fullName>Social_Work</fullName>
+        <columns>NAME</columns>
+        <columns>Instance_Title__c</columns>
+        <columns>Start_Date_Time__c</columns>
+        <filterScope>Everything</filterScope>
+        <filters>
+            <field>Instance_Title__c</field>
+            <operation>contains</operation>
+            <value>MSW</value>
+        </filters>
+        <label>Social Work</label>
+        <language>en_US</language>
+        <sharedTo>
+            <group>SSW_Admissions</group>
+        </sharedTo>
     </listViews>
     <nameField>
         <displayFormat>S-{000000}</displayFormat>

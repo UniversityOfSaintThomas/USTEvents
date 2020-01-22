@@ -116,6 +116,10 @@
                 <behavior>Edit</behavior>
                 <field>Contact_Creation__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Exclude_Search_Engine_Tag__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

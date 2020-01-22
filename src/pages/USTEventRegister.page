@@ -11,12 +11,50 @@
         </apex:define>
         <apex:define name="pageTitle"><a href="{!eventPage.Event_home_Link_URL__c}">{!eventPage.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
+        <!-- Adding Datalayer-->
+
             <script>
                 dataLayer = [{
                     'school': '{!eventPage.School__r.Name}',
                     'recordType': '{!eventPage.RecordType.Name}',
-                    'eventlabel': '{!eventPage.Event_Name__c}'
+                    'eventLabel': '{!eventPage.Event_Name__c}'
                 }];
+            </script>
+
+        <!--  Adding  Json-ld-->
+            <script type="application/ld+json">
+                [
+                    {
+                        "@context": "https://schema.org",
+                        "@type": "Event",
+
+                        "name": "{!eventPage.Event_Name__c}",
+                        "startDate": "{!JSONLDStartTimeString}",
+                        "endDate": "{!JSONLDEndTimeString}",
+
+                        "location": {
+                              "@type": "Place",
+                              "address": {
+                                  "@type": "PostalAddress",
+                                  "addressLocality": "{!eventPage.Location_Type__c}",
+                                  "addressRegion": "",
+                                  "postalCode": "",
+                                  "streetAddress": "{!eventPage.Location_Address__c}"
+                              },
+                              "name": "{!dataLayerLocationType}",
+                              "url": "{!eventPage.Location_Map_Link__c}"
+                        },
+
+                        "offers": {
+                            "@type": "Offer",
+                            "price": "",
+                            "priceCurrency": "USD",
+                            "url": ""
+                          },
+                        "description": "{!eventPage.Event_description__c}"
+                    }
+                ]
+
             </script>
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>
             <link href="{!URLFOR($Resource.USTEventAssets, '/chosen/chosen-ust.css')}" rel="stylesheet" type="text/css"/>

@@ -35,6 +35,8 @@ public with sharing class USTEventRegisterController {
     public Boolean evtHasAppointments { get; set; }
     public String birthDateString { get; set; }
     public String dataLayerLocationType { get; set; }
+    public String JSONLDStartTimeString { get; set; }
+    public String JSONLDEndTimeString { get; set; }
 
 
     public USTEventRegisterController() {
@@ -78,6 +80,18 @@ public with sharing class USTEventRegisterController {
                     WHERE Id = :evtInfo.instanceID
                     LIMIT 1
             ][0];
+
+            JSONLDStartTimeString = String.valueOf(evtInstance.Start_Date_Time__c);
+            JSONLDEndTimeString = String.valueOf(evtInstance.End_Date_Time__c);
+            //changing the date format for Json-LD start and end date
+
+            String dateFormat = 'EEE, d MMM yyyy HH:mm:ss Z';
+
+            JSONLDStartTimeString = evtInstance.Start_Date_Time__c.format(dateFormat);
+            System.debug(JSONLDStartTimeString);
+
+            JSONLDEndTimeString = evtInstance.End_Date_Time__c.format(dateFormat);
+            System.debug(JSONLDStartTimeString);
 
             //define Event ID from instanceInfo data
             evtInfo.evtId = evtInstance.Event__r.Id;

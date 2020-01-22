@@ -59,6 +59,10 @@
                 <behavior>Edit</behavior>
                 <field>Registrant_Postal_Code__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Group_Assignment__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns/>
         <style>TwoColumnsLeftToRight</style>

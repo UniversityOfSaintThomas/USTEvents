@@ -79,6 +79,10 @@
                 <behavior>Readonly</behavior>
                 <field>dfc_interview_link__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Group_Assignment__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

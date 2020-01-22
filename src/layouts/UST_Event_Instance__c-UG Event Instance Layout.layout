@@ -96,6 +96,10 @@
                 <behavior>Readonly</behavior>
                 <field>Current_Available_Capacity__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Recruitment_Year__c</field>
+            </layoutItems>
         </layoutColumns>
         <style>TwoColumnsTopToBottom</style>
     </layoutSections>

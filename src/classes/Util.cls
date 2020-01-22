@@ -60,7 +60,7 @@ public class Util {
         }
         if ( programIDsByNameMap.containsKey(progName) ) { return programIDsByNameMap.get(progName); }
         return NULL;
-    }
+    } // "Program" as in "Program Catalog" as in "Level" (e.g. UG/G), not as in "Program Offered" (e.g. full-time MBA)
     
     public static Id getProfileIdByName(String profileName) {
         // Returns "NULL" if no Profile ID identified by string passed through parameter
