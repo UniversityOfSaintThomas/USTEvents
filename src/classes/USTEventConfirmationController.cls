@@ -1,6 +1,7 @@
-/**
- * Created by dahl3702 on 5/1/2018.
- */
+// Copyright 2019 University of St. Thomas - Minnesota. All rights reserved.
+// Use of this source code is governed by a BSD Revised
+// license that can be found in the LICENSE file.
+// Created by Thaddaeus Dahlberg on 5/1/2018.
 
 public with sharing class USTEventConfirmationController {
     public USTEventShared USTShared = new USTEventShared();
@@ -76,7 +77,10 @@ public with sharing class USTEventConfirmationController {
                 eventTitle = evtReg.Event_Name__c;
             }
             evtReg.Status__c = 'Requested';
-            upsert evtReg;
+
+            registrationCRUD regCRUD = new registrationCRUD();
+            evtReg = regCRUD.updateRegistration(evtReg);
+
             //Remove the registration ID from the cookie so back button will redirect to the correct page.
             USTShared.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
             //create touchpoint
@@ -139,5 +143,19 @@ public with sharing class USTEventConfirmationController {
         }
 
         insert tp;
+    }
+
+    private without sharing class registrationCRUD {
+
+        public UST_Event_Registration__c updateRegistration(UST_Event_Registration__c newEvtReg) {
+            try {
+                upsert newEvtReg;
+            } catch (Exception ex) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                ApexPages.addMessage(myMsg);
+            }
+            return newEvtReg;
+        }
+
     }
 }

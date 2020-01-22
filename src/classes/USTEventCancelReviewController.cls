@@ -1,6 +1,7 @@
-/**
- * Created by dahl3702 on 5/1/2018.
- */
+// Copyright 2019 University of St. Thomas - Minnesota. All rights reserved.
+// Use of this source code is governed by a BSD Revised
+// license that can be found in the LICENSE file.
+// Created by Thaddaeus Dahlberg on  5/1/2018.
 
 public with sharing class USTEventCancelReviewController {
     public USTEventShared USTShared = new USTEventShared();
@@ -47,14 +48,29 @@ public with sharing class USTEventCancelReviewController {
     }
 
     public PageReference cancelRegistration() {
+        registrationCRUD regCrud = new registrationCRUD();
         if (evt != null) {
             evt.Status__c = 'Cancelled';
-            upsert evt;
+            evt = regCrud.updateRegistration(evt);
         }
         pageReference pg = new pageReference(ApexPages.currentPage().getURL());
         pg.getParameters().put('regid',evt.id);
         pg.setRedirect(TRUE);
         return pg;
+    }
+
+    private without sharing class registrationCRUD {
+
+        public UST_Event_Registration__c updateRegistration(UST_Event_Registration__c newEvtReg) {
+            try {
+                upsert newEvtReg;
+            } catch (Exception ex) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                ApexPages.addMessage(myMsg);
+            }
+            return newEvtReg;
+        }
+
     }
 
 }

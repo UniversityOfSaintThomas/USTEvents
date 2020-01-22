@@ -1,6 +1,7 @@
-/**
- * Created by dahl3702 on 5/1/2018.
- */
+// Copyright 2019 University of St. Thomas - Minnesota. All rights reserved.
+// Use of this source code is governed by a BSD Revised
+// license that can be found in the LICENSE file.
+// Created by Thaddaeus Dahlberg on 5/1/2018.
 
 public with sharing class USTEventRegistrationOptionsController {
     public USTEventShared USTShared = new USTEventShared();
@@ -262,7 +263,8 @@ public with sharing class USTEventRegistrationOptionsController {
                 addAppt.Description__c = appt.Description__c;
                 addAppt.Registrant_Input__c = appt.Registrant_Input__c;
                 addAppt.Do_Not_Show_Time__c = appt.Do_Not_Show_Time__c;
-                upsert addAppt;
+                appointmentsCRUD apptCRUD = new appointmentsCRUD();
+                addAppt = apptCRUD.updateAppointments(addAppt);
                 addedAppts = true;
             }
 
@@ -281,11 +283,9 @@ public with sharing class USTEventRegistrationOptionsController {
                 WHERE Event_Registration__c = :evtinfo.evtRegId
                 AND Client_Created_Appointment__c = true
         ];
-        try {
-            delete deleteAppt;
-        } catch (DmlException e) {
-            System.Debug('HERE IS THE DROID YOU ARE LOOKING FOR ======>' + e.getMessage());
-        }
+        appointmentsCRUD apptCrud = new appointmentsCRUD();
+        apptCrud.deleteAppointments(deleteAppt);
+
         List<incomingAppt> deserializedInvoices = (List<incomingAppt>) JSON.deserialize(incomingApptJSon, List<incomingAppt>.class);
         PageReference submitPage = Page.USTEventSubmit;
         for (incomingAppt appt : deserializedInvoices) {
@@ -325,8 +325,8 @@ public with sharing class USTEventRegistrationOptionsController {
             }
             addAppt.Description__c = appt.appDesc;
             addAppt.Registrant_Input__c = appt.appInput;
-
-            upsert addAppt;
+            
+            addAppt = apptCRUD.updateAppointments(addAppt);
         }
         return submitPage;
     }
@@ -336,5 +336,28 @@ public with sharing class USTEventRegistrationOptionsController {
         PageReference registerPage = Page.USTEventRegister;
 
         return registerPage;
+    }
+
+    private without sharing class appointmentsCRUD {
+
+        public UST_Event_Appointments__c updateAppointments(UST_Event_Appointments__c appts) {
+            try {
+                upsert appts;
+            } catch (Exception ex) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                ApexPages.addMessage(myMsg);
+            }
+            return appts;
+        }
+
+        public void deleteAppointments(List<UST_Event_Appointments__c> appts) {
+            try {
+                delete appts;
+            } catch (Exception ex) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                ApexPages.addMessage(myMsg);
+            }
+        }
+
     }
 }

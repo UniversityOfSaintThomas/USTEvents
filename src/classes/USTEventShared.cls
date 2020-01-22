@@ -1,6 +1,7 @@
-/**
- * Created by dahl3702 on 5/1/2018.
- */
+// Copyright 2019 University of St. Thomas - Minnesota. All rights reserved.
+// Use of this source code is governed by a BSD Revised
+// license that can be found in the LICENSE file.
+// Created by Thaddaeus Dahlberg on 5/1/2018.
 
 public with sharing class USTEventShared {
     //private key for encryption
@@ -15,8 +16,6 @@ public with sharing class USTEventShared {
         public String recordTypeName { get; set; }
     }
 
-
-    //TODO: THIS IS SOMETHING TO DO
     public USTEventShared() {
 
     }
@@ -76,7 +75,7 @@ public with sharing class USTEventShared {
 
         List<UST_Event_Instance__c> recTypeInfo = [SELECT Event__r.RecordType.Name, Id FROM UST_Event_Instance__c WHERE ID = :evtInfo.instanceID];
 
-        if (recTypeInfo.size() > 0 ) {
+        if (recTypeInfo.size() > 0) {
             if (String.isBlank(recTypeInfo[0].event__r.RecordType.Name)) {
                 evtInfo.recordTypeName = 'Undergraduate';
             } else {
