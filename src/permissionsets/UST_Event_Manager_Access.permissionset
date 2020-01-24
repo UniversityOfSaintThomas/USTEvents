@@ -752,11 +752,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event_Registration__c.Event_School_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>UST_Event_Registration__c.Event__c</field>
         <readable>true</readable>
@@ -957,11 +952,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event_Registration__c.Registrant_Major_Prog_Major_Conc_Code__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>UST_Event_Registration__c.Registrant_Major__c</field>
         <readable>true</readable>
@@ -1127,11 +1117,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event_Registration__c.dfc_interview_link__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>UST_Event__c.Academic_Program_List_Selected__c</field>
         <readable>true</readable>
@@ -1282,16 +1267,6 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event__c.Banner_Event_Code__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event__c.Banner_Event_Function_Code__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
         <editable>true</editable>
         <field>UST_Event__c.Building__c</field>
         <readable>true</readable>
@@ -1310,11 +1285,6 @@
         <editable>false</editable>
         <field>UST_Event__c.Community_Base_URL__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event__c.Contact_Creation__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>

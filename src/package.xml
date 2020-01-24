@@ -382,6 +382,7 @@
         <members>UST_Event_Manager</members>
         <members>UST_Event_Manager_Access</members>
         <members>UST_Event_Read_Only_All</members>
+        <members>UST_Event_Registrant</members>
         <name>PermissionSet</name>
     </types>
     <types>
