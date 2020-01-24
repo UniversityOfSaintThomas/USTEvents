@@ -444,8 +444,10 @@ public with sharing class USTEventRegisterController {
     }
 
     public PageReference saveContactRegistration() {
+        System.Debug('                 Arrived at Save!');
+
         boolean newContactCreated = false;
-        PageReference optionPage;
+        PageReference optionPage = Page.USTEventRegister;
 
         //Record selected programs of interest
         String recordSelPrg = '';
@@ -521,6 +523,7 @@ public with sharing class USTEventRegisterController {
             }
         }
 
+        System.debug('        EVENT INFO: ' + JSON.serializePretty(evtInfo));
         if (String.isNotBlank(evtInfo.evtRegId) && String.isNotBlank(newEvtReg.Contact__r.Id) && !dataHasChanged) {
             matched.put('contactId', newEvtReg.Contact__r.Id);
             contactId = newEvtReg.Contact__r.Id;
@@ -557,22 +560,16 @@ public with sharing class USTEventRegisterController {
             if (newContactCreated) {
                 newEvtReg.New_Contact_Created__c = true;
             }
-            try {
-                newEvtReg = rCRUD.updateRegistration(newEvtReg);
-                //Update matching log with new ID
-                newEvtReg.Matching_Log__c = newEvtReg.Matching_Log__c.replaceAll('\\[\\[REGID\\]\\]', newEvtReg.Id);
-            } catch (Exception ex) {
-                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
-                ApexPages.addMessage(myMsg);
-            }
-            evtInfo.evtRegId = newEvtReg.Id;
-
-            //make matching log functional for reparenting
+            newEvtReg = rCRUD.updateRegistration(newEvtReg);
+            //Update matching log with new ID
+            newEvtReg.Matching_Log__c = newEvtReg.Matching_Log__c.replaceAll('\\[\\[REGID\\]\\]', newEvtReg.Id);
         }
 
         //update registration it may already exist, and matching log has to be updated on new registration inserts
         newEvtReg = rCRUD.updateRegistration(newEvtReg);
+        evtInfo.evtRegId = newEvtReg.Id;
 
+        System.debug('NEW EVENT ID: ' + evtInfo.evtRegId);
 
         if (String.isNotBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
             if (evtHasAppointments) {

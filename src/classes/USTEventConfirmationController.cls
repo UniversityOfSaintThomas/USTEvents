@@ -94,6 +94,7 @@ public with sharing class USTEventConfirmationController {
     }
 
     private void createTouchpoint(UST_Event_Registration__c evtReg, String eventTitle) {
+        registrationCRUD regCRUD = new registrationCRUD();
         Touch_Point__c tp = new Touch_Point__c();
         tp.Contact__c = evtReg.Contact__c;
         tp.Lead_Source__c = 'Event';
@@ -141,8 +142,7 @@ public with sharing class USTEventConfirmationController {
                 tp.Degree_Sought_Program_Catalog__c = UgProgOffered[0].Id;
             }
         }
-
-        insert tp;
+        regCRUD.createTouchpoint(tp);
     }
 
     private without sharing class registrationCRUD {
@@ -155,6 +155,15 @@ public with sharing class USTEventConfirmationController {
                 ApexPages.addMessage(myMsg);
             }
             return newEvtReg;
+        }
+
+        public void createTouchpoint(Touch_Point__c tp) {
+            try {
+                upsert tp;
+            } catch (Exception ex) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                ApexPages.addMessage(myMsg);
+            }
         }
 
     }
