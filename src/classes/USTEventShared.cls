@@ -66,7 +66,6 @@ public with sharing class USTEventShared {
 
                     }
                     String eventCookie = '{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"COMING","evtId":"' + evtInfo.evtId + '","recordTypeName","' + evtInfo.recordTypeName + '"}';
-                    System.Debug('COOKIE 1: ' + eventCookie);
                     createEncryptedCookie(eventCookie, 'USTEvent');
                 }
             }
@@ -91,7 +90,6 @@ public with sharing class USTEventShared {
             if (evtReg.Status__c != 'Started') {
                 //Registration is complete and a new form should be generated.
                 String eventCookie2 = '{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"","evtId":"' + evtInfo.evtId + '","recordTypeName","' + evtInfo.recordTypeName + '"}';
-                System.Debug('COOKIE 1: ' + eventCookie2);
                 createEncryptedCookie(eventCookie2, 'USTEvent');
             }
         }
@@ -105,14 +103,11 @@ public with sharing class USTEventShared {
         USTEventInfo evt = new USTEventInfo();
         PageReference myVFPage = null;
         evt = getUSTEventInfo();
-        SYSTEM.debug('!!!!!!!!!!!!!!!  EVENT ID : ' + evt.evtId + ' , INSTANCE ID : ' + evt.instanceID + ' , EVENT REG ID : ' + evt.evtRegId);
 
         // UST_Event_Settings__c orgDefault = UST_Event_Settings__c.getOrgDefaults();
         // UST_Event_Settings__c myProfileSetting = UST_Event_Settings__c.getInstance(UserInfo.getProfileId());
         UST_Event_Settings__c myUserSetting = UST_Event_Settings__c.getInstance(UserInfo.getUserId());
         String communityBaseURL = myUserSetting.Community_Base_URL__c;
-
-        //System.Debug('COMMUNITY URL: ' + communityBaseURL);
 
         //String ustEventSettings = UST_Event_Settings__c.getValues('Community_Base_URL__c');
         if ((String.isBlank(evt.evtRegId) && !ApexPages.currentPage().getUrl().containsIgnoreCase('USTEventRegister')) || String.isBlank(evt.instanceID)) {

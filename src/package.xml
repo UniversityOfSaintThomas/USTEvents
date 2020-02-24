@@ -27,7 +27,6 @@
         <members>USTEventShared</members>
         <members>USTEventSubmitController</members>
         <members>USTRestAdmissions</members>
-        <members>Util</members>
         <name>ApexClass</name>
     </types>
     <types>

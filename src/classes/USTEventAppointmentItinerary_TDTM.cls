@@ -7,7 +7,7 @@ global class USTEventAppointmentItinerary_TDTM extends hed.TDTM_Runnable {
         hed.TDTM_Runnable.dmlWrapper dmlWrapper = new hed.TDTM_Runnable.DmlWrapper();
 
         if (triggerAction == hed.TDTM_Runnable.Action.AfterInsert || triggerAction == hed.TDTM_Runnable.Action.AfterUpdate
-                || triggerAction == hed.TDTM_Runnable.Action.AfterDelete || triggerAction == hed.TDTM_Runnable.Action.AfterUndelete ) {
+                || triggerAction == hed.TDTM_Runnable.Action.AfterDelete || triggerAction == hed.TDTM_Runnable.Action.AfterUndelete) {
 
             //Create a mapped list of unique ids
             List<UST_Event_Appointments__c> AllAppts = new List<UST_Event_Appointments__c>();
@@ -20,7 +20,7 @@ global class USTEventAppointmentItinerary_TDTM extends hed.TDTM_Runnable {
             }
 
             if (oldlist != null) {
-                for (UST_Event_Appointments__c oa : (List<UST_Event_Appointments__c>)oldlist) {
+                for (UST_Event_Appointments__c oa : (List<UST_Event_Appointments__c>) oldlist) {
                     if (String.isNotBlank(oa.Event_Registration__c) && !uniqueRegIds.containsKey(oa.Event_Registration__c)) {
                         uniqueRegIds.put(oa.Event_Registration__c, oa.Event_Registration__c);
                     }
@@ -233,10 +233,21 @@ global class USTEventAppointmentItinerary_TDTM extends hed.TDTM_Runnable {
 
                 newItineraryRegs.add(new UST_Event_Registration__c(id = AllAppts[AllAppts.size() - 1].Event_Registration__r.Id, Generated_Itinerary__c = generatedItinerary, Generated_Requested_Appointments__c = generatedAppts));
             }
-
-            upsert newItineraryRegs;
+            doCRUD CRUDtoDo = new doCRUD();
+            CRUDtoDo.updateRegistration(newItineraryRegs);
         }
 
         return dmlWrapper;
+    }
+
+    private without sharing class doCRUD {
+        private void updateRegistration(List<UST_Event_Registration__c> uRegs) {
+            try {
+                upsert uRegs;
+            } catch (Exception ex) {
+                System.debug(ex.getMessage());
+            }
+        }
+
     }
 }

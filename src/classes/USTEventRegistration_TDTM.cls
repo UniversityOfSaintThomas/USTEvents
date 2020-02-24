@@ -8,6 +8,7 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
     global override hed.TDTM_Runnable.DmlWrapper run(List<SObject> newlist, List<SObject> oldlist, hed.TDTM_Runnable.Action triggerAction, Schema.DescribeSObjectResult objResult) {
 
         hed.TDTM_Runnable.dmlWrapper dmlWrapper = new hed.TDTM_Runnable.DmlWrapper();
+        doCRUD CRUDtoDo = new doCRUD();
 
         if (triggerAction == hed.TDTM_Runnable.Action.AfterInsert || triggerAction == hed.TDTM_Runnable.Action.AfterUpdate) {
             list<ID> listConId = new list<ID>();
@@ -83,7 +84,7 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
                 }
             }
             if (footOnCampus.size() > 0) {
-                upsert footOnCampus;
+                CRUDtoDo.updateContact(footOnCampus);
             }
             //Get any templates for events that have restistration status changes
             List<UST_Event_Email__c> matchEmail = [
@@ -196,7 +197,7 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
             }
 
             if (activityUpdates.size() > 0) {
-                insert activityUpdates;
+                CRUDtoDo.insertTasks(activityUpdates);
             }
         }
         return dmlWrapper;
@@ -216,13 +217,11 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
             mail.setHtmlBody(HTMLBody);
         }
         mail.setOrgWideEmailAddressId(OrgEmailId);
-        System.debug(JSON.serializePretty(mail));
 
         try {
             Messaging.SendEmailResult [] r = Messaging.sendEmail(new Messaging.SingleEmailMessage[]{
                     mail
             });
-            System.debug(JSON.serializePretty(r));
         } catch (Exception e) {
             System.debug(e.getMessage());
         }
@@ -273,6 +272,26 @@ global class USTEventRegistration_TDTM extends hed.TDTM_Runnable {
             }
         }
         return res;
+    }
+
+    private without sharing class doCRUD  {
+
+        public void insertTasks(List<Task> newTasks) {
+            try {
+                upsert newTasks;
+            } catch (Exception ex) {
+                System.debug(ex.getMessage());
+            }
+        }
+
+        private void updateContact(List<Contact> uContacts) {
+            try {
+                upsert uContacts;
+            } catch (Exception ex) {
+                System.debug(ex.getMessage());
+            }
+        }
+
     }
 
 }

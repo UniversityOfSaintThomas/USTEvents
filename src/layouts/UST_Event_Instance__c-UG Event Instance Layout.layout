@@ -52,10 +52,6 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Readonly</behavior>
-                <field>Undergrad_FY_Admin_Registration_Link__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Readonly</behavior>
                 <field>Registration_Close_Date__c</field>
             </layoutItems>
             <layoutItems>
@@ -143,6 +139,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Building_Override__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Exclude_Search_Engine_Tag_Override__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -249,7 +249,7 @@
     <showRunAssignmentRulesCheckbox>false</showRunAssignmentRulesCheckbox>
     <showSubmitAndAttachButton>false</showSubmitAndAttachButton>
     <summaryLayout>
-        <masterLabel>00h0m000000gJQg</masterLabel>
+        <masterLabel>00h0a00000BFKzK</masterLabel>
         <sizeX>4</sizeX>
         <sizeY>0</sizeY>
         <summaryLayoutStyle>Default</summaryLayoutStyle>

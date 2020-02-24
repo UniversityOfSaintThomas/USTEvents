@@ -22,7 +22,8 @@ public with sharing class USTEventConfirmationController {
         if (!String.isEmpty(evtInfo.evtId)) {
             eventPage = [
                     SELECT Event_Confirmation_Title__c, Event_Name__c, Template__c, Event_Confirmation_Description__c, Event_Footer__c,
-                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Tracking_Confirmation_Registration__c,RecordType.Name, School__r.Name,Exclude_Search_Engine_Tag__c, Hand_Raise_Action__c
+                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Tracking_Confirmation_Registration__c,RecordType.Name,
+                            School__r.Name, Exclude_Search_Engine_Tag__c, Hand_Raise_Action__c
                     FROM UST_Event__c
                     WHERE Id = :evtinfo.evtId
             ][0];

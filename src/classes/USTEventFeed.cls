@@ -1,8 +1,6 @@
-// Copyright 2019 University of St. Thomas - Minnesota. All rights reserved.
-// Use of this source code is governed by a BSD Revised
-// license that can be found in the LICENSE file.
-// Created by Thaddaeus Dahlberg on 8/09/2018.
-
+/**
+ * Created by dahl3702 on 8/09/2018.
+ */
 @RestResource(urlMapping='/usteventfeed/*')
 
 global with sharing class USTEventFeed {
@@ -31,6 +29,7 @@ global with sharing class USTEventFeed {
         public String sponsors {get;set;}
         public Integer capacityTotal {get;set;}
         public Integer capacityRemaining {get;set;}
+        public boolean excludeSearchTag { get; set; }
     }
 
     @HttpGet
@@ -79,10 +78,9 @@ global with sharing class USTEventFeed {
         eventQuery += ' Event__r.Location_Title__c, Event__r.Location_Type__c, Event__r.Location_Address__c, Event__r.Location_Map_Link__c, Event__r.Building__c, Event__r.Event_description__c, Event__r.Community_Base_URL__c, ';
         eventQuery += ' Building_Override__c, Alternate_Registration_URL_Override__c, Location_Address_Override__c, Location_Map_Link_Override__c, Location_Title_Override__c, Location_Type_Override__c,  ';
         eventQuery += ' Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c, Event__r.School__r.Name, Event__r.Event_Sponsor__c, ';
-        eventQuery += ' Event__r.Feed_Registration_Button_Text__c, Feed_Registration_Button_Text_Override__c, Capacity__c, Current_Available_Capacity__c ';
-        eventQuery += ' FROM UST_Event_Instance__c ';
-        eventQuery += ' WHERE ';
-        eventQuery += ' Event__R.Event_Status__c = \'Active\' ';
+        eventQuery += ' Event__r.Feed_Registration_Button_Text__c, Feed_Registration_Button_Text_Override__c, Capacity__c, Current_Available_Capacity__c, Event__r.Exclude_Search_Engine_Tag__c,Exclude_Search_Engine_Tag_Override__c ';
+        eventQuery += ' FROM UST_Event_Instance__c';
+        eventQuery += ' Where Event__R.Event_Status__c = \'Active\' ';
         eventQuery += ' AND Active_Status__c = \'Active\' ';
         eventQuery += ' AND (Current_Available_Capacity__c > 0 OR Capacity__c = null) ';
         eventQuery += ' AND Event__r.Audience__c EXCLUDES (\'No Audience\') ';
@@ -208,6 +206,14 @@ global with sharing class USTEventFeed {
             } else {
                 evt.instanceDesc = '';
             }
+
+
+            evt.excludeSearchTag = false;
+
+            if (es.Event__r.Exclude_Search_Engine_Tag__c || es.Exclude_Search_Engine_Tag_Override__c) {
+                evt.excludeSearchTag = true;
+            }
+
 
             if (!String.isBlank(es.Feed_Registration_Button_Text_Override__c)) {
                 evt.FeedButtonText = es.Feed_Registration_Button_Text_Override__c;

@@ -35,6 +35,7 @@ public with sharing class USTEventContactMatching {
         String softFirstLastZipMatches = '';
         boolean newContactCreated = false;
         String query = '';
+        doCRUD CRUDtoDo = new doCRUD();
 
         /* Start the the matching log HTML table */
         String matchLog = '';
@@ -50,7 +51,6 @@ public with sharing class USTEventContactMatching {
         String lastName = evt.Registrant_Last_Name__c;
         String email = evt.Registrant_Email__c;
 
-        System.Debug('Made it to matching!');
         /* Already have an Id, why work, return */
         if (String.isNotBlank(evt.Contact__r.Id)) {
             contactId = evt.Contact__r.Id;
@@ -65,7 +65,6 @@ public with sharing class USTEventContactMatching {
 
         /* HARD MATCH - First 3 letters of first name / preferred first name, last name, and birthdate */
         if (String.isBlank(contactId) && evt.Registrant_Date_of_Birth__c != null && String.isNotBlank(evt.Registrant_Last_Name__c)) {
-            System.Debug('HARD MATCH - First 3 letters of first name / preferred first name, last name, and birthdate');
             /* Get the first three characters of name and preferred name */
             String firstThree = '';
             String prefFirstThree = '';
@@ -84,17 +83,18 @@ public with sharing class USTEventContactMatching {
 
             query = ' SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE (';
             if (String.isNotBlank(firstThree)) {
-                query += ' Mailing_First_Name__c LIKE \'' + firstThree + '%\' OR';
+                query += ' Mailing_First_Name__c LIKE \'' + String.escapeSingleQuotes(firstThree) + '%\' OR';
             }
             if (String.isNotBlank(prefFirstThree)) {
-                query += ' Mailing_First_Name__c LIKE \'' + prefFirstThree + '%\' OR';
+                query += ' Mailing_First_Name__c LIKE \'' + String.escapeSingleQuotes(prefFirstThree) + '%\' OR';
             }
             query = query.removeEnd(' OR');
             query += ' ) ';
             query += ' AND LastName = \'' + String.escapeSingleQuotes(evt.Registrant_Last_Name__c) + '\' ';
             query += ' AND Birthdate = ' + String.valueOf(evt.Registrant_Date_of_Birth__c).removeEnd(' 00:00:00');
-            System.Debug(query);
-            List<Contact> hardContactTest1 = database.query(query);
+
+            List<Contact> hardContactTest1 = CRUDtoDo.findContacts(query);
+
             if (hardContactTest1.size() > 0) {
                 contactId = hardContactTest1[0].Id;
 
@@ -108,8 +108,7 @@ public with sharing class USTEventContactMatching {
 
         //HARD MATCH - Last name and email
         if (String.isBlank(contactId)) {
-            System.Debug('HARD MATCH - Last name and email');
-            List<Contact> hardContactTest2 = [SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE LastName = :lastName AND Email = :email];
+            List<Contact> hardContactTest2 = CRUDtoDo.emailLastMatch(email, lastName);
             if (hardContactTest2.size() > 0) {
                 contactId = hardContactTest2[0].Id;
                 matchLog += '<div class="slds-text-heading_small slds-m-vertical_medium">Hard match on LAST NAME, EMAIL!</div>';
@@ -121,14 +120,13 @@ public with sharing class USTEventContactMatching {
         }
 
         //Check for already made DUPLICATE emails and attach to matching
-        if (String.isBlank(contactId) && matchingScope.startsWith('Full matching')) {
-            System.Debug('SOFT MATCH - CHECK FOR dup emails');
+        if (String.isBlank(contactId) && (matchingScope.startsWith('Full matching') || String.isBlank(matchingScope))) {
             String[] possibleEmails = new List<String>();
             possibleEmails.add(evt.Registrant_Email__c);
             for (Integer x = 1; x <= 10; x++) {
                 possibleEmails.add('Event_Dup_' + String.valueOf(x) + '_' + evt.Registrant_Email__c);
             }
-            List<Contact> hardContactTest3 = [SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE LastName = :lastName AND Email IN :possibleEmails];
+            List<Contact> hardContactTest3 = CRUDtoDo.possibleEmailLastMatches(lastName, possibleEmails);
             if (hardContactTest3.size() > 0) {
                 //hard match on first DUP email found.
                 contactId = hardContactTest3[0].Id;
@@ -141,15 +139,8 @@ public with sharing class USTEventContactMatching {
         }
 
         if (String.isBlank(contactId) && (matchingScope.startsWith('Full matching') || String.isBlank(matchingScope))) {
-            System.Debug('SOFT MATCH ');
             //Check if first name last name zip match
-            List<Contact> zipContactTest = [
-                    SELECT Id, LastName, FirstName, Email, MailingPostalCode
-                    FROM Contact
-                    WHERE FirstName = :evt.Registrant_First_Name__c
-                    AND LastName = :evt.Registrant_Last_Name__c
-                    AND MailingZip__c = :evt.Registrant_Zip__c
-            ];
+            List<Contact> zipContactTest = CRUDtoDo.zipFirstLastMatch(evt.Registrant_Zip__c, evt.Registrant_Last_Name__c, evt.Registrant_First_Name__c);
             if (zipContactTest.size() > 0) {
                 //Soft Match found with zip
                 matchLog += '<div class="slds-text-heading_small slds-m-vertical_medium">Soft Match on Zip, Last Name, First Name</div>';
@@ -161,11 +152,7 @@ public with sharing class USTEventContactMatching {
                 }
                 matchLog += '</tbody></table>';
             }
-            List<Contact> emailContactTest = [
-                    SELECT Id, LastName, FirstName, Email, MailingPostalCode
-                    FROM Contact
-                    WHERE Email = :evt.Registrant_Email__c
-            ];
+            List<Contact> emailContactTest = CRUDtoDo.emailOnlyMatch(evt.Registrant_Email__c);
             if (emailContactTest.size() > 0) {
                 //Soft Match found with email
                 matchLog += '<div class="slds-text-heading_small slds-m-vertical_medium">Soft Match on Email</div>';
@@ -189,20 +176,32 @@ public with sharing class USTEventContactMatching {
             //Create new contact
         }
 
-        if (String.isNotBlank(contactId)) {
-            System.Debug('Returning CONTACT ID');
-            return new Map<String, String>{
-                    'contactId' => contactId,
-                    'softEmailMatches' => softEmailMatches.abbreviate(255),
-                    'softFirstLastZipMatches' => softFirstLastZipMatches.abbreviate(255),
-                    'newContactCreated' => String.valueOf(newContactCreated),
-                    'matchLog' => matchLog
-            };
+        return new Map<String, String>{
+                'contactId' => contactId,
+                'softEmailMatches' => softEmailMatches.abbreviate(255),
+                'softFirstLastZipMatches' => softFirstLastZipMatches.abbreviate(255),
+                'newContactCreated' => String.valueOf(newContactCreated),
+                'matchLog' => matchLog
+        };
+    }
+
+    private String UGMatchTD(String ContactId, String LastName, String FirstName, String Email, String Zip, Boolean Action) {
+        String mOut = '<tr class="slds-hint-parent">';
+        mOut += '<td data-label="Last Name"><div class="slds-truncate"><a href="/' + ContactId + '" target="_blank">' + LastName + '</a></div></td>';
+        mOut += '<td data-label="First Name"><div class="slds-truncate"><a href="/' + ContactId + '" target="_blank">' + FirstName + '</a></div></td>';
+        mOut += '<td data-label="Email"><div class="slds-truncate">' + Email + '</div></td>';
+        mOut += '<td data-label="Zip"><div class="slds-truncate">' + Zip + '</div></td>';
+        if (Action) {
+            mOut += '<td data-label="Action"><div class="slds-truncate"><a class="slds-text-link_reset" href="/apex/SummitEventsReparent?regId=[[REGID]]&reparentTo=' + ContactId + '"><span class="slds-text-link">Reparent</span></a></div></td>';
+        } else {
+            mOut += '<td data-label="Action"><div class="slds-truncate"> --- </div></td>';
         }
-        return new Map<String,String>();
+        mOut += '</tr>';
+        return mOut;
     }
 
     private Contact createNewContact(UST_Event_Registration__c evt) {
+        doCRUD CRUDtoDo = new doCRUD();
         //evt = escapeRegistration(evt);
         Contact newEvtContact = new Contact();
         newEvtContact.LeadSource = 'Event';
@@ -248,11 +247,7 @@ public with sharing class USTEventContactMatching {
         }
 
         //Check for all possible email matches including dupes
-        List<Contact> emailContactTest = [
-                SELECT Id, Email
-                FROM Contact
-                WHERE Email IN :possibleEmails
-        ];
+        List<Contact> emailContactTest = CRUDtoDo.possibleEmailMatches(possibleEmails);
 
         //If query is empty then we are free to use the email provided else we have to creat/check for dup emails
         if (emailContactTest.size() == 0) {
@@ -278,28 +273,64 @@ public with sharing class USTEventContactMatching {
             }
         }
 
-        try {
-            upsert newEvtContact;
-        } catch (Exception ex) {
-            ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
-            ApexPages.addMessage(myMsg);
-        }
+        newEvtContact = CRUDtoDo.addContact(newEvtContact);
         return newEvtContact;
     }
 
-    private String UGMatchTD(String ContactId, String LastName, String FirstName, String Email, String Zip, Boolean Action) {
-        String mOut = '<tr class="slds-hint-parent">';
-        mOut += '<td data-label="Last Name"><div class="slds-truncate"><a href="/' + ContactId + '" target="_blank">' + LastName + '</a></div></td>';
-        mOut += '<td data-label="First Name"><div class="slds-truncate"><a href="/' + ContactId + '" target="_blank">' + FirstName + '</a></div></td>';
-        mOut += '<td data-label="Email"><div class="slds-truncate">' + Email + '</div></td>';
-        mOut += '<td data-label="Zip"><div class="slds-truncate">' + Zip + '</div></td>';
-        if (Action) {
-            mOut += '<td data-label="Action"><div class="slds-truncate"><a class="slds-text-link_reset" href="/apex/USTEventReparent?regId=[[REGID]]&reparentTo=' + ContactId + '"><span class="slds-text-link">Reparent</span></a></div></td>';
-        } else {
-            mOut += '<td data-label="Action"><div class="slds-truncate"> --- </div></td>';
+    private without sharing class doCRUD {
+
+        public List<Contact> findContacts(string query) {
+            try {
+                List<Contact> contactsFound = database.query(query);
+                return contactsFound;
+            } catch (Exception ex) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                ApexPages.addMessage(myMsg);
+            }
+            return null;
         }
-        mOut += '</tr>';
-        return mOut;
+
+        public Contact addContact(Contact contactToAdd) {
+            try {
+                upsert contactToAdd;
+            } catch (Exception ex) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
+                ApexPages.addMessage(myMsg);
+            }
+            return contactToAdd;
+        }
+
+        Public List<Contact> emailLastMatch(String email, String last) {
+            List<Contact> foundContacts = [SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE LastName = :last AND Email = :email];
+            return foundContacts;
+        }
+
+        Public List<Contact> possibleEmailLastMatches(String last, List<String> possibleEmails) {
+            List<Contact> foundContacts = [SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE LastName = :last AND Email IN :possibleEmails];
+            return foundContacts;
+        }
+
+        Public List<Contact> possibleEmailMatches(String[] possibleEmails) {
+            List<Contact> foundContacts = [SELECT Id, Email FROM Contact WHERE Email IN :possibleEmails];
+            return foundContacts;
+        }
+
+        public List<Contact> emailOnlyMatch(string email) {
+            List<Contact> foundContacts = [SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE Email = :email];
+            return foundContacts;
+        }
+
+        public List<Contact> zipFirstLastMatch(String zip, String last, String first) {
+            List<Contact> foundContacts = [
+                    SELECT Id, LastName, FirstName, Email, MailingPostalCode
+                    FROM Contact
+                    WHERE FirstName = :first
+                    AND LastName = :last
+                    AND MailingPostalCode = :zip
+            ];
+            return foundContacts;
+        }
+
     }
 
 }

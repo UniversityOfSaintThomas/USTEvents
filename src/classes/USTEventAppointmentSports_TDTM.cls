@@ -62,10 +62,22 @@ global class USTEventAppointmentSports_TDTM extends hed.TDTM_Runnable {
                     }
                 }
                 if (sportsContacts.size() > 0) {
-                    upsert sportsContacts;
+                    doCRUD CRUDtoDo = new doCRUD();
+                    CRUDtoDo.updateContact(sportsContacts);
                 }
             }
         }
         return dmlWrapper;
+    }
+
+    private without sharing class doCRUD {
+        private void updateContact(List<Contact> uContacts) {
+            try {
+                upsert uContacts;
+            } catch (Exception ex) {
+                System.debug(ex.getMessage());
+            }
+        }
+
     }
 }

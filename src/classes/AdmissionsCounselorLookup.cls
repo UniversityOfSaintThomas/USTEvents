@@ -177,7 +177,7 @@ global with sharing class AdmissionsCounselorLookup {
     private static List<CounselorInfo> counselorByName(String counselorName) {
         List<User> cUser = new List<User>();
         List<Id> cUserIds = new List<Id>();
-        System.Debug('>>>>>COUNSELOR NAME: ' + counselorName);
+
         cUser = [
                 SELECT Id
                 FROM User
