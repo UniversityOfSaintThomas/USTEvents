@@ -24,47 +24,51 @@ global with sharing class AdmissionsCounselorLookup {
 
     @HttpGet
     global static void getAdmissionsCounselorLookup() {
-        String feedType = RestContext.request.params.get('type');
+        if (String.isNotBlank(RestContext.request.params.get('type'))) {
+            String feedType = String.escapeSingleQuotes(RestContext.request.params.get('type'));
+            String serializedJSON = '';
 
-        RestResponse res = RestContext.response;
-        String callback = RestContext.request.params.get('callback');
-        String serializedJSON = '';
+            RestResponse res = RestContext.response;
+            String callback = '';
 
-        if (String.isBlank(callback)) {
-            res.addHeader('Content-Type', 'application/json');
-            callback = '';
-        } else {
-            res.addHeader('Content-Type', 'application/javascript');
-        }
+            if (String.isNotBlank(RestContext.request.params.get('callback'))) {
+                callback = String.escapeSingleQuotes(RestContext.request.params.get('callback'));
+            }
 
-        if (!String.isBlank(feedType)) {
-            if (feedType.toLowerCase() == 'counselor') {
-                serializedJSON = JSON.serialize(counselorInformation());
-            } else if (feedType.toLowerCase() == 'bio') {
-                String counselorName = RestContext.request.params.get('name');
-                if (String.isNotBlank(counselorName)) {
-                    counselorName.replace('%20', ' ');
-                    counselorName.replace('+', ' ');
-                    serializedJSON = JSON.serialize(counselorByName(counselorName));
-                }
-            } else if (feedType.toLowerCase() == 'intl') {
-                Id intlRole = Util.getSObjIdBySettingsCompositeKey('Counselor_Role__c', 'UG_Adm4Y_Couns_Fallback_for_Intls');
+            if (String.isBlank(callback)) {
+                res.addHeader('Content-Type', 'application/json');
+                callback = '';
+            } else {
+                res.addHeader('Content-Type', 'application/javascript');
+            }
 
-                if (String.isNotBlank(intlRole)) {
-                    Counselor_Role__c intlId = [SELECT Id, Staff_Member_Holding_Role__r.Id FROM Counselor_Role__c WHERE id = :intlRole][0];
+            if (!String.isBlank(feedType)) {
+                if (feedType.toLowerCase() == 'counselor') {
+                    serializedJSON = JSON.serialize(counselorInformation());
+                } else if (feedType.toLowerCase() == 'bio') {
+                    String counselorName = RestContext.request.params.get('name');
+                    if (String.isNotBlank(counselorName)) {
+                        counselorName.replace('%20', ' ');
+                        counselorName.replace('+', ' ');
+                        serializedJSON = JSON.serialize(counselorByName(counselorName));
+                    }
+                } else if (feedType.toLowerCase() == 'intl') {
+                    doCRUD CRUDToDo = new doCRUD();
+                    Counselor_Role__c intlId = CRUDToDo.getIntlCounselorByRole();
                     if (intlId != null) {
                         List<Id> intlIds = new List<Id>();
                         intlIds.add(intlId.Staff_Member_Holding_Role__r.Id);
-                        serializedJSON = JSON.serialize(grabCounslorList(intlIds));
+                        serializedJSON = JSON.serialize(grabCounselorList(intlIds));
                     }
+
                 }
             }
-        }
 
-        if (!String.isBlank(callback)) {
-            serializedJSON = callback + '(' + serializedJSON + ')';
+            if (!String.isBlank(callback)) {
+                serializedJSON = callback + '(' + serializedJSON + ')';
+            }
+            res.responseBody = Blob.valueOf(serializedJSON);
         }
-        res.responseBody = Blob.valueOf(serializedJSON);
     }
 
     private static List<CounselorInfo> counselorInformation() {
@@ -80,59 +84,52 @@ global with sharing class AdmissionsCounselorLookup {
         List<EnrollmentrxRx__High_School__c> hs = new list<EnrollmentrxRx__High_School__c>();
         List<UG_Counseling_Territory__c> UGTerritories = new List<UG_Counseling_Territory__c>();
         List<Id> cUserIds = new List<Id>();
+        doCRUD CRUDToDo = new doCRUD();
         //Get URL variables
         if (String.isNotBlank(RestContext.request.params.get('nation'))) {
-            nation = RestContext.request.params.get('nation').toUpperCase();
+            nation = String.escapeSingleQuotes(RestContext.request.params.get('nation')).toUpperCase();
         }
         if (String.isNotBlank(RestContext.request.params.get('state'))) {
-            state = RestContext.request.params.get('state').toUpperCase();
+            state = String.escapeSingleQuotes(RestContext.request.params.get('state')).toUpperCase();
         }
         if (String.isNotBlank(RestContext.request.params.get('city'))) {
-            city = RestContext.request.params.get('city').toLowerCase();
+            city = String.escapeSingleQuotes(RestContext.request.params.get('city')).toLowerCase();
         }
         if (String.isNotBlank(RestContext.request.params.get('school'))) {
-            school = RestContext.request.params.get('school').toLowerCase();
+            school = String.escapeSingleQuotes(RestContext.request.params.get('school')).toLowerCase();
         }
         if (String.isNotBlank(RestContext.request.params.get('territory'))) {
-            territory = RestContext.request.params.get('territory').toLowerCase();
+            territory = String.escapeSingleQuotes(RestContext.request.params.get('territory')).toLowerCase();
         }
         if (String.isNotBlank(RestContext.request.params.get('role'))) {
-            role = RestContext.request.params.get('role').toLowerCase();
+            role = String.escapeSingleQuotes(RestContext.request.params.get('role')).toLowerCase();
         }
 
         //Build query string for SOQL LIKE statement
         if (String.isNotBlank(school)) {
-            hs = [
-                    SELECT UG_Adm_Couns_Working_Sch_for_FYs__r.Staff_Member_Holding_Role__r.id
-                    FROM EnrollmentrxRx__High_School__c
-                    WHERE EnrollmentrxRx__CEEB_Code__c = :school
-            ];
+            hs = CRUDToDo.getSchool(school);
             if (hs.size() > 0) {
                 for (EnrollmentrxRx__High_School__c h : hs) {
                     cUserIds.add(h.UG_Adm_Couns_Working_Sch_for_FYs__r.Staff_Member_Holding_Role__r.id);
                 }
-                ci = grabCounslorList(cUserIds);
+                ci = grabCounselorList(cUserIds);
             }
         } else if (String.isNotBlank(territory)) {
-            UGTerritories = [
-                    SELECT Id, UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__r.Id
-                    FROM UG_Counseling_Territory__c
-                    WHERE Banner_Territory_Code__c = :territory
-            ];
+            UGTerritories = CRUDToDo.getTerrroy(territory);
             if (UGTerritories.size() > 0) {
                 for (UG_Counseling_Territory__c ugt : UGTerritories) {
                     cUserIds.add(ugt.UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__r.Id);
                 }
-                ci = grabCounslorList(cUserIds);
+                ci = grabCounselorList(cUserIds);
             }
         } else if (String.isNotBlank(role)) {
             role = role + '%';
             List<Counselor_Role__c> counselorByRole = [SELECT Id, Name, Staff_Member_Holding_Role__c FROM Counselor_Role__c WHERE Name LIKE :role];
-            if (counselorByRole.size()>0) {
+            if (counselorByRole.size() > 0) {
                 for (Counselor_Role__c cbr : counselorByRole) {
                     cUserIds.add(cbr.Staff_Member_Holding_Role__c);
                 }
-                ci = grabCounslorList(cUserIds);
+                ci = grabCounselorList(cUserIds);
             }
         } else {
             // DomesticS
@@ -153,11 +150,7 @@ global with sharing class AdmissionsCounselorLookup {
 
             if (String.IsNotBlank(query)) {
                 //Get all geo areas that match query like statement (using passed in URL variables)
-                ga = [
-                        SELECT UG_Counseling_Geographic_Territory__r.UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__c
-                        FROM Geographic_Area__c
-                        WHERE NAME LIKE :query
-                ];
+                ga = CRUDToDo.gaList(query);
 
                 if (ga.size() > 0) {
 
@@ -165,7 +158,7 @@ global with sharing class AdmissionsCounselorLookup {
                     for (Geographic_Area__c g : ga) {
                         cUserIds.add(g.UG_Counseling_Geographic_Territory__r.UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__c);
                     }
-                    ci = grabCounslorList(cUserIds);
+                    ci = grabCounselorList(cUserIds);
                 }
             }
         }
@@ -178,40 +171,29 @@ global with sharing class AdmissionsCounselorLookup {
         List<User> cUser = new List<User>();
         List<Id> cUserIds = new List<Id>();
 
-        cUser = [
-                SELECT Id
-                FROM User
-                WHERE NAME LIKE :counselorName
-        ];
+        doCRUD CRUDToDo = new doCRUD();
+        cUser = CRUDToDo.getCounselorByName(counselorName);
 
         if (cUser.size() > 0) {
             for (User u : cUser) {
                 cUserIds.add(u.Id);
             }
-            return grabCounslorList(cUserIds);
+            return grabCounselorList(cUserIds);
         }
         return new List<CounselorInfo>();
     }
 
-    private static List<CounselorInfo> grabCounslorList(List<Id> cUserIds) {
+    private static List<CounselorInfo> grabCounselorList(List<Id> cUserIds) {
         List<CounselorInfo> ci = new List<CounselorInfo>();
+        doCRUD CRUDToDO = new doCRUD();
         List<User> cUser = new List<User>();
         String cascadeUserImage = '';
         //Get list off all users that match gathered list from geo areas
         if (cUserIds.size() > 0) {
-            cUser = [
-                    SELECT Name, Email, College__c, Major__c, Hometown__c, About_Me__c, What_I_Love_About_St_Thomas__c, Words_of_Advice__c,
-                            SmallPhotoUrl, FullPhotoUrl, title, phone, street, state, city, postalCode, Extension
-                    FROM User
-                    WHERE Id in :cUserIds
-            ];
+            cUser = CRUDToDO.readUserByIdList(cUserIds);
 
             //Add queried users to custom object defined in this class
-            String myDomain = '';
-            List<Domain> DomainList = [SELECT Domain FROM Domain];
-            if (DomainList.size() > 0) {
-                myDomain = DomainList[0].Domain;
-            }
+            String myDomain = CRUDToDO.getDomain();
 
             for (User u : cUser) {
                 CounselorInfo addCoun = new CounselorInfo();
@@ -239,6 +221,77 @@ global with sharing class AdmissionsCounselorLookup {
             }
         }
         return ci;
+    }
+
+    private without sharing class doCRUD {
+
+        public List<UG_Counseling_Territory__c> getTerrroy(String territory) {
+            List<UG_Counseling_Territory__c> UGTerritories = [
+                    SELECT Id, UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__r.Id
+                    FROM UG_Counseling_Territory__c
+                    WHERE Banner_Territory_Code__c = :territory
+            ];
+
+            return UGTerritories;
+        }
+        public List<User> getCounselorByName(String counselorName) {
+            List<User> cUser = [
+                    SELECT Id,Admissions_Counselor__c
+                    FROM User
+                    WHERE NAME LIKE :counselorName
+                    AND Admissions_Counselor__c = TRUE
+            ];
+            return cUser;
+        }
+
+        public List<User> readUserByIdList(List<Id> cUserIds) {
+            List<User> cUser = [
+                    SELECT Name, Email, College__c, Major__c, Hometown__c, About_Me__c, What_I_Love_About_St_Thomas__c, Words_of_Advice__c,
+                            SmallPhotoUrl, FullPhotoUrl, title, phone, street, state, city, postalCode, Extension, Admissions_Counselor__c
+                    FROM User
+                    WHERE Id  in :cUserIds
+                    AND Admissions_Counselor__c = TRUE
+            ];
+            return cUser;
+        }
+
+        public List<Geographic_Area__c> gaList(String likeQuery) {
+            List<Geographic_Area__c> gaList = [
+                    SELECT UG_Counseling_Geographic_Territory__r.UG_Adm_Couns_Working_This_Territory__r.Staff_Member_Holding_Role__c
+                    FROM Geographic_Area__c
+                    WHERE NAME LIKE :likeQuery
+            ];
+            return gaList;
+        }
+
+        public String getDomain() {
+            List<Domain> DomainList = [SELECT Domain FROM Domain];
+            String myDomain = '';
+            if (DomainList.size() > 0) {
+                myDomain = DomainList[0].Domain;
+            }
+            return myDomain;
+        }
+
+        public Counselor_Role__c getIntlCounselorByRole() {
+            Id roleId = Util.getSObjIdBySettingsCompositeKey('Counselor_Role__c', 'UG_Adm4Y_Couns_Fallback_for_Intls');
+            Counselor_Role__c intlId = null;
+            if (String.isNotBlank(roleId)) {
+                intlId = [SELECT Id, Staff_Member_Holding_Role__r.Id FROM Counselor_Role__c WHERE id = :roleId][0];
+            }
+            return intlId;
+        }
+
+        public List<EnrollmentrxRx__High_School__c> getSchool(String CEEBCode) {
+            List<EnrollmentrxRx__High_School__c> hs = [
+                    SELECT UG_Adm_Couns_Working_Sch_for_FYs__r.Staff_Member_Holding_Role__r.id
+                    FROM EnrollmentrxRx__High_School__c
+                    WHERE EnrollmentrxRx__CEEB_Code__c = :CEEBCode
+            ];
+            return hs;
+        }
+
+
     }
 
 }
