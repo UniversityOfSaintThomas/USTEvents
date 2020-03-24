@@ -58,6 +58,10 @@
                 <behavior>Readonly</behavior>
                 <field>Open_Registration__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Instance_Notes__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

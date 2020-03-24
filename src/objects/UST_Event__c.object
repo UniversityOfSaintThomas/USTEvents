@@ -1685,6 +1685,38 @@ TEXT(YEAR( End_Date__c))
         <type>TextArea</type>
     </fields>
     <fields>
+        <fullName>Registration_Email_Restriction__c</fullName>
+        <description>Validates other registrations in the same event to see if the same email was used ignoring &quot;Cancelled&quot; OR &quot;Started&quot; statu registrations. Errors will be given on the application if another email is found with these circumstances.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Validates other registrations in the same event to see if the same email was used ignoring &quot;Cancelled&quot; OR &quot;Started&quot; statu registrations. Errors will be given on the application if another email is found with these circumstances.</inlineHelpText>
+        <label>Registration Email Restriction</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>No limit</fullName>
+                    <default>true</default>
+                    <label>No limit</label>
+                </value>
+                <value>
+                    <fullName>One registration per instance</fullName>
+                    <default>false</default>
+                    <label>One registration per instance</label>
+                </value>
+                <value>
+                    <fullName>One registration per event</fullName>
+                    <default>false</default>
+                    <label>One registration per event</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>School__c</fullName>
         <deleteConstraint>SetNull</deleteConstraint>
         <description>School this event is representing.</description>
@@ -2468,6 +2500,21 @@ TEXT(YEAR( End_Date__c))
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Registration_Email_Restriction__c</picklist>
+            <values>
+                <fullName>No limit</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>One registration per event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One registration per instance</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>Template__c</picklist>
             <values>
                 <fullName>CastorTemplate2017</fullName>
@@ -3051,6 +3098,21 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>St%2E Paul - South</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Registration_Email_Restriction__c</picklist>
+            <values>
+                <fullName>No limit</fullName>
+                <default>true</default>
+            </values>
+            <values>
+                <fullName>One registration per event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One registration per instance</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

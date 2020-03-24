@@ -40,6 +40,10 @@
                 <behavior>Edit</behavior>
                 <field>Contact_Creation__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Registration_Email_Restriction__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

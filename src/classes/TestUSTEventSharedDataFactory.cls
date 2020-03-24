@@ -4,7 +4,14 @@
 @isTest
 public with sharing class TestUSTEventSharedDataFactory {
 
-    public static UST_Event_Instance__c createTestEvent(String recType, String testEventName, String audience, Boolean includeAppt, Boolean includeAddQuestions) {
+    public static UST_Event_Instance__c createTestEvent(
+            String recType,
+            String testEventName,
+            String audience,
+            Boolean includeAppt,
+            Boolean includeAddQuestions,
+            String registrationEmailRestriction
+    ) {
 
         UST_Event__c testEvent = new UST_Event__c();
 
@@ -45,6 +52,11 @@ public with sharing class TestUSTEventSharedDataFactory {
                 Academic_Program_List__c = ''
 
         );
+
+        if (String.isNotBlank(registrationEmailRestriction)) {
+            testEvent.Registration_Email_Restriction__c = registrationEmailRestriction;
+        }
+
 
         if (includeAddQuestions) {
             testEvent.Add_Info_Question_Type_1__c = 'Pick-list';

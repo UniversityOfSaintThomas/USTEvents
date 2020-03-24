@@ -91,10 +91,8 @@ public with sharing class USTEventRegisterController {
             String dateFormat = 'EEE, d MMM yyyy HH:mm:ss Z';
 
             JSONLDStartTimeString = evtInstance.Start_Date_Time__c.format(dateFormat);
-            System.debug(JSONLDStartTimeString);
 
             JSONLDEndTimeString = evtInstance.End_Date_Time__c.format(dateFormat);
-            System.debug(JSONLDStartTimeString);
 
             //define Event ID from instanceInfo data
             evtInfo.evtId = evtInstance.Event__r.Id;
@@ -129,7 +127,8 @@ public with sharing class USTEventRegisterController {
                             Add_Info_Question_Pick_List_5__c, Add_Info_Question_Text_5__c, Add_Info_Question_Type_5__c,
                             Academic_Program_List__c, School__c, School__r.Name, Ask_Mailing_Address__c, Ask_Phone__c, Event_Sponsor__c,
                             Applicant_Type__c, Location_Type__c, Location_Title__c, Location_Address__c, Location_Map_Link__c,
-                            Tracking_Event_Registration__c, Ask_Date_Of_Birth__c, Event_Type__c, RecordType.Name, Contact_Creation__c,Exclude_Search_Engine_Tag__c
+                            Tracking_Event_Registration__c, Ask_Date_Of_Birth__c, Event_Type__c, RecordType.Name, Contact_Creation__c,
+                            Exclude_Search_Engine_Tag__c, Registration_Email_Restriction__c
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1
@@ -221,7 +220,6 @@ public with sharing class USTEventRegisterController {
                 guestAmt = new List<SelectOption>();
                 if (Integer.valueOf(eventPage.Max_Other_Attendees__c) > 0) {
                     for (Integer ma = 0; ma <= Integer.valueOf(eventPage.Max_Other_Attendees__c); ma++) {
-                        System.debug(ma);
                         guestAmt.add(new SelectOption(String.valueOf(ma), String.valueOf(ma)));
                     }
                 }
@@ -229,8 +227,9 @@ public with sharing class USTEventRegisterController {
 
             //creating a flag for json-ld
             excludeSearchTag = false;
-            if (eventPage.Exclude_Search_Engine_Tag__c || evtInstance.Exclude_Search_Engine_Tag_Override__c)
-            { excludeSearchTag = true; }
+            if (eventPage.Exclude_Search_Engine_Tag__c || evtInstance.Exclude_Search_Engine_Tag_Override__c) {
+                excludeSearchTag = true;
+            }
 
             //Get Appoitment Types for event
             apptTypes = [SELECT Id, Title__c, Appointment_Category__c, Appointment_Type__c, Description__c FROM UST_Event_Appointment_Type__c WHERE UST_Event__c = :evtInfo.evtId];
@@ -431,6 +430,9 @@ public with sharing class USTEventRegisterController {
     }
 
     public PageReference saveContactRegistration() {
+
+
+
         boolean newContactCreated = false;
         PageReference optionPage = Page.USTEventRegister;
 
@@ -441,6 +443,16 @@ public with sharing class USTEventRegisterController {
         Boolean progSelectionMade = true;
 
         doCRUD CRUDToDo = new doCRUD();
+
+        if(String.isNotBlank(eventPage.Registration_Email_Restriction__c) && eventPage.Registration_Email_Restriction__c != 'No Limit') {
+            System.debug('GOT TO REGISTRANT EMAIL RESTRICTIONS');
+            UST_Event_Registration__c foundRegistration = CRUDToDo.checkForOtherRegistrations(eventPage.Registration_Email_Restriction__c, newEvtReg.Registrant_Email__c, evtInstance.Id, eventPage.Id);
+            if(foundRegistration != null) {
+                ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.ERROR, 'It appears you’ve already registered for this event. Please contact the Event Host for more information.');
+                ApexPages.addMessage(myMsg);
+                return null;
+            }
+        }
 
         if (selectedPrograms.isEmpty() && String.isBlank(selectedProgramsOne) && !String.isBlank(eventPage.Academic_Program_List__c)) {
             selectedPrograms = eventPage.Academic_Program_List__c.split(';');
@@ -521,12 +533,13 @@ public with sharing class USTEventRegisterController {
                 matchingScope = 'Full matching contact creation with duplicate management';
             }
             if (!matchingScope.startsWith('No matching')) {
-                System.debug('PASSING TO MATCHING METHOD');
                 matched = matcher.USTEventContactMatching(evtInfo.recordTypeName, newEvtReg, matchingScope);
                 //Populate matching results into data - matched may be blank depending on the Contact_Creation__c setting
                 if (matched.size() > 0) {
-                    contactId = (Id) matched.get('contactId');
-                    newContactCreated = Boolean.valueOf(matched.get('newContactCreated'));
+                    if (String.isNotBlank(matched.get('contactId'))) {
+                        contactId = (Id) matched.get('contactId');
+                        newContactCreated = Boolean.valueOf(matched.get('newContactCreated'));
+                    }
                     newEvtReg.Contact_Soft_Match_Email__c = String.valueOf(matched.get('softEmailMatches'));
                     newEvtReg.Contact_Soft_Match_First_Last_Zip__c = String.valueOf(matched.get('softFirstLastZipMatches'));
                     newEvtReg.Matching_Log__c = String.valueOf(matched.get('matchLog'));
@@ -547,14 +560,14 @@ public with sharing class USTEventRegisterController {
             }
             newEvtReg = CRUDToDo.updateRegistration(newEvtReg);
             //Update matching log with new ID
-            newEvtReg.Matching_Log__c = newEvtReg.Matching_Log__c.replaceAll('\\[\\[REGID\\]\\]', newEvtReg.Id);
+            if (String.isNotBlank(newEvtReg.Matching_Log__c)) {
+                newEvtReg.Matching_Log__c = newEvtReg.Matching_Log__c.replaceAll('\\[\\[REGID\\]\\]', newEvtReg.Id);
+            }
         }
 
         //update registration it may already exist, and matching log has to be updated on new registration inserts
         newEvtReg = CRUDToDo.updateRegistration(newEvtReg);
         evtInfo.evtRegId = newEvtReg.Id;
-
-        System.debug('NEW EVENT ID: ' + evtInfo.evtRegId);
 
         if (String.isNotBlank(evtInfo.evtRegId) && evtInfo.evtRegId != 'COMING') {
             if (evtHasAppointments) {
@@ -583,6 +596,43 @@ public with sharing class USTEventRegisterController {
                 System.debug(myMsg);
             }
             return newEvtReg;
+        }
+
+        public UST_Event_Registration__c checkForOtherRegistrations(String checkType, String registrationEmail, Id eventInstanceId, Id eventId) {
+
+            String[] notAcceptableStatuses = new List<String>();
+            notAcceptableStatuses.add('Cancelled');
+            notAcceptableStatuses.add('Started');
+            notAcceptableStatuses.add('Status');
+
+            List<UST_Event_Registration__c> foundRegistrations = new List<UST_Event_Registration__c>();
+            UST_Event_Registration__c foundRegistration = null;
+
+            System.debug('Type: ' +  checkType + ', email: ' +  registrationEmail + ', Instance ID: ' +  eventInstanceId + ', Event Id: ' + eventId);
+
+            if (checkType == 'One registration per instance') {
+                foundRegistrations = [
+                        SELECT Id, LastModifiedDate, Registrant_Email__c
+                        FROM UST_Event_Registration__c
+                        WHERE Registrant_Email__c = :registrationEmail
+                        AND Event_Instance__c = :eventInstanceId
+                        AND Status__c NOT IN :notAcceptableStatuses
+                        ORDER BY LastModifiedDate
+                ];
+            } else if (checkType == 'One registration per event') {
+                foundRegistrations = [
+                        SELECT Id, LastModifiedDate, Registrant_Email__c
+                        FROM UST_Event_Registration__c
+                        WHERE Registrant_Email__c = :registrationEmail
+                        AND Event__c = :eventId
+                        AND Status__c NOT IN :notAcceptableStatuses
+                        ORDER BY LastModifiedDate
+                ];
+            }
+            if (foundRegistrations.size() > 0) {
+                foundRegistration = foundRegistrations[0];
+            }
+            return foundRegistration;
         }
 
         public Contact getUserFromContact() {

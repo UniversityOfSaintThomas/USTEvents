@@ -2,8 +2,10 @@
 .waiting-overlay { text-align:center; position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; background: rgba(255, 255, 255, 0.5) url(//static.stthomas.edu/undergraduate-admissions/rfi/images/spinner.gif) no-repeat center center; }
 .ui-datepicker { width: 100%!important; }
 .ui-datepicker td span, .ui-datepicker td a { padding: .7em;}
-.validationError {color:red!important;}
-.validationError input {border:1px solid red;}
+.validationError, .errorMessages ul {color:red!important;}
+.errorMessages ul {display:block;padding:10px 20px;}
+.errorMessages ul li {font-weight: bold;}
+.validationError input, .errorMessages ul {border:1px solid red;}
 label.required {font-weight:bold;}
 .yearError {color:red; display:block; margin: -20px 0px -5px 0px; font-style: italic;}
 .eventClosed,.eventClosed * {color:gray!important;}

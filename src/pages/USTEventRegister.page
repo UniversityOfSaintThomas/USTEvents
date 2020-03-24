@@ -63,11 +63,6 @@
         </apex:define>
         <apex:define name="sectionNav"/>
         <apex:define name="body">
-            <div class="row">
-                <div class="columns errorMessages">
-                    <apex:messages />
-                </div>
-            </div>
             <apex:form id="USTRegistraterForm">
                 <div class="row">
                     <div class="columns eventCrumb">
@@ -80,6 +75,11 @@
                             <span class="bc-spacer"><span>»</span></span>
                             {!eventStartDateTimeCrumb}
                         </apex:outputPanel>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="columns errorMessages">
+                        <apex:messages />
                     </div>
                 </div>
                 <apex:outputPanel rendered="{!!eventIsClosed}" layout="none">

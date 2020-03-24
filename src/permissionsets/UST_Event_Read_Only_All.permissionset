@@ -443,11 +443,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>UST_Event_Instance__c.Exclude_Search_Engine_Tag_Override__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>UST_Event_Instance__c.Feed_Registration_Button_Text_Override__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1365,11 +1360,6 @@
         <editable>false</editable>
         <field>UST_Event__c.Event_description__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event__c.Exclude_Search_Engine_Tag__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
