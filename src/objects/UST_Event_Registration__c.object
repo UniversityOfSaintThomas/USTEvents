@@ -488,6 +488,18 @@ Event__r.Community_Base_URL__c
         <unique>false</unique>
     </fields>
     <fields>
+        <fullName>Contact_Gender__c</fullName>
+        <externalId>false</externalId>
+        <formula>IF(ISPICKVAL(Contact__r.EnrollmentrxRx__Gender__c, &quot;Male&quot;), &quot;Male&quot;, &quot;Female&quot;)</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Contact Gender</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
         <fullName>Contact_Name__c</fullName>
         <externalId>false</externalId>
         <formula>Contact__r.FirstName &amp; &quot; &quot; &amp; Contact__r.LastName</formula>

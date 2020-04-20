@@ -182,11 +182,10 @@ global with sharing class USTEventFeed {
 
         List<UST_Event_Instance__c> EventInstance = database.query(eventQuery);
 
-        DateTime regDateOpenDate = null;
+        Date regDateOpenDate = null;
         for (UST_Event_Instance__c es : EventInstance) {
-            regDateOpenDate = Datetime.now().addDays(-1);
+            regDateOpenDate = Date.today();
             if (es.Event__r.Close_Event_Days_Before__c != null && es.Event__r.Close_Event_Days_Before__c != 0) {
-                regDateOpenDate = USTShared.adjustForCenteralTime(Datetime.now());
                 regDateOpenDate = regDateOpenDate.addDays((Integer.valueOf(es.Event__r.Close_Event_Days_Before__c) + 1));
             }
             eventItem evt = new eventItem();
@@ -304,7 +303,8 @@ global with sharing class USTEventFeed {
                 evt.locationMapLink = '';
             }
 
-            if (evt.start < regDateOpenDate) {
+            Date startDate = date.newInstance(evt.start.year(), evt.start.month(), evt.start.day());
+            if (startDate < regDateOpenDate) {
                 evt.eventClosed = true;
                 evt.eventUrl = 'javascript:void(0);';
                 evt.className = 'eventClosed';

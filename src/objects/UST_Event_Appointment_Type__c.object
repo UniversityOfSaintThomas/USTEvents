@@ -457,6 +457,11 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Digital Media</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Economics</valueName>
             </valueSettings>
             <valueSettings>

@@ -638,11 +638,11 @@ IF(!ISBLANK(HOUR(Appointment_Time__c)),
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Campus Tour</controllingFieldValue>
-                <valueName>Residence Hall Tour</valueName>
+                <valueName>Campus Tour</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Campus Tour</controllingFieldValue>
-                <valueName>Campus Tour</valueName>
+                <valueName>Residence Hall Tour</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
