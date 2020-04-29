@@ -964,6 +964,67 @@
         </valueSet>
     </fields>
     <fields>
+        <fullName>Category__c</fullName>
+        <description>How is this event being categorized?  This may dictate where it displays on the website or utilized in reporting</description>
+        <externalId>false</externalId>
+        <label>Category</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Teach-in Tuesday</fullName>
+                    <default>false</default>
+                    <label>Teach-in Tuesday</label>
+                </value>
+                <value>
+                    <fullName>SOLV</fullName>
+                    <default>false</default>
+                    <label>SOLV</label>
+                </value>
+                <value>
+                    <fullName>Research</fullName>
+                    <default>false</default>
+                    <label>Research</label>
+                </value>
+                <value>
+                    <fullName>Other Dean events</fullName>
+                    <default>false</default>
+                    <label>Other Dean events</label>
+                </value>
+                <value>
+                    <fullName>Language and Media Arts</fullName>
+                    <default>false</default>
+                    <label>Language and Media Arts</label>
+                </value>
+                <value>
+                    <fullName>Musical Arts</fullName>
+                    <default>false</default>
+                    <label>Musical Arts</label>
+                </value>
+                <value>
+                    <fullName>Faith-based</fullName>
+                    <default>false</default>
+                    <label>Faith-based</label>
+                </value>
+                <value>
+                    <fullName>Art and Museum Studies</fullName>
+                    <default>false</default>
+                    <label>Art and Museum Studies</label>
+                </value>
+                <value>
+                    <fullName>Sciences and Math</fullName>
+                    <default>false</default>
+                    <label>Sciences and Math</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>5</visibleLines>
+    </fields>
+    <fields>
         <fullName>Close_Event_Days_Before__c</fullName>
         <defaultValue>0</defaultValue>
         <description>The amount of days before the event that you want registration to close (accepting no new registrants)</description>
@@ -1340,6 +1401,16 @@ TEXT(YEAR( End_Date__c))
                     <default>false</default>
                     <label>Veritas Institute</label>
                 </value>
+                <value>
+                    <fullName>Dean</fullName>
+                    <default>false</default>
+                    <label>Dean</label>
+                </value>
+                <value>
+                    <fullName>Irish Studies</fullName>
+                    <default>false</default>
+                    <label>Irish Studies</label>
+                </value>
             </valueSetDefinition>
         </valueSet>
         <visibleLines>10</visibleLines>
@@ -1414,9 +1485,29 @@ TEXT(YEAR( End_Date__c))
                     <label>Coffee Chat</label>
                 </value>
                 <value>
+                    <fullName>Concert/Recital</fullName>
+                    <default>false</default>
+                    <label>Concert/Recital</label>
+                </value>
+                <value>
+                    <fullName>Conference/Workshop</fullName>
+                    <default>false</default>
+                    <label>Conference/Workshop</label>
+                </value>
+                <value>
                     <fullName>Counselor Meet-up</fullName>
                     <default>false</default>
                     <label>Counselor Meet-up</label>
+                </value>
+                <value>
+                    <fullName>Discussion/Presentation</fullName>
+                    <default>false</default>
+                    <label>Discussion/Presentation</label>
+                </value>
+                <value>
+                    <fullName>Exhibit</fullName>
+                    <default>false</default>
+                    <label>Exhibit</label>
                 </value>
                 <value>
                     <fullName>Info Session</fullName>
@@ -1836,6 +1927,46 @@ TEXT(YEAR( End_Date__c))
         <type>LongTextArea</type>
         <visibleLines>3</visibleLines>
     </fields>
+    <fields>
+        <fullName>Where_to_Display__c</fullName>
+        <externalId>false</externalId>
+        <label>Where to Display</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>MultiselectPicklist</type>
+        <valueSet>
+            <valueSetDefinition>
+                <sorted>true</sorted>
+                <value>
+                    <fullName>CAS site</fullName>
+                    <default>false</default>
+                    <label>CAS site</label>
+                </value>
+                <value>
+                    <fullName>EDU site</fullName>
+                    <default>false</default>
+                    <label>EDU site</label>
+                </value>
+                <value>
+                    <fullName>On-Campus Screens</fullName>
+                    <default>false</default>
+                    <label>On-Campus Screens</label>
+                </value>
+                <value>
+                    <fullName>One St. Thomas</fullName>
+                    <default>false</default>
+                    <label>One St. Thomas</label>
+                </value>
+                <value>
+                    <fullName>Opus site</fullName>
+                    <default>false</default>
+                    <label>Opus site</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+        <visibleLines>4</visibleLines>
+    </fields>
     <label>UST Event</label>
     <listViews>
         <fullName>All</fullName>
@@ -2115,6 +2246,14 @@ TEXT(YEAR( End_Date__c))
         <picklistValues>
             <picklist>Audience__c</picklist>
             <values>
+                <fullName>Dougherty Family College %282-Year%29</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>First-Year International</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Graduate Alumni</fullName>
                 <default>false</default>
             </values>
@@ -2131,6 +2270,18 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>High School Group</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>High School Junior or Younger</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>High School Senior</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>International Graduate Student</fullName>
                 <default>false</default>
             </values>
@@ -2139,7 +2290,23 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>Opus College of Business Undergraduate</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Prospective Graduate Student</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Regional Event</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Transfer International</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2291,6 +2458,45 @@ TEXT(YEAR( End_Date__c))
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Art and Museum Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Faith-based</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Language and Media Arts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Musical Arts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other Dean events</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Research</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SOLV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sciences and Math</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Teach-in Tuesday</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>College_High_School_Ask__c</picklist>
             <values>
                 <fullName>Auto Select on Audience</fullName>
@@ -2343,6 +2549,10 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>Dean</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Entrepreneurship</fullName>
                 <default>false</default>
             </values>
@@ -2360,6 +2570,10 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>Healthcare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Irish Studies</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2425,7 +2639,23 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>Concert%2FRecital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Conference%2FWorkshop</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Counselor Meet-up</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discussion%2FPresentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Exhibit</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2522,6 +2752,29 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>OPUSTemplate2018</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Where_to_Display__c</picklist>
+            <values>
+                <fullName>CAS site</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EDU site</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>On-Campus Screens</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One St%2E Thomas</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Opus site</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2729,6 +2982,22 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>Graduate Alumni</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Graduate Public</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Graduate Staff</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Graduate Student</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>High School Group</fullName>
                 <default>false</default>
             </values>
@@ -2741,11 +3010,19 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>International Graduate Student</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>No Audience</fullName>
                 <default>false</default>
             </values>
             <values>
                 <fullName>Opus College of Business Undergraduate</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Prospective Graduate Student</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2909,6 +3186,45 @@ TEXT(YEAR( End_Date__c))
             </values>
         </picklistValues>
         <picklistValues>
+            <picklist>Category__c</picklist>
+            <values>
+                <fullName>Art and Museum Studies</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Faith-based</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Language and Media Arts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Musical Arts</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Other Dean events</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Research</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>SOLV</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Sciences and Math</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Teach-in Tuesday</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
             <picklist>College_High_School_Ask__c</picklist>
             <values>
                 <fullName>Auto Select on Audience</fullName>
@@ -2961,6 +3277,10 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>Dean</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Entrepreneurship</fullName>
                 <default>false</default>
             </values>
@@ -2978,6 +3298,10 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>Healthcare</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Irish Studies</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -3043,7 +3367,23 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>Concert%2FRecital</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Conference%2FWorkshop</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Counselor Meet-up</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Discussion%2FPresentation</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Exhibit</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -3124,6 +3464,29 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>OPUSTemplate2018</fullName>
+                <default>false</default>
+            </values>
+        </picklistValues>
+        <picklistValues>
+            <picklist>Where_to_Display__c</picklist>
+            <values>
+                <fullName>CAS site</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>EDU site</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>On-Campus Screens</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>One St%2E Thomas</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Opus site</fullName>
                 <default>false</default>
             </values>
         </picklistValues>

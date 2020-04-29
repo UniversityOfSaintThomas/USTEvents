@@ -572,6 +572,11 @@
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
+                <valueName>Journalism</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Justice &amp; Peace Studies</valueName>
             </valueSettings>
             <valueSettings>

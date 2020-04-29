@@ -407,5 +407,9 @@
         <members>OPUSScripts2018</members>
         <name>StaticResource</name>
     </types>
+    <types>
+        <members>UST_Event__c</members>
+        <name>SharingRules</name>
+    </types>
     <version>46.0</version>
 </Package>

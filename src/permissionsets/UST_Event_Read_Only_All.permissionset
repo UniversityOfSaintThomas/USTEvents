@@ -443,8 +443,18 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UST_Event_Instance__c.Exclude_Search_Engine_Tag_Override__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UST_Event_Instance__c.Feed_Registration_Button_Text_Override__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Instance__c.Instance_Notes__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -625,6 +635,11 @@
         <editable>false</editable>
         <field>UST_Event_Registration__c.Contact_Banner_ID__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event_Registration__c.Contact_Gender__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -1238,6 +1253,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UST_Event__c.Category__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UST_Event__c.Close_Event_Days_Before__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1363,6 +1383,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UST_Event__c.Exclude_Search_Engine_Tag__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UST_Event__c.Feed_Registration_Button_Text__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1423,6 +1448,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UST_Event__c.Registration_Email_Restriction__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UST_Event__c.School__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1455,6 +1485,11 @@
         <editable>false</editable>
         <field>UST_Event__c.Tracking_Submit_Registration__c</field>
         <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>UST_Event__c.Where_to_Display__c</field>
+        <readable>false</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>UST Event Read Only (All)</label>

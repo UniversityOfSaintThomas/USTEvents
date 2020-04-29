@@ -42,7 +42,7 @@ public with sharing class USTEventSubmitController {
                     FROM UST_Event_Appointments__c
                     WHERE Event_Registration__c = :evtinfo.evtRegId
                     AND Chosen_State__c != 'Added but not shown'
-                    ORDER BY Appointment_Title__c
+                    ORDER BY Sort_Order__c, Appointment_Title__c
             ];
             if (chosenAppts.size() > 0) {
                 chosenFormatted += '<ul id="choosenAppointments">';
