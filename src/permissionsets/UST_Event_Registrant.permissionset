@@ -296,26 +296,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>UST_Event_Email__c.Letterhead_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event_Email__c.Letterhead_Name__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event_Email__c.Letterhead__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event_Email__c.Org_Email_Id__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>UST_Event_Email__c.Org_Email__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -451,18 +431,8 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>UST_Event_Instance__c.Exclude_Search_Engine_Tag_Override__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>UST_Event_Instance__c.Feed_Registration_Button_Text_Override__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event_Instance__c.Instance_Notes__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -641,16 +611,6 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
-        <field>UST_Event_Registration__c.Contact_Banner_ID__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event_Registration__c.Contact_Gender__c</field>
-        <readable>false</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
         <field>UST_Event_Registration__c.Contact_Name__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -778,11 +738,6 @@
         <editable>true</editable>
         <field>UST_Event_Registration__c.MPCW_Visit_ID__c</field>
         <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <editable>false</editable>
-        <field>UST_Event_Registration__c.Matching_Log__c</field>
-        <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>true</editable>
@@ -1262,7 +1217,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UST_Event__c.Category__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
@@ -1411,6 +1366,11 @@
     </fieldPermissions>
     <fieldPermissions>
         <editable>false</editable>
+        <field>UST_Event__c.Keep_Registration_Open_During_Event__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
         <field>UST_Event__c.Location_Address__c</field>
         <readable>true</readable>
     </fieldPermissions>
@@ -1497,7 +1457,7 @@
     <fieldPermissions>
         <editable>false</editable>
         <field>UST_Event__c.Where_to_Display__c</field>
-        <readable>false</readable>
+        <readable>true</readable>
     </fieldPermissions>
     <hasActivationRequired>false</hasActivationRequired>
     <label>UST Event Registrant</label>

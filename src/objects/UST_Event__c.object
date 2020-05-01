@@ -697,6 +697,11 @@
                     <label>First-Year</label>
                 </value>
                 <value>
+                    <fullName>Not applicable</fullName>
+                    <default>false</default>
+                    <label>Not applicable</label>
+                </value>
+                <value>
                     <fullName>Transfer</fullName>
                     <default>false</default>
                     <label>Transfer</label>
@@ -1623,6 +1628,17 @@ TEXT(YEAR( End_Date__c))
         <type>Checkbox</type>
     </fields>
     <fields>
+        <fullName>Keep_Registration_Open_During_Event__c</fullName>
+        <defaultValue>false</defaultValue>
+        <description>When checked registrants will be able to register for the event even while the event is happening.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>When checked registrants will be able to register for the event even while the event is happening.</inlineHelpText>
+        <label>Keep Registration Open During Event</label>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Checkbox</type>
+    </fields>
+    <fields>
         <fullName>Location_Address__c</fullName>
         <description>The address of the location the event is taking place.</description>
         <externalId>false</externalId>
@@ -1998,6 +2014,7 @@ TEXT(YEAR( End_Date__c))
     <listViews>
         <fullName>All_Undergraduate_Events</fullName>
         <columns>NAME</columns>
+        <columns>CREATED_DATE</columns>
         <filterScope>Everything</filterScope>
         <filters>
             <field>RECORDTYPE</field>
@@ -2246,14 +2263,6 @@ TEXT(YEAR( End_Date__c))
         <picklistValues>
             <picklist>Audience__c</picklist>
             <values>
-                <fullName>Dougherty Family College %282-Year%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>First-Year International</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Graduate Alumni</fullName>
                 <default>false</default>
             </values>
@@ -2270,18 +2279,6 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
-                <fullName>High School Group</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>High School Junior or Younger</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>High School Senior</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>International Graduate Student</fullName>
                 <default>false</default>
             </values>
@@ -2290,23 +2287,7 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
-                <fullName>Opus College of Business Undergraduate</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Prospective Graduate Student</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Regional Event</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transfer</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Transfer International</fullName>
                 <default>false</default>
             </values>
         </picklistValues>
@@ -2930,6 +2911,10 @@ TEXT(YEAR( End_Date__c))
             <picklist>Applicant_Type__c</picklist>
             <values>
                 <fullName>First-Year</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Not applicable</fullName>
                 <default>false</default>
             </values>
             <values>

@@ -20,15 +20,15 @@ global with sharing class USTEventFeed {
         public String eventUrl { get; set; }
         public Boolean eventClosed { get; set; }
         public String className { get; set; }
-        public String locationTitle { get; set; } 
+        public String locationTitle { get; set; }
         public String locationType { get; set; }
         public String locationAddress { get; set; }
         public String locationMapLink { get; set; }
         public String locationBuilding { get; set; }
         public String feedButtonText { get; set; }
-        public String sponsors {get;set;}
-        public Integer capacityTotal {get;set;}
-        public Integer capacityRemaining {get;set;}
+        public String sponsors { get; set; }
+        public Integer capacityTotal { get; set; }
+        public Integer capacityRemaining { get; set; }
         public boolean excludeSearchTag { get; set; }
     }
 
@@ -54,14 +54,17 @@ global with sharing class USTEventFeed {
             res.addHeader('Content-Type', 'application/javascript');
         }
 
-
-        if (feedType == 'audienceDD') {
-            serializedJSON = JSON.serialize(getAudienceDD(UST_Event__c.Audience__c.getDescribe()));
-        } else if (feedType == 'sexDD') {
-            serializedJSON = JSON.serialize(getAudienceDD(Contact.EnrollmentrxRx__Gender__c.getDescribe()));
-        } else if (feedType == 'eventList') {
-            serializedJSON = JSON.serialize(getEventList());
-            serializedJSON = serializedJSON.replace('"endDate":', '"end":');
+        if (String.isNotBlank(feedType)) {
+            if (feedType.equalsIgnoreCase('audienceDD')) {
+                serializedJSON = JSON.serialize(getAudienceDD(UST_Event__c.Audience__c.getDescribe()));
+            } else if (feedType.equalsIgnoreCase('sexDD')) {
+                serializedJSON = JSON.serialize(getAudienceDD(Contact.EnrollmentrxRx__Gender__c.getDescribe()));
+            } else if (feedType.equalsIgnoreCase('eventList')) {
+                serializedJSON = JSON.serialize(getEventList());
+                serializedJSON = serializedJSON.replace('"endDate":', '"end":');
+            } else if (feedType.equalsIgnoreCase('parameterKey')) {
+                serializedJSON = JSON.serialize(getOptions());
+            }
         }
         if (!String.isBlank(callback)) {
             serializedJSON = callback + '(' + serializedJSON + ')';
@@ -78,7 +81,8 @@ global with sharing class USTEventFeed {
         eventQuery += ' Event__r.Location_Title__c, Event__r.Location_Type__c, Event__r.Location_Address__c, Event__r.Location_Map_Link__c, Event__r.Building__c, Event__r.Event_description__c, Event__r.Community_Base_URL__c, ';
         eventQuery += ' Building_Override__c, Alternate_Registration_URL_Override__c, Location_Address_Override__c, Location_Map_Link_Override__c, Location_Title_Override__c, Location_Type_Override__c,  ';
         eventQuery += ' Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c, Event__r.School__r.Name, Event__r.Event_Sponsor__c, ';
-        eventQuery += ' Event__r.Feed_Registration_Button_Text__c, Feed_Registration_Button_Text_Override__c, Capacity__c, Current_Available_Capacity__c, Event__r.Exclude_Search_Engine_Tag__c,Exclude_Search_Engine_Tag_Override__c ';
+        eventQuery += ' Event__r.Feed_Registration_Button_Text__c, Feed_Registration_Button_Text_Override__c, Capacity__c, Current_Available_Capacity__c, Event__r.Exclude_Search_Engine_Tag__c,Exclude_Search_Engine_Tag_Override__c, ';
+        eventQuery += ' Event__r.Where_to_Display__c, Event__r.Category__c, Event__r.Keep_Registration_Open_During_Event__c';
         eventQuery += ' FROM UST_Event_Instance__c';
         eventQuery += ' Where Event__R.Event_Status__c = \'Active\' ';
         eventQuery += ' AND Active_Status__c = \'Active\' ';
@@ -128,28 +132,35 @@ global with sharing class USTEventFeed {
             eventQuery += ' AND Event__r.id = \'' + eventId + '\' ';
         }
 
-        //get event based on audience (can be comma seperated)
+        //Audience filter (can be comma separated)
         String audience = req.params.get('audience');
         if (audience != 'all' && !String.isBlank(audience)) {
-            List<String> audienceList = new List<String>();
-            audienceList = audience.split(',');
-            for (String aud : audienceList) {
-                audience = '\'' + String.escapeSingleQuotes(aud) + '\',';
-            }
-            audience = audience.removeEnd(',');
-            eventQuery += ' AND Event__r.Audience__c INCLUDES (' + audience + ') ';
+            eventQuery += ' AND Event__r.Audience__c INCLUDES (' + sanitizeIncludeList(audience) + ') ';
         }
 
-        //Sponsor filter (can be comma seperated)
+        //Sponsor filter (can be comma separated)
         String sponsor = req.params.get('sponsor');
         if (!String.isBlank(sponsor)) {
-            List<String> sponsorList = new List<String>();
-            sponsorList = sponsor.split(',');
-            for (String spon : sponsorList) {
-                sponsor = '\'' + String.escapeSingleQuotes(spon) + '\',';
-            }
-            sponsor = sponsor.removeEnd(',');
-            eventQuery += ' AND Event__r.Event_Sponsor__c INCLUDES (' + sponsor + ') ';
+            eventQuery += ' AND Event__r.Event_Sponsor__c INCLUDES (' + sanitizeIncludeList(sponsor) + ') ';
+        }
+
+        //Display on filter (can be comma separated)
+        String displayOn = req.params.get('displayon');
+        System.debug('DISPLAY ON IN: ' + displayOn);
+        if (!String.isBlank(displayOn)) {
+            eventQuery += ' AND Event__r.Where_to_Display__c INCLUDES (' + sanitizeIncludeList(displayOn) + ') ';
+        }
+
+        //Category filter (can be comma separated)
+        String category = req.params.get('category');
+        if (!String.isBlank(category)) {
+            eventQuery += ' AND Event__r.Category__c INCLUDES (' + sanitizeIncludeList(category) + ') ';
+        }
+
+        //Program filter (can be comma separated)
+        String program = req.params.get('program');
+        if (!String.isBlank(program)) {
+            eventQuery += ' AND (' + sanitizeProgramOrLikeList(program) + ') ';
         }
 
         //get filter with like soql concatinated program,location, school, location address, location type
@@ -182,11 +193,11 @@ global with sharing class USTEventFeed {
 
         List<UST_Event_Instance__c> EventInstance = database.query(eventQuery);
 
-        Date regDateOpenDate = null;
+        Date compareCloseDate = null;
         for (UST_Event_Instance__c es : EventInstance) {
-            regDateOpenDate = Date.today();
+            compareCloseDate = Date.today();
             if (es.Event__r.Close_Event_Days_Before__c != null && es.Event__r.Close_Event_Days_Before__c != 0) {
-                regDateOpenDate = regDateOpenDate.addDays((Integer.valueOf(es.Event__r.Close_Event_Days_Before__c) + 1));
+                compareCloseDate = compareCloseDate.addDays((Integer.valueOf(es.Event__r.Close_Event_Days_Before__c) + 1));
             }
             eventItem evt = new eventItem();
             evt.ID = es.Id;
@@ -304,7 +315,18 @@ global with sharing class USTEventFeed {
             }
 
             Date startDate = date.newInstance(evt.start.year(), evt.start.month(), evt.start.day());
-            if (startDate < regDateOpenDate) {
+            Date endDate = date.newInstance(evt.endDate.year(), evt.endDate.month(), evt.endDate.day());
+
+            Boolean eventIsClosed = false;
+            if (es.Event__r.Keep_Registration_Open_During_Event__c) {
+                if (endDate < compareCloseDate && endDate != compareCloseDate) {
+                    eventIsClosed = true;
+                }
+            } else if (startDate <= compareCloseDate) {
+                eventIsClosed = true;
+            }
+
+            if (eventIsClosed) {
                 evt.eventClosed = true;
                 evt.eventUrl = 'javascript:void(0);';
                 evt.className = 'eventClosed';
@@ -328,6 +350,40 @@ global with sharing class USTEventFeed {
         return EventList;
     }
 
+    private static String sanitizeIncludeList(String listIn) {
+        String listOut = '';
+        if (String.isNotBlank(listIn)) {
+            List<String> listInList = new List<String>();
+            listInList = listIn.split(',');
+            for (String listItem : listInList) {
+                listOut += '\'' + String.escapeSingleQuotes(listItem) + '\',';
+            }
+            listOut = listOut.removeEnd(',');
+
+            return listOut;
+        }
+        return '';
+    }
+
+    private static String sanitizeProgramOrLikeList(String listIn) {
+        if (String.isNotBlank(listIn)) {
+            String listOut = '';
+            List<String> listInList = new List<String>();
+            listInList = listIn.split(',');
+            for (String listItem : listInList) {
+                listOut += ' ( Event__r.Program_Filter__c LIKE \'%' + String.escapeSingleQuotes(listItem) + '%\' ) OR ';
+                listOut += ' ( Event__r.Program_Filter_2__c LIKE \'%' + String.escapeSingleQuotes(listItem) + '%\' ) OR ';
+                listOut += ' ( Event__r.Program_Filter_3__c LIKE \'%' + String.escapeSingleQuotes(listItem) + '%\' ) OR ';
+            }
+            listOut = listOut.removeEnd(' OR ');
+            return listOut;
+        }
+        return '';
+    }
+
+
+    //eventQuery += ' Event__r.Program_Filter__c LIKE \'%' + f + '%\' OR ';
+
     private static Map<String, String> getAudienceDD(Schema.DescribeFieldResult fieldResult) {
         Map<String, String> fieldMap = new Map<String, String>();
         List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
@@ -335,6 +391,124 @@ global with sharing class USTEventFeed {
             fieldMap.put(f.getLabel(), f.getValue());
         }
         return fieldMap;
+    }
+
+    private static List<String> getObjectItemList (Schema.DescribeFieldResult fieldResult) {
+        List<String> fieldMap = new List<String>();
+        List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
+        for (Schema.PicklistEntry f : ple) {
+            fieldMap.add(f.getValue());
+        }
+        return fieldMap;
+    }
+
+    private class optionList {
+        String option;
+        String description;
+        List<String> items;
+    }
+
+    private static List<optionList> getOptions() {
+        List<optionList> allOptions = new List<optionList>();
+
+        //FeedType
+        allOptions.add(makeOption('feedType',new List<String>{'audienceDD','sexDD', 'eventList', 'parameterKey'},'Must be included to get any feed (&feedType= one of these items)'));
+
+        //Record Types
+        List<RecordType> recTypeList = [SELECT Id, Name FROM RecordType WHERE SObjectType = 'UST_Event__c'];
+        List<String> recTypeNames = new List<String>();
+        for (RecordType rt : recTypeList) {
+            recTypeNames.add(rt.Name);
+        }
+
+        doCRUD CRUDtoDo = new doCRUD();
+
+        allOptions.add(makeOption('rectype', recTypeNames, 'filters on salesforce record type (&rectype= one of these items)'));
+
+        //View start
+        allOptions.add(makeOption('viewStart',new List<String>{Datetime.now().addMonths(-1).format()},'The date scope of the feed start. Defaults to current month -1. (&viewStart=)'));
+
+        //View end
+        allOptions.add(makeOption('viewStart',new List<String>{Datetime.now().addMonths(1).format()},'The date scope of the feed end. Defaults to current month +1. (&viewEnd=)'));
+
+        //eventId
+        allOptions.add(makeOption('eventId',new List<String>{},'Shows only the instances under the event umbrella (&eventId= Salesforce Id for the event)'));
+
+        //audience
+        allOptions.add(makeOption('audience',getObjectItemList(UST_Event__c.Audience__c.getDescribe()),'Filters on audiences (&audience= single or coma separated list of these items)'));
+
+        //sponsor
+        allOptions.add(makeOption('sponsor',getObjectItemList(UST_Event__c.Event_Sponsor__c.getDescribe()),'Filters on sponsor (&sponsor= single or coma separated list of these items)'));
+
+        //displayon
+        allOptions.add(makeOption('displayon',getObjectItemList(UST_Event__c.Where_to_Display__c.getDescribe()),'Filters on where in the digital world you want to display events(&displayon= single or coma separated list of these items)'));
+
+        //category
+        allOptions.add(makeOption('category',getObjectItemList(UST_Event__c.Category__c.getDescribe()),'Filters category picklist events (&category= single or coma separated list of these items)'));
+
+        //longdesc
+        allOptions.add(makeOption('longdesc',new List<String>{'true','false','0','1'},'If set to 1 or true will show the long description of the event'));
+
+        //longdesc
+        allOptions.add(makeOption('program', CRUDtoDo.getPrograms(),'If set to 1 or true will show the long description of the event'));
+
+        //filter
+        allOptions.add(makeOption('filter',new List<String>{'Program_Filter','Location_Title','Location_Address','Building','School_Name'},'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
+
+        //filter-Location
+        allOptions.add(makeOption('filter+location',new List<String>{'Program_Filter','Location_Title','Location_Address','Building','School_Name'},'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
+
+        //filter-Program
+        allOptions.add(makeOption('filter+program',CRUDtoDo.getPrograms(),'Programs are filter on program code add the code before the equal sign to your filter list to get events in that program. (&filter=PROGRAM|CODE single or coma separated list of these items'));
+
+
+        //filter-Building
+        allOptions.add(makeOption('filter+building',getObjectItemList(UST_Event__c.Building__c.getDescribe()),'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
+
+        //filter-School name
+        allOptions.add(makeOption('filter+school',CRUDtoDo.getSchools(),'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
+        return allOptions;
+    }
+
+    private static optionList makeOption(String options, List<String> items, String description) {
+        optionList newOption = new optionList();
+        newOption.option = options;
+        newOption.description = description;
+        newOption.items =items;
+        return newOption;
+    }
+
+    private without sharing class doCRUD {
+        private List<String> getPrograms() {
+            List<Major__c> allPrograms = [
+                    SELECT Major_Display_Name__c, Prog_Major_Conc_Code__c, Program_Code__c, Status__c, Program_Offered__r.Degree_Level__c,  College_School__c, Program_Offered__r.School__r.Name, Degree_Level__c
+                    FROM Major__c
+                    WHERE Status__c = 'Active'
+                    ORDER BY Program_Offered__r.Degree_Level__c, Major_Display_Name__c
+            ];
+            List<String> allProgramsList = new List<String>();
+            String programString = '';
+            for (Major__c program : allPrograms) {
+                programString = program.Prog_Major_Conc_Code__c;
+                programString += ' = ' + program.Major_Display_Name__c;
+                programString += ' - ' + program.Degree_Level__c;
+                allProgramsList.add(programString);
+            }
+            return allProgramsList;
+        }
+
+        private List<String> getSchools() {
+            List<EnrollmentrxRx__School__c> allSchools = [
+                    SELECT Id, Name, Active_Display_on_Portal__c
+                    FROM EnrollmentrxRx__School__c
+                    WHERE Active_Display_on_Portal__c = TRUE
+            ];
+            List<String> allSchoolsList = new List<String>();
+            for (EnrollmentrxRx__School__c school : allSchools) {
+                allSchoolsList.add(school.Name);
+            }
+            return allSchoolsList;
+        }
     }
 
 }
