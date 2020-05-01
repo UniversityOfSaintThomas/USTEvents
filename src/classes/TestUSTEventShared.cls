@@ -343,6 +343,12 @@ public with sharing class TestUSTEventShared {
 
         //Test sex dd request
         req.params.remove('feedType');
+        req.params.put('feedType', 'parameterKey');
+        RestContext.request = req;
+        USTEventFeed.getUSTEventFeed();
+
+        //Test parameter key
+        req.params.remove('feedType');
         req.params.put('feedType', 'sexDD');
         RestContext.request = req;
         USTEventFeed.getUSTEventFeed();
@@ -350,6 +356,34 @@ public with sharing class TestUSTEventShared {
         //test filter minus dates
         req.params.remove('feedType');
         req.params.put('feedType', 'eventList');
+        RestContext.request = req;
+        USTEventFeed.getUSTEventFeed();
+
+        //test program parameter
+        req.params.remove('feedType');
+        req.params.put('feedType', 'eventList');
+        req.params.put('program', '|TEST|PROG');
+        RestContext.request = req;
+        USTEventFeed.getUSTEventFeed();
+
+        //test school parameter
+        req.params.remove('feedType');
+        req.params.put('feedType', 'eventList');
+        req.params.put('school', 'A Test School');
+        RestContext.request = req;
+        USTEventFeed.getUSTEventFeed();
+
+        //test category parameter
+        req.params.remove('feedType');
+        req.params.put('feedType', 'eventList');
+        req.params.put('category', 'A Category');
+        RestContext.request = req;
+        USTEventFeed.getUSTEventFeed();
+
+        //test building parameter
+        req.params.remove('feedType');
+        req.params.put('feedType', 'eventList');
+        req.params.put('building', 'A Building');
         RestContext.request = req;
         USTEventFeed.getUSTEventFeed();
 

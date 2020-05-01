@@ -37,7 +37,7 @@ global with sharing class USTEventFeed {
         feedType = RestContext.request.params.get('feedType');
         String recType = RestContext.request.params.get('rectype');
 
-        if (!String.isBlank(recType)) {
+        if (String.isNotBlank(recType)) {
             List<RecordType> recTypeList = [SELECT Id,Name FROM RecordType WHERE SObjectType = 'UST_Event__c' AND Name = :recType];
             if (recTypeList.size() > 0) {
                 recTypeId = recTypeList[0].Id;
@@ -66,7 +66,7 @@ global with sharing class USTEventFeed {
                 serializedJSON = JSON.serialize(getOptions());
             }
         }
-        if (!String.isBlank(callback)) {
+        if (String.isNotBlank(callback)) {
             serializedJSON = callback + '(' + serializedJSON + ')';
         }
         res.responseBody = Blob.valueOf(serializedJSON);
@@ -98,14 +98,14 @@ global with sharing class USTEventFeed {
         String formattedViewStart;
         String formattedViewEnd;
 
-        if (!String.isBlank(req.params.get('viewStart'))) {
+        if (String.isNotBlank(req.params.get('viewStart'))) {
             String viewStartString = req.params.get('viewStart').trim();
             if (!viewStartString.containsIgnoreCase(' ')) {
                 viewStartString = viewStartString + ' 00:00:00';
             }
             viewStart = DateTime.valueOf(viewStartString);
         }
-        if (!String.isBlank(req.params.get('viewEnd'))) {
+        if (String.isNotBlank(req.params.get('viewEnd'))) {
             String viewEndString = req.params.get('viewEnd').trim();
             if (!viewEndString.containsIgnoreCase(' ')) {
                 viewEndString = viewEndString + ' 23:59:59';
@@ -128,44 +128,56 @@ global with sharing class USTEventFeed {
         } catch (Exception e) {
             eventId = null;
         }
-        if (!String.isBlank(eventId)) {
+        if (String.isNotBlank(eventId)) {
             eventQuery += ' AND Event__r.id = \'' + eventId + '\' ';
         }
 
         //Audience filter (can be comma separated)
         String audience = req.params.get('audience');
-        if (audience != 'all' && !String.isBlank(audience)) {
+        if (audience != 'all' && String.isNotBlank(audience)) {
             eventQuery += ' AND Event__r.Audience__c INCLUDES (' + sanitizeIncludeList(audience) + ') ';
         }
 
         //Sponsor filter (can be comma separated)
         String sponsor = req.params.get('sponsor');
-        if (!String.isBlank(sponsor)) {
+        if (String.isNotBlank(sponsor)) {
             eventQuery += ' AND Event__r.Event_Sponsor__c INCLUDES (' + sanitizeIncludeList(sponsor) + ') ';
         }
 
         //Display on filter (can be comma separated)
         String displayOn = req.params.get('displayon');
         System.debug('DISPLAY ON IN: ' + displayOn);
-        if (!String.isBlank(displayOn)) {
+        if (String.isNotBlank(displayOn)) {
             eventQuery += ' AND Event__r.Where_to_Display__c INCLUDES (' + sanitizeIncludeList(displayOn) + ') ';
         }
 
         //Category filter (can be comma separated)
         String category = req.params.get('category');
-        if (!String.isBlank(category)) {
+        if (String.isNotBlank(category)) {
             eventQuery += ' AND Event__r.Category__c INCLUDES (' + sanitizeIncludeList(category) + ') ';
         }
 
         //Program filter (can be comma separated)
         String program = req.params.get('program');
-        if (!String.isBlank(program)) {
+        if (String.isNotBlank(program)) {
             eventQuery += ' AND (' + sanitizeProgramOrLikeList(program) + ') ';
+        }
+
+        //School filter (can be comma separated)
+        String school = req.params.get('school');
+        if (String.isNotBlank(school)) {
+            eventQuery += ' AND (' + sanitizeOrLikeList(school, 'Event__r.School__r.Name') + ') ';
+        }
+
+        //School filter (can be comma separated)
+        String building = req.params.get('building');
+        if (String.isNotBlank(building)) {
+            eventQuery += ' AND (' + sanitizeOrLikeList(building, 'Event__r.Building__c') + ') ';
         }
 
         //get filter with like soql concatinated program,location, school, location address, location type
         String filter = req.params.get('filter');
-        if (!String.isBlank(filter)) {
+        if (String.isNotBlank(filter)) {
             eventQuery += ' AND  (';
             List<String> filterList = filter.split(',');
             for (String f : filterList) {
@@ -179,7 +191,7 @@ global with sharing class USTEventFeed {
             eventQuery += ' ) ';
         }
 
-        if (!String.isBlank(recTypeId)) {
+        if (String.isNotBlank(recTypeId)) {
             eventQuery += ' AND Event__r.RecordType.Id = \'' + String.valueOf(recTypeId) + '\' ';
         }
 
@@ -191,7 +203,22 @@ global with sharing class USTEventFeed {
             }
         }
 
-        List<UST_Event_Instance__c> EventInstance = database.query(eventQuery);
+        List<UST_Event_Instance__c> EventInstance = new List<UST_Event_Instance__c>();
+        Try {
+            EventInstance = database.query(eventQuery);
+        } Catch (Exception ex) {
+//            List<eventItem> errorEvent = new List<eventItem>();
+//            eventItem ei = new eventItem();
+//            ei.title = 'Exception Error';
+//            ei.description = ex.getMessage();
+//            errorEvent.add(ei);
+//            ei = new eventItem();
+//            ei.title = 'Query';
+//            ei.description =eventQuery;
+//            errorEvent.add(ei);
+//            Return errorEvent;
+        }
+
 
         Date compareCloseDate = null;
         for (UST_Event_Instance__c es : EventInstance) {
@@ -211,12 +238,11 @@ global with sharing class USTEventFeed {
                 evt.title += ' - ' + es.Instance_Title__c;
             }
 
-            if (!String.isBlank(es.Instance_Short_Description__c)) {
+            if (String.isNotBlank(es.Instance_Short_Description__c)) {
                 evt.instanceDesc = es.Instance_Short_Description__c;
             } else {
                 evt.instanceDesc = '';
             }
-
 
             evt.excludeSearchTag = false;
 
@@ -224,36 +250,35 @@ global with sharing class USTEventFeed {
                 evt.excludeSearchTag = true;
             }
 
-
-            if (!String.isBlank(es.Feed_Registration_Button_Text_Override__c)) {
+            if (String.isNotBlank(es.Feed_Registration_Button_Text_Override__c)) {
                 evt.FeedButtonText = es.Feed_Registration_Button_Text_Override__c;
-            } else if (!String.isBlank(es.Event__r.Feed_Registration_Button_Text__c)) {
+            } else if (String.isNotBlank(es.Event__r.Feed_Registration_Button_Text__c)) {
                 evt.FeedButtonText = es.Event__r.Feed_Registration_Button_Text__c;
             } else {
                 evt.FeedButtonText = 'Register';
             }
 
-            if (!String.isBlank(es.Location_Type_Override__c)) {
+            if (String.isNotBlank(es.Location_Type_Override__c)) {
                 evt.locationType = es.Location_Type_Override__c;
-            } else if (!String.isBlank(es.Event__r.Location_Type__c)) {
+            } else if (String.isNotBlank(es.Event__r.Location_Type__c)) {
                 evt.locationType = es.Event__r.Location_Type__c;
             } else {
                 evt.locationType = '';
             }
 
-            if (!String.isBlank(es.Event__r.Event_Sponsor__c)) {
+            if (String.isNotBlank(es.Event__r.Event_Sponsor__c)) {
                 evt.sponsors = es.Event__r.Event_Sponsor__c;
             } else {
                 evt.sponsors = '';
             }
 
-            if (!String.isBlank(es.Event__r.Building__c)) {
+            if (String.isNotBlank(es.Event__r.Building__c)) {
                 evt.locationBuilding = es.Event__r.Building__c;
             } else {
                 evt.locationBuilding = '';
             }
 
-            if (!String.isBlank(es.Event__r.Event_Short_Listing_Description__c)) {
+            if (String.isNotBlank(es.Event__r.Event_Short_Listing_Description__c)) {
                 evt.description = es.Event__r.Event_Short_Listing_Description__c;
             } else {
                 evt.description = '';
@@ -284,8 +309,8 @@ global with sharing class USTEventFeed {
                 evt.endDate = USTShared.adjustForCenteralTime(es.End_Date_Time__c);
             }
 
-            if (!String.isBlank(es.Event__r.Location_Title__c) || !String.isBlank(es.Location_Title_Override__c)) {
-                if (!String.isBlank(es.Location_Title_Override__c)) {
+            if (String.isNotBlank(es.Event__r.Location_Title__c) || String.isNotBlank(es.Location_Title_Override__c)) {
+                if (String.isNotBlank(es.Location_Title_Override__c)) {
                     evt.locationTitle = es.Location_Title_Override__c;
                 } else {
                     evt.locationTitle = es.Event__r.Location_Title__c;
@@ -294,8 +319,8 @@ global with sharing class USTEventFeed {
                 evt.locationTitle = '';
             }
 
-            if (!String.isBlank(es.Event__r.Location_Address__c) || !String.isBlank(es.Location_Address_Override__c)) {
-                if (!String.isBlank(es.Location_Address_Override__c)) {
+            if (String.isNotBlank(es.Event__r.Location_Address__c) || String.isNotBlank(es.Location_Address_Override__c)) {
+                if (String.isNotBlank(es.Location_Address_Override__c)) {
                     evt.locationAddress = es.Location_Address_Override__c;
                 } else {
                     evt.locationAddress = es.Event__r.Location_Address__c;
@@ -304,8 +329,8 @@ global with sharing class USTEventFeed {
                 evt.locationAddress = '';
             }
 
-            if (!String.isBlank(es.Event__r.Location_Map_Link__c) || !String.isBlank(es.Location_Map_Link_Override__c)) {
-                if (!String.isBlank(es.Location_Map_Link_Override__c)) {
+            if (String.isNotBlank(es.Event__r.Location_Map_Link__c) || String.isNotBlank(es.Location_Map_Link_Override__c)) {
+                if (String.isNotBlank(es.Location_Map_Link_Override__c)) {
                     evt.locationMapLink = es.Location_Map_Link_Override__c;
                 } else {
                     evt.locationMapLink = es.Event__r.Location_Map_Link__c;
@@ -332,8 +357,8 @@ global with sharing class USTEventFeed {
                 evt.className = 'eventClosed';
             } else {
                 evt.eventClosed = false;
-                if (!String.isBlank(es.Event__r.Alternate_Registration_URL__c) || !String.isBlank(es.Alternate_Registration_URL_Override__c)) {
-                    if (!String.isBlank(es.Alternate_Registration_URL_Override__c)) {
+                if (String.isNotBlank(es.Event__r.Alternate_Registration_URL__c) || String.isNotBlank(es.Alternate_Registration_URL_Override__c)) {
+                    if (String.isNotBlank(es.Alternate_Registration_URL_Override__c)) {
                         evt.eventUrl = es.Alternate_Registration_URL_Override__c;
                     } else {
                         evt.eventUrl = es.Event__r.Alternate_Registration_URL__c;
@@ -356,7 +381,7 @@ global with sharing class USTEventFeed {
             List<String> listInList = new List<String>();
             listInList = listIn.split(',');
             for (String listItem : listInList) {
-                listOut += '\'' + String.escapeSingleQuotes(listItem) + '\',';
+                listOut += '\'' + String.escapeSingleQuotes(listItem.trim()) + '\',';
             }
             listOut = listOut.removeEnd(',');
 
@@ -371,9 +396,23 @@ global with sharing class USTEventFeed {
             List<String> listInList = new List<String>();
             listInList = listIn.split(',');
             for (String listItem : listInList) {
-                listOut += ' ( Event__r.Program_Filter__c LIKE \'%' + String.escapeSingleQuotes(listItem) + '%\' ) OR ';
-                listOut += ' ( Event__r.Program_Filter_2__c LIKE \'%' + String.escapeSingleQuotes(listItem) + '%\' ) OR ';
-                listOut += ' ( Event__r.Program_Filter_3__c LIKE \'%' + String.escapeSingleQuotes(listItem) + '%\' ) OR ';
+                listOut += ' ( Event__r.Program_Filter__c LIKE \'%' + String.escapeSingleQuotes(listItem.trim()) + '%\' ) OR ';
+                listOut += ' ( Event__r.Program_Filter_2__c LIKE \'%' + String.escapeSingleQuotes(listItem.trim()) + '%\' ) OR ';
+                listOut += ' ( Event__r.Program_Filter_3__c LIKE \'%' + String.escapeSingleQuotes(listItem.trim()) + '%\' ) OR ';
+            }
+            listOut = listOut.removeEnd(' OR ');
+            return listOut;
+        }
+        return '';
+    }
+
+    private static String sanitizeOrLikeList(String listIn, String fieldToCompare) {
+        if (String.isNotBlank(listIn)) {
+            String listOut = '';
+            List<String> listInList = new List<String>();
+            listInList = listIn.split(',');
+            for (String listItem : listInList) {
+                listOut += ' ( ' + fieldToCompare + ' LIKE \'%' + String.escapeSingleQuotes(listItem.trim()) + '%\' ) OR ';
             }
             listOut = listOut.removeEnd(' OR ');
             return listOut;
@@ -393,7 +432,7 @@ global with sharing class USTEventFeed {
         return fieldMap;
     }
 
-    private static List<String> getObjectItemList (Schema.DescribeFieldResult fieldResult) {
+    private static List<String> getObjectItemList(Schema.DescribeFieldResult fieldResult) {
         List<String> fieldMap = new List<String>();
         List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
         for (Schema.PicklistEntry f : ple) {
@@ -403,16 +442,18 @@ global with sharing class USTEventFeed {
     }
 
     private class optionList {
-        String option;
+        String parameter;
         String description;
-        List<String> items;
+        List<String> options;
     }
 
     private static List<optionList> getOptions() {
         List<optionList> allOptions = new List<optionList>();
 
         //FeedType
-        allOptions.add(makeOption('feedType',new List<String>{'audienceDD','sexDD', 'eventList', 'parameterKey'},'Must be included to get any feed (&feedType= one of these items)'));
+        allOptions.add(makeOption('feedType', new List<String>{
+                'audienceDD', 'sexDD', 'eventList', 'parameterKey'
+        }, 'Must be included to get any feed (&feedType= one of these items)'));
 
         //Record Types
         List<RecordType> recTypeList = [SELECT Id, Name FROM RecordType WHERE SObjectType = 'UST_Event__c'];
@@ -426,62 +467,75 @@ global with sharing class USTEventFeed {
         allOptions.add(makeOption('rectype', recTypeNames, 'filters on salesforce record type (&rectype= one of these items)'));
 
         //View start
-        allOptions.add(makeOption('viewStart',new List<String>{Datetime.now().addMonths(-1).format()},'The date scope of the feed start. Defaults to current month -1. (&viewStart=)'));
+        allOptions.add(makeOption('viewStart', new List<String>{
+                Datetime.now().addMonths(-1).format()
+        }, 'The date scope of the feed start. Defaults to current month -1. (&viewStart=)'));
 
         //View end
-        allOptions.add(makeOption('viewStart',new List<String>{Datetime.now().addMonths(1).format()},'The date scope of the feed end. Defaults to current month +1. (&viewEnd=)'));
+        allOptions.add(makeOption('viewEnd', new List<String>{
+                Datetime.now().addMonths(1).format()
+        }, 'The date scope of the feed end. Defaults to current month +1. (&viewEnd=)'));
 
         //eventId
-        allOptions.add(makeOption('eventId',new List<String>{},'Shows only the instances under the event umbrella (&eventId= Salesforce Id for the event)'));
+        allOptions.add(makeOption('eventId', new List<String>{
+        }, 'Shows only the instances under the event umbrella (&eventId= Salesforce Id for the event)'));
 
         //audience
-        allOptions.add(makeOption('audience',getObjectItemList(UST_Event__c.Audience__c.getDescribe()),'Filters on audiences (&audience= single or coma separated list of these items)'));
+        allOptions.add(makeOption('audience', getObjectItemList(UST_Event__c.Audience__c.getDescribe()), 'Filters on audiences (&audience= single or coma separated list of these items)'));
 
         //sponsor
-        allOptions.add(makeOption('sponsor',getObjectItemList(UST_Event__c.Event_Sponsor__c.getDescribe()),'Filters on sponsor (&sponsor= single or coma separated list of these items)'));
+        allOptions.add(makeOption('sponsor', getObjectItemList(UST_Event__c.Event_Sponsor__c.getDescribe()), 'Filters on sponsor (&sponsor= single or coma separated list of these items)'));
 
         //displayon
-        allOptions.add(makeOption('displayon',getObjectItemList(UST_Event__c.Where_to_Display__c.getDescribe()),'Filters on where in the digital world you want to display events(&displayon= single or coma separated list of these items)'));
+        allOptions.add(makeOption('displayon', getObjectItemList(UST_Event__c.Where_to_Display__c.getDescribe()), 'Filters on where in the digital world you want to display events(&displayon= single or coma separated list of these items)'));
 
         //category
-        allOptions.add(makeOption('category',getObjectItemList(UST_Event__c.Category__c.getDescribe()),'Filters category picklist events (&category= single or coma separated list of these items)'));
+        allOptions.add(makeOption('category', getObjectItemList(UST_Event__c.Category__c.getDescribe()), 'Filters category picklist events (&category= single or coma separated list of these items)'));
 
         //longdesc
-        allOptions.add(makeOption('longdesc',new List<String>{'true','false','0','1'},'If set to 1 or true will show the long description of the event'));
+        allOptions.add(makeOption('longdesc', new List<String>{
+                'true', 'false', '0', '1'
+        }, 'If set to 1 or true will show the long description of the event'));
 
-        //longdesc
-        allOptions.add(makeOption('program', CRUDtoDo.getPrograms(),'If set to 1 or true will show the long description of the event'));
+        //program
+        allOptions.add(makeOption('program', CRUDtoDo.getPrograms(), 'Filters program list of events (&program= single or coma separated list of these items)'));
+
+        //program
+        allOptions.add(makeOption('school', CRUDtoDo.getSchools(), 'Filters school list of events (&school= single or coma separated list of these items)'));
 
         //filter
-        allOptions.add(makeOption('filter',new List<String>{'Program_Filter','Location_Title','Location_Address','Building','School_Name'},'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
+        allOptions.add(makeOption('filter', new List<String>{
+                'Program_Filter', 'Location_Title', 'Location_Address', 'Building', 'School_Name'
+        }, 'Filter searches with a like statement all of these items together. (&filter= single or coma separated list of these items)'));
 
         //filter-Location
-        allOptions.add(makeOption('filter+location',new List<String>{'Program_Filter','Location_Title','Location_Address','Building','School_Name'},'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
+        allOptions.add(makeOption('filter+location', new List<String>{
+                'Program_Filter', 'Location_Title', 'Location_Address', 'Building', 'School_Name'
+        }, 'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
 
         //filter-Program
-        allOptions.add(makeOption('filter+program',CRUDtoDo.getPrograms(),'Programs are filter on program code add the code before the equal sign to your filter list to get events in that program. (&filter=PROGRAM|CODE single or coma separated list of these items'));
-
+        allOptions.add(makeOption('filter+program', CRUDtoDo.getPrograms(), 'Programs are filter on program code add the code before the equal sign to your filter list to get events in that program. (&filter=PROGRAM|CODE single or coma separated list of these items'));
 
         //filter-Building
-        allOptions.add(makeOption('filter+building',getObjectItemList(UST_Event__c.Building__c.getDescribe()),'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
+        allOptions.add(makeOption('filter+building', getObjectItemList(UST_Event__c.Building__c.getDescribe()), 'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
 
         //filter-School name
-        allOptions.add(makeOption('filter+school',CRUDtoDo.getSchools(),'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
+        allOptions.add(makeOption('filter+school', CRUDtoDo.getSchools(), 'Filter searches with a like statement all of these items. (&filter= single or coma separated list of these items)'));
         return allOptions;
     }
 
     private static optionList makeOption(String options, List<String> items, String description) {
         optionList newOption = new optionList();
-        newOption.option = options;
+        newOption.parameter = options;
         newOption.description = description;
-        newOption.items =items;
+        newOption.options = items;
         return newOption;
     }
 
     private without sharing class doCRUD {
         private List<String> getPrograms() {
             List<Major__c> allPrograms = [
-                    SELECT Major_Display_Name__c, Prog_Major_Conc_Code__c, Program_Code__c, Status__c, Program_Offered__r.Degree_Level__c,  College_School__c, Program_Offered__r.School__r.Name, Degree_Level__c
+                    SELECT Major_Display_Name__c, Prog_Major_Conc_Code__c, Program_Code__c, Status__c, Program_Offered__r.Degree_Level__c, College_School__c, Program_Offered__r.School__r.Name, Degree_Level__c
                     FROM Major__c
                     WHERE Status__c = 'Active'
                     ORDER BY Program_Offered__r.Degree_Level__c, Major_Display_Name__c
