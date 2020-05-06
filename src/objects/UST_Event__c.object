@@ -156,18 +156,6 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
-        <fullName>Academic_Program_List_Selected__c</fullName>
-        <description>List of academic programs selected.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>List of academic programs selected.</inlineHelpText>
-        <label>Academic Program List Selected</label>
-        <length>6000</length>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
-    </fields>
-    <fields>
         <fullName>Academic_Program_List__c</fullName>
         <description>List of selected academic programs.</description>
         <externalId>false</externalId>
@@ -283,33 +271,6 @@
             </valueSetDefinition>
         </valueSet>
         <visibleLines>5</visibleLines>
-    </fields>
-    <fields>
-        <fullName>Academic_Program_Selected__c</fullName>
-        <description>Programs available for selection in academic programs.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Programs available for selection in academic programs.</inlineHelpText>
-        <label>Academic Program Selected</label>
-        <length>8000</length>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>LongTextArea</type>
-        <visibleLines>3</visibleLines>
-    </fields>
-    <fields>
-        <fullName>Academic_Program__c</fullName>
-        <deleteConstraint>SetNull</deleteConstraint>
-        <description>Define an academic program this event is tied.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>Define an academic program this event is tied.</inlineHelpText>
-        <label>Academic Program</label>
-        <referenceTo>EnrollmentrxRx__Program_Offered__c</referenceTo>
-        <relationshipLabel>UST Events</relationshipLabel>
-        <relationshipName>UST_Events</relationshipName>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>Lookup</type>
     </fields>
     <fields>
         <fullName>Add_Info_Question_Pick_List_1__c</fullName>

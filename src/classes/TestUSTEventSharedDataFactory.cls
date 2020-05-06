@@ -48,8 +48,7 @@ public with sharing class TestUSTEventSharedDataFactory {
                 Location_Title__c = 'A location',
                 Location_Map_Link__c = 'Map Link 1',
                 Location_Address__c = '123 Electric Ave.',
-                Location_Type__c = 'St. Paul',
-                Academic_Program_List__c = ''
+                Location_Type__c = 'St. Paul'
 
         );
 
@@ -62,7 +61,9 @@ public with sharing class TestUSTEventSharedDataFactory {
             testEvent.Add_Info_Question_Type_1__c = 'Pick-list';
             testEvent.Add_Info_Question_Text_1__c = 'What is your favorite color?';
             testEvent.Add_Info_Question_Pick_List_1__c = 'Red\nGreen\nYellow\nBlue';
-            testEvent.Academic_Program_List__c = 'This(THIS_THIS|THAT);That(THAT_THAT|THIS);';
+            testEvent.Program_Filter__c = 'THIS_THIS|THAT;THAT_THAT|THIS;';
+            testEvent.Program_Filter_2__c = 'THIS_THIS|THAT;THAT_THAT|THIS;';
+            testEvent.Program_Filter_3__c = 'THIS_THIS|THAT;THAT_THAT|THIS;';
         }
 
         insert testEvent;

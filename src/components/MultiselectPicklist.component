@@ -60,7 +60,7 @@
                         </apex:repeat>
                     </select>
                 </td>
-                <td class="buttonCell">
+                <td class="buttonCell buttonCellUpDown">
                     <apex:outputPanel layout="block" styleClass="text" rendered="{!showUpDownButtons}">Up
                     </apex:outputPanel>
                     <apex:outputPanel layout="block" styleClass="text" rendered="{!showUpDownButtons}">

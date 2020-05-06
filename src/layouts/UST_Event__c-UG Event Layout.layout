@@ -119,6 +119,10 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
+                <field>Keep_Registration_Open_During_Event__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
                 <field>Close_Event_Days_Before__c</field>
             </layoutItems>
             <layoutItems>
@@ -210,7 +214,7 @@
                 <field>Ask_Registrant_Program_Of_Interest__c</field>
             </layoutItems>
             <layoutItems>
-                <height>250</height>
+                <height>300</height>
                 <page>USTEventProgramLookup</page>
                 <showLabel>false</showLabel>
                 <showScrollbars>false</showScrollbars>
@@ -218,11 +222,31 @@
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
-                <field>Program_Filter__c</field>
+                <field>Academic_Program__c</field>
             </layoutItems>
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Academic_Program_List__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Academic_Program_List_Selected__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Academic_Program_Selected__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Program_Filter__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Program_Filter_2__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>Program_Filter_3__c</field>
             </layoutItems>
         </layoutColumns>
         <style>OneColumn</style>

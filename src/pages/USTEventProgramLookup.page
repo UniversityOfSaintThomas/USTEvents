@@ -10,11 +10,15 @@
 
         .selectCell {
             width: 45%;
-            text-align:left!important;
+            text-align: left !important;
         }
 
         .buttonCell {
             width: 5%
+        }
+
+        .buttonCellUpDown {
+            display: none;
         }
 
         .buttonCell:nth-child(odd) {
@@ -25,18 +29,68 @@
             width: 100%;
         }
     </style>
+    <script>
+        var ready = (callback) => {
+            if (document.readyState != "loading") callback();
+            else document.addEventListener("DOMContentLoaded", callback);
+        }
+
+        ready(() => {
+            let schoolSelection = document.querySelector("[id$=schoolSelector]");
+            let schoolId = "{!UST_Event__c.School__c}";
+            if (schoolSelection.length && schoolId) {
+                schoolSelection.value = schoolId;
+            }
+        });
+
+        function sendSchoolInfo() {
+            let schoolSelection = document.querySelector("[id$=schoolSelector]");
+            let programSelector = document.querySelector("[id$=rightList]");
+            if (schoolSelection.length) {
+                let schoolId = schoolSelection.value;
+                let schoolName = schoolSelection.options[schoolSelection.selectedIndex].innerHTML;
+                let selectedValues = "";
+                if (programSelector.length) {
+                    for (let i = 0; i < programSelector.length; i++) {
+                        selectedValues += programSelector[i].text + ";";
+                    }
+                    if (selectedValues) {
+                        selectedValues = selectedValues.substring(0, selectedValues.length - 1);
+                    }
+                }
+                saveAndSelectUpdate(schoolId, schoolName, selectedValues)
+            }
+        }
+    </script>
+
     <apex:form id="programSelector">
         <apex:inputHidden value="{!UST_Event__c.School__c}" id="schoolIdField"></apex:inputHidden>
-        <apex:inputHidden value="{!UST_Event__c.Academic_Program_List__c}" id="acadProgList"></apex:inputHidden>
-        <apex:inputHidden value="{!UST_Event__c.Academic_Program_List_Selected__c}" id="acadProgList2"></apex:inputHidden>
-        <c:MultiselectPicklist leftLabel="Available Programs"
-                               leftOption="{!Programs}"
-                               rightLabel="Selected Programs"
-                               rightOption="{!SelectedPrograms}"
-                               size="10"
-                               width="150px"/>
-
-        <apex:commandButton value="Update Selected Programs" action="{!save}" onComplete="window.top.location='/{!UST_Event__c.id}'; return false;"></apex:commandButton>
-
+        <apex:inputHidden value="{!UST_Event__c.School__r.Name}" id="schoolNameField"></apex:inputHidden>
+        <apex:inputHidden value="{!UST_Event__c.Program_Filter__c}" id="acadProgList"></apex:inputHidden>
+        <apex:inputHidden value="{!UST_Event__c.Program_Filter_2__c}" id="acadProgList2"></apex:inputHidden>
+        <apex:inputHidden value="{!UST_Event__c.Program_Filter_3__c}" id="acadProgList3"></apex:inputHidden>
+        <apex:actionFunction name="saveAndSelectUpdate" action="{!refreshPrograms}" immediate="true" reRender="selectionArea">
+            <apex:param name="schoolId" value="" assignTo="{!selectedSchoolId}"></apex:param>
+            <apex:param name="schoolName" value="" assignTo="{!selectedSchoolName}"></apex:param>
+            <apex:param name="selectedPrograms" value="" assignTo="{!selectedProgramsString}"></apex:param>
+        </apex:actionFunction>
+        <p>
+            <apex:outputLabel value="School: "/>
+            <apex:selectList value="{!selectedSchoolId}" multiselect="false" id="schoolSelector" size="1" onChange="sendSchoolInfo()">
+                <apex:selectOptions value="{!schools}"/>
+            </apex:selectList>
+        </p>
+        <apex:outputPanel layout="block" id="selectionArea">
+            <c:MultiselectPicklist leftLabel="Available Programs for {!selectedSchoolName}"
+                                   leftOption="{!Programs}"
+                                   rightLabel="Selected Programs "
+                                   rightOption="{!SelectedPrograms}"
+                                   size="10"
+                                   width="150px"/>
+            <p>
+                <apex:commandButton value="Update Selected Programs" action="{!save}" onComplete="window.top.location='/{!UST_Event__c.id}'; return false;"></apex:commandButton>
+                <em> You must click this for selected programs to be recorder</em>
+            </p>
+        </apex:outputPanel>
     </apex:form>
 </apex:page>

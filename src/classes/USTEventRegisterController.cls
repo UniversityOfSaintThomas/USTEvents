@@ -125,10 +125,10 @@ public with sharing class USTEventRegisterController {
                             Add_Info_Question_Pick_List_3__c, Add_Info_Question_Text_3__c, Add_Info_Question_Type_3__c,
                             Add_Info_Question_Pick_List_4__c, Add_Info_Question_Text_4__c, Add_Info_Question_Type_4__c,
                             Add_Info_Question_Pick_List_5__c, Add_Info_Question_Text_5__c, Add_Info_Question_Type_5__c,
-                            Academic_Program_List__c, School__c, School__r.Name, Ask_Mailing_Address__c, Ask_Phone__c, Event_Sponsor__c,
+                            School__c, School__r.Name, Ask_Mailing_Address__c, Ask_Phone__c, Event_Sponsor__c,
                             Applicant_Type__c, Location_Type__c, Location_Title__c, Location_Address__c, Location_Map_Link__c,
                             Tracking_Event_Registration__c, Ask_Date_Of_Birth__c, Event_Type__c, RecordType.Name, Contact_Creation__c,
-                            Exclude_Search_Engine_Tag__c, Registration_Email_Restriction__c
+                            Exclude_Search_Engine_Tag__c, Registration_Email_Restriction__c, Program_Filter__c, Program_Filter_2__c, Program_Filter_3__c
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1

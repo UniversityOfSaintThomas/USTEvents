@@ -8,6 +8,9 @@
             <apex:insert name="metaPageTitle"/>
         </title>
         <meta content="At the Opus College of Business, our mission is to unlock the talent of future problem solvers and prepare students to be highly principled, global business leaders." name="description"/>
+        <script src="https://s3.amazonaws.com/orion-static-files/js/manifest.js?v=7949d36d0a5e6fb9f2a3da1610935aa1291632f6" type="text/javascript"></script>
+        <script src="https://s3.amazonaws.com/orion-static-files/js/vendor.js?v=7949d36d0a5e6fb9f2a3da1610935aa1291632f6" type="text/javascript"></script>
+        <script src="https://s3.amazonaws.com/orion-static-files/js/app.js?v=7949d36d0a5e6fb9f2a3da1610935aa1291632f6" type="text/javascript"></script>
         <link href="https://s3.amazonaws.com/orion-static-files/css/app.css" rel="stylesheet"/>
         <link href="https://fast.fonts.net/t/1.css?apiType=css&amp;projectid=0c20a741-3f4c-46c8-a6fa-debbf6951b8a" rel="stylesheet" type="text/css"/>
         <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=default,polyfill.ioArray.prototype.includes,Symbol"></script>
@@ -28,154 +31,13 @@
                 'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
             })(window,document,'script','dataLayer','GTM-5RDGQ79');</script>
         <!-- End Google Tag Manager -->
-
-
-        <script type="text/javascript">
-            $(document).ready(() => {
-                const dropdownArrow = '<svg viewBox="0 0 16 9.1" class="select-down-arrow"><polygon points="16,1.1 14.9,0 8,6.9 1.1,0 0,1.1 8,9.1 9.1,8 9.1,8"></polygon></svg>';
-
-                /* Add the dropdown arrow to all elements that require it */
-                $('input[type=file], input[type=radio], select').each(function () {
-                    $(this).after(dropdownArrow);
-                    $(this).nextAll('label')
-                        .css('transform', 'translate(-18px,-24px) scale(.8)');
-                });
-
-                /* On focus, move the label to the top-left corner */
-                $(document).on('focus', 'input:not([type=checkbox]), textarea', function () {
-                    $(this).next('label')
-                        .css('transform', 'translate(-18px,-24px) scale(.8)');
-                });
-
-                /* On blur, move the label back to the center */
-                $(document).on('blur', 'input:not([type=checkbox]), textarea', function () {
-                    if ($(this).val() !== '') return;
-                    $(this).next('label')
-                        .css('transform', 'none');
-                });
-
-                /* Change any placeholders to inputs */
-                $('input[placeholder]').each(function () {
-                    if ($(this).hasClass('search__input')) return;
-
-                    let placeholder = $(this).attr('placeholder');
-
-                    let $label = $('<label />')
-                        .text(placeholder);
-
-                    $(this)
-                        .removeAttr('placeholder')
-                        .after($label);
-                });
-
-                /* Move any labels before inputs to after the input */
-                $('label ~ input, label ~ select, label ~ textarea').each(function () {
-                    let $label = $(this).prev('label');
-                    $label.remove();
-
-                    $(this).after($label);
-                })
-                    .promise()
-                    .done(function () {
-                        /* Deletes any stray labels and their empty container */
-                        $('label[for]').each(function () {
-                            let $label = $(this);
-
-                            if ($label.nextAll('input').length || $label.prevAll('input').length
-                                || $label.nextAll('select').length || $label.prevAll('select').length
-                                || $label.nextAll('textarea').length || $label.prevAll('textarea').length
-                                || $label.nextAll('legend').length || $label.prevAll('legend').length) {
-                                return;
-                            }
-
-                            let $container = $label.parent();
-
-                            $label.remove();
-
-                            if ($container.is(':empty')) $container.remove();
-                        });
-                    });
-
-                /*
-                 * ===================
-                 *  Grid system fixes
-                 * ===================
-                 */
-
-                /* Replace all instances of class .row with class .grid-x */
-                $('.row').each(function () {
-                    $(this).toggleClass('grid-x grid-margin-x row');
-                });
-
-                /* Replace all instances of class .column with class .cell */
-                $('.column, .columns').each(function () {
-                    if ($(this).hasClass('columns')) $(this).toggleClass('cell columns');
-                    if ($(this).hasClass('column')) $(this).toggleClass('cell column');
-                });
-
-                /*
-                 * =======================
-                 *  Expandable form fixes
-                 * =======================
-                 */
-
-                $('.form-expandable').each(function () {
-                    let $form = $(this).find('.form');
-                    if (!$form.length) $form = $(this).find('form');
-
-                    if ($form.length) {
-                        $form
-                            .data('height', $form.height())
-                            .data('padding', $form.css('padding'))
-                            .css({
-                                'max-height': 0,
-                                'padding': 0
-                            })
-                            .addClass('form-expandable__form');
-                    }
-                });
-
-                $('.form-expandable__expand-button').on('click', function () {
-                    let $form = $(this).parent().nextAll('.form');
-                    if (!$form.length) $form = $(this).parent().nextAll('form');
-
-                    if ($form.length) {
-                        if ($form.css('max-height') === '0px') {
-                            $form.css({
-                                'max-height': $form.data('height'),
-                                'padding': $form.data('padding')
-                            });
-                        } else {
-                            $form.css({
-                                'max-height': 0,
-                                'padding': 0
-                            })
-                        }
-                    }
-                });
-            })
-            ;
-        </script>
-        <style>
-            form {
-                padding: 1.5rem 1rem;
-            }
-
-            @media print, screen and (min-width: 64em) {
-                form {
-                    padding: 3rem 15rem;
-                }
-            }
-        </style>
+git p
     </head>
     <body>
-
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KHFMKX"
                       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-
-
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5RDGQ79" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->

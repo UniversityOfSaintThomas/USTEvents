@@ -11,7 +11,7 @@
         </apex:define>
         <apex:define name="pageTitle"><a href="{!eventPage.Event_home_Link_URL__c}">{!eventPage.Event_Home_Link_Title__c}</a></apex:define>
         <apex:define name="afterJquery">
-        <!-- Adding Datalayer-->
+            <!-- Adding Datalayer-->
 
             <script>
                 dataLayer = [{
@@ -21,7 +21,7 @@
                 }];
             </script>
 
-        <!--  Adding  Json-ld-->
+            <!--  Adding  Json-ld-->
             <script type="application/ld+json">
                 [
                     {
@@ -55,6 +55,7 @@
                     }
                 ]
 
+
             </script>
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>
             <link href="{!URLFOR($Resource.USTEventAssets, '/chosen/chosen-ust.css')}" rel="stylesheet" type="text/css"/>
@@ -79,7 +80,7 @@
                 </div>
                 <div class="row">
                     <div class="columns errorMessages">
-                        <apex:messages />
+                        <apex:messages/>
                     </div>
                 </div>
                 <apex:outputPanel rendered="{!!eventIsClosed}" layout="none">
@@ -320,7 +321,7 @@
                                 </div>
                                 <div class="column small-12 medium-4 large-4">
                                     <apex:outputLabel value="Postal Code" for="postalCode" styleClass=""/>
-                                    <apex:inputText value="{!newEvtReg.Registrant_Postal_Code__c}" id="postalCode" required="false"  disabled="{!contactSet}" maxLength="40" onKeyPress="return isNumberKey(event)"></apex:inputText>
+                                    <apex:inputText value="{!newEvtReg.Registrant_Postal_Code__c}" id="postalCode" required="false" disabled="{!contactSet}" maxLength="40" onKeyPress="return isNumberKey(event)"></apex:inputText>
                                 </div>
                             </apex:outputPanel>
                         </apex:outputPanel>
