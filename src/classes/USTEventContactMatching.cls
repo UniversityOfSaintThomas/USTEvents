@@ -83,14 +83,14 @@ public with sharing class USTEventContactMatching {
 
             query = ' SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE (';
             if (String.isNotBlank(firstThree)) {
-                query += ' Mailing_First_Name__c LIKE \'' + String.escapeSingleQuotes(firstThree) + '%\' OR';
+                query += ' Mailing_First_Name__c LIKE \'' + String.escapeSingleQuotes(firstThree).trim() + '%\' OR';
             }
             if (String.isNotBlank(prefFirstThree)) {
-                query += ' Mailing_First_Name__c LIKE \'' + String.escapeSingleQuotes(prefFirstThree) + '%\' OR';
+                query += ' Mailing_First_Name__c LIKE \'' + String.escapeSingleQuotes(prefFirstThree).trim() + '%\' OR';
             }
             query = query.removeEnd(' OR');
             query += ' ) ';
-            query += ' AND LastName = \'' + String.escapeSingleQuotes(evt.Registrant_Last_Name__c) + '\' ';
+            query += ' AND LastName = \'' + String.escapeSingleQuotes(evt.Registrant_Last_Name__c).trim() + '\' ';
             query += ' AND Birthdate = ' + String.valueOf(evt.Registrant_Date_of_Birth__c).removeEnd(' 00:00:00');
 
             List<Contact> hardContactTest1 = CRUDtoDo.findContacts(query);
@@ -124,7 +124,7 @@ public with sharing class USTEventContactMatching {
             String[] possibleEmails = new List<String>();
             possibleEmails.add(evt.Registrant_Email__c);
             for (Integer x = 1; x <= 10; x++) {
-                possibleEmails.add('Event_Dup_' + String.valueOf(x) + '_' + evt.Registrant_Email__c);
+                possibleEmails.add(('Event_Dup_' + String.valueOf(x) + '_' + evt.Registrant_Email__c).trim());
             }
             List<Contact> hardContactTest3 = CRUDtoDo.possibleEmailLastMatches(lastName, possibleEmails);
             if (hardContactTest3.size() > 0) {
@@ -302,22 +302,39 @@ public with sharing class USTEventContactMatching {
         }
 
         Public List<Contact> emailLastMatch(String email, String last) {
-            List<Contact> foundContacts = [SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE LastName = :last AND Email = :email];
+            List<Contact> foundContacts = [
+                    SELECT Id, LastName, FirstName, Email, MailingPostalCode
+                    FROM Contact
+                    WHERE LastName = :last.trim()
+                    AND Email = :email.trim()
+            ];
             return foundContacts;
         }
 
         Public List<Contact> possibleEmailLastMatches(String last, List<String> possibleEmails) {
-            List<Contact> foundContacts = [SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE LastName = :last AND Email IN :possibleEmails];
+            List<Contact> foundContacts = [
+                    SELECT Id, LastName, FirstName, Email, MailingPostalCode
+                    FROM Contact
+                    WHERE LastName = :last.trim()
+                    AND Email IN :possibleEmails];
             return foundContacts;
         }
 
         Public List<Contact> possibleEmailMatches(String[] possibleEmails) {
-            List<Contact> foundContacts = [SELECT Id, Email FROM Contact WHERE Email IN :possibleEmails];
+            List<Contact> foundContacts = [
+                    SELECT Id, Email
+                    FROM Contact
+                    WHERE Email IN :possibleEmails
+            ];
             return foundContacts;
         }
 
         public List<Contact> emailOnlyMatch(string email) {
-            List<Contact> foundContacts = [SELECT Id, LastName, FirstName, Email, MailingPostalCode FROM Contact WHERE Email = :email];
+            List<Contact> foundContacts = [
+                    SELECT Id, LastName, FirstName, Email, MailingPostalCode
+                    FROM Contact
+                    WHERE Email = :email.trim()
+            ];
             return foundContacts;
         }
 
@@ -325,8 +342,8 @@ public with sharing class USTEventContactMatching {
             List<Contact> foundContacts = [
                     SELECT Id, LastName, FirstName, Email, MailingPostalCode
                     FROM Contact
-                    WHERE FirstName = :first
-                    AND LastName = :last
+                    WHERE FirstName = :first.trim()
+                    AND LastName = :last.trim()
                     AND MailingPostalCode = :zip
             ];
             return foundContacts;

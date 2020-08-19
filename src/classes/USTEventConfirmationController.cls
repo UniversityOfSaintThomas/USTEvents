@@ -13,6 +13,8 @@ public with sharing class USTEventConfirmationController {
     public String eventStartDateTimeCrumb { get; set; }
     public String locationCrumb { get; set; }
     public String dataLayerLocationType { get; set; }
+    public Boolean eventIsClosed { get; set; }
+    public Boolean adminOpen { get; set; }
 
     public USTEventConfirmationController() {
 
@@ -23,18 +25,27 @@ public with sharing class USTEventConfirmationController {
             eventPage = [
                     SELECT Event_Confirmation_Title__c, Event_Name__c, Template__c, Event_Confirmation_Description__c, Event_Footer__c,
                             Event_Home_Link_Title__c, Event_Home_Link_URL__c, Tracking_Confirmation_Registration__c,RecordType.Name,
-                            School__r.Name, Exclude_Search_Engine_Tag__c, Hand_Raise_Action__c
+                            School__r.Name, Exclude_Search_Engine_Tag__c, Hand_Raise_Action__c,
+                            Keep_Registration_Open_During_Event__c, Close_Event_Days_Before__c, Event_Full_Text__c
                     FROM UST_Event__c
                     WHERE Id = :evtinfo.evtId
             ][0];
             templateSelected = eventPage.Template__c;
 
             evtInstance = [
-                    SELECT Instance_Title__c, Start_Date_Time__c, Event__r.Event_Name__c, End_Date_Time__c,Exclude_Search_Engine_Tag_Override__c
+                    SELECT Instance_Title__c, Start_Date_Time__c, Event__r.Event_Name__c, End_Date_Time__c, Exclude_Search_Engine_Tag_Override__c,
+                            Current_Available_Capacity__c, Active_Status__c
                     FROM UST_Event_Instance__c
                     WHERE Id = :evtinfo.instanceID
                     LIMIT 1
             ];
+
+            if (String.isNotBlank(ApexPages.currentPage().getParameters().get('adminopen'))) {
+                adminOpen = Boolean.valueOf(ApexPages.currentPage().getParameters().get('adminopen'));
+                eventIsClosed = adminOpen;
+            } else {
+                eventIsClosed = USTShared.isEventClosed(eventPage, evtInstance);
+            }
 
             if (evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null) {
                 eventStartDateTimeCrumb = evtInstance.Start_Date_Time__c.format('MMMM d, YYYY, h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
@@ -49,45 +60,76 @@ public with sharing class USTEventConfirmationController {
         evtInfo = USTShared.getUSTEventInfo();
         locationCrumb = '';
         String eventTitle = '';
-        if (!String.isBlank(evtInfo.evtRegId)) {
-            UST_Event_Registration__c evtReg = [
-                    SELECT Id, Status__c, Contact__c, Event_Name__c, Event_Instance_Title__c,
-                            Registrant_First_Name__c, Registrant_Last_Name__c,Registrant_Gender__c,
-                            Event_Instance_Date__c, Registrant_Street_1__c, Registrant_Street_2__c, Registrant_City__c,
-                            Registrant_State__c, Registrant_Zip__c, Registrant_Email__c, Registrant_High_School_Grad_Year__c,
-                            Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c,
-                            Registrant_Program_Interest__c, Registrant_Major__c, Registrant_Major_2__c, Registrant_Major_3__c,
-                            Registrant_Major_4__c,
-                            Registrant_Major__r.Program_Offered__r.School__c,
-                            Registrant_Major_2__r.Program_Offered__r.School__c,
-                            Registrant_Major_3__r.Program_Offered__r.School__c,
-                            Registrant_Major_4__r.Program_Offered__r.School__c,
-                            Registrant_Major__r.Program_Offered__c,
-                            Registrant_Major_2__r.Program_Offered__c,
-                            Registrant_Major_3__r.Program_Offered__c,
-                            Registrant_Major_4__r.Program_Offered__c,
-                            Registrant_Country__c, Registrant_State_Province__c,
-                            Registrant_Postal_Code__c
+        eventIsClosed = false;
+        adminOpen = false;
 
-                    FROM UST_Event_Registration__c
-                    WHERE id = :evtInfo.evtRegId
-            ][0];
-            if (!String.isBlank(evtReg.Event_Instance_Title__c)) {
-                eventTitle = evtReg.Event_Name__c + ' - ' + evtReg.Event_Instance_Title__c ;
-            } else {
-                eventTitle = evtReg.Event_Name__c;
+        eventPage = [
+                SELECT Event_Confirmation_Title__c, Event_Name__c, Template__c, Event_Confirmation_Description__c, Event_Footer__c,
+                        Event_Home_Link_Title__c, Event_Home_Link_URL__c, Tracking_Confirmation_Registration__c,RecordType.Name,
+                        School__r.Name, Exclude_Search_Engine_Tag__c, Hand_Raise_Action__c,
+                        Keep_Registration_Open_During_Event__c, Close_Event_Days_Before__c, Event_Full_Text__c
+                FROM UST_Event__c
+                WHERE Id = :evtinfo.evtId
+        ][0];
+
+        evtInstance = [
+                SELECT Instance_Title__c, Start_Date_Time__c, Event__r.Event_Name__c, End_Date_Time__c, Exclude_Search_Engine_Tag_Override__c,
+                        Current_Available_Capacity__c, Active_Status__c
+                FROM UST_Event_Instance__c
+                WHERE Id = :evtinfo.instanceID
+                LIMIT 1
+        ];
+
+        if (String.isNotBlank(ApexPages.currentPage().getParameters().get('adminopen'))) {
+            adminOpen = Boolean.valueOf(ApexPages.currentPage().getParameters().get('adminopen'));
+            eventIsClosed = adminOpen;
+        } else {
+            if (eventPage != null && evtInstance != null) {
+                eventIsClosed = USTShared.isEventClosed(eventPage, evtInstance);
             }
-            evtReg.Status__c = 'Requested';
+        }
 
-            registrationCRUD regCRUD = new registrationCRUD();
-            evtReg = regCRUD.updateRegistration(evtReg);
+        if (!eventIsClosed) {
+            if (!String.isBlank(evtInfo.evtRegId)) {
+                UST_Event_Registration__c evtReg = [
+                        SELECT Id, Status__c, Contact__c, Event_Name__c, Event_Instance_Title__c,
+                                Registrant_First_Name__c, Registrant_Last_Name__c,Registrant_Gender__c,
+                                Event_Instance_Date__c, Registrant_Street_1__c, Registrant_Street_2__c, Registrant_City__c,
+                                Registrant_State__c, Registrant_Zip__c, Registrant_Email__c, Registrant_High_School_Grad_Year__c,
+                                Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c,
+                                Registrant_Program_Interest__c, Registrant_Major__c, Registrant_Major_2__c, Registrant_Major_3__c,
+                                Registrant_Major_4__c,
+                                Registrant_Major__r.Program_Offered__r.School__c,
+                                Registrant_Major_2__r.Program_Offered__r.School__c,
+                                Registrant_Major_3__r.Program_Offered__r.School__c,
+                                Registrant_Major_4__r.Program_Offered__r.School__c,
+                                Registrant_Major__r.Program_Offered__c,
+                                Registrant_Major_2__r.Program_Offered__c,
+                                Registrant_Major_3__r.Program_Offered__c,
+                                Registrant_Major_4__r.Program_Offered__c,
+                                Registrant_Country__c, Registrant_State_Province__c,
+                                Registrant_Postal_Code__c
 
-            //Remove the registration ID from the cookie so back button will redirect to the correct page.
-            USTShared.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
-            //create touchpoint
+                        FROM UST_Event_Registration__c
+                        WHERE id = :evtInfo.evtRegId
+                ][0];
+                if (!String.isBlank(evtReg.Event_Instance_Title__c)) {
+                    eventTitle = evtReg.Event_Name__c + ' - ' + evtReg.Event_Instance_Title__c ;
+                } else {
+                    eventTitle = evtReg.Event_Name__c;
+                }
+                evtReg.Status__c = 'Requested';
 
-            if (eventPage.Hand_Raise_Action__c == 'Touchpoint' || String.isBlank(eventPage.Hand_Raise_Action__c)) {
-                createTouchpoint(evtReg, eventTitle);
+                registrationCRUD regCRUD = new registrationCRUD();
+                evtReg = regCRUD.updateRegistration(evtReg);
+
+                //Remove the registration ID from the cookie so back button will redirect to the correct page.
+                USTShared.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
+                //create touchpoint
+
+                if (eventPage.Hand_Raise_Action__c == 'Touchpoint' || String.isBlank(eventPage.Hand_Raise_Action__c)) {
+                    createTouchpoint(evtReg, eventTitle);
+                }
             }
         }
 

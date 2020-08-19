@@ -17,7 +17,7 @@
         <apex:define name="body">
             <div class="row">
                 <div class="columns errorMessages">
-                    <apex:messages />
+                    <apex:messages/>
                 </div>
             </div>
             <apex:form id="USTRegistraterSubmitForm" html-data-abide="ajax" html-novalidate="novalidate">
@@ -34,29 +34,43 @@
                         </apex:outputPanel>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="column">
-                        <h2>
-                            <apex:outputText escape="false" value="{!eventPage.Event_Submit_Title__c}"/>
-                        </h2>
-                        <p>
-                            <apex:outputText escape="false" value="{!eventPage.Event_Submit_Description__c}"/>
-                        </p>
+                <apex:outputPanel rendered="{!!eventIsClosed}" layout="none">
+                    <div class="row">
+                        <div class="column">
+                            <h2>
+                                <apex:outputText escape="false" value="{!eventPage.Event_Submit_Title__c}"/>
+                            </h2>
+                            <p>
+                                <apex:outputText escape="false" value="{!eventPage.Event_Submit_Description__c}"/>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <apex:outputText escape="false" value="{!chosenFormatted}"/>
+                    <div class="row">
+                        <div class="column">
+                            <apex:outputText escape="false" value="{!chosenFormatted}"/>
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="column">
-                        <p>
-                            <apex:commandLink action="{!submitRegistration}" onClick="fadeout();" Value="Submit Registration" id="submitOptions" styleClass="button confirmContinue"/>
-                            <apex:commandLink action="{!previousPage}" onClick="fadeout();" Value="Previous" id="previousPage" styleClass="button previous"/>
-                        </p>
+                    <div class="row">
+                        <div class="column">
+                            <p>
+                                <apex:commandLink action="{!submitRegistration}" onClick="fadeout();" Value="Submit Registration" id="submitOptions" styleClass="button confirmContinue"/>
+                                <apex:commandLink action="{!previousPage}" onClick="fadeout();" Value="Previous" id="previousPage" styleClass="button previous"/>
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!eventIsClosed}">
+                    <div class="row">
+                        <div class="column">
+                            <h2>
+                                <apex:outputText value="{!eventPage.Event_Name__c}"></apex:outputText>
+                            </h2>
+                            <p>
+                                <apex:outputText escape="false" value="{!eventPage.Event_Full_Text__c}"></apex:outputText>
+                            </p>
+                        </div>
+                    </div>
+                </apex:outputPanel>
                 <div class="row">
                     <div class="column">
                         <p>

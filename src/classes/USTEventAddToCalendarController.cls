@@ -8,21 +8,26 @@ public with sharing class USTEventAddToCalendarController {
     public String DTSTART { get; set; }
     public String DTEND { get; set; }
     public String DTSTAMP { get; set; }
-    public String SUMMARY { get; set; }
+    public String TIMEZONE {get;set;}
+    public String LOCATION { get; set; }
     public String DESCRIPTION { get; set; }
+    public String LONGDESCRIPTION { get; set; }
     public String UUID { get; set; }
 
     public USTEventAddToCalendarController() {
         DTSTART = '';
         DTEND = '';
         DTSTAMP = '';
-        SUMMARY = '';
+        LOCATION = '';
         DESCRIPTION = '';
+        LONGDESCRIPTION = '';
+        TIMEZONE = 'Central Daylight Time (America/Chicago)';
         UUID = NewGuid();
         String URLinstanceID = ApexPages.currentPage().getParameters().get('instanceID');
         if (!String.isBlank(URLinstanceID)) {
             evtInfo = [
-                    SELECT Event_Name__c, Start_Date_Time__c, End_Date_Time__c, Instance_Title__c, Instance_Short_Description__c, Event__r.Event_Short_Listing_Description__c
+                    SELECT Event_Name__c, Start_Date_Time__c, End_Date_Time__c, Instance_Title__c, Instance_Short_Description__c, Event__r.Event_Short_Listing_Description__c,
+                            EVent__r.Event_description__c, Location_Title_Override__c, Event__r.Location_Title__c
                     FROM UST_Event_Instance__c
                     WHERE Id = :URLinstanceID
             ];
@@ -31,17 +36,19 @@ public with sharing class USTEventAddToCalendarController {
                 DTSTART = evtInfo[0].Start_Date_Time__c.format('yyyyMMdd\'T\'HHmmss\'Z\'');
                 DTEND = evtInfo[0].End_Date_Time__c.format('yyyyMMdd\'T\'HHmmss\'Z\'');
                 DTSTAMP = Datetime.now().format('yyyyMMdd\'T\'HHmmss\'Z\'');
-                SUMMARY = evtInfo[0].Event_Name__c;
-                if (!String.isBlank(evtInfo[0].Instance_Title__c)) {
-                    SUMMARY += ' - ' + evtInfo[0].Instance_Title__c;
-                }
-
                 DESCRIPTION = evtInfo[0].Event_Name__c;
                 if (!String.isBlank(evtInfo[0].Instance_Title__c)) {
                     DESCRIPTION += ' - ' + evtInfo[0].Instance_Title__c;
                 }
+                LONGDESCRIPTION = DESCRIPTION + evtInfo[0].Event__r.Event_description__c;
                 DESCRIPTION += '\n' + evtInfo[0].Event__r.Event_Short_Listing_Description__c;
                 DESCRIPTION += '\n' + evtInfo[0].Instance_Short_Description__c;
+                if (String.isNotBlank(evtInfo[0].Location_Title_Override__c)) {
+                    LOCATION = evtInfo[0].Location_Title_Override__c;
+                } else if (String.isNotBlank(evtInfo[0].Event__r.Location_Title__c)){
+                    LOCATION = evtInfo[0].Event__r.Location_Title__c;
+                }
+
             }
         }
     }

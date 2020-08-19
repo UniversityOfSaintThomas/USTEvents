@@ -37,6 +37,18 @@ public class USTEventProgramLookupExtension {
                     AND Prog_Major_Conc_Code__c IN :bigProgramArray
                     ORDER BY Major_Display_Name__c
             ];
+
+            //Sort like they were initially selected
+            List<Major__c> majorIdListSort = new List<Major__c>();
+            for (String code : bigProgramArray) {
+                for (Major__c mj : selectedProgramList) {
+                    if (mj.Prog_Major_Conc_Code__c.equals(code)) {
+                        majorIdListSort.add(mj);
+                    }
+                }
+            }
+            selectedProgramList = majorIdListSort;
+
             String programName = '';
             for (Major__c program : selectedProgramList) {
                 programName = formattedProgramName(program.Major_Display_Name__c, program.Prog_Major_Conc_Code__c);
@@ -78,6 +90,7 @@ public class USTEventProgramLookupExtension {
                         WHERE Status__c = 'Active'
                         AND Prog_Major_Conc_Code__c != NULL
                         AND Program_Offered__r.Name = 'Undeclared BA'
+                        AND Display_on_RFI_UG__c = true
                         ORDER BY Major_Display_Name__c
                 ];
             } else {
@@ -87,6 +100,7 @@ public class USTEventProgramLookupExtension {
                         WHERE Status__c = 'Active'
                         AND Prog_Major_Conc_Code__c != NULL
                         AND Program_Offered__r.School__c = :schoolId
+                        AND Display_on_RFI__c = true
                         ORDER BY Major_Display_Name__c
                 ];
             }
@@ -96,6 +110,7 @@ public class USTEventProgramLookupExtension {
                     FROM Major__c
                     WHERE Status__c = 'Active'
                     AND Prog_Major_Conc_Code__c != NULL
+                    AND Display_on_RFI__c = true
                     ORDER BY Major_Display_Name__c
             ];
         }

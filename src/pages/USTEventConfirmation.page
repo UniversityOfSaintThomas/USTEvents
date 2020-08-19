@@ -15,9 +15,9 @@
                 dataLayer = [{
                     'school': '{!eventPage.School__r.Name}',
                     'recordType': '{!eventPage.RecordType.Name}',
-                    'eventlabel':'{!eventPage.Event_Name__c}'
+                    'eventlabel': '{!eventPage.Event_Name__c}'
                     //'startDate': '{!evtInstance.Start_Date_Time__c}',
-                   // 'location':'{}'
+                    // 'location':'{}'
 
                 }];
             </script>
@@ -28,7 +28,7 @@
         <apex:define name="body">
             <div class="row">
                 <div class="columns errorMessages">
-                    <apex:messages />
+                    <apex:messages/>
                 </div>
             </div>
             <apex:form id="USTConfirmationForm" html-data-abide="ajax" html-novalidate="novalidate">
@@ -45,16 +45,30 @@
                         </apex:outputPanel>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="column">
-                        <h2>
-                            <apex:outputText escape="false" value="{!eventPage.Event_Confirmation_Title__c}"/>
-                        </h2>
-                        <p>
-                            <apex:outputText escape="false" value="{!eventPage.Event_Confirmation_Description__c}"/>
-                        </p>
+                <apex:outputPanel rendered="{!!eventIsClosed}" layout="none">
+                    <div class="row">
+                        <div class="column">
+                            <h2>
+                                <apex:outputText escape="false" value="{!eventPage.Event_Confirmation_Title__c}"/>
+                            </h2>
+                            <p>
+                                <apex:outputText escape="false" value="{!eventPage.Event_Confirmation_Description__c}"/>
+                            </p>
+                        </div>
                     </div>
-                </div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!eventIsClosed}">
+                    <div class="row">
+                        <div class="column">
+                            <h2>
+                                <apex:outputText value="{!eventPage.Event_Name__c}"></apex:outputText>
+                            </h2>
+                            <p>
+                                <apex:outputText escape="false" value="{!eventPage.Event_Full_Text__c}"></apex:outputText>
+                            </p>
+                        </div>
+                    </div>
+                </apex:outputPanel>
                 <div class="row">
                     <div class="column">
                         <p>

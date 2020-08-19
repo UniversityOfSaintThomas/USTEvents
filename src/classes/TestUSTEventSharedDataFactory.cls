@@ -13,6 +13,36 @@ public with sharing class TestUSTEventSharedDataFactory {
             String registrationEmailRestriction
     ) {
 
+        //Create Majors
+
+        EnrollmentrxRx__School__c school = new EnrollmentrxRx__School__c();
+        school.Name = 'Test School';
+        upsert school;
+
+        List<EnrollmentrxRx__Program_Offered__c> programsOffered = new List<EnrollmentrxRx__Program_Offered__c>();
+        for (Integer xx; xx < 10; xx++) {
+            EnrollmentrxRx__Program_Offered__c programOffered = new EnrollmentrxRx__Program_Offered__c();
+            programOffered.Degree_Code__c = 'MA';
+            programOffered.Degree_Level__c = String.valueOf(xx);
+            programOffered.Name = 'THIS Programed offered ' + xx;
+            programOffered.School__c = school.id;
+            programsOffered.add(programOffered);
+        }
+        upsert programsOffered;
+
+        List<Major__c> addMajors = new List<Major__c>();
+        //Prog_Major_Conc_Code__c, Major_Display_Name__c, Program_Offered__r.Name, Program_Offered__r.Degree_Level__c
+        for (Integer xx; xx < 10; xx++) {
+            Major__c addMajor = new Major__c();
+            //addMajor.Program_Code__c = 'THIS' + xx;
+            //addMajor.Prog_Major_Conc_Code__c = 'THIS' + xx + '|THAT' + xx;
+            addMajor.Major_Display_Name__c = 'THIS' + xx;
+            addMajor.Program_Offered__c = programsOffered[xx].id;
+            addMajors.add(addMajor);
+        }
+        upsert addMajors;
+
+
         UST_Event__c testEvent = new UST_Event__c();
 
         System.Debug('|---------->> USER:' + UserInfo.getUserName());
@@ -61,9 +91,9 @@ public with sharing class TestUSTEventSharedDataFactory {
             testEvent.Add_Info_Question_Type_1__c = 'Pick-list';
             testEvent.Add_Info_Question_Text_1__c = 'What is your favorite color?';
             testEvent.Add_Info_Question_Pick_List_1__c = 'Red\nGreen\nYellow\nBlue';
-            testEvent.Program_Filter__c = 'THIS_THIS|THAT;THAT_THAT|THIS;';
-            testEvent.Program_Filter_2__c = 'THIS_THIS|THAT;THAT_THAT|THIS;';
-            testEvent.Program_Filter_3__c = 'THIS_THIS|THAT;THAT_THAT|THIS;';
+            testEvent.Program_Filter__c = 'THIS0|THAT0;THIS1|THAT1;';
+            testEvent.Program_Filter_2__c = 'THIS2|THAT2;THIS3|THAT3;';
+            testEvent.Program_Filter_3__c = '';
         }
 
         insert testEvent;

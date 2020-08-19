@@ -38,6 +38,7 @@ public with sharing class USTEventRegisterController {
     public String JSONLDStartTimeString { get; set; }
     public String JSONLDEndTimeString { get; set; }
     public boolean excludeSearchTag { get; set; }
+    public Boolean adminOpen { get; set; }
 
 
     public USTEventRegisterController() {
@@ -78,7 +79,8 @@ public with sharing class USTEventRegisterController {
             evtInstance = [
                     SELECT Id, Name, Event__r.Name, Event__r.Event_Name__c, Event__r.Id, Instance_Title__c, Active_Status__c, Capacity__c,
                             Event__r.Event_description__c, Event__r.Audience__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c,
-                            Location_Type_Override__c, Location_Address_Override__c, Event__r.Close_Event_Days_Before__c, Location_Map_Link_Override__c, Location_Title_Override__c, Exclude_Search_Engine_Tag_Override__c
+                            Location_Type_Override__c, Location_Address_Override__c, Location_Map_Link_Override__c, Location_Title_Override__c,
+                            Exclude_Search_Engine_Tag_Override__c
                     FROM UST_Event_Instance__c
                     WHERE Id = :evtInfo.instanceID
                     LIMIT 1
@@ -97,20 +99,6 @@ public with sharing class USTEventRegisterController {
             //define Event ID from instanceInfo data
             evtInfo.evtId = evtInstance.Event__r.Id;
             instanceName = evtInstance.Name;
-            Datetime currentDT = USTShared.adjustForCenteralTime(Datetime.Now());
-
-            if (evtInstance.Event__r.Close_Event_Days_Before__c != null) {
-                currentDT = currentDT.addDays(Integer.Valueof(evtInstance.Event__r.Close_Event_Days_Before__c) + 1);
-            }
-
-            if (evtInstance.Current_Available_Capacity__c <= 0 || evtInstance.Active_Status__c != 'Active' || evtInstance.End_Date_Time__c <= currentDT) {
-                eventIsClosed = true;
-            }
-
-            if (String.isNotBlank(ApexPages.currentPage().getParameters().get('adminopen'))) {
-                Boolean adminOpen = Boolean.valueOf(ApexPages.currentPage().getParameters().get('adminopen'));
-                eventIsClosed = adminOpen;
-            }
 
         }
 
@@ -128,7 +116,8 @@ public with sharing class USTEventRegisterController {
                             School__c, School__r.Name, Ask_Mailing_Address__c, Ask_Phone__c, Event_Sponsor__c,
                             Applicant_Type__c, Location_Type__c, Location_Title__c, Location_Address__c, Location_Map_Link__c,
                             Tracking_Event_Registration__c, Ask_Date_Of_Birth__c, Event_Type__c, RecordType.Name, Contact_Creation__c,
-                            Exclude_Search_Engine_Tag__c, Registration_Email_Restriction__c, Program_Filter__c, Program_Filter_2__c, Program_Filter_3__c
+                            Exclude_Search_Engine_Tag__c, Registration_Email_Restriction__c, Program_Filter__c, Program_Filter_2__c, Program_Filter_3__c,
+                            Keep_Registration_Open_During_Event__c, Close_Event_Days_Before__c
                     FROM UST_Event__c
                     WHERE Id = :evtInfo.evtId
                     LIMIT 1
@@ -138,6 +127,14 @@ public with sharing class USTEventRegisterController {
                 applicantType = eventPage.Applicant_Type__c;
             }
 
+            if (String.isNotBlank(ApexPages.currentPage().getParameters().get('adminopen'))) {
+                adminOpen = Boolean.valueOf(ApexPages.currentPage().getParameters().get('adminopen'));
+                eventIsClosed = adminOpen;
+            } else {
+                eventIsClosed = USTShared.isEventClosed(eventPage, evtInstance);
+            }
+
+            //Figure out if the event is closed.
             if (
                     !String.isBlank(eventPage.Add_Info_Question_Type_1__c) ||
                             !String.isBlank(eventPage.Add_Info_Question_Type_1__c) ||
@@ -174,7 +171,7 @@ public with sharing class USTEventRegisterController {
             }
             dataLayerLocationType = locationAddress;
 
-            if (!String.isBlank(locationTitle)) {
+            if (!String.isBlank(locationTitle) && String.isBlank(locationMapLink)) {
                 locationCrumb = locationTitle + '<br/>';
             }
 
@@ -285,13 +282,17 @@ public with sharing class USTEventRegisterController {
                                 Registrant_College_Not_Found__c, Registrant_Parent_First_Name__c, Registrant_Parent_Last_Name__c, Registrant_Parent_Email__c, Registrant_Parent_Phone__c, Registrant_Parent_Status__c,
                                 Add_Info_Answer_1__c, Add_Info_Answer_2__c, Add_Info_Answer_3__c, Add_Info_Answer_4__c, Add_Info_Answer_5__c, Registrant_Program_Interest__c, Registrant_Preferred_First_Name__c,
                                 Registrant_date_of_Birth__c, Registrant_Other_Email__c, Registrant_Other_First_Name__c, Registrant_Other_Last_Name__c, Registrant_Other_Phone__c, Registrant_Other_Relationship__c,
-                                Registrant_Country__c, Registrant_State_Province__c, Registrant_Postal_Code__c
+                                Registrant_Country__c, Registrant_State_Province__c, Registrant_Postal_Code__c, Registrant_Applicant_Type__c
                         FROM UST_Event_Registration__c
                         WHERE id = :evtInfo.evtRegId
                 ][0];
 
                 if (newEvtReg.Registrant_date_of_Birth__c != null) {
                     birthDateString = newEvtReg.Registrant_date_of_Birth__c.format();
+                }
+
+                if (String.isNotBlank(newEvtReg.Registrant_Applicant_Type__c)) {
+                    applicantType = newEvtReg.Registrant_Applicant_Type__c;
                 }
 
                 //for comparison after the form is filled out we keep original queried event the see if key information is changed and matching should be redone.
@@ -347,55 +348,64 @@ public with sharing class USTEventRegisterController {
     }
 
 
+    public String concatenatedProgramFilter() {
+        String bigProgramList = '';
+        if (String.isNotBlank(eventPage.Program_Filter__c)) {
+            bigProgramList += eventPage.Program_Filter__c.trim();
+        }
+        if (String.isNotBlank(eventPage.Program_Filter_2__c)) {
+            bigProgramList += eventPage.Program_Filter_2__c.trim();
+        }
+        if (String.isNotBlank(eventPage.Program_Filter_3__c)) {
+            bigProgramList += eventPage.Program_Filter_3__c.trim();
+        }
+        return bigProgramList;
+    }
+
+
     public List<SelectOption> getProgramsAvailable() {
-        String prgString = eventPage.Academic_Program_List__c;
-        String prgSelectedAlready = newEvtReg.Registrant_Program_Interest__c;
 
         doCRUD CRUDToDo = new doCRUD();
+        String bigProgramList = concatenatedProgramFilter();
+        List<Major__c> majorList = new List<Major__c>();
+        List<SelectOption> selectableProgramList = new List<SelectOption>();
 
-        if (eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require one selection') {
-            selectedProgramsOne = prgSelectedAlready;
-        }
-
-        //If program list is empty then get the full list
-        If (String.isBlank(prgString)) {
-            List<Major__c> schoolProgs = new List<Major__c>();
+        if (String.isNotBlank(bigProgramList)) {
+            //Get the defined list of programs from event record
+            majorList = CRUDToDo.getSchoolMajorsByShortCode(bigProgramList);
+        } else {
+            //Get a full list if none have been defined.
             if (!String.isBlank(eventPage.School__c)) {
                 Id schoolId = eventPage.School__c;
-                schoolProgs = CRUDToDo.getSchoolMajors(schoolId);
+                majorList = CRUDToDo.getSchoolMajors(schoolId);
             } else {
-                schoolProgs = CRUDToDo.getSchoolMajors(Null);
-            }
-            //turn list into a ; separated string to consume below
-            prgString = '';
-            For (Major__c prog : schoolProgs) {
-                prgString += prog.Major_Display_Name__c + ' - ' + prog.Program_Offered__r.Degree_Level__c + ' (' + prog.Program_Offered__r.Program_Code__c;
-                if (!String.isBlank(prog.Major_Code__c)) {
-                    prgString += '|' + prog.Major_Code__c;
-                }
-                prgString += ');';
-            }
-            prgString = prgString.removeEnd(';');
-        }
-
-        List<SelectOption> progSelOpt = new List<SelectOption>();
-        progSelOpt.add(new SelectOption('', 'Select...'));
-
-        List<String> prgList = prgString.split(';');
-        for (String prg : prgList) {
-            progSelOpt.add(
-                    new SelectOption(
-                            prg,
-                            prg.replaceAll('\\(\\w+\\|\\w+\\)|\\(\\w+\\)', '').trim()
-                    )
-            );
-            if (!String.isBlank(prgSelectedAlready) && eventPage.Ask_Registrant_Program_Of_Interest__c != 'Ask and require one selection') {
-                if (prgSelectedAlready.indexOf(prg) > -1) {
-                    selectedPrograms.add(prg);
-                }
+                majorList = CRUDToDo.getSchoolMajors(Null);
             }
         }
-        return progSelOpt;
+
+        if (majorList.size() > 0) {
+            String programName = '';
+            String programValue = '';
+            selectableProgramList.add(new SelectOption('', 'Select...'));
+            for (Major__c major : majorList) {
+                if (major != null) {
+                    programValue = major.Major_Display_Name__c;
+                    programValue += ' - ' + major.Program_Offered__r.Degree_Level__c;
+                    programValue += ' (' + major.Prog_Major_Conc_Code__c + ')';
+                    programName = major.Major_Display_Name__c + ' - ' + major.Program_Offered__r.Degree_Level__c;
+                    selectableProgramList.add(new SelectOption(programValue, programName));
+                }
+            }
+
+            //Populate if selections have already been made
+            if (String.isNotEmpty(newEvtReg.Registrant_Program_Interest__c)) {
+                selectedProgramsOne = newEvtReg.Registrant_Program_Interest__c;
+            } else {
+                selectedProgramsOne = '';
+            }
+
+        }
+        return selectableProgramList;
 
     }
 
@@ -431,32 +441,39 @@ public with sharing class USTEventRegisterController {
 
     public PageReference saveContactRegistration() {
 
-
-
         boolean newContactCreated = false;
         PageReference optionPage = Page.USTEventRegister;
 
         //Record selected programs of interest
-        String recordSelPrg = '';
-        Pattern TAG_REGEX = Pattern.compile('\\((\\w+|\\w+\\|\\w+)\\)');
+        Pattern TAG_REGEX = Pattern.compile('\\(([^\\)]+)\\)');
         List<String> majorCodes = new List<String>();
-        Boolean progSelectionMade = true;
 
         doCRUD CRUDToDo = new doCRUD();
 
-        if(String.isNotBlank(eventPage.Registration_Email_Restriction__c) && eventPage.Registration_Email_Restriction__c != 'No Limit') {
-            System.debug('GOT TO REGISTRANT EMAIL RESTRICTIONS');
+        if (String.isNotBlank(eventPage.Registration_Email_Restriction__c) && eventPage.Registration_Email_Restriction__c != 'No Limit') {
             UST_Event_Registration__c foundRegistration = CRUDToDo.checkForOtherRegistrations(eventPage.Registration_Email_Restriction__c, newEvtReg.Registrant_Email__c, evtInstance.Id, eventPage.Id);
-            if(foundRegistration != null) {
+            if (foundRegistration != null) {
                 ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.ERROR, 'It appears you’ve already registered for this event. Please contact the Event Host for more information.');
                 ApexPages.addMessage(myMsg);
                 return null;
             }
         }
 
-        if (selectedPrograms.isEmpty() && String.isBlank(selectedProgramsOne) && !String.isBlank(eventPage.Academic_Program_List__c)) {
-            selectedPrograms = eventPage.Academic_Program_List__c.split(';');
-            progSelectionMade = false;
+        //Record selected programs - get list of defined programs if it exists.
+        String bigProgramList = concatenatedProgramFilter();
+
+        //Programs were defined for the event, but the registrant was not asked. Then we apply the top 3 defined programs.
+        if (String.isNotBlank(bigProgramList) && (String.isBlank(eventPage.Ask_Registrant_Program_Of_Interest__c) || eventPage.Ask_Registrant_Program_Of_Interest__c.equalsIgnoreCase('Do not ask'))) {
+            List<Major__c> missingMajorList = CRUDToDo.getSchoolMajorsByShortCode(bigProgramList);
+            Integer xx = 1;
+            //List<String>()
+            for (Major__c major : missingMajorList) {
+                selectedPrograms.add(major.Major_Display_Name__c + ' - ' + major.Program_Offered__r.Degree_Level__c + ' (' + major.Prog_Major_Conc_Code__c + ')');
+                if (xx >= 4) {
+                    break;
+                }
+                xx++;
+            }
         }
 
         if (!String.isBlank(selectedProgramsOne)) {
@@ -464,14 +481,29 @@ public with sharing class USTEventRegisterController {
         }
 
         if (!selectedPrograms.isEmpty()) {
+
+            //reverse selectedPrograms to record in order of selected
+            list<String> reversePrograms = new List<String>();
+            for (String rp : selectedPrograms) {
+                reversePrograms.add(rp);
+            }
+            selectedPrograms = reversePrograms;
+
+
+            //Get the major codes out of the selected program string
             for (String selPrg : selectedPrograms) {
-                recordSelPrg += selPrg + ';';
                 Matcher matcher = TAG_REGEX.matcher(selPrg);
                 while (matcher.find()) {
-                    majorCodes.add(matcher.group(1).trim());
+                    majorCodes.add(matcher.group(1).replace('(', '').replace(')', '').trim());
                 }
             }
-            recordSelPrg.removeEnd(';');
+            //Get the major code IDs and record them to the 4 available major code spots
+
+            //Clear out major codes in case this is a previous page
+            newEvtReg.Registrant_Major__c = null;
+            newEvtReg.Registrant_Major_2__c = null;
+            newEvtReg.Registrant_Major_3__c = null;
+            newEvtReg.Registrant_Major_4__c = null;
 
             List<Major__c> majorIdList = CRUDToDo.getMajorCodes(majorCodes);
 
@@ -488,13 +520,9 @@ public with sharing class USTEventRegisterController {
                     }
                 }
             }
-            //get major ids and save them
-        }
+            //Record selections to the open picklist for Registrant program of interest.
 
-        if ((eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask but do not require' || eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require' || eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require one selection') && progSelectionMade) {
-            newEvtReg.Registrant_Program_Interest__c = recordSelPrg;
-        } else {
-            newEvtReg.Registrant_Program_Interest__c = '';
+            newEvtReg.Registrant_Program_Interest__c = String.join(selectedPrograms, ';');
         }
 
         if (String.isNotBlank(birthDateString)) {
@@ -579,6 +607,11 @@ public with sharing class USTEventRegisterController {
             //Posting along everything we need to build the next page
             String encrytpString = USTShared.createEncryptedCookie('{"audience":"' + evtInfo.audience + '","instanceID":"' + evtInfo.instanceID + '","evtRegId":"' + evtInfo.evtRegId + '","evtId":"' + evtInfo.evtId + '"}', 'USTEvent');
             //optionPage.getParameters().put('evt', encrytpString);
+
+            if (String.isNotBlank(ApexPages.currentPage().getParameters().get('adminopen'))) {
+                optionPage.setRedirect(true);
+                optionPage.getParameters().put('adminopen', ApexPages.currentPage().getParameters().get('adminopen'));
+            }
             return optionPage;
         }
 
@@ -593,7 +626,6 @@ public with sharing class USTEventRegisterController {
             } catch (Exception ex) {
                 ApexPages.Message myMsg = new ApexPages.Message(ApexPages.Severity.WARNING, ex.getMessage());
                 ApexPages.addMessage(myMsg);
-                System.debug(myMsg);
             }
             return newEvtReg;
         }
@@ -607,8 +639,6 @@ public with sharing class USTEventRegisterController {
 
             List<UST_Event_Registration__c> foundRegistrations = new List<UST_Event_Registration__c>();
             UST_Event_Registration__c foundRegistration = null;
-
-            System.debug('Type: ' +  checkType + ', email: ' +  registrationEmail + ', Instance ID: ' +  eventInstanceId + ', Event Id: ' + eventId);
 
             if (checkType == 'One registration per instance') {
                 foundRegistrations = [
@@ -650,22 +680,88 @@ public with sharing class USTEventRegisterController {
             return userContact;
         }
 
+        public List<Major__c> getSchoolMajorsByShortCode(String programListString) {
+            List<String> bigProgramArray = new List<String>();
+            List<Major__c> majorList = new List<Major__c>();
+            if (String.isNotBlank(programListString)) {
+                bigProgramArray = programListString.split(';');
+                majorList = [
+                        SELECT Prog_Major_Conc_Code__c, Major_Display_Name__c, Major__c.Program_Offered__r.Name, Program_Offered__r.Degree_Level__c
+                        FROM Major__c
+                        WHERE Status__c = 'Active'
+                        AND Prog_Major_Conc_Code__c IN :bigProgramArray
+                        ORDER BY Major_Display_Name__c
+                ];
+
+                List<Major__c> majorIdListSort = new List<Major__c>();
+                for (String code : bigProgramArray) {
+                    for (Major__c mj : majorList) {
+                        if (mj.Prog_Major_Conc_Code__c.equals(code)) {
+                            majorIdListSort.add(mj);
+                        }
+                    }
+                }
+                majorList = majorIdListSort;
+            }
+            return majorList;
+        }
+
+
         public List<Major__c> getSchoolMajors(String schoolId) {
-            List<Major__c> schoolProgs = [
-                    SELECT Id,Name, Major_Name__c,Major_Display_Name__c, Major_Code__c, Program_Offered__r.Program_Code__c, Program_Offered__r.Degree_Level__c
-                    FROM Major__c
-                    WHERE Status__c = 'Active'
-                    AND Program_Offered__r.EnrollmentrxRx__Program_Catalog__r.Name != 'Undergraduate'
-                    AND Program_Offered__r.Program_Code__c != NULL
-                    AND Program_Offered__r.School__c = :schoolId
-                    ORDER BY Major_Name__c
+
+            List<Major__c> majorList = new List<Major__c>();
+
+            List<EnrollmentrxRx__School__c> schoolInfoList = [
+                    SELECT ID, Name
+                    FROM EnrollmentrxRx__School__c
+                    WHERE Id = :schoolId
             ];
-            return schoolProgs;
+
+            If (schoolInfoList.size() > 0) {
+                If (schoolInfoList[0].Name.equalsIgnoreCase('Undergraduate')) {
+                    majorList = [
+                            SELECT Prog_Major_Conc_Code__c, Major_Display_Name__c, Program_Offered__r.Name, Program_Offered__r.Degree_Level__c
+                            FROM Major__c
+                            WHERE Status__c = 'Active'
+                            AND Prog_Major_Conc_Code__c != NULL
+                            AND Program_Offered__r.Name = 'Undeclared BA'
+                            AND Display_on_RFI_UG__c = true
+                            ORDER BY Major_Display_Name__c
+                    ];
+
+                } else {
+                    majorList = [
+                            SELECT Id, Major_Display_Name__c, Prog_Major_Conc_Code__c, Program_Offered__r.Name, Program_Offered__r.Degree_Level__c
+                            FROM Major__c
+                            WHERE Status__c = 'Active'
+                            AND Prog_Major_Conc_Code__c != NULL
+                            AND Program_Offered__r.School__c = :schoolId
+                            AND Display_on_RFI__c = true
+                            ORDER BY Major_Name__c
+                    ];
+                }
+            }
+            return majorList;
         }
 
         public List<Major__c> getMajorCodes(List<String> majorCodes) {
-            List<Major__c> majorIdList = [SELECT Id From Major__c Where Prog_Major_Conc_Code__c IN :majorCodes];
-            return majorIdList;
+            List<Major__c> majorIdList = [
+                    SELECT Id, Prog_Major_Conc_Code__c
+                    FROM Major__c
+                    WHERE Prog_Major_Conc_Code__c IN :majorCodes
+                    AND (Display_on_RFI__c = true OR Display_on_RFI_UG__c = true)
+            ];
+            List<Major__c> majorIdListSort = new List<Major__c>(majorIdList.size());
+            Integer position = 0;
+            for (String code : majorCodes) {
+                for (Major__c mj : majorIdList) {
+                    if (mj.Prog_Major_Conc_Code__c.equals(code)) {
+                        majorIdListSort[position] = mj;
+                    }
+                }
+                position++;
+            }
+            return majorIdListSort;
         }
 
     }

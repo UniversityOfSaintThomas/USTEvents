@@ -157,7 +157,9 @@
     <externalSharingModel>ControlledByParent</externalSharingModel>
     <fields>
         <fullName>Actual_Number_of_Guests__c</fullName>
+        <description>Total Attended - Registrants and Guests</description>
         <externalId>false</externalId>
+        <inlineHelpText>Total Attended - Registrants and Guests</inlineHelpText>
         <label>Actual Number of Guests</label>
         <precision>18</precision>
         <required>false</required>
@@ -951,7 +953,7 @@ Event__r.Community_Base_URL__c
         <fullName>Number_of_Guests__c</fullName>
         <description>Total Number of Guests not including the student</description>
         <externalId>false</externalId>
-        <inlineHelpText>Total Number of Guests not including the student</inlineHelpText>
+        <inlineHelpText>Number of Registered Guests</inlineHelpText>
         <label>Number of Guests</label>
         <precision>2</precision>
         <required>false</required>
@@ -1816,7 +1818,7 @@ Registrant_Last_Name__c</formula>
         <trackTrending>false</trackTrending>
         <type>Picklist</type>
         <valueSet>
-            <restricted>true</restricted>
+            <restricted>false</restricted>
             <valueSetDefinition>
                 <sorted>false</sorted>
                 <value>
@@ -2019,6 +2021,7 @@ Registrant_Last_Name__c</formula>
         <externalId>false</externalId>
         <formula>Number_of_Guests__c + 1</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Total Registered - Registrants and Guests</inlineHelpText>
         <label>Total Number of Guests</label>
         <precision>18</precision>
         <required>false</required>
@@ -2038,6 +2041,18 @@ Event__r.Community_Base_URL__c
 ,&quot;Parking Pass&quot;)</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
         <label>UG Parking Pass Link</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Text</type>
+        <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Virtual_Meeting_URL__c</fullName>
+        <externalId>false</externalId>
+        <formula>Event_Instance__r.Virtual_Meeting_URL__c</formula>
+        <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <label>Virtual Meeting URL</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
         <trackTrending>false</trackTrending>

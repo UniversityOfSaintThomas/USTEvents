@@ -1,5 +1,6 @@
 /**
  * Created by dahl3702 on 4/30/2019.
+ * Updated by rdblake on 8/10/2020 - added Meeting Link
  */
 
 global class USTEventAppointmentItinerary_TDTM extends hed.TDTM_Runnable {
@@ -32,7 +33,7 @@ global class USTEventAppointmentItinerary_TDTM extends hed.TDTM_Runnable {
                     SELECT Id, Name, Appointment_Time__c, Appointment_Time_Formatted__c, Event_Registration__r.Id, Event_Registration__r.Event_Name__c, Appointment_Status__c,
                             Faculty_Staff_Member__c, Appointment_Title__c, Event_Host__c, Host_Name__c, Event_Host__r.Assigned__c,
                             Host_Location__c, Building__c, Room__c, Event_Host__r.Time__c, Event_Host__r.Course_Name__c, Event_Host__r.RecordType.Name,
-                            Chosen_State__c, Event_Registration__r.Event__r.RecordType.Name, Description__c, Do_Not_Show_Time__c, Sort_Order__c
+                            Chosen_State__c, Event_Registration__r.Event__r.RecordType.Name, Description__c, Do_Not_Show_Time__c, Sort_Order__c, Appt_Virtual_Meeting_URL__c
                     FROM UST_Event_Appointments__c
                     WHERE Event_Registration__r.Id IN :uniqueRegIds.values()
                     ORDER BY Appointment_Time__c ASC, Event_Host__r.Time__c ASC, Sort_Order__c, Appointment_Title__c ASC
@@ -63,6 +64,7 @@ global class USTEventAppointmentItinerary_TDTM extends hed.TDTM_Runnable {
                 Boolean appointmentsHaveTime = false;
                 Boolean appointmentsHaveLocation = false;
                 Boolean appointmentsHaveHost = false;
+                Boolean appointmentsHaveMeet = false;
                 for (UST_Event_Appointments__c apptTime : AllAppts) {
                     if (!String.isBlank(apptTime.Appointment_Time_Formatted__c) && !apptTime.Do_Not_Show_Time__c) {
                         appointmentsHaveTime = true;
@@ -74,6 +76,9 @@ global class USTEventAppointmentItinerary_TDTM extends hed.TDTM_Runnable {
                     if (!String.isBlank(apptTime.Host_Name__c) || !String.isBlank(apptTime.Host_Location__c)) {
                         appointmentsHaveHost = true;
                     }
+                    if (!String.isBlank(apptTime.Appt_Virtual_Meeting_URL__c)) {
+                        appointmentsHaveMeet = true;
+                    }
                 }
 
 
@@ -84,6 +89,10 @@ global class USTEventAppointmentItinerary_TDTM extends hed.TDTM_Runnable {
                 if (appointmentsHaveHost) {
                     tableHead2 += '<th align="left" style="text-align:left; font-family:arial; font-size:12pt; color:#000000;">Host</th>';
                 }
+                if (appointmentsHaveMeet) {
+                    tableHead2 += '<th align="left" style="text-align:left; font-family:arial; font-size:12pt; color:#000000;">Meeting Link</th>';
+                }
+
                 if (appointmentsHaveLocation) {
                     tableHead2 += '<th align="left" style="text-align:left; font-family:arial; font-size:12pt; color:#000000;">Location</th>';
                 }
@@ -114,6 +123,16 @@ global class USTEventAppointmentItinerary_TDTM extends hed.TDTM_Runnable {
                         }
                         generatedItinerary = generatedItinerary.removeEnd(' - ');
                         generatedItinerary += '</td>';
+
+                        //Appointment Meeting Link
+                        if (appointmentsHaveMeet) {
+                            generatedItinerary += '<td style="vertical-align:top; text-align:left; font-family:arial; font-size:12pt; padding-top:5px; padding-bottom:10px; color:#000000;">';
+                            if (!String.isBlank(AllAPpts[i].Appt_Virtual_Meeting_URL__c) && !isOvernight) {
+                                generatedItinerary += AllAPpts[i].Appt_Virtual_Meeting_URL__c + ' - ';
+                            }
+                            generatedItinerary = generatedItinerary.removeEnd(' - ');
+                            generatedItinerary += '</td>';
+                        }
 
                         //Appointment Host
                         if (isOvernight) {

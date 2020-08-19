@@ -426,6 +426,10 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Chemistry 9-12</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Classical Civilization</valueName>
             </valueSettings>
@@ -436,8 +440,19 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Communication and Journalism</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Communication Arts and Literature</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Communication Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Complimentary Lunch on Campus</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -456,13 +471,28 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Digital Media</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Economics</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Economics-Business</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Economics-International</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Economics-Mathematical</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Economics-Public Policy</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -531,6 +561,10 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Film Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>French</valueName>
             </valueSettings>
@@ -571,7 +605,6 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
-                <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Journalism</valueName>
             </valueSettings>
             <valueSettings>
@@ -581,13 +614,25 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>K-12 World Languages &amp; Cultures</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Latin</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Life Sciences Education (9-12)</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Mathematics</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Mathematics Education (5-12)</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -598,6 +643,10 @@
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Music - Business</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Music Composition</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -626,6 +675,10 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Philosophy-Saint John Vianney</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Physics</valueName>
             </valueSettings>
@@ -643,6 +696,10 @@
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Pre-Dentistry</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Pre-Health Professions</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
@@ -696,6 +753,10 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Social Studies</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Social Work</valueName>
             </valueSettings>
@@ -716,8 +777,16 @@
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Strategic Communication</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
                 <controllingFieldValue>Faculty Visit</controllingFieldValue>
                 <valueName>Theology</valueName>
+            </valueSettings>
+            <valueSettings>
+                <controllingFieldValue>Attend A Class</controllingFieldValue>
+                <valueName>Women, Gender, and Sexuality Studies</valueName>
             </valueSettings>
             <valueSettings>
                 <controllingFieldValue>Attend A Class</controllingFieldValue>

@@ -17,10 +17,6 @@
             width: 5%
         }
 
-        .buttonCellUpDown {
-            display: none;
-        }
-
         .buttonCell:nth-child(odd) {
             display: none;
         }

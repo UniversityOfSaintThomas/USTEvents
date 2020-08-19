@@ -37,6 +37,7 @@
                         </apex:outputPanel>
                     </div>
                 </div>
+                <apex:outputPanel rendered="{!!eventIsClosed}" layout="none">
                 <div class="row">
                     <div class="column">
                         <h2>
@@ -68,6 +69,19 @@
                         </p>
                     </div>
                 </div>
+                </apex:outputPanel>
+                <apex:outputPanel rendered="{!eventIsClosed}">
+                    <div class="row">
+                        <div class="column">
+                            <h2>
+                                <apex:outputText value="{!eventPage.Event_Name__c}"></apex:outputText>
+                            </h2>
+                            <p>
+                                <apex:outputText escape="false" value="{!eventPage.Event_Full_Text__c}"></apex:outputText>
+                            </p>
+                        </div>
+                    </div>
+                </apex:outputPanel>
                 <div class="row">
                     <div class="column">
                         <p>

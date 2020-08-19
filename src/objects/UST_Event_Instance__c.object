@@ -230,10 +230,37 @@ Event__r.Community_Base_URL__c
         </valueSet>
     </fields>
     <fields>
+        <fullName>Capacity_Set_By__c</fullName>
+        <description>This field will dictate when Registration closes.</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Capacity will be controlled by the value selected.</inlineHelpText>
+        <label>Capacity Set By</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Picklist</type>
+        <valueSet>
+            <restricted>true</restricted>
+            <valueSetDefinition>
+                <sorted>false</sorted>
+                <value>
+                    <fullName>Count of Attendees</fullName>
+                    <default>true</default>
+                    <label>Count of Attendees</label>
+                </value>
+                <value>
+                    <fullName>Primary Attendees</fullName>
+                    <default>false</default>
+                    <label>Primary Attendees</label>
+                </value>
+            </valueSetDefinition>
+        </valueSet>
+    </fields>
+    <fields>
         <fullName>Capacity__c</fullName>
         <description>Capacity of the Event Session</description>
         <externalId>false</externalId>
-        <inlineHelpText>Capacity of this Event Session</inlineHelpText>
+        <inlineHelpText>Max Capacity</inlineHelpText>
         <label>Capacity</label>
         <precision>4</precision>
         <required>false</required>
@@ -247,7 +274,7 @@ Event__r.Community_Base_URL__c
         <fullName>Confirmed_Attendees__c</fullName>
         <description>The number of the field “Actual Number of Guests” in the event registration object, which is a field that the user manually put in the attended guests&apos; number after the event.</description>
         <externalId>false</externalId>
-        <inlineHelpText>The number of the field “Actual Number of Guests” in the event registration object, which is a field that the user manually put in the attended guests&apos; number after the event.</inlineHelpText>
+        <inlineHelpText>Total Attendance - Registrants and Guests</inlineHelpText>
         <label>Confirmed Attendees</label>
         <summarizedField>UST_Event_Registration__c.Actual_Number_of_Guests__c</summarizedField>
         <summaryForeignKey>UST_Event_Registration__c.Event_Instance__c</summaryForeignKey>
@@ -260,7 +287,7 @@ Event__r.Community_Base_URL__c
         <fullName>Count_of_Attendees__c</fullName>
         <description>Sum of Number of Guests plus 1 for the student registration</description>
         <externalId>false</externalId>
-        <inlineHelpText>Sum of Number of Guests plus 1 for the student registration</inlineHelpText>
+        <inlineHelpText>Total Registered - Registrants and Guests</inlineHelpText>
         <label>Count of Attendees</label>
         <summarizedField>UST_Event_Registration__c.Total_Number_of_Guests__c</summarizedField>
         <summaryFilterItems>
@@ -276,9 +303,11 @@ Event__r.Community_Base_URL__c
     </fields>
     <fields>
         <fullName>Current_Available_Capacity__c</fullName>
+        <description>Available Capacity</description>
         <externalId>false</externalId>
-        <formula>Capacity__c - Count_of_Attendees__c</formula>
+        <formula>IF(ISPICKVAL(Capacity_Set_By__c, &quot;&quot;), (Capacity__c - Count_of_Attendees__c), IF(ISPICKVAL(Capacity_Set_By__c,&quot;Count of Attendees&quot;), (Capacity__c - Count_of_Attendees__c), (Capacity__c - Primary_Attendees__c)))</formula>
         <formulaTreatBlanksAs>BlankAsZero</formulaTreatBlanksAs>
+        <inlineHelpText>Available Capacity</inlineHelpText>
         <label>Current Available Capacity</label>
         <precision>18</precision>
         <required>false</required>
@@ -483,7 +512,7 @@ Event__r.Community_Base_URL__c
         <fullName>Primary_Attendees__c</fullName>
         <description>Number of registrants minus guests they are bringing</description>
         <externalId>false</externalId>
-        <inlineHelpText>Number of registrants minus guests they are bringing</inlineHelpText>
+        <inlineHelpText>Registrants</inlineHelpText>
         <label>Primary Attendees</label>
         <summaryFilterItems>
             <field>UST_Event_Registration__c.Status__c</field>
@@ -500,7 +529,7 @@ Event__r.Community_Base_URL__c
         <fullName>Primary_Confirmed_Atendees__c</fullName>
         <description>The number of registration that are confirmed counted once</description>
         <externalId>false</externalId>
-        <inlineHelpText>The number of registration that are confirmed counted once</inlineHelpText>
+        <inlineHelpText>Confirmed Registrants</inlineHelpText>
         <label>Primary Confirmed Atendees</label>
         <summaryFilterItems>
             <field>UST_Event_Registration__c.Status__c</field>
@@ -698,6 +727,17 @@ Event__r.Community_Base_URL__c
         <trackTrending>false</trackTrending>
         <type>Text</type>
         <unique>false</unique>
+    </fields>
+    <fields>
+        <fullName>Virtual_Meeting_URL__c</fullName>
+        <description>Use for a virtual meeting URL</description>
+        <externalId>false</externalId>
+        <inlineHelpText>Use for a virtual meeting URL for each instance</inlineHelpText>
+        <label>Virtual Meeting URL</label>
+        <required>false</required>
+        <trackHistory>false</trackHistory>
+        <trackTrending>false</trackTrending>
+        <type>Url</type>
     </fields>
     <label>UST Event Instance</label>
     <listViews>

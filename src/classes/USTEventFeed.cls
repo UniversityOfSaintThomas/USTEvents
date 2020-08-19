@@ -82,7 +82,7 @@ global with sharing class USTEventFeed {
         eventQuery += ' Building_Override__c, Alternate_Registration_URL_Override__c, Location_Address_Override__c, Location_Map_Link_Override__c, Location_Title_Override__c, Location_Type_Override__c,  ';
         eventQuery += ' Event__r.Event_Short_Listing_Description__c, Event__r.Audience__c, Event__r.Close_Event_Days_Before__c, Start_Date_Time__c, End_Date_Time__c, Event__r.School__r.Name, Event__r.Event_Sponsor__c, ';
         eventQuery += ' Event__r.Feed_Registration_Button_Text__c, Feed_Registration_Button_Text_Override__c, Capacity__c, Current_Available_Capacity__c, Event__r.Exclude_Search_Engine_Tag__c,Exclude_Search_Engine_Tag_Override__c, ';
-        eventQuery += ' Event__r.Where_to_Display__c, Event__r.Category__c, Event__r.Keep_Registration_Open_During_Event__c';
+        eventQuery += ' Event__r.Where_to_Display__c, Event__r.Category__c, Event__r.Keep_Registration_Open_During_Event__c, Event__r.Event_Type__c';
         eventQuery += ' FROM UST_Event_Instance__c';
         eventQuery += ' Where Event__R.Event_Status__c = \'Active\' ';
         eventQuery += ' AND Active_Status__c = \'Active\' ';
@@ -157,6 +157,12 @@ global with sharing class USTEventFeed {
             eventQuery += ' AND Event__r.Category__c INCLUDES (' + sanitizeIncludeList(category) + ') ';
         }
 
+        //Event Type filter. Only accepts one.
+        String eventType = req.params.get('type');
+        if (String.isNotBlank(eventType)) {
+            eventQuery += ' AND Event__r.Event_Type__c = \'' + String.escapeSingleQuotes(eventType) + '\' ';
+        }
+
         //Program filter (can be comma separated)
         String program = req.params.get('program');
         if (String.isNotBlank(program)) {
@@ -182,6 +188,8 @@ global with sharing class USTEventFeed {
             List<String> filterList = filter.split(',');
             for (String f : filterList) {
                 eventQuery += ' Event__r.Program_Filter__c LIKE \'%' + f + '%\' OR ';
+                eventQuery += ' Event__r.Program_Filter_2__c LIKE \'%' + f + '%\' OR ';
+                eventQuery += ' Event__r.Program_Filter_3__c LIKE \'%' + f + '%\' OR ';
                 eventQuery += ' Event__r.Location_Title__c LIKE \'%' + f + '%\' OR ';
                 eventQuery += ' Event__r.Location_Address__c LIKE \'%' + f + '%\' OR ';
                 eventQuery += ' Event__r.Building__c LIKE \'%' + f + '%\' OR ';
@@ -203,7 +211,12 @@ global with sharing class USTEventFeed {
             }
         }
 
+        eventQuery += ' ORDER BY Start_Date_Time__c ';
+
         List<UST_Event_Instance__c> EventInstance = new List<UST_Event_Instance__c>();
+
+        System.debug(eventQuery);
+
         Try {
             EventInstance = database.query(eventQuery);
         } Catch (Exception ex) {
@@ -483,6 +496,9 @@ global with sharing class USTEventFeed {
         //audience
         allOptions.add(makeOption('audience', getObjectItemList(UST_Event__c.Audience__c.getDescribe()), 'Filters on audiences (&audience= single or coma separated list of these items)'));
 
+        //Event type
+        allOptions.add(makeOption('type', getObjectItemList(UST_Event__c.Event_Type__c.getDescribe()), 'Filters on event type (&type= single item only)'));
+
         //sponsor
         allOptions.add(makeOption('sponsor', getObjectItemList(UST_Event__c.Event_Sponsor__c.getDescribe()), 'Filters on sponsor (&sponsor= single or coma separated list of these items)'));
 
@@ -538,6 +554,7 @@ global with sharing class USTEventFeed {
                     SELECT Major_Display_Name__c, Prog_Major_Conc_Code__c, Program_Code__c, Status__c, Program_Offered__r.Degree_Level__c, College_School__c, Program_Offered__r.School__r.Name, Degree_Level__c
                     FROM Major__c
                     WHERE Status__c = 'Active'
+                    AND (Display_on_RFI_UG__c = true OR Display_on_RFI__c = true)
                     ORDER BY Program_Offered__r.Degree_Level__c, Major_Display_Name__c
             ];
             List<String> allProgramsList = new List<String>();

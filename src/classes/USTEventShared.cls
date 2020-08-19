@@ -118,7 +118,10 @@ public with sharing class USTEventShared {
             });
 
             if (!String.isBlank(evt.evtId)) {
-                UST_Event__c eventPage = [SELECT Event_Home_Link_URL__c FROM UST_Event__c WHERE Id = :evt.evtId][0];
+                UST_Event__c eventPage = [
+                        SELECT Event_Home_Link_URL__c
+                        FROM UST_Event__c
+                        WHERE Id = :evt.evtId][0];
                 if (!String.isBlank(eventPage.Event_Home_Link_URL__c)) {
                     myVFPage = new PageReference(eventPage.Event_Home_Link_URL__c);
                 } else if (String.isNotBlank(evt.instanceID) && !ApexPages.currentPage().getUrl().containsIgnoreCase('USTEventRegister')) {
@@ -132,6 +135,34 @@ public with sharing class USTEventShared {
             myVFPage.setRedirect(true);
         }
         return myVFPage;
+    }
+
+    public boolean isEventClosed(UST_Event__c eventPage, UST_Event_Instance__c evtInstance) {
+        //Figure out if the event is closed.
+        Boolean eventIsClosed = false;
+
+        Date compareCloseDate = Date.today();
+
+        if (eventPage.Close_Event_Days_Before__c != null && eventPage.Close_Event_Days_Before__c != 0) {
+            compareCloseDate = compareCloseDate.addDays((Integer.valueOf(eventPage.Close_Event_Days_Before__c) + 1));
+        }
+
+        Date startDate = date.newInstance(evtInstance.Start_Date_Time__c.year(), evtInstance.Start_Date_Time__c.month(), evtInstance.Start_Date_Time__c.day());
+        Date endDate = date.newInstance(evtInstance.End_Date_Time__c.year(), evtInstance.End_Date_Time__c.month(), evtInstance.End_Date_Time__c.day());
+
+        if (eventPage.Keep_Registration_Open_During_Event__c) {
+            if (endDate < compareCloseDate && endDate != compareCloseDate) {
+                eventIsClosed = true;
+            }
+        } else if (startDate <= compareCloseDate) {
+            eventIsClosed = true;
+        }
+
+        if (evtInstance.Current_Available_Capacity__c <= 0 || evtInstance.Active_Status__c != 'Active') {
+            eventIsClosed = true;
+        }
+
+        return eventIsClosed;
     }
 
     public String createEncryptedCookie(String CookieValue, String CookieName) {

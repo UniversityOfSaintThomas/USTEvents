@@ -13,25 +13,41 @@ public with sharing class USTEventSubmitController {
     public String chosenFormatted { get; set; }
     public String templateSelected { get; set; }
     public String eventStartDateTimeCrumb {get;set;}
+    public Boolean eventIsClosed { get; set; }
+    public Boolean adminOpen { get; set; }
 
     public USTEventSubmitController() {
         test = '';
         templateSelected = USTShared.defaultTemplate;
+        adminOpen = false;
 
         //Get cookie or URL string variable
         evtInfo = USTShared.getUSTEventInfo();
         chosenFormatted = '';
         if (!String.isEmpty(evtInfo.evtId)) {
             eventPage = [
-                    SELECT Event_Name__c, Event_Submit_Title__c, Event_Submit_Description__c, Event_Footer__c, Template__c, Event_Home_Link_Title__c, Event_Home_Link_URL__c, Tracking_Submit_Registration__c
+                    SELECT Event_Name__c, Event_Submit_Title__c, Event_Submit_Description__c, Event_Footer__c, Template__c,
+                            Event_Home_Link_Title__c, Event_Home_Link_URL__c, Tracking_Submit_Registration__c,
+                            Keep_Registration_Open_During_Event__c, Close_Event_Days_Before__c, Event_Full_Text__c
                     FROM UST_Event__c
                     WHERE Id = :evtinfo.evtId][0];
             templateSelected = eventPage.Template__c;
 
-            evtInstance = [SELECT Instance_Title__c, Start_Date_Time__c, End_Date_Time__c FROM UST_Event_Instance__c WHERE Id = :evtinfo.instanceID LIMIT 1];
+            evtInstance = [
+                    SELECT Instance_Title__c, Start_Date_Time__c, End_Date_Time__c, Current_Available_Capacity__c, Active_Status__c
+                    FROM UST_Event_Instance__c
+                    WHERE Id = :evtinfo.instanceID
+                    LIMIT 1];
 
             if(evtInstance.Start_Date_Time__c != null && evtInstance.End_Date_Time__c != null ) {
                 eventStartDateTimeCrumb = evtInstance.Start_Date_Time__c.format('MMMM d, YYYY, h:mm a') + ' - ' + evtInstance.End_Date_Time__c.format('h:mm a');
+            }
+
+            if (String.isNotBlank(ApexPages.currentPage().getParameters().get('adminopen'))) {
+                adminOpen = Boolean.valueOf(ApexPages.currentPage().getParameters().get('adminopen'));
+                eventIsClosed = adminOpen;
+            } else {
+                eventIsClosed = USTShared.isEventClosed(eventPage, evtInstance);
             }
         }
 
@@ -68,6 +84,10 @@ public with sharing class USTEventSubmitController {
 
     public PageReference submitRegistration() {
         PageReference confirmPage = Page.USTEventConfirmation;
+        if (String.isNotBlank(ApexPages.currentPage().getParameters().get('adminopen'))) {
+            confirmPage.setRedirect(true);
+            confirmPage.getParameters().put('adminopen', ApexPages.currentPage().getParameters().get('adminopen'));
+        }
         return confirmPage;
     }
 
@@ -84,6 +104,10 @@ public with sharing class USTEventSubmitController {
             lastPage = Page.USTEventRegister;
         } else {
             lastPage = Page.USTEventRegistrationOptions;
+        }
+        if (String.isNotBlank(ApexPages.currentPage().getParameters().get('adminopen'))) {
+            lastPage.setRedirect(true);
+            lastPage.getParameters().put('adminopen', ApexPages.currentPage().getParameters().get('adminopen'));
         }
         return lastPage;
     }

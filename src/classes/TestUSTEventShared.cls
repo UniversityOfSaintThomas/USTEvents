@@ -152,7 +152,7 @@ public with sharing class TestUSTEventShared {
     }
 
     @isTest static void testEventWithProgram() {
-        UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Overnight Event', '', true, true, '');
+        UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Overnight Event', '', true, true, 'One registration per event');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
         List<Major__c> mj = TestUSTEventSharedDataFactory.insertTestPrograms();
         UST_Event__c ustEvt = [SELECT Id, Program_Filter__c, Program_Filter_2__c, Program_Filter_3__c, School__c FROM UST_Event__c WHERE Id = :evtInst.Event__c LIMIT 1];
@@ -194,6 +194,7 @@ public with sharing class TestUSTEventShared {
 
         registerCtrl.getProgramsAvailable();
         registerCtrl.getSexDD();
+        registerCtrl.getCountryDD();
         registerCtrl.GetStateDD();
         registerCtrl.getTimeFrame();
         registerCtrl.getParentStatus();

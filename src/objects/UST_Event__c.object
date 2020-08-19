@@ -156,123 +156,6 @@
     <enableStreamingApi>true</enableStreamingApi>
     <externalSharingModel>ReadWrite</externalSharingModel>
     <fields>
-        <fullName>Academic_Program_List__c</fullName>
-        <description>List of selected academic programs.</description>
-        <externalId>false</externalId>
-        <inlineHelpText>List of selected academic programs.</inlineHelpText>
-        <label>Academic Program List</label>
-        <required>false</required>
-        <trackHistory>false</trackHistory>
-        <trackTrending>false</trackTrending>
-        <type>MultiselectPicklist</type>
-        <valueSet>
-            <valueSetDefinition>
-                <sorted>false</sorted>
-                <value>
-                    <fullName>All</fullName>
-                    <default>false</default>
-                    <label>All</label>
-                </value>
-                <value>
-                    <fullName>Part-time Flex MBA (BU_PT_MBA|PTMB)</fullName>
-                    <default>false</default>
-                    <label>Part-time Flex MBA (BU_PT_MBA|PTMB)</label>
-                </value>
-                <value>
-                    <fullName>Online MBA (BU_OL_MBA|PTMB)</fullName>
-                    <default>false</default>
-                    <label>Online MBA (BU_OL_MBA|PTMB)</label>
-                </value>
-                <value>
-                    <fullName>Full-time Flex MBA (BU_FT_MBA|FTMB)</fullName>
-                    <default>false</default>
-                    <label>Full-time Flex MBA (BU_FT_MBA|FTMB)</label>
-                </value>
-                <value>
-                    <fullName>Health Care MBA (BU_HC_MBA|HCMB)</fullName>
-                    <default>false</default>
-                    <label>Health Care MBA (BU_HC_MBA|HCMB)</label>
-                </value>
-                <value>
-                    <fullName>Executive MBA (BU_EX_MBA|EXMB)</fullName>
-                    <default>false</default>
-                    <label>Executive MBA (BU_EX_MBA|EXMB)</label>
-                </value>
-                <value>
-                    <fullName>Transformational Change and Organization Development (BU_GR_CER|BUOD)</fullName>
-                    <default>false</default>
-                    <label>Transformational Change and Organization Development (BU_GR_CER|BUOD)</label>
-                </value>
-                <value>
-                    <fullName>Health Care Communication (BU_HCC_MS|HCMS)</fullName>
-                    <default>false</default>
-                    <label>Health Care Communication (BU_HCC_MS|HCMS)</label>
-                </value>
-                <value>
-                    <fullName>Health Care Innovation (BU_HCI_MS|HCIN)</fullName>
-                    <default>false</default>
-                    <label>Health Care Innovation (BU_HCI_MS|HCIN)</label>
-                </value>
-                <value>
-                    <fullName>Accountancy (BU_AC_MS|ACMS)</fullName>
-                    <default>false</default>
-                    <label>Accountancy (BU_AC_MS|ACMS)</label>
-                </value>
-                <value>
-                    <fullName>Business Analytics (BU_BA_MS|BUAT)</fullName>
-                    <default>false</default>
-                    <label>Business Analytics (BU_BA_MS|BUAT)</label>
-                </value>
-                <value>
-                    <fullName>Business Analytics (BU_GR_CER|BUAT)</fullName>
-                    <default>false</default>
-                    <label>Business Analytics (BU_GR_CER|BUAT)</label>
-                </value>
-                <value>
-                    <fullName>Strategic Risk and Responsibility (BU_GR_CER|BUSR)</fullName>
-                    <default>false</default>
-                    <label>Strategic Risk and Responsibility (BU_GR_CER|BUSR)</label>
-                </value>
-                <value>
-                    <fullName>Business Analytics (Online) (BU_GR_CER|BOAT)</fullName>
-                    <default>false</default>
-                    <label>Business Analytics (Online) (BU_GR_CER|BOAT)</label>
-                </value>
-                <value>
-                    <fullName>Global Business (BU_GR_CER|BUGL)</fullName>
-                    <default>false</default>
-                    <label>Global Business (BU_GR_CER|BUGL)</label>
-                </value>
-                <value>
-                    <fullName>Marketing Communication (BU_GR_CER|BUMC)</fullName>
-                    <default>false</default>
-                    <label>Marketing Communication (BU_GR_CER|BUMC)</label>
-                </value>
-                <value>
-                    <fullName>Digital Experience (BU_GR_CER|BUDE)</fullName>
-                    <default>false</default>
-                    <label>Digital Experience (BU_GR_CER|BUDE)</label>
-                </value>
-                <value>
-                    <fullName>Strategic Growth (BU_GR_CER|BUGS)</fullName>
-                    <default>false</default>
-                    <label>Strategic Growth (BU_GR_CER|BUGS)</label>
-                </value>
-                <value>
-                    <fullName>Corporate Communication (BU_GR_CER|BUCC)</fullName>
-                    <default>false</default>
-                    <label>Corporate Communication (BU_GR_CER|BUCC)</label>
-                </value>
-                <value>
-                    <fullName>Executive Coaching (BU_EC_CER|BUEC)</fullName>
-                    <default>false</default>
-                    <label>Executive Coaching (BU_EC_CER|BUEC)</label>
-                </value>
-            </valueSetDefinition>
-        </valueSet>
-        <visibleLines>5</visibleLines>
-    </fields>
-    <fields>
         <fullName>Add_Info_Question_Pick_List_1__c</fullName>
         <description>return separated list that will be converted to a pick-list.</description>
         <externalId>false</externalId>
@@ -1501,6 +1384,16 @@ TEXT(YEAR( End_Date__c))
                     <label>Overnight</label>
                 </value>
                 <value>
+                    <fullName>Reception</fullName>
+                    <default>false</default>
+                    <label>Reception</label>
+                </value>
+                <value>
+                    <fullName>Seminar</fullName>
+                    <default>false</default>
+                    <label>Seminar</label>
+                </value>
+                <value>
                     <fullName>Visit</fullName>
                     <default>false</default>
                     <label>Visit</label>
@@ -1642,7 +1535,7 @@ TEXT(YEAR( End_Date__c))
         <fullName>Location_Type__c</fullName>
         <description>Campus the event will be hosted or off campus.</description>
         <externalId>false</externalId>
-        <inlineHelpText>Campus the event will be hosted or off campus.</inlineHelpText>
+        <inlineHelpText>Campus the event will be hosted or off campus. NOTE: Leaving Blank will trigger &quot;Foot on Campus&quot; flag on Contact</inlineHelpText>
         <label>Location Type</label>
         <required>false</required>
         <trackHistory>false</trackHistory>
@@ -1916,6 +1809,11 @@ TEXT(YEAR( End_Date__c))
             <valueSetDefinition>
                 <sorted>true</sorted>
                 <value>
+                    <fullName>Alumni site</fullName>
+                    <default>false</default>
+                    <label>Alumni site</label>
+                </value>
+                <value>
                     <fullName>CAS site</fullName>
                     <default>false</default>
                     <label>CAS site</label>
@@ -2034,13 +1932,6 @@ TEXT(YEAR( End_Date__c))
         <active>true</active>
         <description>Graduate school events</description>
         <label>Graduate</label>
-        <picklistValues>
-            <picklist>Academic_Program_List__c</picklist>
-            <values>
-                <fullName>All</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Add_Info_Question_Type_1__c</picklist>
             <values>
@@ -2621,6 +2512,14 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>Reception</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seminar</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Visit</fullName>
                 <default>false</default>
             </values>
@@ -2700,6 +2599,10 @@ TEXT(YEAR( End_Date__c))
         <picklistValues>
             <picklist>Where_to_Display__c</picklist>
             <values>
+                <fullName>Alumni site</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>CAS site</fullName>
                 <default>false</default>
             </values>
@@ -2726,13 +2629,6 @@ TEXT(YEAR( End_Date__c))
         <active>true</active>
         <description>Represents all undergrad interests in events</description>
         <label>Undergraduate</label>
-        <picklistValues>
-            <picklist>Academic_Program_List__c</picklist>
-            <values>
-                <fullName>All</fullName>
-                <default>false</default>
-            </values>
-        </picklistValues>
         <picklistValues>
             <picklist>Add_Info_Question_Type_1__c</picklist>
             <values>
@@ -3345,6 +3241,14 @@ TEXT(YEAR( End_Date__c))
                 <default>false</default>
             </values>
             <values>
+                <fullName>Reception</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Seminar</fullName>
+                <default>false</default>
+            </values>
+            <values>
                 <fullName>Visit</fullName>
                 <default>false</default>
             </values>
@@ -3368,6 +3272,10 @@ TEXT(YEAR( End_Date__c))
             </values>
             <values>
                 <fullName>Off Campus</fullName>
+                <default>false</default>
+            </values>
+            <values>
+                <fullName>Online</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -3415,6 +3323,10 @@ TEXT(YEAR( End_Date__c))
         </picklistValues>
         <picklistValues>
             <picklist>Where_to_Display__c</picklist>
+            <values>
+                <fullName>Alumni site</fullName>
+                <default>false</default>
+            </values>
             <values>
                 <fullName>CAS site</fullName>
                 <default>false</default>

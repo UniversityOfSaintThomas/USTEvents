@@ -800,10 +800,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration-Family Business %28BUFM%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Business Administration-Financial Management %28BUFI%29</fullName>
                 <default>false</default>
             </values>
@@ -821,10 +817,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
             </values>
             <values>
                 <fullName>Business Administration-Leadership %26 Management %28BULM%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration-Legal Studies in Business %28BULS%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -853,10 +845,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
             </values>
             <values>
                 <fullName>Classical Languages %28LAGK%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Communication and Journalism %28COJO%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -956,7 +944,7 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
                 <default>false</default>
             </values>
             <values>
-                <fullName>Journalism %28see Communication and Journalism%29 %28XJOU%29</fullName>
+                <fullName>Journalism %28JOUR%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1299,10 +1287,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration-Family Business %28BUFM%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Business Administration-Financial Management %28BUFI%29</fullName>
                 <default>false</default>
             </values>
@@ -1320,10 +1304,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
             </values>
             <values>
                 <fullName>Business Administration-Leadership %26 Management %28BULM%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration-Legal Studies in Business %28BULS%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1352,10 +1332,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
             </values>
             <values>
                 <fullName>Classical Languages %28LAGK%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Communication and Journalism %28COJO%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1455,7 +1431,7 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
                 <default>false</default>
             </values>
             <values>
-                <fullName>Journalism %28see Communication and Journalism%29 %28XJOU%29</fullName>
+                <fullName>Journalism %28JOUR%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1798,10 +1774,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration-Family Business %28BUFM%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Business Administration-Financial Management %28BUFI%29</fullName>
                 <default>false</default>
             </values>
@@ -1819,10 +1791,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
             </values>
             <values>
                 <fullName>Business Administration-Leadership %26 Management %28BULM%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration-Legal Studies in Business %28BULS%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1851,10 +1819,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
             </values>
             <values>
                 <fullName>Classical Languages %28LAGK%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Communication and Journalism %28COJO%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -1954,7 +1918,7 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
                 <default>false</default>
             </values>
             <values>
-                <fullName>Journalism %28see Communication and Journalism%29 %28XJOU%29</fullName>
+                <fullName>Journalism %28JOUR%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2297,10 +2261,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration-Family Business %28BUFM%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Business Administration-Financial Management %28BUFI%29</fullName>
                 <default>false</default>
             </values>
@@ -2318,10 +2278,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
             </values>
             <values>
                 <fullName>Business Administration-Leadership %26 Management %28BULM%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration-Legal Studies in Business %28BULS%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2350,10 +2306,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
             </values>
             <values>
                 <fullName>Classical Languages %28LAGK%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Communication and Journalism %28COJO%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2453,7 +2405,7 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
                 <default>false</default>
             </values>
             <values>
-                <fullName>Journalism %28see Communication and Journalism%29 %28XJOU%29</fullName>
+                <fullName>Journalism %28JOUR%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2860,10 +2812,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
                 <default>false</default>
             </values>
             <values>
-                <fullName>Business Administration-Family Business %28BUFM%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
                 <fullName>Business Administration-Financial Management %28BUFI%29</fullName>
                 <default>false</default>
             </values>
@@ -2881,10 +2829,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
             </values>
             <values>
                 <fullName>Business Administration-Leadership %26 Management %28BULM%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Business Administration-Legal Studies in Business %28BULS%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -2913,10 +2857,6 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
             </values>
             <values>
                 <fullName>Classical Languages %28LAGK%29</fullName>
-                <default>false</default>
-            </values>
-            <values>
-                <fullName>Communication and Journalism %28COJO%29</fullName>
                 <default>false</default>
             </values>
             <values>
@@ -3016,7 +2956,7 @@ IF(HOUR(Time__c) &gt;= 12, &apos;PM&apos;, &apos;AM&apos;), &apos;&apos;
                 <default>false</default>
             </values>
             <values>
-                <fullName>Journalism %28see Communication and Journalism%29 %28XJOU%29</fullName>
+                <fullName>Journalism %28JOUR%29</fullName>
                 <default>false</default>
             </values>
             <values>

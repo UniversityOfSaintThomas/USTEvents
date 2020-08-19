@@ -56,6 +56,8 @@
                 ]
 
 
+
+
             </script>
             <link href="{!URLFOR($Resource.USTEventAssets, '/css/main.css')}" rel="stylesheet" type="text/css"/>
             <link href="{!URLFOR($Resource.USTEventAssets, '/chosen/chosen-ust.css')}" rel="stylesheet" type="text/css"/>
@@ -431,9 +433,7 @@
                         </div>
 
                         <!-- Program of interest question -->
-                        <apex:outputPanel layout="block" styleClass="row"
-                                          rendered="{!IF((eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask but do not require' || eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require'),
-                                      true, false)}">
+                        <apex:outputPanel layout="block" styleClass="row" rendered="{!IF((eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask but do not require' || eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require'), true, false)}">
                             <div class="column">
                                 <apex:outputLabel for="progInterest">Program of interest</apex:outputLabel>
                                 <apex:selectList size="4" multiSelect="true" value="{!selectedPrograms}" id="progInterest" html-data-placeholder="Choose programs..." required="{!IF(eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require', true, false)}" styleClass="{!IF(eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require', 'required requiredText', '')}">
@@ -441,11 +441,9 @@
                                 </apex:selectList>
                             </div>
                         </apex:outputPanel>
-                        <apex:outputPanel layout="block" styleClass="row"
-                                          rendered="{!IF(eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require one selection',
-                                      true, false)}">
+                        <apex:outputPanel layout="block" styleClass="row" rendered="{!IF(eventPage.Ask_Registrant_Program_Of_Interest__c == 'Ask and require one selection', true, false)}">
                             <div class="column">
-                                <apex:outputLabel for="progInterest2">Program of interest</apex:outputLabel>
+                                <apex:outputLabel for="progInterest2" styleClass="required">Program of interest</apex:outputLabel>
                                 <apex:selectList size="1" multiSelect="false" value="{!selectedProgramsOne}" id="progInterest2" html-data-placeholder="Choose programs..." required="true" styleClass="required requiredText">
                                     <apex:selectOptions value="{!programsAvailable}"></apex:selectOptions>
                                 </apex:selectList>
