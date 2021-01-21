@@ -197,7 +197,7 @@ global with sharing class AdmissionsCounselorLookup {
 
             for (User u : cUser) {
                 CounselorInfo addCoun = new CounselorInfo();
-                cascadeUserImage = u.Name.replace(' ', '_');
+                cascadeUserImage = u.Name.replace(' ', '_').toLowercase();
                 cascadeUserImage = cascadeUserImage + '.jpg';
                 addCoun.name = u.Name;
                 addCoun.email = u.Email;
@@ -273,6 +273,7 @@ global with sharing class AdmissionsCounselorLookup {
             return myDomain;
         }
 
+        // Counselor_Role__c|UG_Adm4Y_Couns_Fallback_for_Intls
         public Counselor_Role__c getIntlCounselorByRole() {
             Id roleId = Util.getSObjIdBySettingsCompositeKey('Counselor_Role__c', 'UG_Adm4Y_Couns_Fallback_for_Intls');
             Counselor_Role__c intlId = null;

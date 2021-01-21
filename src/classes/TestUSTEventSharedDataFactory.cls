@@ -19,6 +19,8 @@ public with sharing class TestUSTEventSharedDataFactory {
         school.Name = 'Test School';
         upsert school;
 
+        insertTestPrograms();
+
         List<EnrollmentrxRx__Program_Offered__c> programsOffered = new List<EnrollmentrxRx__Program_Offered__c>();
         for (Integer xx; xx < 10; xx++) {
             EnrollmentrxRx__Program_Offered__c programOffered = new EnrollmentrxRx__Program_Offered__c();
@@ -45,14 +47,11 @@ public with sharing class TestUSTEventSharedDataFactory {
 
         UST_Event__c testEvent = new UST_Event__c();
 
-        System.Debug('|---------->> USER:' + UserInfo.getUserName());
 
         Id EvtRecType;
-//        if (String.isNotBlank(recType)) {
-//            EvtRecType = [Select Name, Id From RecordType WHERE Name = :recType LIMIT 1].Id;
-//        } else {
+
         EvtRecType = [Select Name, Id From RecordType WHERE Name = 'Undergraduate' LIMIT 1].Id;
-//        }
+
 
         //Create event
         testEvent = new UST_Event__c(
@@ -281,15 +280,21 @@ public with sharing class TestUSTEventSharedDataFactory {
 
         List<Major__c> majorList = new List<Major__c>();
         for (Integer x = 0; x < 10; x++) {
-            majorList.add(new Major__c (
+            Major__c testMajor = new Major__c (
                     Major_Name__c = 'Major' + String.valueOf(x),
                     Major_Display_Name__c = 'Major Name ' + String.valueOf(x),
                     Major_Code__c = 'MAJ' + String.valueOf(x),
                     Program_Offered__c = pc.Id,
                     Status__c = 'Active'
-            ));
+            );
+            testMajor.recalculateFormulas();
+            majorList.add(testMajor);
         }
         Insert majorList;
+
+        majorList = [SELECT Major_Name__c, Major_Display_Name__c, Major_Code__c, Prog_Major_Conc_Code__c, Concentration_Code__c FROM Major__c];
+
+        System.debug('MAJOR LIST: ' + JSON.serializePretty(majorList));
 
         return majorList;
     }
@@ -327,6 +332,8 @@ public with sharing class TestUSTEventSharedDataFactory {
 
     public static UST_Event_Registration__c createEventRegistration(UST_Event_Instance__c evtI, String firstName, String lastName, String Email, String Zip, String DOB, String ClassYear, Id optionalContactLinkId) {
 
+        List<Major__c> testMajors = [SELECT Prog_Major_Conc_Code__c, Major_Display_Name__c, Major__c.Program_Offered__r.Name, Program_Offered__r.Degree_Level__c
+        FROM Major__c];
         UST_Event_Registration__c testRegistration = new UST_Event_Registration__c(
                 Event__c = evtI.Event__c,
                 Event_Instance__c = evtI.Id,
@@ -339,6 +346,12 @@ public with sharing class TestUSTEventSharedDataFactory {
                 Preferred_St_Thomas_Class_Year__c = ClassYear,
                 Status__c = 'Started'
         );
+        if (testMajors.size() > 0) {
+            testRegistration.Registrant_Major__c = testMajors[0].Id;
+            testRegistration.Registrant_Major__c = testMajors[1].Id;
+            testRegistration.Registrant_Major__c = testMajors[2].Id;
+            testRegistration.Registrant_Major__c = testMajors[3].Id;
+        }
 
         insert testRegistration;
 

@@ -2,7 +2,7 @@
  * Created by dahl3702 on 6/12/2018.
  */
 
-@isTest
+@IsTest
 public with sharing class TestUSTEventShared {
 
     /**
@@ -24,7 +24,7 @@ public with sharing class TestUSTEventShared {
 
      **/
 
-    @isTest static void testBlankEvent() {
+    @IsTest static void testBlankEvent() {
         Test.startTest();
         //Making bad cookies for exceptions
         String eventForCookie = '{"blah":"blah"}';
@@ -40,9 +40,9 @@ public with sharing class TestUSTEventShared {
         Test.stopTest();
     }
 
-    @isTest static void testMatchingUDAR() {
+    @IsTest static void testMatchingUDAR() {
         //Insert a test event
-        Contact evtCon = TestUSTEventSharedDataFactory.createContact('MatchFirst', 'Match', 'MatchLast', 'match@valleyhill.net', '55555', '(555) 555-5555', '1971-03-22', '2012');
+        TestUSTEventSharedDataFactory.createContact('MatchFirst', 'Match', 'MatchLast', 'match@valleyhill.net', '55555', '(555) 555-5555', '1971-03-22', '2012');
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('UDAR', 'Test Event', '', true, true, '');
 
         Test.startTest();
@@ -80,10 +80,11 @@ public with sharing class TestUSTEventShared {
         registerCtrl.newEvtReg = TestUSTEventSharedDataFactory.createEventRegistrationObj('TestFirst', 'Test', 'MatchLast', 'test@valleyhill.net', '55418', '(555) 555-5555', '1989-03-22', '2012');
         registerCtrl.saveContactRegistration();
 
+
         Test.stopTest();
     }
 
-    @isTest static void testNoMatchGraduate() {
+    @IsTest static void testNoMatchGraduate() {
         //Insert a test event
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Graduate', 'Test Event', '', true, true, '');
         Test.startTest();
@@ -102,9 +103,9 @@ public with sharing class TestUSTEventShared {
     }
 
 
-    @isTest static void testMatchingUndergraduate() {
+    @IsTest static void testMatchingUndergraduate() {
         //Insert a test event
-        Contact evtCon = TestUSTEventSharedDataFactory.createContact('MatchFirst', 'Match', 'MatchLast', 'match@valleyhill.net', '55555', '(555) 555-5555', '1971-03-22', '2012');
+        TestUSTEventSharedDataFactory.createContact('MatchFirst', 'Match', 'MatchLast', 'match@valleyhill.net', '55555', '(555) 555-5555', '1971-03-22', '2012');
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', 'High School Senior', true, true, '');
 
         Test.startTest();
@@ -151,40 +152,61 @@ public with sharing class TestUSTEventShared {
         Test.stopTest();
     }
 
-    @isTest static void testEventWithProgram() {
+    @IsTest static void testEventWithProgram() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Overnight Event', '', true, true, 'One registration per event');
-        UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
-        List<Major__c> mj = TestUSTEventSharedDataFactory.insertTestPrograms();
+        TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
+//        List<Major__c> mj = TestUSTEventSharedDataFactory.insertTestPrograms();
         UST_Event__c ustEvt = [SELECT Id, Program_Filter__c, Program_Filter_2__c, Program_Filter_3__c, School__c FROM UST_Event__c WHERE Id = :evtInst.Event__c LIMIT 1];
-        ustEvt.School__c = [SELECT School__c FROM EnrollmentrxRx__Program_Offered__c WHERE Id = :mj[0].Program_Offered__c][0].School__c;
+        ustEvt.School__c = [SELECT School__c FROM EnrollmentrxRx__Program_Offered__c ][0].School__c;
         ustEvt.Program_Filter__c = 'THIS_THIS|THAT';
         upsert ustEvt;
         Test.startTest();
+        PageReference pageRef = Page.USTEventRegister;
+        Test.setCurrentPage(pageRef);
+        ApexPages.currentPage().getParameters().put('instanceID', evtInst.Id);
+        ApexPages.currentPage().getParameters().put('adminopen', 'true');
+        ApexPages.currentPage().getParameters().put('audience', 'Transfer');
+        USTEventRegisterController registerCtrl = new USTEventRegisterController();
+        registerCtrl.newEvtReg = TestUSTEventSharedDataFactory.createEventRegistrationObj('TestFirst', 'Test', 'TestLast', 'test@valleyhill.net', '55418', '(555) 444-4444', '1989-03-22', '2002');
+        registerCtrl.saveContactRegistration();
+        UST_Event_Registration__c evtReg2 = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
+        evtReg2.Status__c = 'Registered';
+        update evtReg2;
+        registerCtrl.saveContactRegistration();
         Test.stopTest();
     }
 
-    @isTest static void testEventWithEmailRestrictions() {
+    @IsTest static void testEventWithEmailRestrictions() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', '', true, true, 'One registration per instance');
-
+        evtInst.Location_Address_Override__c = '';
+        evtInst.Location_Map_Link_Override__c = '';
+        evtInst.Location_Title_Override__c = '';
+        evtInst.Location_Type_Override__c = '';
+        upsert evtInst;
         Test.startTest();
         //Add instance ID to register page
         PageReference pageRef = Page.USTEventRegister;
         Test.setCurrentPage(pageRef);
         ApexPages.currentPage().getParameters().put('instanceID', evtInst.Id);
+        ApexPages.currentPage().getParameters().put('adminopen', 'true');
+        ApexPages.currentPage().getParameters().put('audience', 'Transfer');
         USTEventRegisterController registerCtrl = new USTEventRegisterController();
         registerCtrl.newEvtReg = TestUSTEventSharedDataFactory.createEventRegistrationObj('TestFirst', 'Test', 'TestLast', 'test@valleyhill.net', '55418', '(555) 444-4444', '1989-03-22', '2002');
         registerCtrl.saveContactRegistration();
-//        UST_Event_Registration__c evtReg2 = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
+        UST_Event_Registration__c evtReg2 = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
+        evtReg2.Status__c = 'Registered';
+        update evtReg2;
         registerCtrl.saveContactRegistration();
+
         registerCtrl.newEvtReg.Registrant_Email__c = 'test2@valleyhill.net';
         registerCtrl.newEvtReg.Registrant_Date_of_Birth__c = Date.valueOf('1989-03-22');
         registerCtrl.saveContactRegistration();
         Test.stopTest();
     }
 
-    @isTest static void testRegPicklists() {
+    @IsTest static void testRegPicklists() {
 
-        Contact evtCon = TestUSTEventSharedDataFactory.createContact('MatchFirst', 'Match', 'MatchLast', 'match@valleyhill.net', '55555', '(555) 555-5555', '1971-03-22', '2012');
+        TestUSTEventSharedDataFactory.createContact('MatchFirst', 'Match', 'MatchLast', 'match@valleyhill.net', '55555', '(555) 555-5555', '1971-03-22', '2012');
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', 'High School Senior', false, false, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'MatchFirst', 'MatchLast', 'match@valleyhill.net', '55555', '1971-03-22', '2012', null);
         String eventForCookie = '{"audience":"High School Senior","instanceID":"' + evtInst.Id + '","evtRegId":"' + evtReg.Id + '","evtId":"' + evtInst.Event__c + '"}';
@@ -195,26 +217,28 @@ public with sharing class TestUSTEventShared {
         registerCtrl.getProgramsAvailable();
         registerCtrl.getSexDD();
         registerCtrl.getCountryDD();
-        registerCtrl.GetStateDD();
+        registerCtrl.getStateDD();
         registerCtrl.getTimeFrame();
         registerCtrl.getParentStatus();
         registerCtrl.getApplicantTypeDD();
         registerCtrl.getRelationshipDD();
     }
 
-    @isTest static void testRegAlreadyExists() {
+    @IsTest static void testRegAlreadyExists() {
         //Insert a test event
-        Contact evtCon = TestUSTEventSharedDataFactory.createContact('MatchFirst', 'Match', 'MatchLast', 'match@valleyhill.net', '55555', '(555) 555-5555', '1971-03-22', '2012');
+        TestUSTEventSharedDataFactory.createContact('MatchFirst', 'Match', 'MatchLast', 'match@valleyhill.net', '55555', '(555) 555-5555', '1971-03-22', '2012');
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', 'High School Senior', false, false, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'MatchFirst', 'MatchLast', 'match@valleyhill.net', '55555', '1971-03-22', '2012', null);
+        UST_Event__c testEvent = [SELECT Id FROM UST_Event__c WHERE Id = :evtInst.Event__c];
+        testEvent.Applicant_Type__c = 'Transfer';
+        testEvent.Exclude_Search_Engine_Tag__c = true;
+        upsert testEvent;
 
         Test.startTest();
         USTEventShared USTShared = new USTEventShared();
         String eventForCookie = '{"audience":"High School Senior","instanceID":"' + evtInst.Id + '","evtRegId":"' + evtReg.Id + '","evtId":"' + evtInst.Event__c + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
         USTEventRegisterController registerCtrl = new USTEventRegisterController();
-
-        PageReference pr = registerCtrl.setParentInfo('This');
 
         eventForCookie = '{"audience":"High School Senior","instanceID":"' + evtInst.Id + '","evtRegId":"COMING","evtId":"' + evtInst.Event__c + '"}';
         USTShared.createEncryptedCookie(eventForCookie, 'USTEvent');
@@ -228,7 +252,7 @@ public with sharing class TestUSTEventShared {
     }
 
 
-    @isTest static void testSubmit() {
+    @IsTest static void testSubmit() {
         Contact evtCon = TestUSTEventSharedDataFactory.createContact('TestFirst1', 'Test', 'TestLast1', 'test1@valleyhill.net', '55418', '(555) 555-5555', '1971-03-22', '2012');
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', '', true, true, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
@@ -245,7 +269,7 @@ public with sharing class TestUSTEventShared {
         submitCtrl.submitRegistration();
     }
 
-    @isTest static void testRegWithOptions() {
+    @IsTest static void testRegWithOptions() {
         Contact evtCon = TestUSTEventSharedDataFactory.createContact('TestFirst1', 'Test', 'TestLast1', 'test1@valleyhill.net', '55418', '(555) 555-5555', '1971-03-22', '2012');
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', '', true, true, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
@@ -281,7 +305,7 @@ public with sharing class TestUSTEventShared {
         Test.stopTest();
     }
 
-    @isTest static void testRegCancel() {
+    @IsTest static void testRegCancel() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', '', true, true, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
 
@@ -294,7 +318,7 @@ public with sharing class TestUSTEventShared {
         Test.stopTest();
     }
 
-    @isTest static void testRegConfirmationPage() {
+    @IsTest static void testRegConfirmationPage() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', '', true, true, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
 
@@ -309,7 +333,7 @@ public with sharing class TestUSTEventShared {
         Test.stopTest();
     }
 
-    @isTest static void testParkingPass() {
+    @IsTest static void testParkingPass() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', '', true, true, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
         evtReg.Status__c = 'Requested';
@@ -326,7 +350,7 @@ public with sharing class TestUSTEventShared {
         Test.stopTest();
     }
 
-    @isTest static void testEventFeed() {
+    @IsTest static void testEventFeed() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', 'Alumni', true, true, '');
 
         Test.startTest();
@@ -426,7 +450,7 @@ public with sharing class TestUSTEventShared {
     }
 
 
-    @isTest static void testLetterheadLookup() {
+    @IsTest static void testLetterheadLookup() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', '', true, true, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
         UST_Event_Email__c testEvtEmail = TestUSTEventSharedDataFactory.createTestTransactionEmail(evtInst, 'Requested', '');
@@ -460,7 +484,7 @@ public with sharing class TestUSTEventShared {
         Test.stopTest();
     }
 
-    @isTest static void testUSTEventTriggers() {
+    @IsTest static void testUSTEventTriggers() {
 
         // first retrieve default EDA trigger handlers
         List<hed.TDTM_Global_API.TdtmToken> tokens = hed.TDTM_Global_API.getTdtmConfig();
@@ -535,7 +559,7 @@ public with sharing class TestUSTEventShared {
         Test.stopTest();
     }
 
-    @isTest static void testUSTApptConfirmTriggerOvernight() {
+    @IsTest static void testUSTApptConfirmTriggerOvernight() {
 
         // first retrieve default EDA trigger handlers
         List<hed.TDTM_Global_API.TdtmToken> tokens = hed.TDTM_Global_API.getTdtmConfig();
@@ -579,7 +603,7 @@ public with sharing class TestUSTEventShared {
     }
 
     //Test the add to calendar page
-    @isTest static void testUSTAddToCalendar() {
+    @IsTest static void testUSTAddToCalendar() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Overnight Event', '', true, true, '');
 
         Test.startTest();
@@ -590,7 +614,7 @@ public with sharing class TestUSTEventShared {
 
 
     //Test the add to calendar page
-    @isTest static void testUSTHostAssignment() {
+    @IsTest static void testUSTHostAssignment() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Overnight Event', '', true, true, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
 
@@ -625,7 +649,7 @@ public with sharing class TestUSTEventShared {
     }
 
     //Test the add to calendar page
-    @isTest static void testUSTProgramFinder() {
+    @IsTest static void testUSTProgramFinder() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Test Event', '', true, true, '');
         //creatTestPrograms();
         Test.startTest();
@@ -639,7 +663,7 @@ public with sharing class TestUSTEventShared {
     }
 
     //Test itinerary printout
-    @isTest static void testItineraryPrint() {
+    @IsTest static void testItineraryPrint() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Overnight Event', '', true, true, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
 
@@ -712,10 +736,9 @@ public with sharing class TestUSTEventShared {
         Test.stopTest();
     }
 
-    @isTest static void testProgramFinder() {
+    @IsTest static void testProgramFinder() {
         UST_Event_Instance__c evtInst = TestUSTEventSharedDataFactory.createTestEvent('Undergraduate', 'Overnight Event', '', true, true, '');
         UST_Event_Registration__c evtReg = TestUSTEventSharedDataFactory.createEventRegistration(evtInst, 'TestFirst', 'TestLast', 'test@valleyhill.net', '55418', '1971-03-22', '2012', null);
-        List<Major__c> mj = TestUSTEventSharedDataFactory.insertTestPrograms();
 
         List<EnrollmentrxRx__School__c> addSchools = new List<EnrollmentrxRx__School__c>();
         addSchools.add(new EnrollmentrxRx__School__c(Name = 'Hello School', Active_Display_on_Portal__c = true));
@@ -735,7 +758,7 @@ public with sharing class TestUSTEventShared {
         ext.save();
         ext.refreshPrograms();
 
-        ustEvt.School__c = [SELECT School__c FROM EnrollmentrxRx__Program_Offered__c WHERE Id = :mj[0].Program_Offered__c][0].School__c;
+        ustEvt.School__c = [SELECT School__c FROM EnrollmentrxRx__Program_Offered__c][0].School__c;
         ustEvt.Program_Filter__c = 'THIS|THAT;';
         upsert ustEvt;
         ext = new USTEventProgramLookupExtension(sc);

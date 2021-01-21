@@ -55,22 +55,24 @@ public with sharing class TestAdmissionsCounselorLookup {
         Integer UserNum = 0;
         while (uu.size() < 5) {
             UserNum++;
-            Blob b = Crypto.GenerateAESKey(128);
-            String h = EncodingUtil.ConvertTohex(b);
-            String uid = h.SubString(0,8);
+            Blob b = Crypto.generateAesKey(128);
+            String h = EncodingUtil.convertToHex(b);
+            String uid = h.substring(0,8);
             User u = new User(Alias = uid, Email= uid + '@myorg.com',
                     EmailEncodingKey='UTF-8',
                     LanguageLocaleKey='en_US',
                     LocaleSidKey='en_US', ProfileId = p.Id,
-                    TimeZoneSidKey='America/New_York', UserName= uid + '@myorg.com',
+                    TimeZoneSidKey='America/New_York', Username= uid + '@myorg.com',
                     FirstName = 'Test' + String.valueOf(UserNum),
                     LastName = 'Counselor',
                     College__c = 'St. Thomas',
                     Major__c ='Poly Sci',
                     Hometown__c = 'St. Paul',
+                    Admissions_Counselor__c = true,
                     About_Me__c =' I\'m just this guy',
                     What_I_Love_About_St_Thomas__c = 'Everything',
                     Words_of_Advice__c = 'Don\t eat yellow snow!');
+
             uu.add(u);
         }
         insert(uu);

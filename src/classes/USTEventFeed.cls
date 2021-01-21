@@ -1,7 +1,7 @@
 /**
  * Created by dahl3702 on 8/09/2018.
  */
-@RestResource(urlMapping='/usteventfeed/*')
+@RestResource(UrlMapping='/usteventfeed/*')
 
 global with sharing class USTEventFeed {
 
@@ -9,14 +9,14 @@ global with sharing class USTEventFeed {
     private static USTEventShared USTShared = new USTEventShared();
     private static Id recTypeId { get; set; }
 
-    private Class eventItem {
+    private class eventItem {
         public String ID { get; set; }
         public String title { get; set; }
         public String instanceDesc { get; set; }
         public String description { get; set; }
         public String longDesc { get; set; }
         public Datetime endDate { get; set; }
-        public DateTime start { get; set; }
+        public Datetime start { get; set; }
         public String eventUrl { get; set; }
         public Boolean eventClosed { get; set; }
         public String className { get; set; }
@@ -29,7 +29,7 @@ global with sharing class USTEventFeed {
         public String sponsors { get; set; }
         public Integer capacityTotal { get; set; }
         public Integer capacityRemaining { get; set; }
-        public boolean excludeSearchTag { get; set; }
+        public Boolean excludeSearchTag { get; set; }
     }
 
     @HttpGet
@@ -38,7 +38,7 @@ global with sharing class USTEventFeed {
         String recType = RestContext.request.params.get('rectype');
 
         if (String.isNotBlank(recType)) {
-            List<RecordType> recTypeList = [SELECT Id,Name FROM RecordType WHERE SObjectType = 'UST_Event__c' AND Name = :recType];
+            List<RecordType> recTypeList = [SELECT Id,Name FROM RecordType WHERE SobjectType = 'UST_Event__c' AND Name = :recType];
             if (recTypeList.size() > 0) {
                 recTypeId = recTypeList[0].Id;
             }
@@ -86,14 +86,14 @@ global with sharing class USTEventFeed {
         eventQuery += ' FROM UST_Event_Instance__c';
         eventQuery += ' Where Event__R.Event_Status__c = \'Active\' ';
         eventQuery += ' AND Active_Status__c = \'Active\' ';
-        eventQuery += ' AND (Current_Available_Capacity__c > 0 OR Capacity__c = null) ';
+        //eventQuery += ' AND (Current_Available_Capacity__c > 0 OR Capacity__c = null) ';
         eventQuery += ' AND Event__r.Audience__c EXCLUDES (\'No Audience\') ';
 
         // build and sanitize the where statement that have variables
 
         // get start and end view times convert string to datetime then convert back into string to sanitize
-        DateTime viewStart = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(-1);
-        DateTime viewEnd = DateTime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(1);
+        Datetime viewStart = Datetime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(-1);
+        Datetime viewEnd = Datetime.newInstance(Date.today(), Time.newInstance(0, 0, 0, 0)).addMonths(1);
         ///.formatGmt('yyyy-MM-dd\'T\'HH:mm:ss\'Z\'');
         String formattedViewStart;
         String formattedViewEnd;
@@ -103,14 +103,14 @@ global with sharing class USTEventFeed {
             if (!viewStartString.containsIgnoreCase(' ')) {
                 viewStartString = viewStartString + ' 00:00:00';
             }
-            viewStart = DateTime.valueOf(viewStartString);
+            viewStart = Datetime.valueOf(viewStartString);
         }
         if (String.isNotBlank(req.params.get('viewEnd'))) {
             String viewEndString = req.params.get('viewEnd').trim();
             if (!viewEndString.containsIgnoreCase(' ')) {
                 viewEndString = viewEndString + ' 23:59:59';
             }
-            viewEnd = DateTime.valueOf(req.params.get('viewEnd'));
+            viewEnd = Datetime.valueOf(req.params.get('viewEnd'));
         }
         formattedViewStart = viewStart.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
         formattedViewEnd = viewEnd.format('yyyy-MM-dd\'T\'hh:mm:ss\'Z\'');
@@ -217,9 +217,9 @@ global with sharing class USTEventFeed {
 
         System.debug(eventQuery);
 
-        Try {
-            EventInstance = database.query(eventQuery);
-        } Catch (Exception ex) {
+        try {
+            EventInstance = Database.query(eventQuery);
+        } catch (Exception ex) {
 //            List<eventItem> errorEvent = new List<eventItem>();
 //            eventItem ei = new eventItem();
 //            ei.title = 'Exception Error';
@@ -264,11 +264,11 @@ global with sharing class USTEventFeed {
             }
 
             if (String.isNotBlank(es.Feed_Registration_Button_Text_Override__c)) {
-                evt.FeedButtonText = es.Feed_Registration_Button_Text_Override__c;
+                evt.feedButtonText = es.Feed_Registration_Button_Text_Override__c;
             } else if (String.isNotBlank(es.Event__r.Feed_Registration_Button_Text__c)) {
-                evt.FeedButtonText = es.Event__r.Feed_Registration_Button_Text__c;
+                evt.feedButtonText = es.Event__r.Feed_Registration_Button_Text__c;
             } else {
-                evt.FeedButtonText = 'Register';
+                evt.feedButtonText = 'Register';
             }
 
             if (String.isNotBlank(es.Location_Type_Override__c)) {
@@ -352,8 +352,8 @@ global with sharing class USTEventFeed {
                 evt.locationMapLink = '';
             }
 
-            Date startDate = date.newInstance(evt.start.year(), evt.start.month(), evt.start.day());
-            Date endDate = date.newInstance(evt.endDate.year(), evt.endDate.month(), evt.endDate.day());
+            Date startDate = Date.newInstance(evt.start.year(), evt.start.month(), evt.start.day());
+            Date endDate = Date.newInstance(evt.endDate.year(), evt.endDate.month(), evt.endDate.day());
 
             Boolean eventIsClosed = false;
             if (es.Event__r.Keep_Registration_Open_During_Event__c) {
@@ -362,6 +362,12 @@ global with sharing class USTEventFeed {
                 }
             } else if (startDate <= compareCloseDate) {
                 eventIsClosed = true;
+            }
+
+            if( es.Current_Available_Capacity__c!= null) {
+                if (es.Current_Available_Capacity__c <= 0) {
+                    eventIsClosed = true;
+                }
             }
 
             if (eventIsClosed) {
@@ -469,7 +475,7 @@ global with sharing class USTEventFeed {
         }, 'Must be included to get any feed (&feedType= one of these items)'));
 
         //Record Types
-        List<RecordType> recTypeList = [SELECT Id, Name FROM RecordType WHERE SObjectType = 'UST_Event__c'];
+        List<RecordType> recTypeList = [SELECT Id, Name FROM RecordType WHERE SobjectType = 'UST_Event__c'];
         List<String> recTypeNames = new List<String>();
         for (RecordType rt : recTypeList) {
             recTypeNames.add(rt.Name);
@@ -554,7 +560,7 @@ global with sharing class USTEventFeed {
                     SELECT Major_Display_Name__c, Prog_Major_Conc_Code__c, Program_Code__c, Status__c, Program_Offered__r.Degree_Level__c, College_School__c, Program_Offered__r.School__r.Name, Degree_Level__c
                     FROM Major__c
                     WHERE Status__c = 'Active'
-                    AND (Display_on_RFI_UG__c = true OR Display_on_RFI__c = true)
+                    AND (Display_on_RFI_UG__c = TRUE OR Display_on_RFI__c = TRUE)
                     ORDER BY Program_Offered__r.Degree_Level__c, Major_Display_Name__c
             ];
             List<String> allProgramsList = new List<String>();
