@@ -65,6 +65,10 @@ global with sharing class USTRestAdmissions {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=gradschools
                 serializedJSON = JSON.serialize(getUSTSchools());
 
+            } else if (feedType.equalsIgnoreCase('ustschools')) {
+                // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=ustschools
+                serializedJSON = JSON.serialize(getObjDefMap(Major__c.College_School__c.getDescribe()));
+
             } else if (feedType.equalsIgnoreCase('gradprograms')) {
                 // https://COMMUNITY_SUB_DOMAIN.force.com/applicantportal/services/apexrest/ustadmissionsrest.json?type=gradprograms
                 serializedJSON = JSON.serialize(getGradPrograms());
@@ -192,11 +196,11 @@ global with sharing class USTRestAdmissions {
 
         if (String.isNotBlank(RestContext.request.params.get('school'))) {
             String majorSchool = String.valueOf(RestContext.request.params.get('school'));
-            if (pftype.equalsIgnoreCase('grad')) {
-                majorQuery += ' Program_Offered__r.School__r.Name = \'' + majorSchool + '\' AND' ;
-            } else if (pftype.equalsIgnoreCase('ug')) {
+//            if (pftype.equalsIgnoreCase('grad')) {
+//                majorQuery += ' Program_Offered__r.School__r.Name = \'' + majorSchool + '\' AND' ;
+//            } else if (pftype.equalsIgnoreCase('ug')) {
                 majorQuery += ' College_School__c INCLUDES (\'' + majorSchool + '\') AND' ;
-            }
+//            }
 
         }
 
